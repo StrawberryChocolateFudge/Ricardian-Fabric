@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles.css" />
+    <title>Ricardian Fabric</title>
+  </head>
+  <body>
+    <div id="page" class="page">
+      <h1 class="ricardian-title">Ricardian Fabric</h1>
+      <h3 class="ricardian-subtitle">
+        Create and share fulfillable financial contracts with Arweave
+      </h3>
+      <hr />
+      <label class="contract-label" for="contract-text-area"
+        >Handwritten Legal Contract</label
+      >
+      <textarea
+        rows="20"
+        cols="50"
+        class="contract-text"
+        id="contract-text-area"
+      ></textarea>
+      <hr />
+      <label class="price-label" for="price-input">Price (Arweave)</label>
+      <input class="price-input" id="price-input" type="number" />
+
+      <hr />
+      <div class="checkbox-row">
+        <label for="recurring-payment">Recurring payment?</label>
+        <input id="recurring-payment" type="checkbox" />
+      </div>
+      <hr />
+      <label id="select-file-label" for="select-file-input">Wallet</label>
+      <input id="select-file-input" type="file" />
+
+      <hr />
+      <slot id="message-display"></slot>
+      <button class="save-button" id="save-contract">Create</button>
+    </div>
+  </body>
+  <script src="https://unpkg.com/arweave/bundles/web.bundle.min.js"></script>
+  <script async src="./bundle.js"></script>
+</html>
