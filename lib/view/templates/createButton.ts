@@ -1,4 +1,4 @@
-import { createTransaction, getBalance } from "../../business/bloc";
+import { createAcceptableContract, getBalance } from "../../business/bloc";
 import { State } from "../../types";
 import { getById, getKeyFromFile, readFile } from "../utils";
 
@@ -18,13 +18,13 @@ export function renderCreateButton(props: State) {
         const getKey = async (key: any) => {
           //Here I call the business logic to do stuff with the key and the other values
           //   await getBalance(props.arweave, key);
-          const result = await createTransaction(
+          console.log(key);
+          const result = await createAcceptableContract(
             props.arweave,
             key,
             legal_contract.value
           );
         };
-
         readFile(wallet_file.files, getKey);
       }
     }
