@@ -1,7 +1,5 @@
 import { Events, RenderType, State } from "../types";
-import { renderCreateButton } from "./render/createButton";
-import { getById } from "./utils";
-
+import { renderCreateButton } from "./templates/createButton";
 const Render = {
   [RenderType.successMessage]: (props: State) => {},
   [RenderType.errorMessage]: (props: State) => {},
@@ -13,5 +11,3 @@ document.body.addEventListener(Events.render, (e: any) => {
   const props: State = e.detail.props;
   Render[type](props);
 });
-
-// setup create button

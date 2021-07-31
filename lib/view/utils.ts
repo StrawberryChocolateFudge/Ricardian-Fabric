@@ -1,3 +1,5 @@
+import { ContractTypes } from "../types";
+
 export function getById(id: string): HTMLElement {
   const el = document.getElementById(id);
 
@@ -6,6 +8,28 @@ export function getById(id: string): HTMLElement {
   } else {
     return el;
   }
+}
+
+export function getCurrentPage() {
+  const page = getById("page");
+  const contractType = page.dataset.contracttype;
+
+  return contractType as ContractTypes;
+}
+
+export function getBundleSrcUrl(): string {
+  const mainScript = getById("main-script") as HTMLScriptElement;
+  return mainScript.src;
+}
+
+export function getArweaveDependencyUrl(): string {
+  const arweaveScript = getById("arweave-script") as HTMLScriptElement;
+  return arweaveScript.src;
+}
+
+export function getCommunityJsDependencyUrl(): string {
+  const communityScript = getById("community-js-script") as HTMLScriptElement;
+  return communityScript.src;
 }
 
 export function readFile(files: FileList, getKey: CallableFunction) {

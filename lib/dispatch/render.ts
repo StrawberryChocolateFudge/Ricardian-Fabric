@@ -8,3 +8,9 @@ export async function dispatch_renderCreateButton(props: State) {
     props,
   });
 }
+
+export async function dispatch_renderCreatePage() {
+  dispatch(Events.render, {
+    type: RenderType.createPage,
+  });
+}

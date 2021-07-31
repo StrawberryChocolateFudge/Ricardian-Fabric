@@ -15,7 +15,7 @@ export async function getBalance(arweave: any, key: any): Promise<number> {
   return balance;
 }
 
-export async function createTransaction(
+export async function createAcceptableContract(
   arweave: any,
   key: any,
   legalContract: string

@@ -1,8 +1,12 @@
 import { dispatch_renderCreateButton } from "../dispatch/render";
-import { SetHookArgs, State, StateProperties } from "../types";
+import { ContractTypes, SetHookArgs, State, StateProperties } from "../types";
+import { getCurrentPage } from "../view/utils";
 
 export const setStateHook = {
   [StateProperties.arweave]: (args: SetHookArgs) => {
-    dispatch_renderCreateButton(args.obj);
+    const currentPage = getCurrentPage();
+    if (currentPage === ContractTypes.create) {
+      dispatch_renderCreateButton(args.obj);
+    }
   },
 };
