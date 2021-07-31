@@ -11,7 +11,3 @@ WORK-IN-PROGRESS!
 Run the front end
 
 `yarn run dev`
-
-Run arlocal
-
-`yarn run local`
