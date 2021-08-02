@@ -9,8 +9,6 @@ export async function dispatch_renderCreateButton(props: State) {
   });
 }
 
-export async function dispatch_renderCreatePage() {
-  dispatch(Events.render, {
-    type: RenderType.createPage,
-  });
+export async function dispatch_renderAcceptButton(props: State) {
+  dispatch(Events.render, { type: RenderType.acceptButton, props });
 }
