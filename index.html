@@ -9,28 +9,24 @@
   </head>
   <body>
     <div data-contracttype="create" id="page">
+      <hr>
       <h1 class="ricardian-title">Ricardian Fabric</h1>
-      <h3 class="ricardian-subtitle">
+      <hr>
+      <h5 class="ricardian-subtitle">
         Create and share fulfillable financial contracts with Arweave
-      </h3>
+      </h5>
       <hr />
-      <label class="contract-label" for="contract-text-area"
-        >Handwritten Legal Contract</label
-      >
-      <textarea
-        rows="20"
-        cols="50"
-        class="contract-display"
-        id="contract-text-area"
-      ></textarea>
+      <div class="editable-container">
+        <div class="editable"></div>
+      </div>
       <hr />
       <label class="price-label" for="price-input">Price (Arweave)</label>
       <input class="price-input" id="price-input" type="number" />
 
       <hr />
       <div class="checkbox-row">
-        <label for="recurring-payment">Recurring payment?</label>
-        <input id="recurring-payment" type="checkbox" />
+        <label for="redirect-label">Redirect to</label>
+        <input id="redirect-input" type="text" />
       </div>
       <hr />
       <label id="select-file-label" for="select-file-input">Wallet</label>

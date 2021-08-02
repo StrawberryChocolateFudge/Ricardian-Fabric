@@ -20,6 +20,7 @@
   "dependencies": {
     "arweave": "^1.10.16",
     "lit-html": "^1.4.1",
+    "medium-editor": "^5.23.3",
     "testweave-sdk": "^0.2.2"
   }
 }

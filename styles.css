@@ -1,11 +1,13 @@
 #page {
+  margin: 0 auto;
   display: flex;
-  width: 100%;
+  max-width: 800px;
   height: 100%;
   flex-direction: column;
 }
 .ricardian-title {
   margin: 0 auto;
+
 }
 
 .ricardian-subtitle {
@@ -45,4 +47,9 @@
 
 #select-file-label {
   margin: 0 auto;
+}
+
+.editable {
+  background: #f2f2f2;
+  
 }

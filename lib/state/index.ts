@@ -1,10 +1,13 @@
 import { Events, EventType, State, StateProperties } from "../types";
+import createNewEditor from "../view/editor";
 import { setStateHook } from "./setStateHook";
 
 (function InitState() {
   function createState() {
-    let state: State = {
+    const state: State = {
       arweave: undefined,
+      editor: createNewEditor(),
+      domParser: new DOMParser(),
     };
 
     const stateHandler = {
@@ -24,6 +27,9 @@ import { setStateHook } from "./setStateHook";
   const stateSetter = {
     [EventType.setArweave]: (value: any) => {
       stateContainer.arweave = value;
+    },
+    [EventType.setEditor]: (value: any) => {
+      stateContainer.editor = value;
     },
   };
 
