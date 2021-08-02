@@ -1,9 +1,14 @@
+import { render } from "lit-html";
 import { Events, RenderType, State } from "../types";
-import { renderCreateButton } from "./templates/createButton";
+import { renderCreateButtonClick } from "./actions/createButtonClick";
+import renderAcceptButton from "./actions/renderAcceptButton";
+import { acceptButton } from "./templates/acceptButton";
+import { getById } from "./utils";
 const Render = {
   [RenderType.successMessage]: (props: State) => {},
   [RenderType.errorMessage]: (props: State) => {},
-  [RenderType.createButton]: (props: State) => renderCreateButton(props),
+  [RenderType.createButton]: (props: State) => renderCreateButtonClick(props),
+  [RenderType.acceptButton]: (props: State) => renderAcceptButton(props),
 };
 
 document.body.addEventListener(Events.render, (e: any) => {
