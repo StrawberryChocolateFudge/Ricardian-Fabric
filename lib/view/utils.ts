@@ -17,6 +17,12 @@ export function getCurrentPage() {
   return contractType as ContractTypes;
 }
 
+export function getRedirect(): string {
+  const page = getById("page");
+  return page.dataset.redirect;
+}
+
+//TODO: change where the dependencies come from
 export function getBundleSrcUrl(): string {
   const mainScript = getById("main-script") as HTMLScriptElement;
   return mainScript.src;
@@ -56,4 +62,17 @@ export function getKeyFromFile(fileEvent: ProgressEvent) {
   } catch (e) {
     // TODO: validation error
   }
+}
+
+export function parseDOMfromString(
+  parser: DOMParser,
+  initialDom: string
+): Document {
+  const doc = parser.parseFromString(initialDom, "text/html");
+  return doc;
+}
+
+export function serialize(doc: Document): string {
+  const XMLS = new XMLSerializer();
+  return XMLS.serializeToString(doc);
 }
