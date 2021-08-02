@@ -8,14 +8,17 @@ export enum RenderType {
   errorMessage = "errorMessage",
   createPage = "createPage",
   createButton = "createButton",
+  acceptButton = "acceptButton",
 }
 
 export enum EventType {
   setArweave = "setArweave",
+  setEditor = "setEditor",
 }
 
 export enum StateProperties {
   arweave = "arweave",
+  editor = "editor",
 }
 
 export enum ContractTypes {
@@ -26,6 +29,8 @@ export enum ContractTypes {
 
 export type State = {
   arweave: any;
+  editor: any;
+  domParser: DOMParser;
 };
 
 export type SetHookArgs = {
@@ -39,17 +44,32 @@ type Dependency = {
   code: string;
 };
 
-export type InlineProps = {
-  arweaveDeps: Dependency;
-  communityJsDep: Dependency;
-  mainDep: Dependency;
-};
-
 export type AcceptablePageProps = {
-  legalContract: string,
-  creator: string;
-  id: string;
-  transaction: string;
+  legalContract: string;
   createdDate: string;
   price: string;
+  redirect: string;
+  arweaveDeps?: Dependency;
+  communityJsDep?: Dependency;
+  mainDep?: Dependency;
+  domParser: DOMParser;
+};
+
+export type FulfilledPageProps = {
+  legalContract: string;
+  creator: string;
+  id: string; //Transaction and id will come from the URL
+  transaction: string;
+  createdDate: string;
+  paid: string;
+  paidTo: string;
+  paidFrom: string;
+  parentUrl: string;
+  domParser: DOMParser;
+};
+
+export type CreateTransaqctionResult = {
+  id: string;
+  statusCode: number;
+  path: string;
 };
