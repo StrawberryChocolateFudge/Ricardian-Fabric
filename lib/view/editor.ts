@@ -1,6 +1,6 @@
 import MediumEditor from "medium-editor";
 
-export default function createNewEditor(): MediumEditor {
+export default function createNewEditor() {
   const editor = new MediumEditor(".editable", {
     imageDragging: false,
     toolbar: {
