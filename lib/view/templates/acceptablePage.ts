@@ -1,34 +1,10 @@
 import { html } from "lit-html";
 import { AcceptablePageProps } from "../../types";
 import { arweaveDep, communityJsDep, mainDep } from "./dependencies";
-import { classMap } from "lit-html/directives/class-map.js";
+import { loadingIndicator } from "./loadingIndicator";
 
 export const acceptablePageLayout = (props: AcceptablePageProps) => html`
   <style>
-    .lds-dual-ring {
-      display: inline-block;
-      width: 80px;
-      height: 80px;
-    }
-    .lds-dual-ring:after {
-      content: " ";
-      display: block;
-      width: 64px;
-      height: 64px;
-      margin: 8px;
-      border-radius: 50%;
-      border: 6px solid #cef;
-      border-color: #cef transparent #cef transparent;
-      animation: lds-dual-ring 1.2s linear infinite;
-    }
-    @keyframes lds-dual-ring {
-      0% {
-        transform: rotate(0deg);
-      }
-      100% {
-        transform: rotate(360deg);
-      }
-    }
     .center {
       margin: 0 auto;
     }
@@ -44,6 +20,28 @@ export const acceptablePageLayout = (props: AcceptablePageProps) => html`
     .title {
       color: #f2f2f2;
     }
+
+    .row {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .column {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .width-100 {
+      width: 100px;
+    }
+
+    .paddingLeft-50 {
+      padding-left: 50px;
+    }
+
+    .paddingLeft-10 {
+      padding-left: 10px;
+    }
   </style>
   <body>
     ${acceptablePage(props)} ${arweaveDep(props.arweaveDeps.src)}
@@ -53,7 +51,11 @@ export const acceptablePageLayout = (props: AcceptablePageProps) => html`
 
 const acceptablePage = (props: AcceptablePageProps) => html`
 
-      <div data-arweavedep="${props.arweaveDeps.src}"  data-communityjsdep="${props.communityJsDep.src}"  data-maindep="${props.mainDep.src}" data-redirect="${props.redirect}" data-contracttype="acceptable" id="page">
+      <div data-creatorAddress="${props.creatorWallet}" data-arweavedep="${
+  props.arweaveDeps.src
+}"  data-communityjsdep="${props.communityJsDep.src}"  data-maindep="${
+  props.mainDep.src
+}" data-redirect="${props.redirect}" data-contracttype="acceptable" id="page">
             <hr>  
       <h1 class="center title">Ricardian Fabric</h1>
       <hr> 
@@ -61,10 +63,12 @@ const acceptablePage = (props: AcceptablePageProps) => html`
         <div class="center" disabled id="contract-display"></div>
         <hr />
         <div class="center"><span>${props.createdDate}</span></div>
-        <div class="center">Price: <span>${props.price}</span> Ar</div>
+        <div class="center">Price: <span>${props.price}</span>${
+  props.price === "NONE" ? "" : " Ar"
+}</div>
         <hr />
         <div id="action-container" class="center">
-          <div id="loader" class="lds-dual-ring center"></div>
+          ${loadingIndicator}
         </div>
       </div>
     
