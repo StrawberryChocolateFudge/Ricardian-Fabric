@@ -10,14 +10,14 @@ export function getById(id: string): HTMLElement {
   }
 }
 
-export function getCurrentPage() {
+export function getCurrentPageDataProp() {
   const page = getById("page");
   const contractType = page.dataset.contracttype;
 
   return contractType as ContractTypes;
 }
 
-export function getRedirect(): string {
+export function getRedirectDataProp(): string {
   const page = getById("page");
   return page.dataset.redirect;
 }
@@ -48,7 +48,6 @@ export function readFile(files: FileList, getKey: CallableFunction) {
 
   reader.onerror = function (e) {
     console.log(e);
-    //TODO: validation error
   };
 
   reader.readAsText(files[0], "UFT-8");
@@ -75,4 +74,40 @@ export function parseDOMfromString(
 export function serialize(doc: Document): string {
   const XMLS = new XMLSerializer();
   return XMLS.serializeToString(doc);
+}
+
+export function renderError(message: string) {
+  getById("error-display").textContent = message;
+}
+
+export function removeError() {
+  getById("error-display").innerHTML = "";
+}
+
+export function enableCreateButton() {
+  const saveButton = getById("save-contract") as HTMLButtonElement;
+  saveButton.disabled = false;
+}
+
+export function disableCreateButton() {
+  const saveButton = getById("save-contract") as HTMLButtonElement;
+  saveButton.disabled = true;
+}
+
+export function getPrice() {
+  const price = getById("price-input") as HTMLInputElement;
+  if (price.value === "") {
+    return "NONE";
+  } else {
+    price.value;
+  }
+}
+
+export function getRedirect() {
+  const redirect = getById("redirect-input") as HTMLInputElement;
+  if (redirect.value === "") {
+    return "NONE";
+  } else {
+    return redirect.value;
+  }
 }
