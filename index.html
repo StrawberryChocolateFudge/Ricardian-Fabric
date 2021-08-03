@@ -9,10 +9,10 @@
   </head>
   <body>
     <div data-contracttype="create" id="page">
-      <hr>
-      <h1 class="ricardian-title">Ricardian Fabric</h1>
-      <hr>
-      <h5 class="ricardian-subtitle">
+      <hr />
+      <h1 class="center">Ricardian Fabric</h1>
+      <hr />
+      <h5 class="center">
         Create and share fulfillable financial contracts with Arweave
       </h5>
       <hr />
@@ -20,21 +20,39 @@
         <div class="editable"></div>
       </div>
       <hr />
-      <label class="price-label" for="price-input">Price (Arweave)</label>
-      <input class="price-input" id="price-input" type="number" />
-
-      <hr />
-      <div class="checkbox-row">
-        <label for="redirect-label">Redirect to</label>
-        <input id="redirect-input" type="text" />
+      <div class="row center">
+        <div class="column width-100">
+          <label class="center" for="price-input">Price :</label>
+        </div>
+        <div class="column width-100">
+          <div class="row">
+            <input class="width-100 center" id="price-input" type="number" />
+            <span class="paddingLeft-10"> Ar</span>
+          </div>
+        </div>
       </div>
       <hr />
-      <label id="select-file-label" for="select-file-input">Wallet</label>
-      <input id="select-file-input" type="file" />
-
+      <div class="row center">
+        <div class="column width-100">
+          <label for="center">Redirect to:</label>
+        </div>
+        <div class="column width-100">
+          <div class="row">
+            <input id="redirect-input" type="url" />
+            <span class="paddingLeft-10">/{id}</span>
+          </div>
+        </div>
+      </div>
       <hr />
-      <slot id="message-display"></slot>
-      <button class="save-button" id="save-contract">Create</button>
+      <label class="center" for="select-file-input">Wallet</label>
+      <input class="center paddingLedt-50" id="select-file-input" type="file" />
+      <div id="balance" class="center"></div>
+      <hr />
+      <div class="center red" id="error-display"></div>
+      <div class="center" id="transaction-display"></div>
+      <button class="center width-100" id="save-contract" disabled>
+        Create
+      </button>
     </div>
   </body>
   <script

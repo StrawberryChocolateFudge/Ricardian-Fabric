@@ -5,51 +5,37 @@
   height: 100%;
   flex-direction: column;
 }
-.ricardian-title {
-  margin: 0 auto;
 
-}
-
-.ricardian-subtitle {
+.center {
   margin: 0 auto;
 }
 
-.contract-text {
-  margin: 0 auto;
-}
-
-.checkbox-row {
+.row {
   display: flex;
   flex-direction: row;
-  margin: 0 auto;
 }
 
-.contract-label {
-  margin: 0 auto;
+.column {
+  display: flex;
+  flex-direction: column;
 }
-.price-label {
-  margin: 0 auto;
-}
-.price-input {
+
+.width-100 {
   width: 100px;
-  margin: 0 auto;
 }
 
-.save-button {
-  width: 100px;
-  margin: 0 auto;
-}
-
-#select-file-input {
-  margin: 0 auto;
+.paddingLeft-50{
   padding-left: 50px;
 }
 
-#select-file-label {
-  margin: 0 auto;
+.paddingLeft-10{
+  padding-left: 10px;
+
+}
+.red{
+  color: red;
 }
 
 .editable {
   background: #f2f2f2;
-  
 }
