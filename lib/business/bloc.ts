@@ -2,17 +2,26 @@ import {
   createTransactionSend,
   getArweaveCall,
   getBalanceCall,
+  getWalletAddr,
 } from "../arweave/arweave";
 import {
   dispatch_getArweave,
+  dispatch_setBalance,
 } from "../dispatch/stateChange";
 import { fetchDependency } from "../fetch";
 import { AcceptablePageProps } from "../types";
+import {
+  removeLoadingIndicator,
+  renderLoadingIndicator,
+} from "../view/actions/renderLoadingIndicator";
+import { renderTransaction } from "../view/actions/renderTransaction";
 import createNewEditor from "../view/editor";
 import {
+  disableCreateButton,
   getArweaveDependencyUrl,
   getBundleSrcUrl,
   getCommunityJsDependencyUrl,
+  renderError,
 } from "../view/utils";
 import { getAcceptablePage } from "../view/vDom";
 
@@ -21,9 +30,14 @@ export async function getArweave() {
   dispatch_getArweave(arweave);
 }
 
-export async function getBalance(arweave: any, key: any): Promise<number> {
-  const balance = getBalanceCall(arweave, key);
-  return balance;
+export async function getBalance(arweave: any, key: any) {
+  const balance = await getBalanceCall(arweave, key);
+  const address = await getWalletAddr(arweave, key);
+  dispatch_setBalance({ balance, address });
+}
+
+export async function getCreatorWallet(arweave: any, key: any) {
+  return await getWalletAddr(arweave, key);
 }
 
 export async function createAcceptableContract(
@@ -31,28 +45,32 @@ export async function createAcceptableContract(
   key: any,
   data: AcceptablePageProps
 ) {
+  renderLoadingIndicator("transaction-display");
   const arweaveDepUrl = getArweaveDependencyUrl();
   const communityJsDepUrl = getCommunityJsDependencyUrl();
   const bundleSrcUrl = getBundleSrcUrl();
-  const arweaveDepCode = await fetchDependency(arweaveDepUrl);
-  const communityJsDepCode = await fetchDependency(communityJsDepUrl);
-  const bundleDepCode = await fetchDependency(bundleSrcUrl);
-  console.log(data.legalContract);
   const page = await getAcceptablePage({
     ...data,
     arweaveDeps: {
       src: arweaveDepUrl,
-      code: arweaveDepCode,
     },
     mainDep: {
       src: bundleSrcUrl,
-      code: bundleDepCode,
     },
     communityJsDep: {
       src: communityJsDepUrl,
-      code: communityJsDepCode,
     },
   });
+  //TODO: handle not enough balance
   const result = await createTransactionSend(arweave, key, page);
+  await getBalance(arweave, key);
+  disableCreateButton();
+  if (result.statusCode !== 200) {
+    removeLoadingIndicator("transaction-display");
+    renderError("An error occured when sending the transaction!");
+  } else {
+    renderTransaction(result.path);
+  }
+
   return result;
 }
