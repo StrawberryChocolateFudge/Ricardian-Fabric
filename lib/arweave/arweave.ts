@@ -1,5 +1,7 @@
 import TestWeave from "../../node_modules/testweave-sdk";
-import { CreateTransaqctionResult } from "../types";
+import { CreateTransactionResult } from "../types";
+
+const PRECISION = 1000000000000;
 let testweave: TestWeave;
 
 export async function getArweaveCall() {
@@ -26,17 +28,22 @@ export async function getAddressCall(arweave: any, key: any): Promise<string> {
   return await arweave.wallets.jwkToAddress(key);
 }
 
+export async function getWalletAddr(arweave: any, key: any): Promise<string> {
+  const address = await arweave.wallets.jwkToAddress(testweave.rootJWK);
+  return address;
+}
+
 export async function getBalanceCall(arweave: any, key: any): Promise<number> {
-  const address = await getAddressCall(arweave, key);
+  const address = await getAddressCall(arweave, testweave.rootJWK);
   const winston = await arweave.wallets.getBalance(address);
-  return winston as number;
+  return (winston / PRECISION) as number;
 }
 
 export async function createTransactionSend(
   arweave: any,
   key: any,
   page: string
-): Promise<CreateTransaqctionResult> {
+): Promise<CreateTransactionResult> {
   const dataTransaction = await arweave.createTransaction(
     {
       data: page,
@@ -44,23 +51,12 @@ export async function createTransactionSend(
     testweave.rootJWK
   );
   dataTransaction.addTag("Content-Type", "text/html");
-  console.log(page);
   await arweave.transactions.sign(dataTransaction, testweave.rootJWK);
   const response: any = await arweave.transactions.post(dataTransaction);
 
   await arweave.transactions.post(dataTransaction);
-  const statusAfterPost = await arweave.transactions.getStatus(
-    dataTransaction.id
-  );
-  console.log(response.status);
   await testweave.mine();
   console.log(`http://localhost:1984/tx/${dataTransaction.id}/data.html`);
-  await testweave.mine();
-  await testweave.mine();
-  await testweave.mine();
-  await testweave.mine();
-  await testweave.mine();
-
   return {
     statusCode: response.status,
     id: dataTransaction.id,
