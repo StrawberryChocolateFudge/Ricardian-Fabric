@@ -8,3 +8,13 @@ export function dispatch_getArweave(arweave: any) {
     value: arweave,
   });
 }
+
+export function dispatch_setBalance(arg: {
+  balance: number;
+  address: string;
+}) {
+  dispatch(Events.stateChange, {
+    type: EventType.setBalance,
+    value: arg,
+  });
+}

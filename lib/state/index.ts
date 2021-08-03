@@ -8,10 +8,12 @@ import { setStateHook } from "./setStateHook";
       arweave: undefined,
       editor: createNewEditor(),
       domParser: new DOMParser(),
+      balance: 0,
+      address: "",
     };
 
     const stateHandler = {
-      set: function (obj: State, prop: StateProperties, value: any) {
+      set: function (obj: State, prop: string, value: any) {
         obj[prop] = value;
         setStateHook[prop]({ obj, prop, value });
         console.log(obj);
@@ -30,6 +32,10 @@ import { setStateHook } from "./setStateHook";
     },
     [EventType.setEditor]: (value: any) => {
       stateContainer.editor = value;
+    },
+    [EventType.setBalance]: (value: any) => {
+      stateContainer.balance = value.balance;
+      stateContainer.address = value.address;
     },
   };
 

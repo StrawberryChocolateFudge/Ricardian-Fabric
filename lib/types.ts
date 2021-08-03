@@ -9,16 +9,21 @@ export enum RenderType {
   createPage = "createPage",
   createButton = "createButton",
   acceptButton = "acceptButton",
+  balance = "balance",
 }
 
 export enum EventType {
   setArweave = "setArweave",
   setEditor = "setEditor",
+  setBalance = "setBalance",
+  setWalletAddress = "setWalletAddress",
 }
 
 export enum StateProperties {
   arweave = "arweave",
   editor = "editor",
+  balance = "balance",
+  address = "address",
 }
 
 export enum ContractTypes {
@@ -31,6 +36,8 @@ export type State = {
   arweave: any;
   editor: any;
   domParser: DOMParser;
+  balance: number;
+  address: string;
 };
 
 export type SetHookArgs = {
@@ -41,7 +48,6 @@ export type SetHookArgs = {
 
 type Dependency = {
   src: string;
-  code: string;
 };
 
 export type AcceptablePageProps = {
@@ -53,6 +59,7 @@ export type AcceptablePageProps = {
   communityJsDep?: Dependency;
   mainDep?: Dependency;
   domParser: DOMParser;
+  creatorWallet: string;
 };
 
 export type FulfilledPageProps = {
@@ -68,7 +75,7 @@ export type FulfilledPageProps = {
   domParser: DOMParser;
 };
 
-export type CreateTransaqctionResult = {
+export type CreateTransactionResult = {
   id: string;
   statusCode: number;
   path: string;
