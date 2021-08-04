@@ -1,4 +1,5 @@
 import { Events, EventType, State, StateProperties } from "../types";
+import { getPage } from "../view/utils";
 import {
   getArweaveDependencyUrl,
   getBundleSrcUrl,
@@ -7,26 +8,32 @@ import {
   getCreatorAddressDataProp,
   getCurrentPageDataProp,
   getExpiresFromDataProp,
+  getPostToDataProp,
   getPriceFromDataProp,
-  getRedirectDataProp,
+  getRedirectFromDataProp,
+  getWebhookFromDataProp,
 } from "./dataPropGetters";
 import createNewEditor from "./editor";
 import { setStateHook } from "./setStateHook";
 
 (function InitState() {
   function createState() {
+    const pageEl = getPage();
+
     const state: State = {
       arweave: undefined,
       editor: createNewEditor(),
       domParser: new DOMParser(),
       balance: 0,
       address: "",
-      contracttype: getCurrentPageDataProp(),
-      redirect: getRedirectDataProp(),
-      creatorAddress: getCreatorAddressDataProp(),
-      price: getPriceFromDataProp(),
-      expires: getExpiresFromDataProp(),
-      createdDate: getCreatedDateFromDataProp(),
+      contracttype: getCurrentPageDataProp(pageEl),
+      postto: getPostToDataProp(pageEl),
+      webhook: getWebhookFromDataProp(pageEl),
+      redirect: getRedirectFromDataProp(pageEl),
+      creatorAddress: getCreatorAddressDataProp(pageEl),
+      price: getPriceFromDataProp(pageEl),
+      expires: getExpiresFromDataProp(pageEl),
+      createdDate: getCreatedDateFromDataProp(pageEl),
       bundleSrcUrl: getBundleSrcUrl(),
       arweaveDependencyUrl: getArweaveDependencyUrl(),
       communityJsDependencyUrl: getCommunityJsDependencyUrl(),
