@@ -10,7 +10,7 @@
   <body>
     <div data-contracttype="create" id="page">
       <hr />
-      <h1 class="center">Ricardian Fabric</h1>
+      <h1 class="center title">Ricardian Fabric</h1>
       <hr />
       <h5 class="center">
         Create and share fulfillable financial contracts with Arweave
@@ -26,19 +26,10 @@
           <th></th>
         </tr>
         <tr>
-          <td><label class="center" for="price-input">Price:</label></td>
+          <td><label for="price-input">Price:</label></td>
           <td>
-            <input class="width-100 center" id="price-input" type="number" />
+            <input id="price-input" type="number" />
             <span> Ar</span>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <label for="center">Post to:</label>
-          </td>
-          <td>
-            <input id="redirect-input" type="url" />
-            <span>/{id}</span>
           </td>
         </tr>
         <tr>
@@ -48,6 +39,25 @@
           <td>
             <input id="expires-input" type="date" />
             <button id="expires-reset">Never</button>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label>Post to:</label>
+          </td>
+          <td>
+            <input id="postto-input" type="url" />
+            <span>/{id}</span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="webhook-checkbox">Webhook:</label>
+            <input id="webhook-checkbox" type="checkbox" />
+          </td>
+          <td>
+            <label for="redirect-checkbox">Redirect:</label>
+            <input id="redirect-checkbox" type="checkbox" />
           </td>
         </tr>
       </table>
