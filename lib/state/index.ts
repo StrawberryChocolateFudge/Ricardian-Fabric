@@ -1,5 +1,14 @@
 import { Events, EventType, State, StateProperties } from "../types";
-import createNewEditor from "../view/editor";
+import {
+  getArweaveDependencyUrl,
+  getBundleSrcUrl,
+  getCommunityJsDependencyUrl,
+  getCreatorAddressDataProp,
+  getCurrentPageDataProp,
+  getPriceFromDataProp,
+  getRedirectDataProp,
+} from "./dataPropGetters";
+import createNewEditor from "./editor";
 import { setStateHook } from "./setStateHook";
 
 (function InitState() {
@@ -10,6 +19,13 @@ import { setStateHook } from "./setStateHook";
       domParser: new DOMParser(),
       balance: 0,
       address: "",
+      contracttype: getCurrentPageDataProp(),
+      redirect: getRedirectDataProp(),
+      creatorAddress: getCreatorAddressDataProp(),
+      price: getPriceFromDataProp(),
+      bundleSrcUrl: getBundleSrcUrl(),
+      arweaveDependencyUrl: getArweaveDependencyUrl(),
+      communityJsDependencyUrl: getCommunityJsDependencyUrl(),
     };
 
     const stateHandler = {
