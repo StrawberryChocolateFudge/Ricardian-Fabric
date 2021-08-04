@@ -23,6 +23,16 @@ export function getPriceFromDataProp(): string {
   return page.dataset.price;
 }
 
+export function getCreatedDateFromDataProp(): string {
+  const page = getById("page");
+  return page.dataset.created;
+}
+
+export function getExpiresFromDataProp(): string {
+  const page = getById("page");
+  return page.dataset.expires;
+}
+
 //Refactor these to state too!
 export function getBundleSrcUrl(): string {
   const mainScript = getById("main-script") as HTMLScriptElement;
