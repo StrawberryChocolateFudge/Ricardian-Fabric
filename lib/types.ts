@@ -62,7 +62,9 @@ export type State = {
   balance: number;
   address: string;
   contracttype: ContractTypes;
-  redirect: string;
+  postto: string;
+  webhook: boolean;
+  redirect:boolean;
   creatorAddress: string;
   price: string;
   bundleSrcUrl: string;
@@ -87,6 +89,8 @@ export type AcceptablePageProps = {
   createdDate: string;
   price: string;
   post: string;
+  webhook: boolean;
+  redirect: boolean;
   expires: string;
   arweaveDeps?: Dependency;
   communityJsDep?: Dependency;
