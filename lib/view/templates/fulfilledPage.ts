@@ -3,11 +3,10 @@ import { FulfilledPageProps } from "../../types";
 import { mainDep } from "./dependencies";
 
 export const fulfilledPageLayout = (props: FulfilledPageProps) => html`
-  <body>
-  </body>
+  <body>WIP!!</body>
 `;
 
-const fulfilledPage = (props: FulfilledPageProps) => html`
+export const fulfilledPage = (props: FulfilledPageProps) => html`
   <div data-contracttype="fulfilled" id="page">
     <h1 class="ricardian-title">Ricardian Fabric</h1>
     <h3 class="ricardian-subtitle">Receipt</h3>
@@ -24,7 +23,7 @@ ${props.legalContract}
     >
     <hr />
     <div class="price-input" id="price-input">
-      Paid: <span>${props.paid}</span>
+      Paid: <span>${props.fee}</span>
     </div>
     <div class="price-input" id="price-input"></div>
     <div class="price-input">etc..</div>
