@@ -1,29 +1,34 @@
 import {
   createTransactionSend,
+  FEE,
   getArweaveCall,
   getBalanceCall,
   getWalletAddr,
+  toWinston,
 } from "../arweave/arweave";
+import {
+  dispatch_disableButton,
+  dispatch_removeLoadingIndicator,
+  dispatch_renderError,
+  dispatch_renderLoadingIndicator,
+  dispatch_renderTransaction,
+} from "../dispatch/render";
 import {
   dispatch_getArweave,
   dispatch_setBalance,
 } from "../dispatch/stateChange";
-import { fetchDependency } from "../fetch";
-import { AcceptablePageProps } from "../types";
+import { getCreatorAddressDataProp } from "../state/dataPropGetters";
+import { AcceptablePageProps, State } from "../types";
+
 import {
-  removeLoadingIndicator,
-  renderLoadingIndicator,
-} from "../view/actions/renderLoadingIndicator";
-import { renderTransaction } from "../view/actions/renderTransaction";
-import createNewEditor from "../view/editor";
-import {
-  disableCreateButton,
-  getArweaveDependencyUrl,
-  getBundleSrcUrl,
-  getCommunityJsDependencyUrl,
-  renderError,
+  getAcceptableContract,
+  // getArweaveDependencyUrl,
+  // getBundleSrcUrl,
+  // getCommunityJsDependencyUrl,
+  // getCreatorAddressDataProp,
+  getFromUrl,
 } from "../view/utils";
-import { getAcceptablePage } from "../view/vDom";
+import { getAcceptablePage, getFulfilledPage } from "../view/vDom";
 
 export async function getArweave() {
   const arweave = await getArweaveCall();
@@ -40,37 +45,67 @@ export async function getCreatorWallet(arweave: any, key: any) {
   return await getWalletAddr(arweave, key);
 }
 
-export async function createAcceptableContract(
-  arweave: any,
-  key: any,
-  data: AcceptablePageProps
-) {
-  renderLoadingIndicator("transaction-display");
-  const arweaveDepUrl = getArweaveDependencyUrl();
-  const communityJsDepUrl = getCommunityJsDependencyUrl();
-  const bundleSrcUrl = getBundleSrcUrl();
+export async function createAcceptableContract(args: {
+  props: State;
+  key: any;
+  data: AcceptablePageProps;
+}) {
+  dispatch_renderLoadingIndicator("transaction-display");
   const page = await getAcceptablePage({
-    ...data,
+    ...args.data,
     arweaveDeps: {
-      src: arweaveDepUrl,
+      src: args.props.arweaveDependencyUrl,
     },
     mainDep: {
-      src: bundleSrcUrl,
+      src: args.props.bundleSrcUrl,
     },
     communityJsDep: {
-      src: communityJsDepUrl,
+      src: args.props.communityJsDependencyUrl,
     },
   });
   //TODO: handle not enough balance
-  const result = await createTransactionSend(arweave, key, page);
-  await getBalance(arweave, key);
-  disableCreateButton();
+  const result = await createTransactionSend(
+    args.props.arweave,
+    args.key,
+    page
+  );
+  await getBalance(args.props.arweave, args.key);
+  //TODO: DISPATCH RENDERS DONT CALL DIRECTLY FROM BLOC!
+  dispatch_disableButton(args.props);
   if (result.statusCode !== 200) {
-    removeLoadingIndicator("transaction-display");
-    renderError("An error occured when sending the transaction!");
+    dispatch_removeLoadingIndicator("transaction-display");
+    dispatch_renderError("An error occured when sending the transaction!");
   } else {
-    renderTransaction(result.path);
+    dispatch_renderTransaction(result.path);
   }
 
   return result;
 }
+
+export async function acceptAndPayContract(data: {
+  props: State;
+  winston: number;
+  key: any;
+}) {
+  dispatch_renderLoadingIndicator("transaction-display");
+  dispatch_disableButton(data.props);
+  const page = await getFulfilledPage({
+    legalContract: getAcceptableContract(),
+    creator: getCreatorAddressDataProp(),
+    parentUrl: getFromUrl(),
+    fee: FEE,
+    paidAmount: data.winston,
+    paidTo: getCreatorAddressDataProp(),
+    paidFrom: await getWalletAddr(data.props.arweave, data.key),
+    createdDate: new Date().toISOString(),
+    domParser: data.props.domParser,
+  });
+  //TODO: style page!
+  console.log(page);
+  //TODO:
+  // const result = await acceptTransactionPay({});
+
+  //then I can redirect when I got the transaction id in the result
+}
+
+export async function acceptContract(arweave: any, key: any) {}
