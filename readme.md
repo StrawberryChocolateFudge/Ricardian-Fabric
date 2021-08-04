@@ -7,17 +7,17 @@ WORK-IN-PROGRESS!
 
 Use cases:
 
-Terms and aggreements for websites
-Liability Waivers
-Rental agreements
-General contracting
-Deposits
-Smart contract legal compliance for regulators.
-Smart contract onboarding for seniors and people who cannot read code.
-Helps to defend agains scams by providing a legal grip on smart contracts (users have somebody to sue)
+1.Terms and aggreements for websites
+2.Liability Waivers
+3.Rental agreements
+4.General contracting
+5.Deposits
+6.Smart contract legal compliance for regulators.
+7.Smart contract onboarding for seniors and people who cannot read code.
+8.Helps to defend agains scams by providing a legal grip on smart contracts (users have somebody to sue)
 
-Issuance of dept securities
-Repurchase agreements
+9.Issuance of dept securities
+10.Repurchase agreements
 
 ## Use
 
