@@ -10,28 +10,10 @@
   margin: 0 auto;
 }
 
-.row {
-  display: flex;
-  flex-direction: row;
-}
-
-.column {
-  display: flex;
-  flex-direction: column;
-}
-
 .width-100 {
   width: 100px;
 }
 
-.paddingLeft-50{
-  padding-left: 50px;
-}
-
-.paddingLeft-10{
-  padding-left: 10px;
-
-}
 .red{
   color: red;
 }
