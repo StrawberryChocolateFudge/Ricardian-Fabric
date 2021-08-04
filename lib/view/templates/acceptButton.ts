@@ -1,5 +1,16 @@
 import { html } from "lit-html";
 import { State } from "../../types";
+import { didExpire } from "../utils";
+
+const showSecret = (props: State) => {
+  //If it's posting to webhook, we can post a secret identifier
+  if (props.webhook) {
+    return html` <tr>
+      <td>Secret:</td>
+      <td><input id="secret-input" type="text" /></td>
+    </tr>`;
+  }
+};
 
 export const acceptButton = (props: State) => {
   //Determine if expires is in the past or never
@@ -17,11 +28,25 @@ export const acceptButton = (props: State) => {
     <div class="outter">
       ${expired
         ? html` <div class="center red" id="error-display">Expired</div> `
-        : html` <label id="select-file-label" for="select-file-input"
-              >Wallet</label
-            >
-            <input id="select-file-input" type="file" />
-            <div id="balance" class="center"></div>
+        : html` <table class="center">
+              <tr>
+                <th></th>
+                <th></th>
+              </tr>
+              ${showSecret(props)}
+              <tr>
+                <td>
+                  <label id="select-file-label" for="select-file-input"
+                    >Wallet</label
+                  >
+                </td>
+                <td>
+                  <input id="select-file-input" type="file" />
+                </td>
+              </tr>
+              <tr id="balance" class="center"></tr>
+            </table>
+            <hr />
             <div class="center red" id="error-display"></div>
             <div class="center" id="transaction-display"></div>
             <button id="accept-button" class="center width-200" disabled>
@@ -30,12 +55,3 @@ export const acceptButton = (props: State) => {
     </div>`;
 };
 
-function didExpire(expires: string): boolean {
-  if (expires === "NEVER") {
-    return false;
-  } else {
-    const now = new Date().getTime();
-    const expiryDate = new Date(expires).getTime();
-    return now > expiryDate;
-  }
-}
