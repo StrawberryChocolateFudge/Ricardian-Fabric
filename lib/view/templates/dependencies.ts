@@ -5,7 +5,7 @@ export const arweaveDep = (src: string) => html`
 `;
 
 export const communityJsDep = (src: string) => html`
-  <script src="${src}" id="community-script"></script>
+  <script src="${src}" id="community-js-script"></script>
 `;
 
 export const mainDep = (src: string) => html`
