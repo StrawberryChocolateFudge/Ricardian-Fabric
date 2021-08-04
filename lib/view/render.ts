@@ -14,7 +14,7 @@ export async function renderbalance(balance: number) {
 export function renderAcceptButton(props: State) {
   const actionContainer = getById("action-container");
   actionContainer.innerHTML = "";
-  render(acceptButton(), actionContainer);
+  render(acceptButton(props), actionContainer);
 }
 
 export async function renderLoadingIndicator(to: string) {

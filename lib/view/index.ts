@@ -1,5 +1,6 @@
 import { Events, Renderer, RenderType, State } from "../types";
 import { renderCreateButtonClick } from "./actions/createButtonClick";
+import { attachNeverExpiresClick } from "./actions/neverExpiresClick";
 import { onFileSelect } from "./actions/onFileSelect";
 import { renderAcceptOnCLick } from "./actions/renderAcceptButton";
 import {
@@ -22,6 +23,7 @@ const Render: Renderer = {
     // The order of attaching listeners is important
     onFileSelect(props);
     renderCreateButtonClick(props);
+    attachNeverExpiresClick();
   },
   [RenderType.acceptButton]: (props: State) => {
     renderAcceptButton(props);

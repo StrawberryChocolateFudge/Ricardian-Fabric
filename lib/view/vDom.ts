@@ -1,4 +1,4 @@
-import { render } from "lit-html";
+import { html, render } from "lit-html";
 import { AcceptablePageProps, FulfilledPageProps } from "../types";
 import { acceptablePageLayout } from "./templates/acceptablePage";
 import { fulfilledPageLayout } from "./templates/fulfilledPage";
@@ -9,6 +9,7 @@ export async function getAcceptablePage(
 ): Promise<string> {
   const doc = parseDOMfromString(pageProps.domParser, initialStringDom);
   render(acceptablePageLayout(pageProps), doc.body);
+  // The legal contract HTML is sanitized by the editor
   doc.getElementById("contract-display").innerHTML = pageProps.legalContract;
   return serialize(doc);
 }

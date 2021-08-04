@@ -20,14 +20,7 @@ import {
 import { getCreatorAddressDataProp } from "../state/dataPropGetters";
 import { AcceptablePageProps, State } from "../types";
 
-import {
-  getAcceptableContract,
-  // getArweaveDependencyUrl,
-  // getBundleSrcUrl,
-  // getCommunityJsDependencyUrl,
-  // getCreatorAddressDataProp,
-  getFromUrl,
-} from "../view/utils";
+import { getAcceptableContract, getFromUrl } from "../view/utils";
 import { getAcceptablePage, getFulfilledPage } from "../view/vDom";
 
 export async function getArweave() {
@@ -70,7 +63,6 @@ export async function createAcceptableContract(args: {
     page
   );
   await getBalance(args.props.arweave, args.key);
-  //TODO: DISPATCH RENDERS DONT CALL DIRECTLY FROM BLOC!
   dispatch_disableButton(args.props);
   if (result.statusCode !== 200) {
     dispatch_removeLoadingIndicator("transaction-display");
