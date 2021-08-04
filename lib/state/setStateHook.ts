@@ -4,11 +4,11 @@ import {
   dispatch_renderCreateButton,
 } from "../dispatch/render";
 import { ContractTypes, SetHookArgs, State, StateProperties } from "../types";
-import { getCurrentPageDataProp } from "../view/utils";
+// import { getCurrentPageDataProp } from "../view/utils";
 
 export const setStateHook = {
   [StateProperties.arweave]: (args: SetHookArgs) => {
-    const currentPage = getCurrentPageDataProp();
+    const currentPage = args.obj.contracttype;
     if (currentPage === ContractTypes.create) {
       dispatch_renderCreateButton(Object.assign({}, args.obj));
     } else if (currentPage === ContractTypes.acceptable) {
