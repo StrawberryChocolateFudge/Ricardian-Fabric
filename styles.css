@@ -14,10 +14,13 @@
   width: 100px;
 }
 
-.red{
+.red {
   color: red;
 }
 
 .editable {
   background: #f2f2f2;
+}
+.title {
+  color: darkgrey;
 }
