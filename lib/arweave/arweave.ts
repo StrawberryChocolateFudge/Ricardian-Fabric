@@ -1,7 +1,9 @@
 import TestWeave from "../../node_modules/testweave-sdk";
 import { CreateTransactionResult } from "../types";
+import { arweaveDep } from "../view/templates/dependencies";
 
 const PRECISION = 1000000000000;
+export const FEE = "0.1";
 let testweave: TestWeave;
 
 export async function getArweaveCall() {
@@ -39,6 +41,11 @@ export async function getBalanceCall(arweave: any, key: any): Promise<number> {
   return (winston / PRECISION) as number;
 }
 
+export function toWinston(price: string) {
+  const parsed = parseFloat(price);
+  return parsed * PRECISION;
+}
+
 export async function createTransactionSend(
   arweave: any,
   key: any,
@@ -56,7 +63,35 @@ export async function createTransactionSend(
 
   await arweave.transactions.post(dataTransaction);
   await testweave.mine();
-  console.log(`http://localhost:1984/tx/${dataTransaction.id}/data.html`);
+  return {
+    statusCode: response.status,
+    id: dataTransaction.id,
+    path: `http://localhost:1984/tx/${dataTransaction.id}/data.html`,
+  };
+}
+
+export async function profitShare(arweave: any, key: any) {}
+
+export async function acceptTransactionPay(arg: {
+  arweave: any;
+  key: any;
+  page: string;
+  target: string;
+  quantity: string;
+}) {
+  const dataTransaction = await arg.arweave.createTransaction(
+    {
+      data: arg.page,
+      target: arg.target,
+      quantity: arg.quantity,
+    },
+    arg.key
+  );
+  dataTransaction.addTag("Content-Type", "text/html");
+  await arg.arweave.transactions.sign(dataTransaction, testweave.rootJWK);
+  const response: any = await arg.arweave.transactions.post(dataTransaction);
+  await arg.arweave.transactions.post(dataTransaction);
+  await testweave.mine();
   return {
     statusCode: response.status,
     id: dataTransaction.id,
