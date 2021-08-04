@@ -68,6 +68,8 @@ export type State = {
   bundleSrcUrl: string;
   arweaveDependencyUrl: string;
   communityJsDependencyUrl: string;
+  createdDate: string;
+  expires: string;
 };
 
 export type SetHookArgs = {
@@ -84,7 +86,8 @@ export type AcceptablePageProps = {
   legalContract: string;
   createdDate: string;
   price: string;
-  redirect: string;
+  post: string;
+  expires: string;
   arweaveDeps?: Dependency;
   communityJsDep?: Dependency;
   mainDep?: Dependency;
