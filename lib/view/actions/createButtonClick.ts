@@ -3,7 +3,7 @@ import {
   getCreatorWallet,
 } from "../../business/bloc";
 import { State } from "../../types";
-import { getById, getPrice, getRedirect, readFile } from "../utils";
+import { getById, getExpires, getPrice, getRedirect, readFile } from "../utils";
 export function renderCreateButtonClick(props: State) {
   getById("save-contract").onclick = function () {
     const wallet_file = getById("select-file-input") as HTMLInputElement;
@@ -18,7 +18,8 @@ export function renderCreateButtonClick(props: State) {
             legalContract: props.editor.getContent(),
             createdDate: new Date().toISOString(),
             price: getPrice(),
-            redirect: getRedirect(),
+            post: getRedirect(),
+            expires: getExpires(),
             domParser: props.domParser,
             creatorAddress: await getCreatorWallet(props.arweave, key),
           },

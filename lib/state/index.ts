@@ -3,8 +3,10 @@ import {
   getArweaveDependencyUrl,
   getBundleSrcUrl,
   getCommunityJsDependencyUrl,
+  getCreatedDateFromDataProp,
   getCreatorAddressDataProp,
   getCurrentPageDataProp,
+  getExpiresFromDataProp,
   getPriceFromDataProp,
   getRedirectDataProp,
 } from "./dataPropGetters";
@@ -23,6 +25,8 @@ import { setStateHook } from "./setStateHook";
       redirect: getRedirectDataProp(),
       creatorAddress: getCreatorAddressDataProp(),
       price: getPriceFromDataProp(),
+      expires: getExpiresFromDataProp(),
+      createdDate: getCreatedDateFromDataProp(),
       bundleSrcUrl: getBundleSrcUrl(),
       arweaveDependencyUrl: getArweaveDependencyUrl(),
       communityJsDependencyUrl: getCommunityJsDependencyUrl(),
@@ -36,7 +40,6 @@ import { setStateHook } from "./setStateHook";
         return true;
       },
     };
-
     return new Proxy(state, stateHandler);
   }
 

@@ -46,7 +46,7 @@ export function getKeyFromFile(fileEvent: ProgressEvent) {
 
 export function getPrice() {
   const price = getById("price-input") as HTMLInputElement;
-  if (price.value === "") {
+  if (price.value === "" || price.value === "0") {
     return "NONE";
   } else {
     return price.value;
@@ -60,6 +60,14 @@ export function getRedirect() {
   } else {
     return redirect.value;
   }
+}
+
+export function getExpires(): string {
+  const acceptableTill = getById("expires-input") as HTMLInputElement;
+  if (acceptableTill.value === "") {
+    return "NEVER";
+  }
+  return new Date(acceptableTill.value).toISOString();
 }
 
 //Util functions to call when redirecting
