@@ -2,6 +2,7 @@ import { Events, Renderer, RenderType, State } from "../types";
 import { renderCreateButtonClick } from "./actions/createButtonClick";
 import { attachNeverExpiresClick } from "./actions/neverExpiresClick";
 import { onFileSelect } from "./actions/onFileSelect";
+import { postCheckboxSelect } from "./actions/postCheckboxSelect";
 import { renderAcceptOnCLick } from "./actions/renderAcceptButton";
 import {
   disableButton,
@@ -21,9 +22,10 @@ const Render: Renderer = {
   [RenderType.createPage]: (props: State) => {},
   [RenderType.createButton]: (props: State) => {
     // The order of attaching listeners is important
+    postCheckboxSelect();
     onFileSelect(props);
     renderCreateButtonClick(props);
-    attachNeverExpiresClick();
+    attachNeverExpiresClick(props);
   },
   [RenderType.acceptButton]: (props: State) => {
     renderAcceptButton(props);
