@@ -64,48 +64,40 @@ const issuer = (address: string) => {
   `;
 };
 
-const expiry = (date: string) => html`
-  <tr>
-    <td>Expires:</td>
-    <td>${date}</td>
-  </tr>
-`;
+const expiry = (date: string) => html` <tr>
+  <td>Expires:</td>
+  <td>${date}</td>
+</tr>`;
 
 const acceptablePage = (props: AcceptablePageProps) => html`
-<style>
-.address{
-  overflow: scroll;
-}
-
-</style>
-      <div data-expires="${props.expires}" data-created="${
-  props.createdDate
-}" data-price="${props.price}"  data-creatorAddress="${
-  props.creatorAddress
-}" data-arweavedep="${props.arweaveDeps.src}"  data-communityjsdep="${
-  props.communityJsDep.src
-}"  data-maindep="${props.mainDep.src}" data-redirect="${
-  props.post
-}" data-contracttype="acceptable" id="page">
-      <hr>  
-      <h1 class="center title">Ricardian Fabric</h1>
-      <hr> 
-      <h5 class="center">Carefully read the contract bellow</h5>
-        <div class="center" disabled id="contract-display"></div> 
-        <table class="center">
-          <tr>
-            <th></th>
-            <th></th>
-          </tr>
-        ${issuer(props.creatorAddress)}
-        ${createdDate(props.createdDate)}
-        ${expiry(props.expires)}
-        ${getPrice(props.price)}
-        </table>
-        <hr/>
-         <hr/>
-        <div id="action-container" class="center">
-        ${loadingIndicator}
-        </div>
-      </div>
-  </html> `;
+  <div
+    data-redirect="${props.redirect}"
+    data-webhook="${props.webhook}"
+    data-expires="${props.expires}"
+    data-created="${props.createdDate}"
+    data-price="${props.price}"
+    data-creatorAddress="${props.creatorAddress}"
+    data-arweavedep="${props.arweaveDeps.src}"
+    data-communityjsdep="${props.communityJsDep.src}"
+    data-maindep="${props.mainDep.src}"
+    data-postto="${props.post}"
+    data-contracttype="acceptable"
+    id="page"
+  >
+    <hr />
+    <h1 class="center title">Ricardian Fabric</h1>
+    <hr />
+    <h5 class="center">Carefully read the contract bellow</h5>
+    <div class="center" disabled id="contract-display"></div>
+    <table class="center">
+      <tr>
+        <th></th>
+        <th></th>
+      </tr>
+      ${issuer(props.creatorAddress)} ${createdDate(props.createdDate)}
+      ${expiry(props.expires)} ${getPrice(props.price)}
+    </table>
+    <hr />
+    <div id="action-container" class="center">${loadingIndicator}</div>
+  </div>
+`;
