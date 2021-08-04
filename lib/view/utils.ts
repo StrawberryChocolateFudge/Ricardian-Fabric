@@ -10,6 +10,10 @@ export function getById(id: string): HTMLElement {
   }
 }
 
+export function getPage(): HTMLElement {
+  return getById("page");
+}
+
 export function getAcceptableContract() {
   const contractEl = getById("contract-display");
   return contractEl.innerHTML;
@@ -52,16 +56,45 @@ export function getPrice() {
     return price.value;
   }
 }
-
-export function getRedirect() {
-  const redirect = getById("redirect-input") as HTMLInputElement;
-  if (redirect.value === "") {
+export function getPostTo() {
+  const postto = getById("postto-input") as HTMLInputElement;
+  if (postto.value === "") {
     return "NONE";
   } else {
-    return redirect.value;
+    return handleHTTPS(postto.value);
   }
 }
 
+function handleHTTPS(url: string) {
+  if (url === "") {
+    return url;
+  }
+  if (url.includes("http")) {
+    return url;
+  } else {
+    return "https://" + url;
+  }
+}
+
+export function didExpire(expires: string): boolean {
+  if (expires === "NEVER") {
+    return false;
+  } else {
+    const now = new Date().getTime();
+    const expiryDate = new Date(expires).getTime();
+    return now > expiryDate;
+  }
+}
+
+export function getWebhookCheckbox(): boolean {
+  const webhook = getById("webhook-checkbox") as HTMLInputElement;
+  return webhook.checked;
+}
+
+export function getRedirectCheckbox(): boolean {
+  const redirect = getById("redirect-checkbox") as HTMLInputElement;
+  return redirect.checked;
+}
 export function getExpires(): string {
   const acceptableTill = getById("expires-input") as HTMLInputElement;
   if (acceptableTill.value === "") {
