@@ -10,7 +10,30 @@ export enum RenderType {
   createButton = "createButton",
   acceptButton = "acceptButton",
   balance = "balance",
+  addLoadingIndicator = "addLoadingIndicator",
+  removeLoadingIndicator = "removeLoadingIndicator",
+  transaction = "renderTransaction",
+  renderError = "renderError",
+  removeError = "removeError",
+  enableButton = "enableButton",
+  disableButton = "disableButton",
 }
+
+export type Renderer = {
+  [RenderType.successMessage]: CallableFunction;
+  [RenderType.errorMessage]: CallableFunction;
+  [RenderType.createPage]: CallableFunction;
+  [RenderType.createButton]: CallableFunction;
+  [RenderType.acceptButton]: CallableFunction;
+  [RenderType.balance]: CallableFunction;
+  [RenderType.addLoadingIndicator]: CallableFunction;
+  [RenderType.removeLoadingIndicator]: CallableFunction;
+  [RenderType.transaction]: CallableFunction;
+  [RenderType.renderError]: CallableFunction;
+  [RenderType.removeError]: CallableFunction;
+  [RenderType.enableButton]: CallableFunction;
+  [RenderType.disableButton]: CallableFunction;
+};
 
 export enum EventType {
   setArweave = "setArweave",
@@ -38,6 +61,13 @@ export type State = {
   domParser: DOMParser;
   balance: number;
   address: string;
+  contracttype: ContractTypes;
+  redirect: string;
+  creatorAddress: string;
+  price: string;
+  bundleSrcUrl: string;
+  arweaveDependencyUrl: string;
+  communityJsDependencyUrl: string;
 };
 
 export type SetHookArgs = {
@@ -59,16 +89,15 @@ export type AcceptablePageProps = {
   communityJsDep?: Dependency;
   mainDep?: Dependency;
   domParser: DOMParser;
-  creatorWallet: string;
+  creatorAddress: string;
 };
 
 export type FulfilledPageProps = {
   legalContract: string;
   creator: string;
-  id: string; //Transaction and id will come from the URL
-  transaction: string;
   createdDate: string;
-  paid: string;
+  fee: string;
+  paidAmount: number;
   paidTo: string;
   paidFrom: string;
   parentUrl: string;
