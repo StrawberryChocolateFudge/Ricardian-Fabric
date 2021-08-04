@@ -21,32 +21,6 @@ export const acceptablePageLayout = (props: AcceptablePageProps) => html`
     .title {
       color: #f2f2f2;
     }
-
-    .row {
-      display: flex;
-      flex-direction: row;
-    }
-
-    .column {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .width-100 {
-      width: 100px;
-    }
-
-    .width-200 {
-      width: 200px;
-    }
-
-    .paddingLeft-50 {
-      padding-left: 50px;
-    }
-
-    .paddingLeft-10 {
-      padding-left: 10px;
-    }
   </style>
   <body>
     ${acceptablePage(props)} ${arweaveDep(props.arweaveDeps.src)}
@@ -57,41 +31,45 @@ export const acceptablePageLayout = (props: AcceptablePageProps) => html`
 const getPrice = (price: string) => {
   if (price !== "NONE") {
     const formattedPrice = price === "NONE" ? "" : `${price} Ar`;
-    return html`
-      <div class="row center">
-        <div class="column width-100">
-          <label for="center">Price </label>
-        </div>
-        <div class="column width-100">
-          <div class="center">
-            <span>${formattedPrice}</span>
-          </div>
-        </div>
-      </div>
-      <div class="row center">
-        <div class="column width-100">
-          <label for="center">Fee: </label>
-        </div>
-        <div class="column width-100">
-          <div class="center">
-            <span>${FEE}</span>
-          </div>
-        </div>
-      </div>
-    `;
+    return html` <tr>
+        <td>
+          <label>Price:</label>
+        </td>
+        <td>
+          <div>${formattedPrice}</div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label>Fee:</label>
+        </td>
+        <td>${FEE}</td>
+      </tr>`;
   }
 };
 
 const createdDate = (date: string) => {
-  return html` <div class="center">${date}</div> `;
+  return html` <tr>
+    <td>Created:</td>
+    <td>${date}</td>
+  </tr>`;
 };
 
-const creator = (address: string) => {
+const issuer = (address: string) => {
   return html`
-    <label class="center">Issuer</label>
-    <div class="center"><span>${address}</span></div>
+    <tr>
+      <td>Issuer:</td>
+      <td>${address}</td>
+    </tr>
   `;
 };
+
+const expiry = (date: string) => html`
+  <tr>
+    <td>Expires:</td>
+    <td>${date}</td>
+  </tr>
+`;
 
 const acceptablePage = (props: AcceptablePageProps) => html`
 <style>
@@ -100,22 +78,31 @@ const acceptablePage = (props: AcceptablePageProps) => html`
 }
 
 </style>
-      <div data-price="${props.price}"  data-creatorAddress="${
+      <div data-expires="${props.expires}" data-created="${
+  props.createdDate
+}" data-price="${props.price}"  data-creatorAddress="${
   props.creatorAddress
 }" data-arweavedep="${props.arweaveDeps.src}"  data-communityjsdep="${
   props.communityJsDep.src
 }"  data-maindep="${props.mainDep.src}" data-redirect="${
-  props.redirect
+  props.post
 }" data-contracttype="acceptable" id="page">
       <hr>  
       <h1 class="center title">Ricardian Fabric</h1>
       <hr> 
       <h5 class="center">Carefully read the contract bellow</h5>
-        <div class="center" disabled id="contract-display"></div>
-        ${creator(props.creatorAddress)}
+        <div class="center" disabled id="contract-display"></div> 
+        <table class="center">
+          <tr>
+            <th></th>
+            <th></th>
+          </tr>
+        ${issuer(props.creatorAddress)}
         ${createdDate(props.createdDate)}
-        <hr/>
+        ${expiry(props.expires)}
         ${getPrice(props.price)}
+        </table>
+        <hr/>
          <hr/>
         <div id="action-container" class="center">
         ${loadingIndicator}
