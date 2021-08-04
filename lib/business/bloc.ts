@@ -4,7 +4,6 @@ import {
   getArweaveCall,
   getBalanceCall,
   getWalletAddr,
-  toWinston,
 } from "../arweave/arweave";
 import {
   dispatch_disableButton,
@@ -17,7 +16,6 @@ import {
   dispatch_getArweave,
   dispatch_setBalance,
 } from "../dispatch/stateChange";
-import { getCreatorAddressDataProp } from "../state/dataPropGetters";
 import { AcceptablePageProps, State } from "../types";
 
 import { getAcceptableContract, getFromUrl } from "../view/utils";
@@ -83,11 +81,11 @@ export async function acceptAndPayContract(data: {
   dispatch_disableButton(data.props);
   const page = await getFulfilledPage({
     legalContract: getAcceptableContract(),
-    creator: getCreatorAddressDataProp(),
+    creator: data.props.creatorAddress,
     parentUrl: getFromUrl(),
     fee: FEE,
     paidAmount: data.winston,
-    paidTo: getCreatorAddressDataProp(),
+    paidTo: data.props.creatorAddress,
     paidFrom: await getWalletAddr(data.props.arweave, data.key),
     createdDate: new Date().toISOString(),
     domParser: data.props.domParser,

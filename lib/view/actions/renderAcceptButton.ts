@@ -1,8 +1,6 @@
-import { render } from "lit-html";
 import { toWinston } from "../../arweave/arweave";
 import { acceptAndPayContract, acceptContract } from "../../business/bloc";
 import { State } from "../../types";
-import { acceptButton } from "../templates/acceptButton";
 import { getById, readFile } from "../utils";
 
 export function renderAcceptOnCLick(props: State) {
@@ -10,7 +8,6 @@ export function renderAcceptOnCLick(props: State) {
 
   acceptButton.onclick = async function () {
     const wallet_file = getById("select-file-input") as HTMLInputElement;
-    
     const getKey = async (key: any) => {
       const price = props.price;
       if (price !== "NONE") {
@@ -27,4 +24,3 @@ export function renderAcceptOnCLick(props: State) {
     readFile(wallet_file.files, getKey);
   };
 }
-
