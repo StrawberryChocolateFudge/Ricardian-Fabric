@@ -1,39 +1,40 @@
 import { ContractTypes } from "../types";
 import { getById } from "../view/utils";
 
-export function getRedirectDataProp(): string {
-  const page = getById("page");
-  return page.dataset.redirect;
+export function getPostToDataProp(page: HTMLElement): string {
+  return page.dataset.postto;
 }
 
-export function getCreatorAddressDataProp(): string {
-  const page = getById("page");
+export function getCreatorAddressDataProp(page: HTMLElement): string {
   return page.dataset.creatoraddress;
 }
 
-export function getCurrentPageDataProp() {
-  const page = getById("page");
+export function getCurrentPageDataProp(page: HTMLElement) {
   const contractType = page.dataset.contracttype;
 
   return contractType as ContractTypes;
 }
 
-export function getPriceFromDataProp(): string {
-  const page = getById("page");
+export function getPriceFromDataProp(page: HTMLElement): string {
   return page.dataset.price;
 }
 
-export function getCreatedDateFromDataProp(): string {
-  const page = getById("page");
+export function getCreatedDateFromDataProp(page: HTMLElement): string {
   return page.dataset.created;
 }
 
-export function getExpiresFromDataProp(): string {
-  const page = getById("page");
+export function getExpiresFromDataProp(page: HTMLElement): string {
   return page.dataset.expires;
 }
 
-//Refactor these to state too!
+export function getWebhookFromDataProp(page: HTMLElement): boolean {
+  return page.dataset.webhook === "true";
+}
+
+export function getRedirectFromDataProp(page: HTMLElement): boolean {
+  return page.dataset.redirect === "true";
+}
+
 export function getBundleSrcUrl(): string {
   const mainScript = getById("main-script") as HTMLScriptElement;
   return mainScript.src;
