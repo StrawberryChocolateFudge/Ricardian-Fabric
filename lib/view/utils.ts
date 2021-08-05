@@ -103,13 +103,27 @@ export function getExpires(): string {
   return new Date(acceptableTill.value).toISOString();
 }
 
-//Util functions to call when redirecting
-// export function formatUrl() {}
+export function getSecret(): string {
+  const secret = getById("secret-input") as HTMLInputElement;
+  return secret.value;
+}
 
-// export function redirect() {
-//   const url = getRedirectDataProp();
+export function redirect(url: string) {
+  window.location.replace(url);
+}
 
-//   const formatted = formatUrl();
-
-//   window.location.href = url;
-// }
+export function copyStringToClipboard(str: string) {
+  // Create new element
+  var el = document.createElement("textarea");
+  // Set value (string to be copied)
+  el.value = str;
+  // Set non-editable to avoid focus and move outside of view
+  el.setAttribute("readonly", "");
+  document.body.appendChild(el);
+  // Select text inside element
+  el.select();
+  // Copy text to clipboard
+  document.execCommand("copy");
+  // Remove temporary element
+  document.body.removeChild(el);
+}
