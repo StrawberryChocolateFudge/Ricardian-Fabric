@@ -2,8 +2,8 @@ import TestWeave from "../../node_modules/testweave-sdk";
 import { CreateTransactionResult } from "../types";
 import { arweaveDep } from "../view/templates/dependencies";
 
-const PRECISION = 1000000000000;
-export const FEE = "0.1";
+export const FEE = "0.1"; //TODO: Fee should be calculated!!
+export const TESTADDRESS = "1seRanklLU_1VTGkEk7P0xAwMJfA7owA1JHW5KyZKlY";
 let testweave: TestWeave;
 
 export async function getArweaveCall() {
@@ -38,12 +38,7 @@ export async function getWalletAddr(arweave: any, key: any): Promise<string> {
 export async function getBalanceCall(arweave: any, key: any): Promise<number> {
   const address = await getAddressCall(arweave, testweave.rootJWK);
   const winston = await arweave.wallets.getBalance(address);
-  return (winston / PRECISION) as number;
-}
-
-export function toWinston(price: string) {
-  const parsed = parseFloat(price);
-  return parsed * PRECISION;
+  return arweave.ar.winstonToAr(winston) as number;
 }
 
 export async function createTransactionSend(
@@ -77,21 +72,46 @@ export async function acceptTransactionPay(arg: {
   key: any;
   page: string;
   target: string;
-  quantity: string;
+  quantity: number;
 }) {
-  const dataTransaction = await arg.arweave.createTransaction(
+  const arweave = arg.arweave;
+  const dataTransaction = await arweave.createTransaction(
     {
       data: arg.page,
-      target: arg.target,
-      quantity: arg.quantity,
+      target: TESTADDRESS,
+      quantity: arweave.ar.arToWinston(arg.quantity),
     },
-    arg.key
+    testweave.rootJWK
   );
   dataTransaction.addTag("Content-Type", "text/html");
-  await arg.arweave.transactions.sign(dataTransaction, testweave.rootJWK);
-  const response: any = await arg.arweave.transactions.post(dataTransaction);
-  await arg.arweave.transactions.post(dataTransaction);
+  await arweave.transactions.sign(dataTransaction, testweave.rootJWK);
+  const response: any = await arweave.transactions.post(dataTransaction);
   await testweave.mine();
+
+  return {
+    statusCode: response.status,
+    id: dataTransaction.id,
+    path: `http://localhost:1984/tx/${dataTransaction.id}/data.html`,
+  };
+}
+
+export async function acceptTransactionFree(arg: {
+  arweave: any;
+  key: any;
+  page: any;
+}) {
+  const arweave = arg.arweave;
+  const dataTransaction = await arweave.createTransaction(
+    {
+      data: arg.page,
+    },
+    testweave.rootJWK
+  );
+  dataTransaction.addTag("Content-Type", "text/html");
+  await arweave.transactions.sign(dataTransaction, testweave.rootJWK);
+  const response: any = await arweave.transactions.post(dataTransaction);
+  await testweave.mine();
+
   return {
     statusCode: response.status,
     id: dataTransaction.id,

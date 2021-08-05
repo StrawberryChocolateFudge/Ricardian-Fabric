@@ -1,4 +1,3 @@
-import { toWinston } from "../../arweave/arweave";
 import { acceptAndPayContract, acceptContract } from "../../business/bloc";
 import { State } from "../../types";
 import { getById, readFile } from "../utils";
@@ -11,14 +10,13 @@ export function renderAcceptOnCLick(props: State) {
     const getKey = async (key: any) => {
       const price = props.price;
       if (price !== "NONE") {
-        const winston = toWinston(price);
         await acceptAndPayContract({
           props,
-          winston,
+          ar: parseFloat(price), //TODO: handle parsing error!
           key,
         });
       } else {
-        await acceptContract(props.arweave, key);
+        await acceptContract(props, key);
       }
     };
     readFile(wallet_file.files, getKey);
