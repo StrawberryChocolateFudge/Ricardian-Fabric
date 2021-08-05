@@ -4,7 +4,7 @@ import { acceptablePageLayout } from "./templates/acceptablePage";
 import { fulfilledPageLayout } from "./templates/fulfilledPage";
 import { initialStringDom } from "./templates/initialDom";
 
-export async function getAcceptablePage(
+export async function getAcceptablePageFromVDOM(
   pageProps: AcceptablePageProps
 ): Promise<string> {
   const doc = parseDOMfromString(pageProps.domParser, initialStringDom);
@@ -14,7 +14,7 @@ export async function getAcceptablePage(
   return serialize(doc);
 }
 
-export async function getFulfilledPage(pageProps: FulfilledPageProps) {
+export async function getFulfilledPagefromVDOM(pageProps: FulfilledPageProps) {
   const doc = parseDOMfromString(pageProps.domParser, initialStringDom);
   render(fulfilledPageLayout(pageProps), doc.body);
   return serialize(doc);
