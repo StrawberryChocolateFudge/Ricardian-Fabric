@@ -4,7 +4,7 @@ import { acceptButton } from "./templates/acceptButton";
 import { balanceTemplate } from "./templates/balance";
 import { loadingIndicator } from "./templates/loadingIndicator";
 import { transactionUrl } from "./templates/transaction";
-import { getById } from "./utils";
+import { copyStringToClipboard, getById } from "./utils";
 
 export async function renderbalance(balance: number) {
   const balanceEl = getById("balance");
@@ -27,6 +27,7 @@ export async function removeLoadingIndicator(from: string) {
 
 export async function renderTransaction(url: string) {
   render(transactionUrl(url), getById("transaction-display"));
+  copyStringToClipboard(url);
 }
 
 export function renderError(message: string) {
