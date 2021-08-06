@@ -17,6 +17,7 @@ export enum RenderType {
   removeError = "removeError",
   enableButton = "enableButton",
   disableButton = "disableButton",
+  version = "version",
 }
 
 export type Renderer = {
@@ -33,6 +34,7 @@ export type Renderer = {
   [RenderType.removeError]: CallableFunction;
   [RenderType.enableButton]: CallableFunction;
   [RenderType.disableButton]: CallableFunction;
+  [RenderType.version]: CallableFunction;
 };
 
 export enum EventType {
@@ -64,7 +66,7 @@ export type State = {
   contracttype: ContractTypes;
   postto: string;
   webhook: boolean;
-  redirect:boolean;
+  redirect: boolean;
   creatorAddress: string;
   price: string;
   bundleSrcUrl: string;
@@ -72,6 +74,8 @@ export type State = {
   communityJsDependencyUrl: string;
   createdDate: string;
   expires: string;
+  currentUrl: string;
+  version: string;
 };
 
 export type SetHookArgs = {
@@ -97,6 +101,7 @@ export type AcceptablePageProps = {
   mainDep?: Dependency;
   domParser: DOMParser;
   creatorAddress: string;
+  version : string;
 };
 
 export type FulfilledPageProps = {
