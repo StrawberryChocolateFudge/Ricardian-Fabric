@@ -48,10 +48,10 @@ export const acceptButton = (props: State) => {
             </table>
             <hr />
             <div class="center red" id="error-display"></div>
+            <div class="center" id="redirect-display"></div>
             <div class="center" id="transaction-display"></div>
             <button id="accept-button" class="center width-200" disabled>
               Accept and Sign
             </button>`}
     </div>`;
 };
-
