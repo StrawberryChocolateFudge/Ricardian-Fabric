@@ -3,6 +3,7 @@ import { ContractTypes, State } from "../types";
 import { acceptButton } from "./templates/acceptButton";
 import { balanceTemplate } from "./templates/balance";
 import { loadingIndicator } from "./templates/loadingIndicator";
+import { redirectCounter } from "./templates/redirectCounter";
 import { transactionUrl } from "./templates/transaction";
 import { copyStringToClipboard, getById } from "./utils";
 
@@ -40,6 +41,11 @@ export function removeError() {
 
 export function renderVersion(version: string) {
   getById("version").textContent = version;
+}
+
+export function renderCounter(count: number) {
+  const counterEl = getById("redirect-display");
+  render(redirectCounter(count), counterEl);
 }
 
 export function enableButton(props: State) {
