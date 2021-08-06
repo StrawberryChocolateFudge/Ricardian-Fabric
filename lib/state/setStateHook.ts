@@ -2,6 +2,7 @@ import {
   dispatch_renderAcceptButton,
   dispatch_renderBalance,
   dispatch_renderCreateButton,
+  dispatch_renderVersion,
 } from "../dispatch/render";
 import { ContractTypes, SetHookArgs, State, StateProperties } from "../types";
 // import { getCurrentPageDataProp } from "../view/utils";
@@ -11,6 +12,7 @@ export const setStateHook = {
     const currentPage = args.obj.contracttype;
     if (currentPage === ContractTypes.create) {
       dispatch_renderCreateButton(Object.assign({}, args.obj));
+      dispatch_renderVersion(args.obj.version);
     } else if (currentPage === ContractTypes.acceptable) {
       dispatch_renderAcceptButton(Object.assign({}, args.obj));
     }
