@@ -43,6 +43,7 @@ export function renderCreateButtonClick(props: State) {
             webhook: getWebhookCheckbox(),
             redirect: getRedirectCheckbox(),
             expires,
+            version: props.version,
             domParser: props.domParser,
             creatorAddress: await getCreatorWallet(props.arweave, key),
           },
