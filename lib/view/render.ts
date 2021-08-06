@@ -38,6 +38,10 @@ export function removeError() {
   getById("error-display").innerHTML = "";
 }
 
+export function renderVersion(version: string) {
+  getById("version").textContent = version;
+}
+
 export function enableButton(props: State) {
   const currentPage = props.contracttype;
   if (currentPage === ContractTypes.create) {

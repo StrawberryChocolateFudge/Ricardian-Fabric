@@ -13,6 +13,7 @@ import {
   renderError,
   renderLoadingIndicator,
   renderTransaction,
+  renderVersion,
 } from "./render";
 import { renderAcceptButton } from "./render";
 
@@ -55,6 +56,9 @@ const Render: Renderer = {
   },
   [RenderType.disableButton]: (props: State) => {
     disableButton(props);
+  },
+  [RenderType.version]: (props: { version: string }) => {
+    renderVersion(props.version);
   },
 };
 
