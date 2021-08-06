@@ -14,6 +14,10 @@ export function getPage(): HTMLElement {
   return getById("page");
 }
 
+export function getCurrentUrl(): string {
+  return window.location.href;
+}
+
 export function getAcceptableContract() {
   const contractEl = getById("contract-display");
   return contractEl.innerHTML;
