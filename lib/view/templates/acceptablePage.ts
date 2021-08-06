@@ -1,5 +1,4 @@
 import { html } from "lit-html";
-import { FEE } from "../../arweave/arweave";
 import { AcceptablePageProps } from "../../types";
 import { arweaveDep, communityJsDep, mainDep } from "./dependencies";
 import { loadingIndicator } from "./loadingIndicator";
@@ -28,7 +27,7 @@ export const acceptablePageLayout = (props: AcceptablePageProps) => html`
   </body>
 `;
 
-const getPrice = (price: string) => {
+const getPrice = (price: string, fee: number) => {
   if (price !== "NONE") {
     const formattedPrice = price === "NONE" ? "" : `${price} Ar`;
     return html` <tr>
@@ -43,7 +42,7 @@ const getPrice = (price: string) => {
         <td>
           <label>Fee:</label>
         </td>
-        <td>${FEE}</td>
+        <td>${fee}</td>
       </tr>`;
   }
 };
@@ -96,7 +95,7 @@ const acceptablePage = (props: AcceptablePageProps) => html`
         <th></th>
       </tr>
       ${issuer(props.creatorAddress)} ${createdDate(props.createdDate)}
-      ${expiry(props.expires)} ${getPrice(props.price)}
+      ${expiry(props.expires)} ${getPrice(props.price, props.fee)}
     </table>
     <hr />
     <div id="action-container" class="center">${loadingIndicator}</div>

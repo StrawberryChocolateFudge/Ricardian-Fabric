@@ -104,13 +104,14 @@ export type AcceptablePageProps = {
   domParser: DOMParser;
   creatorAddress: string;
   version: string;
+  fee: number;
 };
 
 export type FulfilledPageProps = {
   legalContract: string;
   creator: string;
   createdDate: string;
-  fee: string;
+  fee: number;
   paidAmount: number;
   paidTo: string;
   paidFrom: string;

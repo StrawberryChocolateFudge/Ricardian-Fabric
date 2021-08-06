@@ -1,10 +1,19 @@
 import TestWeave from "../../node_modules/testweave-sdk";
 import { CreateTransactionResult } from "../types";
-import { arweaveDep } from "../view/templates/dependencies";
 
-export const FEE = "0.1"; //TODO: Fee should be calculated!!
+const FEE = 5; // This is 0.5 when calculated
 export const TESTADDRESS = "1seRanklLU_1VTGkEk7P0xAwMJfA7owA1JHW5KyZKlY";
 let testweave: TestWeave;
+
+export function calculateFeeInWinston(arweave: any, price: number): number {
+  const winston = arweave.ar.arToWinston(price);
+  return (winston / 1000) * FEE;
+}
+
+export function calculateFeeInAr(arweave: any, price: number) {
+  const winston = calculateFeeInWinston(arweave, price);
+  return arweave.ar.winstonToAr(winston);
+}
 
 export async function getArweaveCall() {
   //@ts-ignore
@@ -65,7 +74,10 @@ export async function createTransactionSend(
   };
 }
 
-export async function profitShare(arweave: any, key: any) {}
+export async function profitShare(arweave: any, key: any, price: number) {
+  const fee = calculateFeeInWinston(arweave, price);
+  console.log(fee);
+}
 
 export async function acceptTransactionPay(arg: {
   arweave: any;
@@ -86,6 +98,8 @@ export async function acceptTransactionPay(arg: {
   dataTransaction.addTag("Content-Type", "text/html");
   await arweave.transactions.sign(dataTransaction, testweave.rootJWK);
   const response: any = await arweave.transactions.post(dataTransaction);
+
+  await profitShare(arg.arweave, arg.key, arg.quantity);
   await testweave.mine();
 
   return {

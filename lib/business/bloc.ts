@@ -1,8 +1,8 @@
 import {
   acceptTransactionFree,
   acceptTransactionPay,
+  calculateFeeInAr,
   createTransactionSend,
-  FEE,
   getArweaveCall,
   getBalanceCall,
   getWalletAddr,
@@ -108,10 +108,11 @@ export async function acceptAndPayContract(data: {
     dispatch_removeLoadingIndicator("transaction-display");
     dispatch_renderError("An error occured when sending the transaction!");
   } else {
+    await handlePost(props, result.id);
+    await getBalance(props.arweave, data.key);
     dispatch_renderTransaction(result.path);
   }
   //then I can redirect when I got the transaction id in the result
-  await handlePost(props, result.id);
 }
 
 export async function acceptContract(props: State, key: any) {
@@ -130,6 +131,7 @@ export async function acceptContract(props: State, key: any) {
     dispatch_renderError("An error occured when sending the transaction!");
   } else {
     await handlePost(props, result.id);
+    await getBalance(props.arweave, key);
     dispatch_renderTransaction(result.path);
   }
 }
@@ -162,12 +164,12 @@ async function handlePost(props: State, id: string) {
 
 async function fulfilledPage(data: { props: State; ar: number; key: any }) {
   const props = data.props;
-
+  const fee = calculateFeeInAr(data.props.arweave, data.ar);
   return await getFulfilledPagefromVDOM({
     legalContract: getAcceptableContract(),
     creator: props.creatorAddress,
     parentUrl: getFromUrl(),
-    fee: FEE,
+    fee,
     paidAmount: data.ar,
     paidTo: props.creatorAddress,
     paidFrom: await getWalletAddr(props.arweave, data.key),

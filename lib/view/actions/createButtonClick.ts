@@ -1,3 +1,4 @@
+import { calculateFeeInWinston } from "../../arweave/arweave";
 import {
   createAcceptableContract,
   getCreatorWallet,
@@ -32,13 +33,19 @@ export function renderCreateButtonClick(props: State) {
     if (wallet_file.files !== null) {
       const getKey = async (key: any) => {
         //Here I call the business logic to do stuff with the key and the other values
+        const price = getPrice();
+        const feeInWinston = calculateFeeInWinston(
+          props.arweave,
+          parseFloat(price)
+        );
+        const fee = props.arweave.ar.winstonToAr(feeInWinston);
         await createAcceptableContract({
           props,
           key,
           data: {
             legalContract: props.editor.getContent(),
             createdDate: new Date().toISOString(),
-            price: getPrice(),
+            price,
             post: getPostTo(),
             webhook: getWebhookCheckbox(),
             redirect: getRedirectCheckbox(),
@@ -46,6 +53,7 @@ export function renderCreateButtonClick(props: State) {
             version: props.version,
             domParser: props.domParser,
             creatorAddress: await getCreatorWallet(props.arweave, key),
+            fee,
           },
         });
       };
