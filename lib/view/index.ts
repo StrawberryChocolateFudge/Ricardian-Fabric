@@ -10,6 +10,7 @@ import {
   removeError,
   removeLoadingIndicator,
   renderbalance,
+  renderCounter,
   renderError,
   renderLoadingIndicator,
   renderTransaction,
@@ -59,6 +60,9 @@ const Render: Renderer = {
   },
   [RenderType.version]: (props: { version: string }) => {
     renderVersion(props.version);
+  },
+  [RenderType.redirectCounter]: (props: { count: number }) => {
+    renderCounter(props.count);
   },
 };
 
