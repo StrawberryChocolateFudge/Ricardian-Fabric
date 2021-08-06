@@ -9,6 +9,7 @@ import {
 } from "../arweave/arweave";
 import {
   dispatch_disableButton,
+  dispatch_redirectCounter,
   dispatch_removeLoadingIndicator,
   dispatch_renderError,
   dispatch_renderLoadingIndicator,
@@ -18,13 +19,21 @@ import {
   dispatch_getArweave,
   dispatch_setBalance,
 } from "../dispatch/stateChange";
+import { hitWebhook } from "../fetch";
 import { AcceptablePageProps, State } from "../types";
 
-import { getAcceptableContract, getFromUrl } from "../view/utils";
+import {
+  getAcceptableContract,
+  getFromUrl,
+  getSecret,
+  redirect,
+} from "../view/utils";
 import {
   getAcceptablePageFromVDOM,
   getFulfilledPagefromVDOM,
 } from "../view/vDom";
+
+const REDIRECT_TIMEOUT = 1000;
 
 export async function getArweave() {
   const arweave = await getArweaveCall();
@@ -46,6 +55,7 @@ export async function createAcceptableContract(args: {
   key: any;
   data: AcceptablePageProps;
 }) {
+  dispatch_disableButton(args.props);
   dispatch_renderLoadingIndicator("transaction-display");
   const page = await getAcceptablePageFromVDOM({
     ...args.data,
@@ -66,7 +76,6 @@ export async function createAcceptableContract(args: {
     page
   );
   await getBalance(args.props.arweave, args.key);
-  dispatch_disableButton(args.props);
   if (result.statusCode !== 200) {
     dispatch_removeLoadingIndicator("transaction-display");
     dispatch_renderError("An error occured when sending the transaction!");
@@ -102,6 +111,7 @@ export async function acceptAndPayContract(data: {
     dispatch_renderTransaction(result.path);
   }
   //then I can redirect when I got the transaction id in the result
+  await handlePost(props, result.id);
 }
 
 export async function acceptContract(props: State, key: any) {
@@ -119,13 +129,34 @@ export async function acceptContract(props: State, key: any) {
     dispatch_removeLoadingIndicator("transaction-display");
     dispatch_renderError("An error occured when sending the transaction!");
   } else {
+    await handlePost(props, result.id);
     dispatch_renderTransaction(result.path);
   }
+}
+
+async function handlePost(props: State, id: string) {
+  const url = props.postto;
+  if (url === "NONE") {
+    return;
+  }
+  const getURLWithId = (url: string, id: string) => {
+    return url + "/" + id;
+  };
 
   if (props.webhook) {
-    //I hit the webhook here
+    hitWebhook(getURLWithId(url, id), getSecret());
   } else if (props.redirect) {
-   // I show a coundback and redirect
+    // I show a countback and redirect
+    let counter = 1;
+    dispatch_redirectCounter(counter);
+    const interval = setInterval(function () {
+      counter++;
+      dispatch_redirectCounter(counter);
+      if (counter === 5) {
+        clearInterval(interval);
+        redirect(getURLWithId(url, id));
+      }
+    }, REDIRECT_TIMEOUT);
   }
 }
 
