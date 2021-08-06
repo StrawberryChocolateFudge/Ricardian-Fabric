@@ -1,5 +1,5 @@
 import { Events, EventType, State, StateProperties } from "../types";
-import { getPage } from "../view/utils";
+import { getCurrentUrl, getPage } from "../view/utils";
 import {
   getArweaveDependencyUrl,
   getBundleSrcUrl,
@@ -11,6 +11,7 @@ import {
   getPostToDataProp,
   getPriceFromDataProp,
   getRedirectFromDataProp,
+  getVersionFromDataProp,
   getWebhookFromDataProp,
 } from "./dataPropGetters";
 import createNewEditor from "./editor";
@@ -34,9 +35,11 @@ import { setStateHook } from "./setStateHook";
       price: getPriceFromDataProp(pageEl),
       expires: getExpiresFromDataProp(pageEl),
       createdDate: getCreatedDateFromDataProp(pageEl),
+      version: getVersionFromDataProp(pageEl),
       bundleSrcUrl: getBundleSrcUrl(),
       arweaveDependencyUrl: getArweaveDependencyUrl(),
       communityJsDependencyUrl: getCommunityJsDependencyUrl(),
+      currentUrl: getCurrentUrl(),
     };
 
     const stateHandler = {
