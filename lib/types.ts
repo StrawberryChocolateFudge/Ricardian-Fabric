@@ -18,6 +18,7 @@ export enum RenderType {
   enableButton = "enableButton",
   disableButton = "disableButton",
   version = "version",
+  redirectCounter = "redirectCounter",
 }
 
 export type Renderer = {
@@ -35,6 +36,7 @@ export type Renderer = {
   [RenderType.enableButton]: CallableFunction;
   [RenderType.disableButton]: CallableFunction;
   [RenderType.version]: CallableFunction;
+  [RenderType.redirectCounter]: CallableFunction;
 };
 
 export enum EventType {
@@ -101,7 +103,7 @@ export type AcceptablePageProps = {
   mainDep?: Dependency;
   domParser: DOMParser;
   creatorAddress: string;
-  version : string;
+  version: string;
 };
 
 export type FulfilledPageProps = {
