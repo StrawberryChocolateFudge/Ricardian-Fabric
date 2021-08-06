@@ -71,3 +71,10 @@ export function dispatch_renderVersion(version: string) {
     props: { version },
   });
 }
+
+export function dispatch_redirectCounter(count: number) {
+  dispatch(Events.render, {
+    type: RenderType.redirectCounter,
+    props: { count },
+  });
+}
