@@ -35,6 +35,10 @@ export function getRedirectFromDataProp(page: HTMLElement): boolean {
   return page.dataset.redirect === "true";
 }
 
+export function getVersionFromDataProp(page: HTMLElement): string {
+  return page.dataset.version;
+}
+
 export function getBundleSrcUrl(): string {
   const mainScript = getById("main-script") as HTMLScriptElement;
   return mainScript.src;
