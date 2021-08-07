@@ -59,21 +59,16 @@ export async function createAcceptableContract(args: {
   dispatch_renderLoadingIndicator("transaction-display");
   const page = await getAcceptablePageFromVDOM({
     ...args.data,
-    arweaveDeps: {
-      src: args.props.arweaveDependencyUrl,
-    },
     mainDep: {
       src: args.props.bundleSrcUrl,
-    },
-    communityJsDep: {
-      src: args.props.communityJsDependencyUrl,
     },
   });
   //TODO: handle not enough balance
   const result = await createTransactionSend(
     args.props.arweave,
     args.key,
-    page
+    page,
+    args.data.version
   );
   await getBalance(args.props.arweave, args.key);
   if (result.statusCode !== 200) {
@@ -166,14 +161,18 @@ async function fulfilledPage(data: { props: State; ar: number; key: any }) {
   const props = data.props;
   const fee = calculateFeeInAr(data.props.arweave, data.ar);
   return await getFulfilledPagefromVDOM({
+    version: props.version,
+    createdDate: new Date().toISOString(),
+    creatorAddress: props.creatorAddress,
     legalContract: getAcceptableContract(),
-    creator: props.creatorAddress,
     parentUrl: getFromUrl(),
     fee,
-    paidAmount: data.ar,
-    paidTo: props.creatorAddress,
+    price: data.ar,
     paidFrom: await getWalletAddr(props.arweave, data.key),
-    createdDate: new Date().toISOString(),
     domParser: props.domParser,
+    expires: props.expires,
+    post: props.postto,
+    webhook: props.webhook,
+    redirect: props.redirect,
   });
 }
