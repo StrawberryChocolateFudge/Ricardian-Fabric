@@ -91,32 +91,34 @@ type Dependency = {
 };
 
 export type AcceptablePageProps = {
-  legalContract: string;
+  version: string;
   createdDate: string;
+  creatorAddress: string;
   price: string;
+  expires: string;
   post: string;
   webhook: boolean;
   redirect: boolean;
-  expires: string;
-  arweaveDeps?: Dependency;
-  communityJsDep?: Dependency;
   mainDep?: Dependency;
   domParser: DOMParser;
-  creatorAddress: string;
-  version: string;
   fee: number;
+  legalContract: string;
 };
 
 export type FulfilledPageProps = {
-  legalContract: string;
-  creator: string;
+  version: string;
+  creatorAddress: string;
   createdDate: string;
+  price: number;
+  expires: string;
+  post: string;
+  webhook: boolean;
+  redirect: boolean;
+  domParser: DOMParser;
   fee: number;
-  paidAmount: number;
-  paidTo: string;
+  legalContract: string;
   paidFrom: string;
   parentUrl: string;
-  domParser: DOMParser;
 };
 
 export type CreateTransactionResult = {

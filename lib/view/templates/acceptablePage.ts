@@ -22,8 +22,7 @@ export const acceptablePageLayout = (props: AcceptablePageProps) => html`
     }
   </style>
   <body>
-    ${acceptablePage(props)} ${arweaveDep(props.arweaveDeps.src)}
-    ${communityJsDep(props.communityJsDep.src)} ${mainDep(props.mainDep.src)}
+    ${acceptablePage(props)} ${mainDep(props.mainDep.src)}
   </body>
 `;
 
@@ -70,17 +69,16 @@ const expiry = (date: string) => html` <tr>
 
 const acceptablePage = (props: AcceptablePageProps) => html`
   <div
+    data-contracttype="acceptable"
+    data-version="${props.version}"
+    data-created="${props.createdDate}"
+    data-creatorAddress="${props.creatorAddress}"
+    data-price="${props.price}"
+    data-expires="${props.expires}"
+    data-postto="${props.post}"
     data-redirect="${props.redirect}"
     data-webhook="${props.webhook}"
-    data-expires="${props.expires}"
-    data-created="${props.createdDate}"
-    data-price="${props.price}"
-    data-creatorAddress="${props.creatorAddress}"
-    data-arweavedep="${props.arweaveDeps.src}"
-    data-communityjsdep="${props.communityJsDep.src}"
     data-maindep="${props.mainDep.src}"
-    data-postto="${props.post}"
-    data-contracttype="acceptable"
     id="page"
   >
     <hr />
