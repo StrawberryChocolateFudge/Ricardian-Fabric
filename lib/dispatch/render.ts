@@ -78,3 +78,10 @@ export function dispatch_redirectCounter(count: number) {
     props: { count },
   });
 }
+
+export function dispatch_attachDateClickListener(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.dateClickListener,
+    props,
+  });
+}

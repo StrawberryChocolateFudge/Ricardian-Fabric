@@ -64,6 +64,9 @@ const Render: Renderer = {
   [RenderType.redirectCounter]: (props: { count: number }) => {
     renderCounter(props.count);
   },
+  [RenderType.dateClickListener]: (props: State) => {
+    attachExpiryClickAndListener(props);
+  },
 };
 
 document.body.addEventListener(Events.render, (e: any) => {

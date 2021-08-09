@@ -9,12 +9,16 @@ export function dispatch_getArweave(arweave: any) {
   });
 }
 
-export function dispatch_setBalance(arg: {
-  balance: number;
-  address: string;
-}) {
+export function dispatch_setBalance(arg: { balance: number; address: string }) {
   dispatch(Events.stateChange, {
     type: EventType.setBalance,
     value: arg,
+  });
+}
+
+export function dispatch_setSelectedDate(date: Date | string) {
+  dispatch(Events.stateChange, {
+    type: EventType.setSelectedDate,
+    value: { date },
   });
 }
