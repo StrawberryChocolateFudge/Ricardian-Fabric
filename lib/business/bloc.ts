@@ -83,7 +83,7 @@ export async function createAcceptableContract(args: {
 
 export async function acceptAndPayContract(data: {
   props: State;
-  ar: number;
+  ar: string;
   key: any;
 }) {
   const props = data.props;
@@ -113,7 +113,7 @@ export async function acceptAndPayContract(data: {
 export async function acceptContract(props: State, key: any) {
   dispatch_renderLoadingIndicator("transaction-display");
   dispatch_disableButton(props);
-  const page = await fulfilledPage({ props, ar: 0, key });
+  const page = await fulfilledPage({ props, ar: "NONE", key });
 
   const result = await acceptTransactionFree({
     arweave: props.arweave,
@@ -157,7 +157,7 @@ async function handlePost(props: State, id: string) {
   }
 }
 
-async function fulfilledPage(data: { props: State; ar: number; key: any }) {
+async function fulfilledPage(data: { props: State; ar: string; key: any }) {
   const props = data.props;
   const fee = calculateFeeInAr(data.props.arweave, data.ar);
   return await getFulfilledPagefromVDOM({
