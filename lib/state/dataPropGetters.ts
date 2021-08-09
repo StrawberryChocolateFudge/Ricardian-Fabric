@@ -44,12 +44,6 @@ export function getBundleSrcUrl(): string {
   return mainScript.src;
 }
 
-export function getArweaveDependencyUrl(): string {
-  const arweaveScript = getById("arweave-script") as HTMLScriptElement;
-  return arweaveScript.src;
-}
-
-export function getCommunityJsDependencyUrl(): string {
-  const communityScript = getById("community-js-script") as HTMLScriptElement;
-  return communityScript.src;
+export function getOnlySignerFromDataProp(page: HTMLElement): string {
+  return page.dataset.onlysigner;
 }

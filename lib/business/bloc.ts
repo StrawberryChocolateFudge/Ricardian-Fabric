@@ -131,6 +131,20 @@ export async function acceptContract(props: State, key: any) {
   }
 }
 
+export async function isOnlySigner(props: State, key: any): Promise<boolean> {
+  const onlySigner = props.onlySigner;
+  if (onlySigner === "NONE") {
+    return true;
+  } else {
+    const address = await getWalletAddr(props.arweave, key);
+    if (onlySigner === address) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
+
 async function handlePost(props: State, id: string) {
   const url = props.postto;
   if (url === "NONE") {

@@ -17,6 +17,7 @@ import {
   getWebhookCheckbox,
   getRedirectCheckbox,
   didExpire,
+  getOnlySigner,
 } from "../utils";
 export function renderCreateButtonClick(props: State) {
   getById("save-contract").onclick = function () {
@@ -51,6 +52,7 @@ export function renderCreateButtonClick(props: State) {
             domParser: props.domParser,
             creatorAddress: await getCreatorWallet(props.arweave, key),
             fee,
+            onlySigner: getOnlySigner(),
           },
         });
       };

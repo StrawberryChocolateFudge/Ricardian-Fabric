@@ -79,12 +79,11 @@ export type State = {
   creatorAddress: string;
   price: string;
   bundleSrcUrl: string;
-  arweaveDependencyUrl: string;
-  communityJsDependencyUrl: string;
   createdDate: string;
   expires: string;
   currentUrl: string;
   version: string;
+  onlySigner: string;
 };
 
 export type SetHookArgs = {
@@ -110,6 +109,7 @@ export type AcceptablePageProps = {
   domParser: DOMParser;
   fee: string;
   legalContract: string;
+  onlySigner: string;
 };
 
 export type FulfilledPageProps = {

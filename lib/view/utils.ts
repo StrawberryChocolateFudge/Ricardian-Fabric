@@ -69,6 +69,15 @@ export function getPostTo() {
   }
 }
 
+export function getOnlySigner() {
+  const onlySigner = getById("onlysigner-input") as HTMLInputElement;
+  if (onlySigner.value === "") {
+    return "NONE";
+  } else {
+    return onlySigner.value;
+  }
+}
+
 function handleHTTPS(url: string) {
   if (url === "") {
     return url;

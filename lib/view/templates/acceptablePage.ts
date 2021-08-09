@@ -1,6 +1,11 @@
 import { html } from "lit-html";
 import { AcceptablePageProps } from "../../types";
-import { createdDateTemplate, expiryTemplate, getPriceTemplate, issuerTemplate } from "./components";
+import {
+  createdDateTemplate,
+  expiryTemplate,
+  getPriceTemplate,
+  issuerTemplate,
+} from "./components";
 import { mainDep } from "./dependencies";
 import { loadingIndicator } from "./loadingIndicator";
 
@@ -39,6 +44,7 @@ const acceptablePage = (props: AcceptablePageProps) => html`
     data-redirect="${props.redirect}"
     data-webhook="${props.webhook}"
     data-maindep="${props.mainDep.src}"
+    data-onlysigner="${props.onlySigner}"
     id="page"
   >
     <hr />
@@ -52,8 +58,9 @@ const acceptablePage = (props: AcceptablePageProps) => html`
         <th></th>
         <th></th>
       </tr>
-      ${issuerTemplate(props.creatorAddress)} ${createdDateTemplate(props.createdDate)}
-      ${expiryTemplate(props.expires)} ${getPriceTemplate(props.price, props.fee)}
+      ${issuerTemplate(props.creatorAddress)}
+      ${createdDateTemplate(props.createdDate)} ${expiryTemplate(props.expires)}
+      ${getPriceTemplate(props.price, props.fee)}
     </table>
     <hr />
     <div id="action-container" class="center">${loadingIndicator}</div>

@@ -1,4 +1,12 @@
-import { acceptAndPayContract, acceptContract } from "../../business/bloc";
+import {
+  acceptAndPayContract,
+  acceptContract,
+  isOnlySigner,
+} from "../../business/bloc";
+import {
+  dispatch_removeError,
+  dispatch_renderError,
+} from "../../dispatch/render";
 import { State } from "../../types";
 import { getById, readFile } from "../utils";
 
@@ -8,15 +16,21 @@ export function renderAcceptOnCLick(props: State) {
   acceptButton.onclick = async function () {
     const wallet_file = getById("select-file-input") as HTMLInputElement;
     const getKey = async (key: any) => {
-      const price = props.price;
-      if (price !== "NONE") {
-        await acceptAndPayContract({
-          props,
-          ar: parseFloat(price), //TODO: handle parsing error!
-          key,
-        });
+      dispatch_removeError();
+      const validSigner = await isOnlySigner(props, key);
+      if (validSigner) {
+        const price = props.price;
+        if (price !== "NONE") {
+          await acceptAndPayContract({
+            props,
+            ar: price,
+            key,
+          });
+        } else {
+          await acceptContract(props, key);
+        }
       } else {
-        await acceptContract(props, key);
+        dispatch_renderError("You are not allowed to sign this contract");
       }
     };
     readFile(wallet_file.files, getKey);

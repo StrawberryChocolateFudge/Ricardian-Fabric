@@ -1,13 +1,12 @@
 import { Events, EventType, State, StateProperties } from "../types";
 import { getCurrentUrl, getPage } from "../view/utils";
 import {
-  getArweaveDependencyUrl,
   getBundleSrcUrl,
-  getCommunityJsDependencyUrl,
   getCreatedDateFromDataProp,
   getCreatorAddressDataProp,
   getCurrentPageDataProp,
   getExpiresFromDataProp,
+  getOnlySignerFromDataProp,
   getPostToDataProp,
   getPriceFromDataProp,
   getRedirectFromDataProp,
@@ -38,9 +37,8 @@ import { setStateHook } from "./setStateHook";
       createdDate: getCreatedDateFromDataProp(pageEl),
       version: getVersionFromDataProp(pageEl),
       bundleSrcUrl: getBundleSrcUrl(),
-      arweaveDependencyUrl: getArweaveDependencyUrl(),
-      communityJsDependencyUrl: getCommunityJsDependencyUrl(),
       currentUrl: getCurrentUrl(),
+      onlySigner: getOnlySignerFromDataProp(pageEl),
     };
 
     const stateHandler = {
