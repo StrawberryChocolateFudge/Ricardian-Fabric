@@ -34,11 +34,8 @@ export function renderCreateButtonClick(props: State) {
       const getKey = async (key: any) => {
         //Here I call the business logic to do stuff with the key and the other values
         const price = getPrice();
-        const feeInWinston = calculateFeeInWinston(
-          props.arweave,
-          parseFloat(price)
-        );
-        const fee = props.arweave.ar.winstonToAr(feeInWinston);
+        const feeInWinston = calculateFeeInWinston(props.arweave, price);
+        const fee = props.arweave.ar.winstonToAr(feeInWinston.toString());
         await createAcceptableContract({
           props,
           key,
