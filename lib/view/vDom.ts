@@ -11,12 +11,16 @@ export async function getAcceptablePageFromVDOM(
   render(acceptablePageLayout(pageProps), doc.body);
   // The legal contract HTML is sanitized by the editor
   doc.getElementById("contract-display").innerHTML = pageProps.legalContract;
+  //TODO: I need to inline the script dependency here!!
+  //with document.createTextNode?
+
   return serialize(doc);
 }
 
 export async function getFulfilledPagefromVDOM(pageProps: FulfilledPageProps) {
   const doc = parseDOMfromString(pageProps.domParser, initialStringDom);
   render(fulfilledPageLayout(pageProps), doc.body);
+  doc.getElementById("contract-display").innerHTML = pageProps.legalContract;
   return serialize(doc);
 }
 
