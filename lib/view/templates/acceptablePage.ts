@@ -1,6 +1,7 @@
 import { html } from "lit-html";
 import { AcceptablePageProps } from "../../types";
-import { arweaveDep, communityJsDep, mainDep } from "./dependencies";
+import { createdDateTemplate, expiryTemplate, getPriceTemplate, issuerTemplate } from "./components";
+import { mainDep } from "./dependencies";
 import { loadingIndicator } from "./loadingIndicator";
 
 export const acceptablePageLayout = (props: AcceptablePageProps) => html`
@@ -26,47 +27,6 @@ export const acceptablePageLayout = (props: AcceptablePageProps) => html`
   </body>
 `;
 
-const getPrice = (price: string, fee: number) => {
-  if (price !== "NONE") {
-    const formattedPrice = price === "NONE" ? "" : `${price} Ar`;
-    return html` <tr>
-        <td>
-          <label>Price:</label>
-        </td>
-        <td>
-          <div>${formattedPrice}</div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <label>Fee:</label>
-        </td>
-        <td>${fee}</td>
-      </tr>`;
-  }
-};
-
-const createdDate = (date: string) => {
-  return html` <tr>
-    <td>Created:</td>
-    <td>${date}</td>
-  </tr>`;
-};
-
-const issuer = (address: string) => {
-  return html`
-    <tr>
-      <td>Issuer:</td>
-      <td>${address}</td>
-    </tr>
-  `;
-};
-
-const expiry = (date: string) => html` <tr>
-  <td>Expires:</td>
-  <td>${date}</td>
-</tr>`;
-
 const acceptablePage = (props: AcceptablePageProps) => html`
   <div
     data-contracttype="acceptable"
@@ -86,14 +46,14 @@ const acceptablePage = (props: AcceptablePageProps) => html`
     <p class="center title" id="version">${props.version}</p>
     <hr />
     <h5 class="center">Carefully read the contract bellow</h5>
-    <div class="center" disabled id="contract-display"></div>
+    <div class="center" id="contract-display"></div>
     <table class="center">
       <tr>
         <th></th>
         <th></th>
       </tr>
-      ${issuer(props.creatorAddress)} ${createdDate(props.createdDate)}
-      ${expiry(props.expires)} ${getPrice(props.price, props.fee)}
+      ${issuerTemplate(props.creatorAddress)} ${createdDateTemplate(props.createdDate)}
+      ${expiryTemplate(props.expires)} ${getPriceTemplate(props.price, props.fee)}
     </table>
     <hr />
     <div id="action-container" class="center">${loadingIndicator}</div>
