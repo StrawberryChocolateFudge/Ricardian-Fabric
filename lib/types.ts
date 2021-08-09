@@ -1,3 +1,5 @@
+import Arweave from "arweave";
+
 export enum Events {
   render = "render",
   stateChange = "stateChange",
@@ -19,6 +21,7 @@ export enum RenderType {
   disableButton = "disableButton",
   version = "version",
   redirectCounter = "redirectCounter",
+  dateClickListener = "dateClickListener",
 }
 
 export type Renderer = {
@@ -37,6 +40,7 @@ export type Renderer = {
   [RenderType.disableButton]: CallableFunction;
   [RenderType.version]: CallableFunction;
   [RenderType.redirectCounter]: CallableFunction;
+  [RenderType.dateClickListener]: CallableFunction;
 };
 
 export enum EventType {
@@ -44,6 +48,7 @@ export enum EventType {
   setEditor = "setEditor",
   setBalance = "setBalance",
   setWalletAddress = "setWalletAddress",
+  setSelectedDate = "setSelectedDate",
 }
 
 export enum StateProperties {
@@ -51,6 +56,7 @@ export enum StateProperties {
   editor = "editor",
   balance = "balance",
   address = "address",
+  selectedDate = "selectedDate",
 }
 
 export enum ContractTypes {
@@ -60,11 +66,12 @@ export enum ContractTypes {
 }
 
 export type State = {
-  arweave: any;
+  arweave: Arweave;
   editor: any;
   domParser: DOMParser;
   balance: number;
   address: string;
+  selectedDate: Date | string;
   contracttype: ContractTypes;
   postto: string;
   webhook: boolean;
@@ -101,7 +108,7 @@ export type AcceptablePageProps = {
   redirect: boolean;
   mainDep?: Dependency;
   domParser: DOMParser;
-  fee: number;
+  fee: string;
   legalContract: string;
 };
 
@@ -109,13 +116,13 @@ export type FulfilledPageProps = {
   version: string;
   creatorAddress: string;
   createdDate: string;
-  price: number;
+  price: string;
   expires: string;
   post: string;
   webhook: boolean;
   redirect: boolean;
   domParser: DOMParser;
-  fee: number;
+  fee: string;
   legalContract: string;
   paidFrom: string;
   parentUrl: string;
