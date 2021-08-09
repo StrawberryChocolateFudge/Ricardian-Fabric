@@ -6,12 +6,12 @@ const FEE = 5; // This is 0.5 when calculated
 export const TESTADDRESS = "1seRanklLU_1VTGkEk7P0xAwMJfA7owA1JHW5KyZKlY";
 let testweave: TestWeave;
 
-export function calculateFeeInWinston(arweave: Arweave, price: number): number {
-  const winston = arweave.ar.arToWinston(price.toString());
+export function calculateFeeInWinston(arweave: Arweave, price: string): number {
+  const winston = arweave.ar.arToWinston(price);
   return (parseInt(winston) / 1000) * FEE;
 }
 
-export function calculateFeeInAr(arweave: Arweave, price: number) {
+export function calculateFeeInAr(arweave: Arweave, price: string) {
   const winston = calculateFeeInWinston(arweave, price);
   return arweave.ar.winstonToAr(winston.toString());
 }
@@ -79,6 +79,7 @@ export async function createTransactionSend(
   dataTransaction.addTag("Issuer", address);
   dataTransaction.addTag("App", "Ricardian Fabric");
   dataTransaction.addTag("version", version);
+  //TODO: add a hash of the page to the tags!!
   await arweave.transactions.sign(dataTransaction, testweave.rootJWK);
   const response: any = await arweave.transactions.post(dataTransaction);
 
@@ -91,9 +92,8 @@ export async function createTransactionSend(
   };
 }
 
-export async function profitShare(arweave: Arweave, key: any, price: number) {
+export async function profitShare(arweave: Arweave, key: any, price: string) {
   const fee = calculateFeeInWinston(arweave, price);
-  console.log(fee);
 }
 
 export async function acceptTransactionPay(arg: {
@@ -101,14 +101,14 @@ export async function acceptTransactionPay(arg: {
   key: any;
   page: string;
   target: string;
-  quantity: number;
+  quantity: string;
 }) {
   const arweave = arg.arweave;
   const dataTransaction = await arweave.createTransaction(
     {
       data: arg.page,
       target: TESTADDRESS,
-      quantity: arweave.ar.arToWinston(arg.quantity.toString()),
+      quantity: arweave.ar.arToWinston(arg.quantity),
     },
     testweave.rootJWK
   );
