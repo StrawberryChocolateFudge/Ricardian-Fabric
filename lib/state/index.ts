@@ -27,6 +27,7 @@ import { setStateHook } from "./setStateHook";
       domParser: new DOMParser(),
       balance: 0,
       address: "",
+      selectedDate: "",
       contracttype: getCurrentPageDataProp(pageEl),
       postto: getPostToDataProp(pageEl),
       webhook: getWebhookFromDataProp(pageEl),
@@ -65,6 +66,9 @@ import { setStateHook } from "./setStateHook";
     [EventType.setBalance]: (value: any) => {
       stateContainer.balance = value.balance;
       stateContainer.address = value.address;
+    },
+    [EventType.setSelectedDate]: (value: { date: Date | string }) => {
+      stateContainer.selectedDate = value.date;
     },
   };
 
