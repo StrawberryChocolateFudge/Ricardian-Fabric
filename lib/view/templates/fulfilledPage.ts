@@ -1,7 +1,32 @@
 import { html } from "lit-html";
 import { FulfilledPageProps } from "../../types";
+import {
+  createdDateTemplate,
+  expiryTemplate,
+  getParticipantFromTemplate,
+  getPriceTemplate,
+  issuerTemplate,
+} from "./components";
 
 export const fulfilledPageLayout = (props: FulfilledPageProps) => html`
+  <style>
+    .center {
+      margin: 0 auto;
+    }
+    #page {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      flex-direction: column;
+    }
+    #contract-display {
+      max-width: 800px;
+    }
+    .title {
+      color: #f2f2f2;
+    }
+  </style>
+
   <body>
     ${fulfilledPage(props)}
   </body>
@@ -23,12 +48,22 @@ export const fulfilledPage = (props: FulfilledPageProps) => html`
     data-fee="${props.fee}"
     id="page"
   >
-    <h1 class="ricardian-title">Ricardian Fabric</h1>
-    <h3 class="ricardian-subtitle">Receipt</h3>
+    <h1 class="center title">Ricardian Fabric</h1>
+    <p class="center title" id="version">${props.version}</p>
     <hr />
-    <div class="price-input" id="price-input">Paid: <span></span></div>
-    <div class="price-input" id="price-input"></div>
-    <div class="price-input">etc..</div>
+    <h5 class="center">Contract</h5>
+    <div class="center" id="contract-display"></div>
+    <table class="center">
+      <tr>
+        <th></th>
+        <th></th>
+        ${issuerTemplate(props.creatorAddress)}
+        ${getParticipantFromTemplate(props.paidFrom)}
+        ${createdDateTemplate(props.createdDate)}
+        ${expiryTemplate(props.expires)}
+        ${getPriceTemplate(props.price, props.fee)}
+      </tr>
+    </table>
     <hr />
   </div>
 `;
