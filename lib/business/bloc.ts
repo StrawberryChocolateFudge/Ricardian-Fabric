@@ -5,7 +5,7 @@ import {
   createTransactionSend,
   getArweaveCall,
   getBalanceCall,
-  getWalletAddr,
+  getAddressCall,
 } from "../arweave/arweave";
 import {
   dispatch_disableButton,
@@ -44,12 +44,12 @@ export async function getArweave() {
 
 export async function getBalance(arweave: any, key: any) {
   const balance = await getBalanceCall(arweave, key);
-  const address = await getWalletAddr(arweave, key);
+  const address = await getAddressCall(arweave, key);
   dispatch_setBalance({ balance, address });
 }
 
 export async function getCreatorWallet(arweave: any, key: any) {
-  return await getWalletAddr(arweave, key);
+  return await getAddressCall(arweave, key);
 }
 
 export async function createAcceptableContract(args: {
@@ -138,7 +138,7 @@ export async function isOnlySigner(props: State, key: any): Promise<boolean> {
   if (onlySigner === "NONE") {
     return true;
   } else {
-    const address = await getWalletAddr(props.arweave, key);
+    const address = await getAddressCall(props.arweave, key);
     if (onlySigner === address) {
       return true;
     } else {
@@ -184,7 +184,7 @@ async function fulfilledPage(data: { props: State; ar: string; key: any }) {
     parentUrl: getFromUrl(),
     fee,
     price: data.ar,
-    paidFrom: await getWalletAddr(props.arweave, data.key),
+    paidFrom: await getAddressCall(props.arweave, data.key),
     domParser: props.domParser,
     expires: props.expires,
     post: props.postto,
