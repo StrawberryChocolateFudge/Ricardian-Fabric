@@ -49,7 +49,6 @@ const acceptablePage = (props: AcceptablePageProps) => html`
   >
     <hr />
     <h1 class="center title">Ricardian Fabric</h1>
-    <p class="center title" id="version">${props.version}</p>
     <hr />
     <h5 class="center">Carefully read the contract bellow</h5>
     <div class="center" id="contract-display"></div>
