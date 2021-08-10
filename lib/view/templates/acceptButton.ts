@@ -50,7 +50,6 @@ export const acceptButton = (props: State) => {
                   <input id="select-file-input" type="file" />
                 </td>
               </tr>
-              <tr id="balance" class="center"></tr>
             </table>
             <hr />
             <div class="center red" id="error-display"></div>
