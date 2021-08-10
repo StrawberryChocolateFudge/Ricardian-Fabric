@@ -54,9 +54,13 @@ export function enableButton(props: State) {
   if (currentPage === ContractTypes.create) {
     const saveButton = getById("save-contract") as HTMLButtonElement;
     saveButton.disabled = false;
+    saveButton.style.backgroundColor = "black";
+    saveButton.style.color = "white";
   } else if (currentPage === ContractTypes.acceptable) {
     const saveButton = getById("accept-button") as HTMLButtonElement;
     saveButton.disabled = false;
+    saveButton.style.backgroundColor = "black";
+    saveButton.style.color = "white";
   }
 }
 
@@ -65,9 +69,13 @@ export function disableButton(props: State) {
   if (currentPage === ContractTypes.create) {
     const saveButton = getById("save-contract") as HTMLButtonElement;
     saveButton.disabled = true;
+    saveButton.style.backgroundColor = "";
+    saveButton.style.color = "";
   } else if (currentPage === ContractTypes.acceptable) {
     const saveButton = getById("accept-button") as HTMLButtonElement;
     saveButton.disabled = true;
+    saveButton.style.backgroundColor = "";
+    saveButton.style.color = "";
   }
 }
 

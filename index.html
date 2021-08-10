@@ -7,15 +7,15 @@
     <link inline rel="stylesheet" href="./styles.css" />
     <title>Ricardian Fabric</title>
   </head>
-  <body>
-    <div data-version="0.0.1" data-contracttype="create" id="page">
-      <hr />
-      <h1 class="center title">Ricardian Fabric</h1>
-      <p class="center title" id="version"></p>
-      <hr />
+  <body class="background">
+    <div class="title-row">
+      <h1 class="center">Ricardian Fabric</h1>
       <h5 class="center">
         Create and share fulfillable financial contracts with Arweave
       </h5>
+    </div>
+
+    <div data-version="0.0.1" data-contracttype="create" id="page">
       <hr />
       <div class="editable-container">
         <div class="editable"></div>
@@ -69,17 +69,13 @@
             <input id="redirect-checkbox" type="checkbox" />
           </td>
         </tr>
-      </table>
-      <hr />
-      <label class="center" for="select-file-input">Wallet</label>
-      <input class="center" id="select-file-input" type="file" />
-      <table class="center">
-        <tr>
-          <th></th>
-          <th></th>
-        </tr>
         <tr id="balance"></tr>
       </table>
+      <hr />
+      <label class="center" id="wallet-label" for="select-file-input"
+        >Wallet
+      </label>
+      <input class="center" id="select-file-input" type="file" />
       <hr />
       <div class="center red" id="error-display"></div>
       <div class="center" id="transaction-display"></div>
@@ -88,9 +84,7 @@
       </button>
     </div>
     <div id="overlay">
-      <div id="overlay-layout">
-       
-      </div>
+      <div id="overlay-layout"></div>
     </div>
   </body>
   <script id="main-script" async inline src="./main.ts"></script>
