@@ -41,15 +41,7 @@ export async function getAddressCall(
   arweave: Arweave,
   key: any
 ): Promise<string> {
-  return await arweave.wallets.jwkToAddress(key);
-}
-
-export async function getWalletAddr(
-  arweave: Arweave,
-  key: any
-): Promise<string> {
-  const address = await arweave.wallets.jwkToAddress(testweave.rootJWK);
-  return address;
+  return await arweave.wallets.jwkToAddress(testweave.rootJWK);
 }
 
 export async function getBalanceCall(
