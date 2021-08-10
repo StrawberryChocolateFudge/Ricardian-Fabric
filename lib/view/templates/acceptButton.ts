@@ -24,6 +24,12 @@ export const acceptButton = (props: State) => {
       .red {
         color: red;
       }
+      #accept-button {
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+        border-radius: 20px;
+        border: none;
+        cursor: pointer;
+      }
     </style>
     <div class="outter">
       ${expired
