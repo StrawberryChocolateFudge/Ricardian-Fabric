@@ -1,4 +1,4 @@
-import { ContractTypes, State } from "../types";
+const storageKEY = "RicardianFabric";
 
 export function getById(id: string): HTMLElement {
   const el = document.getElementById(id);
@@ -139,4 +139,22 @@ export function copyStringToClipboard(str: string) {
   document.execCommand("copy");
   // Remove temporary element
   document.body.removeChild(el);
+}
+
+export function setBannerDisplayBlock() {
+  getById("overlay").style.display = "block";
+}
+
+export function setTermsAccepted(termsAccepted: boolean) {
+  localStorage.setItem(storageKEY, JSON.stringify({ termsAccepted }));
+}
+
+export function getTermsAccepted(): boolean {
+  const data = localStorage.getItem(storageKEY);
+  const parsed = JSON.parse(data);
+  if (parsed === null) {
+    return parsed;
+  } else {
+    return parsed.termsAccepted;
+  }
 }

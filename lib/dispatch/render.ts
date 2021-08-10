@@ -85,3 +85,10 @@ export function dispatch_attachDateClickListener(props: State) {
     props,
   });
 }
+
+export function dispatch_renderTerms() {
+  dispatch(Events.render, {
+    type: RenderType.renderTerms,
+    props: {},
+  });
+}

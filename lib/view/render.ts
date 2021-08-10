@@ -4,8 +4,9 @@ import { acceptButton } from "./templates/acceptButton";
 import { balanceTemplate } from "./templates/balance";
 import { loadingIndicator } from "./templates/loadingIndicator";
 import { redirectCounter } from "./templates/redirectCounter";
+import { termsLayout } from "./templates/terms";
 import { transactionUrl } from "./templates/transaction";
-import { copyStringToClipboard, getById } from "./utils";
+import { copyStringToClipboard, getById, setBannerDisplayBlock } from "./utils";
 
 export async function renderbalance(balance: number) {
   const balanceEl = getById("balance");
@@ -68,4 +69,10 @@ export function disableButton(props: State) {
     const saveButton = getById("accept-button") as HTMLButtonElement;
     saveButton.disabled = true;
   }
+}
+
+export function renderTerms() {
+  setBannerDisplayBlock();
+  const layout = getById("overlay-layout");
+  render(termsLayout(), layout);
 }

@@ -22,6 +22,7 @@ export enum RenderType {
   version = "version",
   redirectCounter = "redirectCounter",
   dateClickListener = "dateClickListener",
+  renderTerms = "renderTerms",
 }
 
 export type Renderer = {
@@ -41,6 +42,7 @@ export type Renderer = {
   [RenderType.version]: CallableFunction;
   [RenderType.redirectCounter]: CallableFunction;
   [RenderType.dateClickListener]: CallableFunction;
+  [RenderType.renderTerms]: CallableFunction;
 };
 
 export enum EventType {

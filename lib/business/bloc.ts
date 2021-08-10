@@ -13,6 +13,7 @@ import {
   dispatch_removeLoadingIndicator,
   dispatch_renderError,
   dispatch_renderLoadingIndicator,
+  dispatch_renderTerms,
   dispatch_renderTransaction,
 } from "../dispatch/render";
 import {
@@ -26,6 +27,7 @@ import {
   getAcceptableContract,
   getFromUrl,
   getSecret,
+  getTermsAccepted,
   redirect,
 } from "../view/utils";
 import {
@@ -189,4 +191,11 @@ async function fulfilledPage(data: { props: State; ar: string; key: any }) {
     webhook: props.webhook,
     redirect: props.redirect,
   });
+}
+
+export function showBanner() {
+  const termsAccepted = getTermsAccepted();
+  if (termsAccepted !== true) {
+    dispatch_renderTerms();
+  }
 }

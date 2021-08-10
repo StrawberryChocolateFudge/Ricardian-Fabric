@@ -13,10 +13,12 @@ import {
   renderCounter,
   renderError,
   renderLoadingIndicator,
+  renderTerms,
   renderTransaction,
   renderVersion,
 } from "./render";
 import { renderAcceptButton } from "./render";
+import { attachTermsButtonListeners } from "./actions/bannerButtonListeners";
 
 const Render: Renderer = {
   [RenderType.successMessage]: (props: State) => {},
@@ -66,6 +68,10 @@ const Render: Renderer = {
   },
   [RenderType.dateClickListener]: (props: State) => {
     attachExpiryClickAndListener(props);
+  },
+  [RenderType.renderTerms]: () => {
+    renderTerms();
+    attachTermsButtonListeners();
   },
 };
 
