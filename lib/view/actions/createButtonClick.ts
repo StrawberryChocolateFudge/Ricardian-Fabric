@@ -30,11 +30,23 @@ export function renderCreateButtonClick(props: State) {
       return;
     }
 
+    const onlySigner = getOnlySigner();
+    if (onlySigner !== "NONE" && onlySigner.length !== 43) {
+      // the lengths of the address must be 43
+      dispatch_renderError("Only signer address is invalid");
+      return;
+    }
+    const price = getPrice();
+
+    if (parseFloat(price) < 0) {
+      dispatch_renderError("Price can't be negative!");
+      return;
+    }
+
     const wallet_file = getById("select-file-input") as HTMLInputElement;
     if (wallet_file.files !== null) {
       const getKey = async (key: any) => {
         //Here I call the business logic to do stuff with the key and the other values
-        const price = getPrice();
         const feeInWinston = calculateFeeInWinston(props.arweave, price);
         const fee = props.arweave.ar.winstonToAr(feeInWinston.toString());
         await createAcceptableContract({
@@ -52,7 +64,7 @@ export function renderCreateButtonClick(props: State) {
             domParser: props.domParser,
             creatorAddress: await getCreatorWallet(props.arweave, key),
             fee,
-            onlySigner: getOnlySigner(),
+            onlySigner,
           },
         });
       };
