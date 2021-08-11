@@ -36,7 +36,10 @@ export const termsLayout = () => html` <style>
   <h2>Terms and conditions</h2>
   <div id="terms-container">${termsAndConditions()}</div>
   <div id="terms-button-container">
-    <button id="terms-accept-button">
+    <button
+      aria-label="I agree to the terms and conditions"
+      id="terms-accept-button"
+    >
       I agree to the terms and conditions!
     </button>
   </div>`;
