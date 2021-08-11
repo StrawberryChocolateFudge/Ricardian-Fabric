@@ -83,7 +83,9 @@ const acceptablePage = (props: AcceptablePageProps) => html`
     id="page"
   >
     <hr />
-    <h5 class="center">Carefully read the contract bellow</h5>
+    <h5 aria-label="Carefully read the contract bellow" class="center">
+      Carefully read the contract bellow
+    </h5>
     <div class="center" id="contract-display"></div>
     <table class="center">
       <tr>

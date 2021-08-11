@@ -8,50 +8,50 @@ export const getPriceTemplate = (
     const formattedPrice = price === "NONE" ? "" : `${price} Ar`;
     return html` <tr>
         <td>
-          <label>Price:</label>
+          <label aria-label="price label">Price:</label>
         </td>
         <td>
-          <div>${formattedPrice}</div>
+          <div aria-label="price">${formattedPrice}</div>
         </td>
       </tr>
       <tr>
         <td>
-          <label>Fee:</label>
+          <label aria-label="fee label">Fee:</label>
         </td>
-        <td>${fee} Ar</td>
+        <td aria-label="fee">${fee} Ar</td>
       </tr>`;
   }
 };
 
 export const createdDateTemplate = (date: string) => {
   return html` <tr>
-    <td>Created:</td>
-    <td>${date}</td>
+    <td aria-label="created date label">Created:</td>
+    <td aria-label="created date">${date}</td>
   </tr>`;
 };
 
 export const issuerTemplate = (address: string) => {
   return html`
     <tr>
-      <td>Issuer:</td>
-      <td>${address}</td>
+      <td aria-label="issuer label">Issuer:</td>
+      <td aria-label="address">${address}</td>
     </tr>
   `;
 };
 
 export const expiryTemplate = (date: string) => html` <tr>
-  <td>Expires:</td>
-  <td>${date}</td>
+  <td aria-label="expires label">Expires:</td>
+  <td aria-label="date">${date}</td>
 </tr>`;
 
 export const getParticipantFromTemplate = (paidFrom: string) => html`<tr>
-  <td>Participant:</td>
-  <td>${paidFrom}</td>
+  <td aria-label="participant label">Participant:</td>
+  <td aria-label="participant">${paidFrom}</td>
 </tr>`;
 
 export const parentUrl = (url: string) => html`
   <tr>
-    <td>Accepted at</td>
-    <td><a href="${url}">${url}</a></td>
+    <td aria-label="accepted at url label">Accepted at</td>
+    <td><a aria-label="accepted at url ${url}" href="${url}">${url}</a></td>
   </tr>
 `;

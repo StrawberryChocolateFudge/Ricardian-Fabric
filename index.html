@@ -17,69 +17,142 @@
 
     <div data-version="0.0.1" data-contracttype="create" id="page">
       <hr />
+
       <div class="editable-container">
-        <div class="editable"></div>
+        <div aria-label="Editor" class="editable"></div>
+        <div id="editor-control"></div>
       </div>
       <hr />
-      <table class="center">
+      <table aria-label="input field container table" class="center">
         <tr>
           <th></th>
           <th></th>
         </tr>
         <tr>
-          <td><label for="price-input">Price:</label></td>
           <td>
-            <input id="price-input" type="number" />
+            <label aria-labelledby="Price label" for="price-input"
+              >Price:</label
+            >
+          </td>
+          <td>
+            <input
+              aria-label="Input for price"
+              name="price"
+              id="price-input"
+              type="number"
+            />
             <span> Ar</span>
           </td>
         </tr>
         <tr>
           <td>
-            <label>Only signer:</label>
+            <label aria-labelledby="only signer field input"
+              >Only signer:</label
+            >
           </td>
           <td>
-            <input id="onlysigner-input" type="text" />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <label for="center">Expires:</label>
-          </td>
-          <td>
-            <input id="expires-input" type="date" />
-            <button id="expires-reset">Never</button>
+            <input
+              aria-label="only signer "
+              id="onlysigner-input"
+              type="text"
+            />
           </td>
         </tr>
         <tr>
           <td>
-            <label>Post to:</label>
+            <label aria-labelledby="expires label" for="center">Expires:</label>
           </td>
           <td>
-            <input id="postto-input" type="url" />
-            <span>/{id}</span>
+            <input
+              aria-label="expires date input"
+              name="expires"
+              id="expires-input"
+              type="date"
+            />
+            <button
+              aria-label="never expires button"
+              name="never"
+              id="expires-reset"
+            >
+              Never
+            </button>
           </td>
         </tr>
         <tr>
           <td>
-            <label for="webhook-checkbox">Webhook:</label>
-            <input id="webhook-checkbox" type="checkbox" />
+            <label aria-labelledby="post to label">Post to:</label>
           </td>
           <td>
-            <label for="redirect-checkbox">Redirect:</label>
-            <input id="redirect-checkbox" type="checkbox" />
+            <input
+              aria-label="post to input"
+              name="postto"
+              id="postto-input"
+              type="url"
+            />
+            <span aria-label="/{id} is gonna be appended">/{id}</span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label
+              aria-labelledby="webhook checkbox label"
+              for="webhook-checkbox"
+              >Webhook:</label
+            >
+            <input
+              aria-label="webhook-checkbox"
+              id="webhook-checkbox"
+              type="checkbox"
+            />
+          </td>
+          <td>
+            <label
+              aria-labelledby="redirect-checkbox-label"
+              for="redirect-checkbox"
+              >Redirect:</label
+            >
+            <input
+              aria-label="redirect-checkbox"
+              id="redirect-checkbox"
+              type="checkbox"
+            />
           </td>
         </tr>
         <tr id="balance"></tr>
       </table>
       <hr />
-      <label class="center" id="wallet-label" for="select-file-input"
+      <label
+        aria-labelledby="select wallet label"
+        class="center"
+        id="wallet-label"
+        for="select-file-input"
         >Wallet
       </label>
-      <input class="center" id="select-file-input" type="file" />
+      <input
+        aria-label="select-walletfile-input"
+        name="select-file-input"
+        class="center"
+        id="select-file-input"
+        type="file"
+      />
       <hr />
-      <div class="center red" id="error-display"></div>
-      <div class="center" id="transaction-display"></div>
-      <button class="center width-100" id="save-contract" disabled>
+      <div
+        aria-label="error-display-slot"
+        class="center red"
+        id="error-display"
+      ></div>
+      <div
+        aria-label="transaction-display-slot"
+        class="center"
+        id="transaction-display"
+      ></div>
+      <button
+        class="center width-100"
+        id="save-contract"
+        disabled
+        role="button"
+        aria-label="Create"
+      >
         Create
       </button>
     </div>

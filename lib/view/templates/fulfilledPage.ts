@@ -84,7 +84,7 @@ export const fulfilledPage = (props: FulfilledPageProps) => html`
     id="page"
   >
     <hr />
-    <h5 class="center">Contract</h5>
+    <h5 aria-label="Signed Contract" class="center">Signed Contract</h5>
     <div class="center" id="contract-display"></div>
     <table class="center">
       <tr>
