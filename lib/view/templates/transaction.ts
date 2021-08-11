@@ -10,6 +10,7 @@ export const transactionUrl = (url: string) =>
     </style>
 
     <div class="transaction-layout">
-      <p>Copied to clipboard!</p>
-      <a href="${url}">${url}</a>
+      <a class="center" aria-label="Link copied to clipboard" href="${url}"
+        >Link copied to clipboard</a
+      >
     </div>`;
