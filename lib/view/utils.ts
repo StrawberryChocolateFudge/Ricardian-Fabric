@@ -82,7 +82,8 @@ function handleHTTPS(url: string) {
   if (url === "") {
     return url;
   }
-  if (url.includes("http")) {
+  const slice = url.substring(0, 4);
+  if (slice === "http") {
     return url;
   } else {
     return "https://" + url;
