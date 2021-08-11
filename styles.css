@@ -29,10 +29,11 @@ body {
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  max-width: 500px;
+  max-width: 350px;
   min-width: 350px;
   background-color: white;
   margin-bottom: 30px;
+  border-radius: 25px;
 }
 
 #page {
