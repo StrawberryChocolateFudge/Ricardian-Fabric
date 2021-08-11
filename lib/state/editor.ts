@@ -1,4 +1,5 @@
 import MediumEditor from "medium-editor";
+import { getById } from "../view/utils";
 
 export default function createNewEditor() {
   const editor = new MediumEditor(".editable", {
@@ -12,9 +13,6 @@ export default function createNewEditor() {
         "italic",
         "underline",
         "anchor",
-        "strikethrough",
-        "subscript",
-        "superscript",
         "anchor",
         "quote",
         "pre",
@@ -32,19 +30,15 @@ export default function createNewEditor() {
         "h4",
         "h5",
         "h6",
-        "removeFormat",
-        "html",
       ],
-      diffLeft: 0,
-      diffTop: 400,
       firstButtonClass: "medium-editor-button-first",
       lastButtonClass: "medium-editor-button-last",
-      relativeContainer: null,
+      relativeContainer: getById("editor-control"),
       standardizeSelectionStart: true,
       static: false,
       /* options which only apply when static is true */
       align: "center",
-      sticky: false,
+      sticky: true,
       updateOnEmptySelection: false,
     },
     placeholder: {
