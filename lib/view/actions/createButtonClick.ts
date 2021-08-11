@@ -43,6 +43,17 @@ export function renderCreateButtonClick(props: State) {
       return;
     }
 
+    const webhook = getWebhookCheckbox();
+    const redirect = getRedirectCheckbox();
+    const post = getPostTo();
+
+    if (webhook || redirect) {
+      if (post === "NONE") {
+        dispatch_renderError("Post to, where?");
+        return;
+      }
+    }
+
     const wallet_file = getById("select-file-input") as HTMLInputElement;
     if (wallet_file.files !== null) {
       const getKey = async (key: any) => {
@@ -56,9 +67,9 @@ export function renderCreateButtonClick(props: State) {
             legalContract: props.editor.getContent(),
             createdDate: new Date().toISOString(),
             price,
-            post: getPostTo(),
-            webhook: getWebhookCheckbox(),
-            redirect: getRedirectCheckbox(),
+            post,
+            webhook,
+            redirect,
             expires,
             version: props.version,
             domParser: props.domParser,
