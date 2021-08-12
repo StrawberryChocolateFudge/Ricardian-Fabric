@@ -9,7 +9,6 @@ import { State } from "../../types";
 import { didExpire, getById, getExpires } from "../utils";
 
 export const attachExpiryClickAndListener = (props: State) => {
-  console.log(`props ${props.selectedDate}`);
   const reset = getById("expires-reset");
   const date = getById("expires-input") as HTMLInputElement;
   if (props.selectedDate === "") {
