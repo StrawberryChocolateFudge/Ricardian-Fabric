@@ -6,6 +6,7 @@ export const loadingIndicator = html`
       display: inline-block;
       width: 80px;
       height: 80px;
+      padding-right: 5px;
     }
     .lds-dual-ring:after {
       content: " ";
@@ -27,5 +28,9 @@ export const loadingIndicator = html`
       }
     }
   </style>
-  <div aria-label="loading indicator" id="loader" class="lds-dual-ring center"></div>
+  <div
+    aria-label="loading indicator"
+    id="loader"
+    class="lds-dual-ring center"
+  ></div>
 `;
