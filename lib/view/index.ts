@@ -12,13 +12,18 @@ import {
   renderbalance,
   renderCounter,
   renderError,
+  renderInstrumentSettings,
+  renderInstrumentSettingsTooltips,
   renderLoadingIndicator,
   renderTerms,
+  renderToolTipHelptextsForCreate,
   renderTransaction,
   renderVersion,
 } from "./render";
 import { renderAcceptButton } from "./render";
 import { attachTermsButtonListeners } from "./actions/bannerButtonListeners";
+import { attachFinancialInstrumentCheckboxListener } from "./actions/attachFinancialInstrumentCheckboxListener";
+import { attachFinancialInstrumetsSettingsActions } from "./actions/attachFinancialInstrumentsSettingsActions";
 
 const Render: Renderer = {
   [RenderType.successMessage]: (props: State) => {},
@@ -30,6 +35,8 @@ const Render: Renderer = {
     onFileSelect(props);
     renderCreateButtonClick(props);
     attachExpiryClickAndListener(props);
+    attachFinancialInstrumentCheckboxListener(props);
+    renderToolTipHelptextsForCreate();
   },
   [RenderType.acceptButton]: (props: State) => {
     renderAcceptButton(props);
@@ -72,6 +79,11 @@ const Render: Renderer = {
   [RenderType.renderTerms]: () => {
     renderTerms();
     attachTermsButtonListeners();
+  },
+  [RenderType.renderInstrumentSettings]: (props: State) => {
+    renderInstrumentSettings();
+    attachFinancialInstrumetsSettingsActions(props);
+    renderInstrumentSettingsTooltips();
   },
 };
 
