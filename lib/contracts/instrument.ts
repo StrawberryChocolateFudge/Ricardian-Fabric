@@ -6,13 +6,13 @@
 // The resale object is
 // {instrumentTxId : {ownerAddress,price}}
 
-// The swap object is
+// The trade object is
 // {ownerAddress : {quantity,rate}}
 
 // the balances object is a typical pst balance
 
 // TODO: on Derivatives transfer, credit the creator and the community with a fee
-// TODO: on transfer and accept swap, I need to send some dividends to the creator!
+// TODO: on transfer and accept trade, I need to send some dividends to the creator!
 
 export const instrumentState = (
   name: string,
@@ -38,16 +38,16 @@ export const instrumentState = (
     "derivativeSupply":0
   },
   "balances":{},
-  "swap":{}
+  "trade":{}
 }`;
 
-// export const instrumentContract = `
+export const instrumentContract = `
 
 export async function handle(state, action) {
   const input = action.input;
   const caller = action.caller;
   const balances = state.balances;
-  const swap = state.swap;
+  const trade = state.trade;
   const instrument = state.instrument;
 
   const calculateCreatorDividends = function (price: number) {
@@ -95,8 +95,8 @@ export async function handle(state, action) {
     return { result: { onResale } };
   }
 
-  if (input.function === "availableSwaps") {
-    return { result: { swaps: state.swap } };
+  if (input.function === "availableTrades") {
+    return { result: { trades: state.trade } };
   }
 
   if (input.function === "initialsale") {
@@ -343,7 +343,7 @@ export async function handle(state, action) {
 
     if (balances[caller] < qty) {
       throw new ContractError(
-        `Caller balance not high enough to send token(s)!`
+        'Caller balance not high enough to send token(s)!''
       );
     }
 
@@ -394,7 +394,7 @@ export async function handle(state, action) {
 
     if (balances[caller] < qty) {
       throw new ContractError(
-        `Caller balance not high enough to burn token(s)!`
+        'Caller balance not high enough to burn token(s)!'
       );
     }
 
@@ -404,7 +404,7 @@ export async function handle(state, action) {
     return { state };
   }
 
-  if (input.function === "initiateSwap") {
+  if (input.function === "initiateTrade") {
     const qty = input.qty;
     const rate = input.rate;
     // Calling this function multiple times should also readjust price
@@ -416,41 +416,41 @@ export async function handle(state, action) {
       throw new ContractError('Invalid value for "qty". Must be an integer');
     }
     if (rate <= 0) {
-      throw new ContractError("Invalid swap price");
+      throw new ContractError("Invalid trade price");
     }
     // You can have 0 quantity if you only want to  just readjust price
     if (qty < 0) {
-      throw new ContractError("Invalid swap qty");
+      throw new ContractError("Invalid trade qty");
     }
 
     if (balances[caller] < qty) {
       throw new ContractError("You don't have enough balance!");
     }
 
-    // create the swap balance if it don't exist
+    // create the trade balance if it don't exist
 
-    if (!swap[caller]) {
-      swap[caller] = { quantity: 0, rate: 0 };
+    if (!trade[caller]) {
+      trade[caller] = { quantity: 0, rate: 0 };
     }
 
-    //Lower the balance of the caller and add to the swap
+    //Lower the balance of the caller and add to the trade
     balances[caller] -= qty;
 
-    if (caller in swap) {
-      // If swap already has balance
-      swap[caller].quantity += qty;
-      swap[caller].rate = rate;
+    if (caller in trade) {
+      // If trade already has balance
+      trade[caller].quantity += qty;
+      trade[caller].rate = rate;
     } else {
-      // New swap balance
-      swap[caller].quantity = qty;
-      swap[caller].rate = rate;
+      // New trade balance
+      trade[caller].quantity = qty;
+      trade[caller].rate = rate;
     }
 
     return { state };
   }
 
-  if (input.function === "cancelSwap") {
-    // Cancel swap can be used to readjust the quantity for sale
+  if (input.function === "cancelTrade") {
+    // Cancel trade can be used to readjust the quantity for sale
     const qty = input.qty;
 
     if (!Number.isInteger(qty)) {
@@ -461,23 +461,23 @@ export async function handle(state, action) {
       throw new ContractError("Invalid  qty");
     }
 
-    if (swap[caller].quantity < qty) {
-      throw new ContractError("You don't have enough swap balance!");
+    if (trade[caller].quantity < qty) {
+      throw new ContractError("You don't have enough trade balance!");
     }
 
-    // Lower the swap balance of the caller
-    swap[caller].quantity -= qty;
+    // Lower the trade balance of the caller
+    trade[caller].quantity -= qty;
     // Add it back to the balance of the caller
     balances[caller] += qty;
 
-    if (swap[caller].quantity === 0) {
+    if (trade[caller].quantity === 0) {
       // if the quantity went to zero, I set the price to zero too
-      swap[caller].rate = 0;
+      trade[caller].rate = 0;
     }
     return { state };
   }
 
-  if (input.function === "acceptSwap") {
+  if (input.function === "acceptTrade") {
     const amountToBuy = input.amountToBuy;
     const target = await SmartWeave.transaction.target;
     const payedQuantity = await SmartWeave.transaction.quantity;
@@ -488,17 +488,17 @@ export async function handle(state, action) {
       );
     }
 
-    if (swap[target].quantity < amountToBuy) {
-      throw new ContractError("Swap doesn't contain enough balance");
+    if (trade[target].quantity < amountToBuy) {
+      throw new ContractError("trade doesn't contain enough balance");
     }
 
-    if (amountToBuy * swap[target].rate !== payedQuantity) {
+    if (amountToBuy * trade[target].rate !== payedQuantity) {
       throw new ContractError("Rate doesn't match payed quantity");
     }
 
     // If the rate matched payed quantity
-    // I reduce the swap balance
-    swap[target].quantity -= amountToBuy;
+    // I reduce the trade balance
+    trade[target].quantity -= amountToBuy;
 
     if (!balances[caller]) {
       balances[caller] = 0;
@@ -531,8 +531,8 @@ export async function handle(state, action) {
   }
 
   throw new ContractError(
-    `No function supplied or function not recognised: "${input.function}"`
+    'No function supplied or function not recognised.'
   );
 }
 
-//  `
+ `;
