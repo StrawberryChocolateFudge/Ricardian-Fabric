@@ -27,6 +27,7 @@
         <tr>
           <th></th>
           <th></th>
+          <th></th>
         </tr>
         <tr>
           <td>
@@ -41,8 +42,41 @@
               id="price-input"
               type="number"
             />
-            <span> Ar</span>
           </td>
+          <td><span id="price-tooltip"></span></td>
+        </tr>
+        <tr>
+          <td>
+            <label aria-labelledby="profit share label" for="profit-share-input"
+              >PST contract id:</label
+            >
+          </td>
+          <td>
+            <input
+              aria-label="Profit sharing contract id"
+              name="pstContractId"
+              id="pstContractId"
+              type="text"
+            />
+          </td>
+          <td><span id="pst-tooltip"></span></td>
+        </tr>
+        <tr>
+          <td>
+            <label
+              aria-labelledby="is financial instrument"
+              for="is-financial-instrument"
+              >Financial instrument?</label
+            >
+          </td>
+          <td>
+            <input
+              type="checkbox"
+              name="isInstrument"
+              id="is-financial-instrument"
+            />
+          </td>
+          <td><span id="instrument-tooltip"></span></td>
         </tr>
         <tr>
           <td>
@@ -57,6 +91,7 @@
               type="text"
             />
           </td>
+          <td><span id="onlysigner-tooltip"></span></td>
         </tr>
         <tr>
           <td>
@@ -77,6 +112,7 @@
               Never
             </button>
           </td>
+          <td><span id="expires-tooltip"></span></td>
         </tr>
         <tr>
           <td>
@@ -89,8 +125,8 @@
               id="postto-input"
               type="url"
             />
-            <span aria-label="/{id} is gonna be appended">/{id}</span>
           </td>
+          <td><span id="postTo-tooltip"></span></td>
         </tr>
         <tr>
           <td>
@@ -116,6 +152,9 @@
               id="redirect-checkbox"
               type="checkbox"
             />
+          </td>
+          <td>
+            <span id="webhook-tooltip"></span>
           </td>
         </tr>
         <tr id="balance"></tr>
