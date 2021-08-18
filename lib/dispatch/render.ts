@@ -92,3 +92,10 @@ export function dispatch_renderTerms() {
     props: {},
   });
 }
+
+export function dispatch_renderInstrumentSettings(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.renderInstrumentSettings,
+    props,
+  });
+}
