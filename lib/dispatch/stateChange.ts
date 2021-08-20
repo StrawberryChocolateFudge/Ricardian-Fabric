@@ -1,6 +1,11 @@
-import { Events, EventType } from "../types";
+import {
+  CreatePages,
+  Events,
+  EventType,
+  InstrumentPageData,
+  PDFPage,
+} from "../types";
 import { dispatch } from "./dispatch";
-import MediumEditor from "medium-editor";
 
 export function dispatch_getArweave(arweave: any) {
   dispatch(Events.stateChange, {
@@ -20,5 +25,28 @@ export function dispatch_setSelectedDate(date: Date | string) {
   dispatch(Events.stateChange, {
     type: EventType.setSelectedDate,
     value: { date },
+  });
+}
+
+export function dispatch_setPdfPageData(pdfPageData: PDFPage) {
+  dispatch(Events.stateChange, {
+    type: EventType.setPdfPageData,
+    value: { pdfPageData },
+  });
+}
+
+export function dispatch_setCreatePages(createPage: CreatePages) {
+  dispatch(Events.stateChange, {
+    type: EventType.setCreatePages,
+    value: { createPage },
+  });
+}
+
+export function dispatch_instrumentPageData(
+  instrumentPageData: InstrumentPageData
+) {
+  dispatch(Events.stateChange, {
+    type: EventType.setInstrumentPageData,
+    value: { instrumentPageData },
   });
 }
