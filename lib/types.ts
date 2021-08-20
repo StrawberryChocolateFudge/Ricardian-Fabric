@@ -24,6 +24,7 @@ export enum RenderType {
   dateClickListener = "dateClickListener",
   renderTerms = "renderTerms",
   renderInstrumentSettings = "renderInstrumentSettings",
+  setInstrument = "setInstrument",
 }
 
 export type Renderer = {
@@ -45,6 +46,7 @@ export type Renderer = {
   [RenderType.dateClickListener]: CallableFunction;
   [RenderType.renderTerms]: CallableFunction;
   [RenderType.renderInstrumentSettings]: CallableFunction;
+  [RenderType.setInstrument]: CallableFunction;
 };
 
 export enum EventType {
@@ -53,6 +55,9 @@ export enum EventType {
   setBalance = "setBalance",
   setWalletAddress = "setWalletAddress",
   setSelectedDate = "setSelectedDate",
+  setPdfPageData = "setPdfPageData",
+  setCreatePages = "setCreatePages",
+  setInstrumentPageData = "setInstrumentPageData",
 }
 
 export enum StateProperties {
@@ -60,7 +65,9 @@ export enum StateProperties {
   editor = "editor",
   balance = "balance",
   address = "address",
-  selectedDate = "selectedDate",
+  pdfPage = "pdfPage",
+  createPages = "createPages",
+  instrumentPageData = "instrumentPageData",
 }
 
 export enum ContractTypes {
@@ -69,13 +76,30 @@ export enum ContractTypes {
   fulfilled = "fulfilled",
 }
 
+export enum CreatePages {
+  PDF = "PDF",
+  AddWallet = "AddWallet",
+  SmartContract = "SmartContract",
+  Networking = "Networking",
+  SummaryPage = "SummaryPage",
+}
+export type PDFPage = {
+  PDF: FileList | string;
+  price: string;
+  onlySigner: string;
+  selectedDate: Date | string;
+};
+
 export type State = {
+  createPages: CreatePages;
   arweave: Arweave;
   editor: any;
   domParser: DOMParser;
   balance: number;
   address: string;
-  selectedDate: Date | string;
+  walletFile: FileList | string;
+  pdfPage: PDFPage;
+  instrumentPageData: InstrumentPageData;
   contracttype: ContractTypes;
   postto: string;
   webhook: boolean;
@@ -114,6 +138,12 @@ export type AcceptablePageProps = {
   fee: string;
   legalContract: string;
   onlySigner: string;
+  pstContractId: string;
+  isInstrument: boolean;
+  instrumentName: string;
+  instrumentTicker: string;
+  instrumentSupply: string;
+  canDerive: string;
 };
 
 export type FulfilledPageProps = {
@@ -136,4 +166,13 @@ export type CreateTransactionResult = {
   id: string;
   statusCode: number;
   path: string;
+};
+
+export type InstrumentPageData = {
+  pstContractId: string;
+  isInstrument: boolean;
+  name: string;
+  ticker: string;
+  supply: number;
+  canDerive: number;
 };
