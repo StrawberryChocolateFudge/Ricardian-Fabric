@@ -1,8 +1,3 @@
-import { calculateFeeInWinston } from "../../arweave/arweave";
-import {
-  createAcceptableContract,
-  getCreatorWallet,
-} from "../../business/bloc";
 import {
   dispatch_removeError,
   dispatch_renderError,
@@ -13,12 +8,14 @@ import {
   getExpires,
   getPrice,
   getPostTo,
-  readFile,
   getWebhookCheckbox,
   getRedirectCheckbox,
   didExpire,
   getOnlySigner,
 } from "../utils";
+
+//TODO: The create button needs to show a modal with summary and a SIGN button should be there!
+
 export function renderCreateButtonClick(props: State) {
   getById("save-contract").onclick = function () {
     dispatch_removeError();
@@ -54,32 +51,68 @@ export function renderCreateButtonClick(props: State) {
       }
     }
 
-    const wallet_file = getById("select-file-input") as HTMLInputElement;
-    if (wallet_file.files !== null) {
-      const getKey = async (key: any) => {
-        //Here I call the business logic to do stuff with the key and the other values
-        const feeInWinston = calculateFeeInWinston(props.arweave, price);
-        const fee = props.arweave.ar.winstonToAr(feeInWinston.toString());
-        await createAcceptableContract({
-          props,
-          key,
-          data: {
-            legalContract: props.editor.getContent(),
-            createdDate: new Date().toISOString(),
-            price,
-            post,
-            webhook,
-            redirect,
-            expires,
-            version: props.version,
-            domParser: props.domParser,
-            creatorAddress: await getCreatorWallet(props.arweave, key),
-            fee,
-            onlySigner,
-          },
-        });
-      };
-      readFile(wallet_file.files, getKey);
-    }
+    // const pstContractId = getProfitSharingContractId();
+    // const isInstrument = getIsInstrument();
+
+    // if (isInstrument) {
+    //   if (props.instrumentSettings.name === "") {
+    //     dispatch_renderError("Instrument name is not specified");
+    //     return;
+    //   }
+
+    //   if (props.instrumentSettings.ticker === "") {
+    //     dispatch_renderError("Ticker is not specified");
+    //     return;
+    //   }
+
+    //   if (parseInt(props.instrumentSettings.supply)) {
+    //     dispatch_renderError("Invalid supply, must be a valid integer");
+    //     return;
+    //   }
+
+    //   if (parseInt(props.instrumentSettings.canDerive)) {
+    //     dispatch_renderError(
+    //       "Invalid canDerive field, must be a valid integer"
+    //     );
+    //     return;
+    //   }
+    // }
+
+    // const wallet_file = getById("select-file-input") as HTMLInputElement;
+
+    // if (wallet_file.files !== null) {
+    //   const getKey = async (key: any) => {
+    //     //Here I call the business logic to do stuff with the key and the other values
+    //     const feeInWinston = calculateFeeInWinston(props.arweave, price);
+    //     const fee = props.arweave.ar.winstonToAr(feeInWinston.toString());
+    //     await createAcceptableContract({
+    //       props,
+    //       key,
+    //       data: {
+    //         legalContract: props.editor.getContent(),
+    //         createdDate: new Date().toISOString(),
+    //         price,
+    //         post,
+    //         webhook,
+    //         redirect,
+    //         expires,
+    //         version: props.version,
+    //         domParser: props.domParser,
+    //         creatorAddress: await getCreatorWallet(props.arweave, key),
+    //         fee,
+    //         onlySigner,
+    //         pstContractId,
+    //         isInstrument,
+    //         instrumentName: props.instrumentSettings.name,
+    //         instrumentTicker: props.instrumentSettings.ticker,
+    //         instrumentSupply: props.instrumentSettings.supply,
+    //         canDerive: props.instrumentSettings.canDerive,
+    //       },
+    //     });
+    //   };
+    //   readFile(wallet_file.files, getKey);
+    // }
+
+
   };
 }
