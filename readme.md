@@ -3,7 +3,8 @@
 A new take on Ricardian Contracts.
 A tool that helps to create payable, handwritten, machine processable financial contracts that live on arweave.
 
-WORK-IN-PROGRESS!
+WORK-IN-PROGRESS! DO NOT USE!
+WILL BE AVAILABE ON RICARDIANFABRIC.COM
 
 Use cases:
 
