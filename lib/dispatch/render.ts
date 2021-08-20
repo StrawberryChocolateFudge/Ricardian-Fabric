@@ -1,6 +1,13 @@
-import { RenderType, State } from "../types";
+import { CreatePages, RenderType, State } from "../types";
 import { dispatch } from "./dispatch";
 import { Events } from "../types";
+
+export function dispatch_createPage(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.createPage,
+    props,
+  });
+}
 
 export function dispatch_renderCreateButton(props: State) {
   dispatch(Events.render, {
@@ -96,6 +103,13 @@ export function dispatch_renderTerms() {
 export function dispatch_renderInstrumentSettings(props: State) {
   dispatch(Events.render, {
     type: RenderType.renderInstrumentSettings,
+    props,
+  });
+}
+
+export function dispatch_instrumentsSetRerender(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.setInstrument,
     props,
   });
 }
