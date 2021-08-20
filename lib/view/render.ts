@@ -1,7 +1,8 @@
 import { html, render } from "lit-html";
-import { ContractTypes, State } from "../types";
+import { ContractTypes, CreatePages, State } from "../types";
 import { acceptButton } from "./templates/acceptButton";
 import { balanceTemplate } from "./templates/balance";
+import { CreatePage } from "./templates/createPage";
 import { helperTooltips } from "./templates/helperTooltips";
 import { instrumentSettings } from "./templates/instrumentSettings";
 import { loadingIndicator } from "./templates/loadingIndicator";
@@ -9,6 +10,10 @@ import { redirectCounter } from "./templates/redirectCounter";
 import { termsLayout } from "./templates/terms";
 import { transactionUrl } from "./templates/transaction";
 import { copyStringToClipboard, getById, setBannerDisplayBlock } from "./utils";
+
+export async function renderPage(props: State) {
+  render(CreatePage(props), getById("page"));
+}
 
 export async function renderbalance(balance: number) {
   const balanceEl = getById("balance");
@@ -96,7 +101,9 @@ export function renderToolTipHelptextsForCreate() {
   const posttoTooltip = getById("postTo-tooltip");
   const webhookTooltip = getById("webhook-tooltip");
   render(
-    helperTooltips(`Price in Ar. The 0.5% fee is not included.`),
+    helperTooltips(
+      `Price in Ar. It must be under the legal limit allowed by your local regulation. The 0.5% fee is not included.`
+    ),
     pricetooltip
   );
   render(
