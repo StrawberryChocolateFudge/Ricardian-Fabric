@@ -1,8 +1,7 @@
-import { Events, Renderer, RenderType, State } from "../types";
+import { CreatePages, Events, Renderer, RenderType, State } from "../types";
 import { renderCreateButtonClick } from "./actions/createButtonClick";
 import { attachExpiryClickAndListener } from "./actions/attachExpiryClickAndListener";
 import { onFileSelect } from "./actions/onFileSelect";
-import { postCheckboxSelect } from "./actions/postCheckboxSelect";
 import { renderAcceptOnCLick } from "./actions/renderAcceptButton";
 import {
   disableButton,
@@ -15,6 +14,7 @@ import {
   renderInstrumentSettings,
   renderInstrumentSettingsTooltips,
   renderLoadingIndicator,
+  renderPage,
   renderTerms,
   renderToolTipHelptextsForCreate,
   renderTransaction,
@@ -22,21 +22,38 @@ import {
 } from "./render";
 import { renderAcceptButton } from "./render";
 import { attachTermsButtonListeners } from "./actions/bannerButtonListeners";
-import { attachFinancialInstrumentCheckboxListener } from "./actions/attachFinancialInstrumentCheckboxListener";
-import { attachFinancialInstrumetsSettingsActions } from "./actions/attachFinancialInstrumentsSettingsActions";
+import { instrumentCheckboxListener } from "./actions/instrumentCheckboxListener";
+import { instrumetsSettingsActions } from "./actions/instrumentsSettingsActions";
+import { onPDFFileDropped } from "./actions/onPDFFileDropped";
+import { nextButtonClick } from "./actions/nextButtonClick";
+import { onWalletFileDropped } from "./actions/onWalletFileDropped";
 
 const Render: Renderer = {
   [RenderType.successMessage]: (props: State) => {},
   [RenderType.errorMessage]: (props: State) => {},
-  [RenderType.createPage]: (props: State) => {},
+  [RenderType.createPage]: (props: State) => {
+    renderPage(props);
+    nextButtonClick(props);
+    renderToolTipHelptextsForCreate();
+    if (props.createPages === CreatePages.PDF) {
+      onPDFFileDropped();
+      attachExpiryClickAndListener(props);
+    } else if (props.createPages === CreatePages.SmartContract) {
+      renderInstrumentSettingsTooltips();
+      instrumentCheckboxListener(props);
+    } else if (props.createPages === CreatePages.AddWallet) {
+      onWalletFileDropped(props);
+    }
+  },
   [RenderType.createButton]: (props: State) => {
     // The order of attaching listeners is important
-    postCheckboxSelect();
-    onFileSelect(props);
-    renderCreateButtonClick(props);
-    attachExpiryClickAndListener(props);
-    attachFinancialInstrumentCheckboxListener(props);
-    renderToolTipHelptextsForCreate();
+    console.log("create button setup runs");
+    // postCheckboxSelect();
+    // onFileSelect(props);
+    // renderCreateButtonClick(props);
+    // attachExpiryClickAndListener(props);
+    // instrumentCheckboxListener(props);
+    // renderToolTipHelptextsForCreate();
   },
   [RenderType.acceptButton]: (props: State) => {
     renderAcceptButton(props);
@@ -82,8 +99,11 @@ const Render: Renderer = {
   },
   [RenderType.renderInstrumentSettings]: (props: State) => {
     renderInstrumentSettings();
-    attachFinancialInstrumetsSettingsActions(props);
+    instrumetsSettingsActions(props);
     renderInstrumentSettingsTooltips();
+  },
+  [RenderType.setInstrument]: (props: State) => {
+    renderCreateButtonClick(props);
   },
 };
 
