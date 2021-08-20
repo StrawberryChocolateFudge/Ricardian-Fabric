@@ -1,4 +1,12 @@
-import { Events, EventType, State, StateProperties } from "../types";
+import {
+  CreatePages,
+  Events,
+  EventType,
+  InstrumentPageData,
+  PDFPage,
+  State,
+} from "../types";
+import { CreatePage } from "../view/templates/createPage";
 import { getCurrentUrl, getPage } from "../view/utils";
 import {
   getBundleSrcUrl,
@@ -21,12 +29,27 @@ import { setStateHook } from "./setStateHook";
     const pageEl = getPage();
 
     const state: State = {
+      createPages: CreatePages.PDF,
       arweave: undefined,
       editor: createNewEditor(),
       domParser: new DOMParser(),
       balance: 0,
       address: "",
-      selectedDate: "",
+      walletFile: "",
+      pdfPage: {
+        PDF: "",
+        price: "",
+        onlySigner: "",
+        selectedDate: "",
+      },
+      instrumentPageData: {
+        pstContractId: "",
+        isInstrument: false,
+        name: "",
+        ticker: "",
+        supply: 0,
+        canDerive: 0,
+      },
       contracttype: getCurrentPageDataProp(pageEl),
       postto: getPostToDataProp(pageEl),
       webhook: getWebhookFromDataProp(pageEl),
@@ -66,7 +89,24 @@ import { setStateHook } from "./setStateHook";
       stateContainer.address = value.address;
     },
     [EventType.setSelectedDate]: (value: { date: Date | string }) => {
-      stateContainer.selectedDate = value.date;
+      const selectedDate = value.date;
+      stateContainer.pdfPage = { ...stateContainer.pdfPage, selectedDate };
+    },
+    [EventType.setInstrumentPageData]: (value: {
+      instrumentpageData: InstrumentPageData;
+    }) => {
+      stateContainer.instrumentPageData = value.instrumentpageData;
+    },
+    [EventType.setPdfPageData]: (value: { pdfPageData: PDFPage }) => {
+      stateContainer.pdfPage = value.pdfPageData;
+    },
+    [EventType.setCreatePages]: (value: { createPage: CreatePages }) => {
+      stateContainer.createPages = value.createPage;
+    },
+    [EventType.setInstrumentPageData]: (value: {
+      instrumentPageData: InstrumentPageData;
+    }) => {
+      stateContainer.instrumentPageData = value.instrumentPageData;
     },
   };
 
