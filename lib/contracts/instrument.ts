@@ -19,7 +19,6 @@ export const instrumentState = (
   creator: string,
   supply: number,
   initialPrice: number,
-  id: string,
   canDerive: number, //This will specify how many derivatives can be created for trade from the instrument,
   ticker: string
 ) => `
@@ -27,7 +26,6 @@ export const instrumentState = (
 	"name" : "${name}",
   "ticker":${ticker}",
   "creator": "${creator}",
-  "id" : "${id}",
   "instrument":{
 	  "initialPrice": "${initialPrice}",
 	  "supply": ${supply},
