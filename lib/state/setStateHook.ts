@@ -26,12 +26,7 @@ export const setStateHook = {
   [StateProperties.agreementPage]: (args: SetHookArgs) => {
     dispatch_attachDateClickListener(cloneState(args.obj));
   },
-  [StateProperties.pdfPage]: (args: SetHookArgs) => {
-    if (args.value.PDF === "") {
-      //There is a case when I only set the date
-      dispatch_attachDateClickListener(cloneState(args.obj));
-    }
-  },
+  [StateProperties.pdfPage]: (args: SetHookArgs) => {},
   [StateProperties.instrumentPageData]: (args: SetHookArgs) => {},
   [StateProperties.createPages]: (args: SetHookArgs) => {
     dispatch_createPage(cloneState(args.obj));
