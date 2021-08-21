@@ -90,6 +90,8 @@ export const CreatePage = (props: State) => {
         >
         <input type="file" name="pdf" id="pdf-input" class="drop-zone__input" />
       </div>
+      <hr/>
+      <button class="center" id="discard-button">discard file</button>
       <hr />
       <p class="center">You may proceed without uploading a pdf.</p>
       <div
