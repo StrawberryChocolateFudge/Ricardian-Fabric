@@ -27,6 +27,7 @@ import { instrumetsSettingsActions } from "./actions/instrumentsSettingsActions"
 import { onPDFFileDropped } from "./actions/onPDFFileDropped";
 import { nextButtonClick } from "./actions/nextButtonClick";
 import { onWalletFileDropped } from "./actions/onWalletFileDropped";
+import { postCheckboxSelect } from "./actions/postCheckboxSelect";
 
 const Render: Renderer = {
   [RenderType.successMessage]: (props: State) => {},
@@ -35,14 +36,18 @@ const Render: Renderer = {
     renderPage(props);
     nextButtonClick(props);
     renderToolTipHelptextsForCreate();
-    if (props.createPages === CreatePages.PDF) {
-      onPDFFileDropped();
+    if (props.createPages === CreatePages.Agreement) {
       attachExpiryClickAndListener(props);
+      
+    } else if (props.createPages === CreatePages.PDF) {
+      onPDFFileDropped();
     } else if (props.createPages === CreatePages.SmartContract) {
       renderInstrumentSettingsTooltips();
       instrumentCheckboxListener(props);
     } else if (props.createPages === CreatePages.AddWallet) {
       onWalletFileDropped(props);
+    } else if (props.createPages === CreatePages.Networking) {
+      postCheckboxSelect();
     }
   },
   [RenderType.createButton]: (props: State) => {
@@ -61,7 +66,7 @@ const Render: Renderer = {
     renderAcceptOnCLick(props);
   },
   [RenderType.balance]: (props: State) => {
-    renderbalance(props.balance);
+    renderbalance(props.walletPage.balance, props.walletPage.address);
   },
   [RenderType.addLoadingIndicator]: (props: { to: string }) => {
     renderLoadingIndicator(props.to);
