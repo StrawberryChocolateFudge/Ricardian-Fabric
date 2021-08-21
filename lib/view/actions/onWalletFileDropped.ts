@@ -2,7 +2,7 @@ import Arweave from "arweave";
 import { getBalance } from "../../business/bloc";
 import { dispatch_removeError } from "../../dispatch/render";
 import { dispatch_setBalance } from "../../dispatch/stateChange";
-import { State } from "../../types";
+import { FileType, State } from "../../types";
 import {
   getById,
   readFile,
@@ -59,12 +59,12 @@ export function onWalletFileDropped(props: State) {
 function checkKeyFile(files: FileList, arweave: Arweave) {
   const getKey = async (key: any) => {
     if (key !== undefined && key.kty === "RSA") {
-      //IF the key is not RSA, I show an error and disable create!
       getBalance(arweave, key);
     } else {
+      //IF the key is not RSA, I show an error and disable create!zs
       updatePromptError("Invalid, must be a valid Arweave key.");
       dispatch_setBalance({ balance: 0, address: "" });
     }
   };
-  readFile(files, getKey);
+  readFile(files, getKey, FileType.key);
 }
