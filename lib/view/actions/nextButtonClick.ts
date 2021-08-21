@@ -32,6 +32,7 @@ import {
 } from "../render";
 import {
   didExpire,
+  discardPDF,
   getById,
   getExpires,
   getInstrumentCanDerive,
@@ -41,7 +42,6 @@ import {
   getIsInstrument,
   getOnlySigner,
   getPDF,
-  getPDFDisplay,
   getPostTo,
   getPrice,
   getProfitSharingContractId,
@@ -50,6 +50,7 @@ import {
   getWebhookCheckbox,
   isPSTUser,
   readFile,
+  revertPrompt,
   updatePromptSuccess,
 } from "../utils";
 
@@ -108,9 +109,15 @@ export function nextButtonClick(props: State) {
     }
     const prevButton = getById("EditPage-previous");
     const nextButton = getById("EditPage-next");
-
+    const discardButton = getById("discard-button");
     prevButton.onclick = function () {
       dispatch_setCreatePages(CreatePages.Agreement);
+    };
+
+    discardButton.onclick = function () {
+      discardPDF();
+      dispatch_setPdfPageData(undefined);
+      revertPrompt();
     };
 
     nextButton.onclick = function (e: Event) {
@@ -121,6 +128,7 @@ export function nextButtonClick(props: State) {
       const pdfPageData: PDFPage = {
         PDF,
       };
+
       dispatch_setPdfPageData(pdfPageData);
       dispatch_setCreatePages(CreatePages.AddWallet);
     };
