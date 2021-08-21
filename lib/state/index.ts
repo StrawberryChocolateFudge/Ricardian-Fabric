@@ -1,12 +1,13 @@
 import {
+  AgreementPage,
   CreatePages,
   Events,
   EventType,
   InstrumentPageData,
+  NetworkingPage,
   PDFPage,
   State,
 } from "../types";
-import { CreatePage } from "../view/templates/createPage";
 import { getCurrentUrl, getPage } from "../view/utils";
 import {
   getBundleSrcUrl,
@@ -29,27 +30,40 @@ import { setStateHook } from "./setStateHook";
     const pageEl = getPage();
 
     const state: State = {
-      createPages: CreatePages.PDF,
+      // CreatePage state
+      createPages: CreatePages.Agreement,
       arweave: undefined,
-      editor: createNewEditor(),
       domParser: new DOMParser(),
-      balance: 0,
-      address: "",
-      walletFile: "",
-      pdfPage: {
-        PDF: "",
+      agreementPage: {
         price: "",
         onlySigner: "",
         selectedDate: "",
+        content: "",
+      },
+      pdfPage: {
+        PDF: "",
+      },
+      walletPage: {
+        address: "",
+        balance: 0,
+        key: "",
+        file: "",
       },
       instrumentPageData: {
         pstContractId: "",
         isInstrument: false,
+        willProfitShare: false,
         name: "",
         ticker: "",
         supply: 0,
         canDerive: 0,
       },
+      networkingPage: {
+        postto: "",
+        webhook: false,
+        redirect: false,
+      },
+      // Acceptable page state
       contracttype: getCurrentPageDataProp(pageEl),
       postto: getPostToDataProp(pageEl),
       webhook: getWebhookFromDataProp(pageEl),
@@ -81,16 +95,25 @@ import { setStateHook } from "./setStateHook";
     [EventType.setArweave]: (value: any) => {
       stateContainer.arweave = value;
     },
-    [EventType.setEditor]: (value: any) => {
-      stateContainer.editor = value;
-    },
     [EventType.setBalance]: (value: any) => {
-      stateContainer.balance = value.balance;
-      stateContainer.address = value.address;
+      stateContainer.walletPage = {
+        key: "",
+        file: "",
+        balance: value.balance,
+        address: value.address,
+      };
     },
     [EventType.setSelectedDate]: (value: { date: Date | string }) => {
       const selectedDate = value.date;
-      stateContainer.pdfPage = { ...stateContainer.pdfPage, selectedDate };
+      stateContainer.agreementPage = {
+        ...stateContainer.agreementPage,
+        selectedDate,
+      };
+    },
+    [EventType.setAgreementsPageData]: (value: {
+      agreementsData: AgreementPage;
+    }) => {
+      stateContainer.agreementPage = value.agreementsData;
     },
     [EventType.setInstrumentPageData]: (value: {
       instrumentpageData: InstrumentPageData;
@@ -103,10 +126,27 @@ import { setStateHook } from "./setStateHook";
     [EventType.setCreatePages]: (value: { createPage: CreatePages }) => {
       stateContainer.createPages = value.createPage;
     },
+    [EventType.setKey]: (value: { key: any; file: FileList }) => {
+      const balance = stateContainer.walletPage.balance;
+      const address = stateContainer.walletPage.address;
+
+      stateContainer.walletPage = {
+        balance,
+        address,
+        key: value.key,
+        file: value.file,
+      };
+      console.log(stateContainer.walletPage);
+    },
     [EventType.setInstrumentPageData]: (value: {
       instrumentPageData: InstrumentPageData;
     }) => {
       stateContainer.instrumentPageData = value.instrumentPageData;
+    },
+    [EventType.setNetworkingPage]: (value: {
+      networkingPage: NetworkingPage;
+    }) => {
+      stateContainer.networkingPage = value.networkingPage;
     },
   };
 
