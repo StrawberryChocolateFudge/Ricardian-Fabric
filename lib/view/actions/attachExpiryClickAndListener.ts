@@ -9,10 +9,10 @@ import { CreatePages, State } from "../../types";
 import { didExpire, getById, getExpires } from "../utils";
 
 export const attachExpiryClickAndListener = (props: State) => {
-  if (props.createPages === CreatePages.PDF) {
+  if (props.createPages === CreatePages.Agreement) {
     const reset = getById("expires-reset");
     const date = getById("expires-input") as HTMLInputElement;
-    if (props.pdfPage.selectedDate === "") {
+    if (props.agreementPage.selectedDate === "") {
       date.valueAsDate = new Date();
     } else {
       handleExpiry();
@@ -35,9 +35,6 @@ export const attachExpiryClickAndListener = (props: State) => {
         dispatch_disableButton(props);
       } else {
         dispatch_removeError();
-        if (props.address !== "") {
-          dispatch_enableButton(props);
-        }
       }
     }
   }
