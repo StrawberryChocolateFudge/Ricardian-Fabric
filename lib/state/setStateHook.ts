@@ -1,7 +1,6 @@
 import {
   dispatch_attachDateClickListener,
   dispatch_createPage,
-  dispatch_instrumentsSetRerender,
   dispatch_renderAcceptButton,
   dispatch_renderBalance,
   dispatch_renderVersion,
@@ -19,14 +18,16 @@ export const setStateHook = {
       dispatch_renderAcceptButton(cloneState(args.obj));
     }
   },
-  [StateProperties.editor]: (args: SetHookArgs) => {},
-  [StateProperties.balance]: (args: SetHookArgs) => {
-    dispatch_renderBalance(cloneState(args.obj));
+  [StateProperties.walletPage]: (args: SetHookArgs) => {
+    if (args.value.key === "") {
+      dispatch_renderBalance(cloneState(args.obj));
+    }
   },
-  [StateProperties.address]: (args: SetHookArgs) => {},
+  [StateProperties.agreementPage]: (args: SetHookArgs) => {
+    dispatch_attachDateClickListener(cloneState(args.obj));
+  },
   [StateProperties.pdfPage]: (args: SetHookArgs) => {
     if (args.value.PDF === "") {
-      console.log("RUNS");
       //There is a case when I only set the date
       dispatch_attachDateClickListener(cloneState(args.obj));
     }
@@ -35,6 +36,7 @@ export const setStateHook = {
   [StateProperties.createPages]: (args: SetHookArgs) => {
     dispatch_createPage(cloneState(args.obj));
   },
+  [StateProperties.networkingPage]: (args: SetHookArgs) => {},
 };
 
 function cloneState(state: State) {
