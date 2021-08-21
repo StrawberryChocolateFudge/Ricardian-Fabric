@@ -2,9 +2,87 @@ import { html } from "lit-html";
 import { CreatePages, State } from "../../types";
 
 export const CreatePage = (props: State) => {
-  if (props.createPages === CreatePages.PDF) {
+  if (props.createPages === CreatePages.Agreement) {
     return html`
       <h2 class="center">Create the agreement</h2>
+      <hr />
+      <div class="editable-container">
+        <div aria-label="Editor" class="editable"></div>
+        <div id="editor-control"></div>
+        <table aria-label="edit field container table" class="center">
+          <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+          </tr>
+          <tr>
+            <td>
+              <label aria-labelledby="Price label" for="price-input"
+                >Price:</label
+              >
+            </td>
+            <td>
+              <input
+                aria-label="Input for price"
+                name="price"
+                id="price-input"
+                type="number"
+              />
+            </td>
+            <td><span id="price-tooltip"></span></td>
+          </tr>
+          <tr>
+            <td>
+              <label aria-labelledby="only signer field input"
+                >Only signer:</label
+              >
+            </td>
+            <td>
+              <input
+                aria-label="only signer "
+                id="onlysigner-input"
+                type="text"
+              />
+            </td>
+            <td><span id="onlysigner-tooltip"></span></td>
+          </tr>
+          <tr>
+            <td>
+              <label aria-labelledby="expires label" for="center"
+                >Expires :</label
+              >
+            </td>
+            <td>
+              <input
+                aria-label="expires date input"
+                name="expires"
+                id="expires-input"
+                type="date"
+              />
+              <button
+                aria-label="never expires button"
+                name="never"
+                id="expires-reset"
+              >
+                Never
+              </button>
+            </td>
+            <td><span id="expires-tooltip"></span></td>
+          </tr>
+        </table>
+      </div>
+      <div
+        aria-label="error-display-slot"
+        class="center red"
+        id="error-display"
+      ></div>
+      <div class="button-row">
+        <button class="marginLeft-20" id="AgreementPage-next">Save</button>
+      </div>
+    `;
+  } else if (props.createPages === CreatePages.PDF) {
+    return html`
+      <h2 class="center">Upload a pdf</h2>
       <hr />
       <div id="pdf-dropzone" class="drop-zone">
         <span id="drop-prompt" class="drop-zone__prompt"
@@ -13,71 +91,16 @@ export const CreatePage = (props: State) => {
         <input type="file" name="pdf" id="pdf-input" class="drop-zone__input" />
       </div>
       <hr />
-      <table aria-label="edit field container table" class="center">
-        <tr>
-          <th></th>
-          <th></th>
-          <th></th>
-        </tr>
-        <tr>
-          <td>
-            <label aria-labelledby="Price label" for="price-input"
-              >Price:</label
-            >
-          </td>
-          <td>
-            <input
-              aria-label="Input for price"
-              name="price"
-              id="price-input"
-              type="number"
-            />
-          </td>
-          <td><span id="price-tooltip"></span></td>
-        </tr>
-        <tr>
-          <td>
-            <label aria-labelledby="only signer field input"
-              >Only signer:</label
-            >
-          </td>
-          <td>
-            <input
-              aria-label="only signer "
-              id="onlysigner-input"
-              type="text"
-            />
-          </td>
-          <td><span id="onlysigner-tooltip"></span></td>
-        </tr>
-        <tr>
-          <td>
-            <label aria-labelledby="expires label" for="center">Expires:</label>
-          </td>
-          <td>
-            <input
-              aria-label="expires date input"
-              name="expires"
-              id="expires-input"
-              type="date"
-            />
-            <button
-              aria-label="never expires button"
-              name="never"
-              id="expires-reset"
-            >
-              Never
-            </button>
-          </td>
-          <td><span id="expires-tooltip"></span></td>
-        </tr>
-      </table>
+      <p class="center">You may proceed without uploading a pdf.</p>
       <div
         aria-label="error-display-slot"
         class="center red"
         id="error-display"
       ></div>
-      <button class="center" id="EditPage-next">Next</button>
+      <div class="button-row">
+        <button class="marginRight-20" id="EditPage-previous">Previous</button>
+        <button class="marginLeft-20" id="EditPage-next">Next</button>
+      </div>
     `;
   } else if (props.createPages === CreatePages.AddWallet) {
     return html` <h2 class="center">Add your wallet</h2>
@@ -100,14 +123,19 @@ export const CreatePage = (props: State) => {
           <th></th>
           <th></th>
         </tr>
+        <tr id="address"></tr>
         <tr id="balance"></tr>
       </table>
-
+      <div
+        aria-label="error-display-slot"
+        class="center red"
+        id="error-display"
+      ></div>
       <div class="button-row">
         <button class="marginRight-20" id="AddWalletPage-previous">
           Previous
         </button>
-        <button class="marginLeft-20" id="AddWalletPage-next">Next</button>
+        <button class="marginLeft-20" id="AddWalletPage-next">Save</button>
       </div>`;
   } else if (props.createPages === CreatePages.Networking) {
     return html`
@@ -163,11 +191,20 @@ export const CreatePage = (props: State) => {
           </td>
         </tr>
       </table>
+      <p class="center">
+        You may proceed without filling out any of the fields
+      </p>
+
+      <div
+        aria-label="error-display-slot"
+        class="center red"
+        id="error-display"
+      ></div>
       <div class="button-row">
         <button class="marginRight-20" id="NetworkingPage-previous">
           Previous
         </button>
-        <button class="marginLeft-20" id="NetworkingPage-next">Next</button>
+        <button class="marginLeft-20" id="NetworkingPage-next">Save</button>
       </div>
     `;
   } else if (props.createPages === CreatePages.SmartContract) {
@@ -179,6 +216,22 @@ export const CreatePage = (props: State) => {
           <th></th>
           <th></th>
           <th></th>
+        </tr>
+
+        <tr>
+          <td>
+            <label aria-labelledby="is profit sharing" for="is-profitsharing"
+              >Profit sharing?</label
+            >
+          </td>
+          <td>
+            <input
+              type="checkbox"
+              name="isCryptoInstrument"
+              id="is-profitsharing"
+            />
+          </td>
+          <td><span id="isProfitsharing-tooltip"></span></td>
         </tr>
         <tr>
           <td>
@@ -298,6 +351,9 @@ export const CreatePage = (props: State) => {
           </td>
         </tr>
       </table>
+      <p class="center">
+        You may proceed without filling out any of the fields
+      </p>
       <div
         aria-label="error-display-slot"
         class="center red"
@@ -307,46 +363,30 @@ export const CreatePage = (props: State) => {
         <button class="marginRight-20" id="SmartContractPage-previous">
           Previous
         </button>
-        <button class="marginLeft-20" id="SmartContractPage-next">Next</button>
+        <button class="marginLeft-20" id="SmartContractPage-next">Save</button>
       </div>
     `;
   } else if (props.createPages === CreatePages.SummaryPage) {
     return html`
       <hr />
-      <label
-        aria-labelledby="select wallet label"
-        class="center"
-        id="wallet-label"
-        for="select-file-input"
-        >Wallet
-      </label>
-      <input
-        aria-label="select-walletfile-input"
-        name="select-file-input"
-        class="center"
-        id="select-file-input"
-        type="file"
-      />
-      <hr />
-      <div
-        aria-label="error-display-slot"
-        class="center red"
-        id="error-display"
-      ></div>
       <div
         aria-label="transaction-display-slot"
         class="center"
         id="transaction-display"
       ></div>
-      <button
-        class="center width-100"
-        id="save-contract"
-        disabled
-        role="button"
-        aria-label="Create"
-      >
-        Create
-      </button>
+      <div class="button-row">
+        <button class="marginRight-20" id="summaryPage-previous">
+          Previous
+        </button>
+        <button
+          class="center width-100"
+          id="create-button"
+          role="button"
+          aria-label="Create"
+        >
+          Create
+        </button>
+      </div>
     `;
   }
 };
