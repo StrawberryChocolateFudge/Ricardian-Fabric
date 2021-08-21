@@ -33,6 +33,7 @@ export function onPDFFileDropped() {
   dropZone.ondrop = function (e: DragEvent) {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
+
     if (e.dataTransfer.files.length === 1 && file.type === "application/pdf") {
       pdfInput.files = e.dataTransfer.files;
       updatePromptSuccess(e.dataTransfer.files[0]);
@@ -40,6 +41,14 @@ export function onPDFFileDropped() {
     } else {
       updatePromptError("Invalid file, must be a single pdf");
     }
+
     dropZone.classList.remove("drop-zone--over");
   };
+}
+
+export function fileSizeError(file: File): boolean {
+  if (file.size > 1048576) {
+    return true;
+  }
+  return false;
 }
