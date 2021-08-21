@@ -132,12 +132,17 @@ export function getExpires(): string {
 }
 
 export function getPDF(): FileList {
-  const pdf = getById("pdf-input") as HTMLInputElement;
+  const pdf = getPDFInputEl();
   if (pdf.files.length === 1 && pdf.files[0].type === "application/pdf") {
     return pdf.files;
   } else {
     return null;
   }
+}
+
+export function discardPDF() {
+  const pdf = getPDFInputEl();
+  pdf.value = "";
 }
 
 export function getWallet(): FileList {
@@ -186,6 +191,10 @@ export function getInstrumentCanDerive(): string {
   return instrumentDeriveEl().value;
 }
 
+export function getPDFInputEl(): HTMLInputElement {
+  return getById("pdf-input") as HTMLInputElement;
+}
+
 export function getPSTCheckboxEl(): HTMLInputElement {
   return getById("is-profitsharing") as HTMLInputElement;
 }
@@ -216,6 +225,10 @@ export function instrumentDeriveEl(): HTMLInputElement {
 
 export function getPDFDisplay(): HTMLObjectElement {
   return getById("pdfDisplay") as HTMLObjectElement;
+}
+
+export function getPromptEl(): HTMLElement {
+  return getById("drop-prompt");
 }
 
 export function redirect(url: string) {
@@ -252,14 +265,20 @@ export function getTermsAccepted(): boolean {
   }
 }
 
+export function revertPrompt() {
+  const prompt = getPromptEl();
+  prompt.textContent = "Drop PDF here or click to upload";
+  prompt.style.color = "black";
+}
+
 export function updatePromptSuccess(file) {
-  const prompt = getById("drop-prompt");
+  const prompt = getPromptEl();
   prompt.style.color = "black";
   prompt.textContent = file.name;
 }
 
 export function updatePromptError(message: string) {
-  const prompt = getById("drop-prompt");
+  const prompt = getPromptEl();
   prompt.textContent = message;
   prompt.style.color = "red";
 }
