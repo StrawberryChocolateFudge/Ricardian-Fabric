@@ -53,21 +53,24 @@ export enum EventType {
   setArweave = "setArweave",
   setEditor = "setEditor",
   setBalance = "setBalance",
+  setAgreementsPageData = "setAgreementsPageData",
   setWalletAddress = "setWalletAddress",
   setSelectedDate = "setSelectedDate",
   setPdfPageData = "setPdfPageData",
   setCreatePages = "setCreatePages",
   setInstrumentPageData = "setInstrumentPageData",
+  setKey = "setKey",
+  setNetworkingPage = "setNetworkingPage",
 }
 
 export enum StateProperties {
   arweave = "arweave",
-  editor = "editor",
-  balance = "balance",
-  address = "address",
+  agreementPage = "agreementPage",
   pdfPage = "pdfPage",
   createPages = "createPages",
+  walletPage = "walletPage",
   instrumentPageData = "instrumentPageData",
+  networkingPage = "networkingPage",
 }
 
 export enum ContractTypes {
@@ -77,30 +80,52 @@ export enum ContractTypes {
 }
 
 export enum CreatePages {
+  Agreement = "Agreement",
   PDF = "PDF",
   AddWallet = "AddWallet",
   SmartContract = "SmartContract",
   Networking = "Networking",
   SummaryPage = "SummaryPage",
 }
+
+export enum FileType {
+  key = "key",
+  pdf = "pdf",
+}
+
 export type PDFPage = {
   PDF: FileList | string;
+};
+export type WalletPage = {
+  balance: number;
+  address: string;
+  key: any;
+  file: FileList | string;
+};
+
+export type NetworkingPage = {
+  postto: string;
+  webhook: boolean;
+  redirect: boolean;
+};
+
+export type AgreementPage = {
   price: string;
   onlySigner: string;
   selectedDate: Date | string;
+  content: string;
 };
 
 export type State = {
   createPages: CreatePages;
   arweave: Arweave;
-  editor: any;
   domParser: DOMParser;
-  balance: number;
-  address: string;
-  walletFile: FileList | string;
+  agreementPage: AgreementPage;
   pdfPage: PDFPage;
   instrumentPageData: InstrumentPageData;
+  walletPage: WalletPage;
   contracttype: ContractTypes;
+  networkingPage: NetworkingPage;
   postto: string;
   webhook: boolean;
   redirect: boolean;
@@ -170,6 +195,7 @@ export type CreateTransactionResult = {
 
 export type InstrumentPageData = {
   pstContractId: string;
+  willProfitShare: boolean;
   isInstrument: boolean;
   name: string;
   ticker: string;
