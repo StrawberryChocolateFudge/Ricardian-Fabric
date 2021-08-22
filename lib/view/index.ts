@@ -40,7 +40,6 @@ import {
 import { renderAcceptButton } from "./render";
 import { attachTermsButtonListeners } from "./actions/bannerButtonListeners";
 import { instrumentCheckboxListener } from "./actions/instrumentCheckboxListener";
-import { instrumetsSettingsActions } from "./actions/instrumentsSettingsActions";
 import { onPDFFileDropped } from "./actions/onPDFFileDropped";
 import { nextButtonClick } from "./actions/nextButtonClick";
 import { onWalletFileDropped } from "./actions/onWalletFileDropped";
@@ -66,16 +65,6 @@ const Render: Renderer = {
     } else if (props.createPages === CreatePages.Networking) {
       postCheckboxSelect();
     }
-  },
-  [RenderType.createButton]: (props: State) => {
-    // The order of attaching listeners is important
-    console.log("create button setup runs");
-    // postCheckboxSelect();
-    // onFileSelect(props);
-    // renderCreateButtonClick(props);
-    // attachExpiryClickAndListener(props);
-    // instrumentCheckboxListener(props);
-    // renderToolTipHelptextsForCreate();
   },
   [RenderType.acceptButton]: (props: State) => {
     renderAcceptButton(props);

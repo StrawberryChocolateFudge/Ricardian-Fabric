@@ -10,7 +10,6 @@ export enum RenderType {
   successMessage = "successMessage",
   errorMessage = "errorMessage",
   createPage = "createPage",
-  createButton = "createButton",
   acceptButton = "acceptButton",
   balance = "balance",
   addLoadingIndicator = "addLoadingIndicator",
@@ -41,7 +40,6 @@ export type Renderer = {
   [RenderType.successMessage]: CallableFunction;
   [RenderType.errorMessage]: CallableFunction;
   [RenderType.createPage]: CallableFunction;
-  [RenderType.createButton]: CallableFunction;
   [RenderType.acceptButton]: CallableFunction;
   [RenderType.balance]: CallableFunction;
   [RenderType.addLoadingIndicator]: CallableFunction;

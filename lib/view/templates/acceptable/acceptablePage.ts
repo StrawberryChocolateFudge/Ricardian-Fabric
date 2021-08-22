@@ -1,13 +1,12 @@
 import { html } from "lit-html";
-import { AcceptablePageProps } from "../../types";
+import { AcceptablePageProps } from "../../../types";
 import {
   createdDateTemplate,
   expiryTemplate,
-  getPriceTemplate,
   issuerTemplate,
-} from "./components";
-import { mainDep } from "./dependencies";
-import { loadingIndicator } from "./loadingIndicator";
+} from "../components/components";
+import { mainDep } from "../components/dependencies";
+import { loadingIndicator } from "../components/loadingIndicator";
 
 export const acceptablePageLayout = (props: AcceptablePageProps) => html`
   <style>
@@ -94,10 +93,10 @@ const acceptablePage = (props: AcceptablePageProps) => html`
       </tr>
       ${issuerTemplate(props.creatorAddress)}
       ${createdDateTemplate(props.createdDate)} ${expiryTemplate(props.expires)}
-      ${getPriceTemplate(props.price, props.fee)}
       <tr id="balance" class="center"></tr>
     </table>
     <hr />
     <div id="action-container" class="center">${loadingIndicator}</div>
   </div>
 `;
+      // <!-- ${getPriceTemplate(props.price, props.fee)} -->

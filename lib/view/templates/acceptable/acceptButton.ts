@@ -1,6 +1,6 @@
 import { html } from "lit-html";
-import { State } from "../../types";
-import { didExpire } from "../utils";
+import { State } from "../../../types";
+import { didExpire } from "../../utils";
 
 const showSecret = (props: State) => {
   //If it's posting to webhook, we can post a secret identifier

@@ -1,13 +1,13 @@
 import { html, render } from "lit-html";
 import { ContractTypes, NetworkingPage, State } from "../types";
-import { acceptButton } from "./templates/acceptButton";
-import { addressTemplate, balanceTemplate } from "./templates/balance";
-import { CreatePage } from "./templates/createPage";
-import { helperTooltips } from "./templates/helperTooltips";
-import { loadingIndicator } from "./templates/loadingIndicator";
-import { redirectCounter } from "./templates/redirectCounter";
-import { termsLayout } from "./templates/terms";
-import { transactionUrl } from "./templates/transaction";
+import { acceptButton } from "./templates/acceptable/acceptButton";
+import { addressTemplate, balanceTemplate } from "./templates/components/balance";
+import { CreatePage } from "./templates/pages/createPage";
+import { helperTooltips } from "./templates/components/helperTooltips";
+import { loadingIndicator } from "./templates/components/loadingIndicator";
+import { redirectCounter } from "./templates/components/redirectCounter";
+import { termsLayout } from "./templates/components/terms";
+import { transactionUrl } from "./templates/components/transaction";
 import {
   copyStringToClipboard,
   getById,
@@ -287,7 +287,7 @@ export function revertPrompt() {
   prompt.style.color = "black";
 }
 
-export function updatePromptSuccess(file : File ) {
+export function updatePromptSuccess(file: File) {
   const prompt = getPromptEl();
   prompt.style.color = "black";
   prompt.textContent = file.name;

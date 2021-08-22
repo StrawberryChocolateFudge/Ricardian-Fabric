@@ -1,12 +1,12 @@
 import { html } from "lit-html";
-import { FulfilledPageProps } from "../../types";
+import { FulfilledPageProps } from "../../../types";
 import {
   createdDateTemplate,
   expiryTemplate,
   getParticipantFromTemplate,
   getPriceTemplate,
   issuerTemplate,
-} from "./components";
+} from "../components/components";
 
 export const fulfilledPageLayout = (props: FulfilledPageProps) => html`
   <style>

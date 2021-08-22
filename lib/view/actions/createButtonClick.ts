@@ -99,7 +99,6 @@ export function renderCreateButtonClick(props: State) {
     //         version: props.version,
     //         domParser: props.domParser,
     //         creatorAddress: await getCreatorWallet(props.arweave, key),
-    //         fee,
     //         onlySigner,
     //         pstContractId,
     //         isInstrument,
