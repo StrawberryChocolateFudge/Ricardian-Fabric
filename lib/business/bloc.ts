@@ -1,12 +1,18 @@
+import { simulateCreateContractFromSource } from "smartweave";
 import {
   acceptTransactionFree,
   acceptTransactionPay,
   calculateFeeInAr,
-  createTransactionSend,
   getArweaveCall,
   getBalanceCall,
   getAddressCall,
+  createPDFTransaction,
+  createPageTransaction,
 } from "../arweave/arweave";
+import {
+  instrumentContractSrc,
+  instrumentState,
+} from "../contracts/instrument";
 import {
   dispatch_disableButton,
   dispatch_redirectCounter,
@@ -21,7 +27,7 @@ import {
   dispatch_setBalance,
 } from "../dispatch/stateChange";
 import { hitWebhook } from "../fetch";
-import { AcceptablePageProps, State } from "../types";
+import { AcceptablePageProps, CreatedTransactions, State } from "../types";
 
 import {
   getAcceptableContract,
@@ -52,6 +58,118 @@ export async function getCreatorWallet(arweave: any, key: any) {
   return await getAddressCall(arweave, key);
 }
 
+export async function createTransactionsWithPDF(
+  props: State,
+  pdfData: string,
+  toGetFee: boolean
+): Promise<CreatedTransactions> {
+  const instrumentName = props.instrumentPageData.name,
+    instrumentTicker = props.instrumentPageData.ticker,
+    instrumentSupply = props.instrumentPageData.supply,
+    canDerive = props.instrumentPageData.canDerive,
+    isInstrument = props.instrumentPageData.isInstrument,
+    creator = props.walletPage.address,
+    price = props.agreementPage.price;
+
+  let instrumentContractTx;
+
+  if (toGetFee && isInstrument) {
+    const initContractState = instrumentState({
+      name: instrumentName,
+      creator,
+      supply: instrumentSupply,
+      canDerive,
+      initialPrice: parseInt(price),
+      ticker: instrumentTicker,
+    });
+
+    instrumentContractTx = await simulateCreateContractFromSource(
+      //@ts-ignore
+      props.arweave,
+      props.walletPage.key,
+      initContractState,
+      instrumentContractSrc
+    );
+  }
+
+  console.log("instrumentTransaction");
+  console.log(instrumentContractTx);
+
+  const pdfTransaction = await createPDFTransaction(
+    props.arweave,
+    pdfData,
+    props.walletPage.key
+  );
+  console.log("pdf transaction");
+  console.log(pdfTransaction);
+
+  // Expires can be string or date so I need to handle that!
+  const expiresData = props.agreementPage.selectedDate;
+  let expires = "";
+  if (typeof expiresData !== "string") {
+    const expiresDate = expiresData as Date;
+    expires = expiresDate.toISOString();
+  } else {
+    expires = expiresData;
+  }
+
+  const pstContractId = props.instrumentPageData.willProfitShare
+    ? props.instrumentPageData.pstContractId
+    : "NONE";
+
+  const instrumentContractId = instrumentContractTx
+    ? instrumentContractTx.id
+    : "NONE";
+
+  const data: AcceptablePageProps = {
+    domParser: props.domParser,
+    createdDate: new Date().toISOString(),
+    legalContract: props.agreementPage.content,
+    price,
+    onlySigner: props.agreementPage.onlySigner,
+    expires,
+    pdfTransactionId: pdfTransaction.id,
+    version: props.version,
+    creatorAddress: creator,
+    post: props.networkingPage.postto,
+    redirect: props.networkingPage.redirect,
+    webhook: props.networkingPage.webhook,
+    pstContractId,
+    isInstrument,
+    instrumentName,
+    instrumentTicker,
+    instrumentSupply,
+    canDerive,
+    instrumentContractId,
+  };
+
+  const page = await createAcceptableContractPage(props, data);
+  const pageTransaction = await createPageTransaction({
+    arweave: props.arweave,
+    key: props.walletPage.key,
+    page,
+    version: props.version,
+  });
+
+  console.log("page transaction");
+  console.log(pageTransaction);
+  return { pdfTransaction, instrumentContractTx, pageTransaction };
+}
+
+export async function createAcceptableContractPage(
+  props: State,
+  data: AcceptablePageProps
+): Promise<string> {
+  const page = await getAcceptablePageFromVDOM({
+    ...data,
+    mainDep: {
+      src: props.bundleSrcUrl,
+    },
+  });
+
+  return page;
+}
+
 export async function createAcceptableContract(args: {
   props: State;
   key: any;
@@ -59,28 +177,32 @@ export async function createAcceptableContract(args: {
 }) {
   dispatch_disableButton(args.props);
   dispatch_renderLoadingIndicator("transaction-display");
+
+  //IF needed, deploy the smart contract
+  // add the contract ID to the page!
   const page = await getAcceptablePageFromVDOM({
     ...args.data,
     mainDep: {
       src: args.props.bundleSrcUrl,
     },
   });
-  //TODO: handle not enough balance
-  const result = await createTransactionSend(
-    args.props.arweave,
-    args.key,
-    page,
-    args.data.version
-  );
-  await getBalance(args.props.arweave, args.key);
-  if (result.statusCode !== 200) {
-    dispatch_removeLoadingIndicator("transaction-display");
-    dispatch_renderError("An error occured when sending the transaction!");
-  } else {
-    dispatch_renderTransaction(result.path);
-  }
 
-  return result;
+  //TODO: handle not enough balance
+  // const result = await createTransactionSend(
+  //   args.props.arweave,
+  //   args.key,
+  //   page,
+  //   args.data.version
+  // );
+  // await getBalance(args.props.arweave, args.key);
+  // if (result.statusCode !== 200) {
+  //   dispatch_removeLoadingIndicator("transaction-display");
+  //   dispatch_renderError("An error occured when sending the transaction!");
+  // } else {
+  //   dispatch_renderTransaction(result.path);
+  // }
+
+  //  return result;
 }
 
 export async function acceptAndPayContract(data: {
