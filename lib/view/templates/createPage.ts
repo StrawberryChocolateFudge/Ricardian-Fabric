@@ -90,7 +90,7 @@ export const CreatePage = (props: State) => {
         >
         <input type="file" name="pdf" id="pdf-input" class="drop-zone__input" />
       </div>
-      <hr/>
+      <hr />
       <button class="center" id="discard-button">discard file</button>
       <hr />
       <p class="center">You may proceed without uploading a pdf.</p>
@@ -371,11 +371,34 @@ export const CreatePage = (props: State) => {
   } else if (props.createPages === CreatePages.SummaryPage) {
     return html`
       <hr />
-      <div
+      <h2 class="center">Summary</h2>
+      <table class="center">
+        <tr>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+        <tr>
+          <td>PDF deployment fee:</td>
+          <td id="pdfFee"></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Smart contract deployment fee:</td>
+          <td id="smartFee"></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Acceptable contract deployment fee:</td>
+          <td id="pageFee"></td>
+          <td></td>
+        </tr>
+      </table>
+      <!-- <div
         aria-label="transaction-display-slot"
         class="center"
         id="transaction-display"
-      ></div>
+      ></div> -->
       <div class="button-row">
         <button class="marginRight-20" id="summaryPage-previous">
           Previous
@@ -385,6 +408,7 @@ export const CreatePage = (props: State) => {
           id="create-button"
           role="button"
           aria-label="Create"
+          disabled
         >
           Create
         </button>
