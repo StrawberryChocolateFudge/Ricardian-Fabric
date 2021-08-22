@@ -1,5 +1,9 @@
-import { dispatch_removeError } from "../../dispatch/render";
-import { getById, updatePromptError, updatePromptSuccess } from "../utils";
+import {
+  dispatch_promptError,
+  dispatch_promptSuccess,
+  dispatch_removeError,
+} from "../../dispatch/render";
+import { getById } from "../utils";
 
 export function onPDFFileDropped() {
   const pdfInput = getById("pdf-input") as HTMLInputElement;
@@ -13,10 +17,10 @@ export function onPDFFileDropped() {
 
     if (pdfInput.files.length === 1 && file.type === "application/pdf") {
       // It's valid
-      updatePromptSuccess(pdfInput.files[0]);
+      dispatch_promptSuccess(pdfInput.files[0]);
       dispatch_removeError();
     } else {
-      updatePromptError("Invalid file, must be a single pdf");
+      dispatch_promptError("Invalid file, must be a single pdf");
     }
   };
 
@@ -36,10 +40,10 @@ export function onPDFFileDropped() {
 
     if (e.dataTransfer.files.length === 1 && file.type === "application/pdf") {
       pdfInput.files = e.dataTransfer.files;
-      updatePromptSuccess(e.dataTransfer.files[0]);
+      dispatch_promptSuccess(e.dataTransfer.files[0]);
       dispatch_removeError();
     } else {
-      updatePromptError("Invalid file, must be a single pdf");
+      dispatch_promptError("Invalid file, must be a single pdf");
     }
 
     dropZone.classList.remove("drop-zone--over");
