@@ -1,6 +1,7 @@
 import TestWeave from "../../node_modules/testweave-sdk";
 import { CreateTransactionResult } from "../types";
 import Arweave from "arweave";
+import Transaction from "arweave/node/lib/transaction";
 
 const FEE = 5; // This is 0.5 when calculated
 export const TESTADDRESS = "1seRanklLU_1VTGkEk7P0xAwMJfA7owA1JHW5KyZKlY";
@@ -54,6 +55,89 @@ export async function getBalanceCall(
   return result;
 }
 
+export async function signTransaction(
+  arweave: Arweave,
+  transaction: Transaction,
+  key: any
+) {
+  await arweave.transactions.sign(transaction, testweave.rootJWK);
+}
+
+export async function postTransaction(
+  arweave: Arweave,
+  transaction: Transaction
+) {
+  await arweave.transactions.post(transaction);
+}
+
+export async function mine() {
+  await testweave.mine();
+}
+
+export async function createPDFTransaction(
+  arweave: Arweave,
+  data: any,
+  key: any
+): Promise<Transaction> {
+  const transaction = await arweave.createTransaction(
+    { data: data },
+    testweave.rootJWK
+  );
+  transaction.addTag("Content-Type", "application/pdf");
+  await arweave.transactions.sign(transaction, testweave.rootJWK);
+  return transaction;
+}
+
+export async function upload(arweave: Arweave, transaction: Transaction) {
+  const uploader = await arweave.transactions.getUploader(transaction);
+
+  while (!uploader.isComplete) {
+    await uploader.uploadChunk();
+    console.log(
+      `${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`
+    );
+  }
+}
+
+export async function createPageTransaction(arg: {
+  arweave: Arweave;
+  key: any;
+  page: string;
+  version: string;
+}): Promise<Transaction> {
+  const dataTransaction = await arg.arweave.createTransaction(
+    {
+      data: arg.page,
+    },
+    testweave.rootJWK
+  );
+  const address = await getAddressCall(arg.arweave, arg.key);
+  dataTransaction.addTag("Content-Type", "text/html");
+  dataTransaction.addTag("Issuer", address);
+  dataTransaction.addTag("App", "Ricardian Fabric");
+  dataTransaction.addTag("version", arg.version);
+  await arg.arweave.transactions.sign(dataTransaction, testweave.rootJWK);
+  return dataTransaction;
+}
+
+export async function createContractTransaction(
+  arweave: Arweave,
+  contractSource: string,
+  key: any
+): Promise<Transaction> {
+  const contractTx = await arweave.createTransaction(
+    { data: contractSource },
+    key
+  );
+  contractTx.addTag("App-Name", "SmartWeaveContractSource");
+  contractTx.addTag("App-Version", "0.3.0");
+  contractTx.addTag("Content-Type", "application/javascript");
+
+  return contractTx;
+}
+
+export async function getContractTransactionFee(arweave: Arweave) {}
+
 export async function createTransactionSend(
   arweave: Arweave,
   key: any,
@@ -74,8 +158,6 @@ export async function createTransactionSend(
   //TODO: add a hash of the page to the tags!!
   await arweave.transactions.sign(dataTransaction, testweave.rootJWK);
   const response: any = await arweave.transactions.post(dataTransaction);
-
-  await arweave.transactions.post(dataTransaction);
   await testweave.mine();
   return {
     statusCode: response.status,
