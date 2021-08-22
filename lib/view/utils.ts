@@ -140,10 +140,6 @@ export function getPDF(): FileList {
   }
 }
 
-export function discardPDF() {
-  const pdf = getPDFInputEl();
-  pdf.value = "";
-}
 
 export function getWallet(): FileList {
   const wallet = getById("wallet-input") as HTMLInputElement;
@@ -263,22 +259,4 @@ export function getTermsAccepted(): boolean {
   } else {
     return parsed.termsAccepted;
   }
-}
-
-export function revertPrompt() {
-  const prompt = getPromptEl();
-  prompt.textContent = "Drop PDF here or click to upload";
-  prompt.style.color = "black";
-}
-
-export function updatePromptSuccess(file) {
-  const prompt = getPromptEl();
-  prompt.style.color = "black";
-  prompt.textContent = file.name;
-}
-
-export function updatePromptError(message: string) {
-  const prompt = getPromptEl();
-  prompt.textContent = message;
-  prompt.style.color = "red";
 }
