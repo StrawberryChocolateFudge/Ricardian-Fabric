@@ -1,38 +1,32 @@
+import { createTransactionsWithPDF } from "../../business/bloc";
 import {
+  dispatch_discardPdf,
+  dispatch_initAgreementPage,
+  dispatch_initNetworkingPage,
+  dispatch_initPDFPage,
+  dispatch_initSmartContractPage,
+  dispatch_initWalletPage,
   dispatch_removeError,
-  dispatch_renderBalance,
   dispatch_renderError,
 } from "../../dispatch/render";
 import {
   dispatch_instrumentPageData,
   dispatch_setAgreementsPageData,
   dispatch_setCreatePages,
-  dispatch_setEditor,
   dispatch_setKey,
   dispatch_setNetworkingPage,
   dispatch_setPdfPageData,
 } from "../../dispatch/stateChange";
 import createNewEditor from "../../state/editor";
-import { CreatePages, FileType, PDFPage, State } from "../../types";
 import {
-  setExpiresDateToDOM,
-  setInstrumentCanDeriveToDOM,
-  setInstrumentNameToDOM,
-  setInstrumentSupplyToDOM,
-  setInstrumentTickerToDOM,
-  setIsIntrumentToDOM,
-  setOnlySignerToDOM,
-  setPDFtoDOM,
-  setPostToDOM,
-  setPriceToDOM,
-  setProfitSharingContractIdToDOM,
-  setSmartContractInputFields,
-  setWalletToDom,
-  setWillProfitShareToDOM,
-} from "../render";
+  CreatedTransactions,
+  CreatePages,
+  FileType,
+  PDFPage,
+  State,
+} from "../../types";
 import {
   didExpire,
-  discardPDF,
   getById,
   getExpires,
   getInstrumentCanDerive,
@@ -50,20 +44,13 @@ import {
   getWebhookCheckbox,
   isPSTUser,
   readFile,
-  revertPrompt,
-  updatePromptSuccess,
 } from "../utils";
 
 export function nextButtonClick(props: State) {
   if (props.createPages === CreatePages.Agreement) {
     const editor = createNewEditor();
 
-    if (props.agreementPage.selectedDate !== "") {
-      setExpiresDateToDOM(props.agreementPage.selectedDate.toString());
-      setPriceToDOM(props.agreementPage.price);
-      setOnlySignerToDOM(props.agreementPage.onlySigner);
-      editor.setContent(props.agreementPage.content, 0);
-    }
+    dispatch_initAgreementPage(props, editor);
 
     const nextButton = getById("AgreementPage-next");
 
@@ -101,12 +88,7 @@ export function nextButtonClick(props: State) {
       dispatch_setCreatePages(CreatePages.PDF);
     };
   } else if (props.createPages === CreatePages.PDF) {
-    // Initializing the page if pdf is set in state,
-    // that probably means the back button was pushed
-    if (props.pdfPage.PDF !== "" && props.pdfPage.PDF !== null) {
-      setPDFtoDOM(props.pdfPage.PDF);
-      updatePromptSuccess(props.pdfPage.PDF[0]);
-    }
+    dispatch_initPDFPage(props);
     const prevButton = getById("EditPage-previous");
     const nextButton = getById("EditPage-next");
     const discardButton = getById("discard-button");
@@ -115,9 +97,8 @@ export function nextButtonClick(props: State) {
     };
 
     discardButton.onclick = function () {
-      discardPDF();
       dispatch_setPdfPageData(undefined);
-      revertPrompt();
+      dispatch_discardPdf();
     };
 
     nextButton.onclick = function (e: Event) {
@@ -133,12 +114,7 @@ export function nextButtonClick(props: State) {
       dispatch_setCreatePages(CreatePages.AddWallet);
     };
   } else if (props.createPages === CreatePages.AddWallet) {
-    if (props.walletPage.key !== "") {
-      setWalletToDom(props.walletPage.file);
-      updatePromptSuccess(props.walletPage.file[0]);
-      dispatch_renderBalance(props);
-    }
-
+    dispatch_initWalletPage(props);
     const prevButton = getById("AddWalletPage-previous");
     const nextButton = getById("AddWalletPage-next");
 
@@ -169,18 +145,7 @@ export function nextButtonClick(props: State) {
       readFile(wallet, getKey, FileType.key);
     };
   } else if (props.createPages === CreatePages.SmartContract) {
-    setWillProfitShareToDOM(props.instrumentPageData.willProfitShare);
-    setProfitSharingContractIdToDOM(props.instrumentPageData.pstContractId);
-    setIsIntrumentToDOM(props.instrumentPageData.isInstrument);
-    setInstrumentNameToDOM(props.instrumentPageData.name);
-    setInstrumentTickerToDOM(props.instrumentPageData.ticker);
-    setInstrumentSupplyToDOM(props.instrumentPageData.supply);
-    setInstrumentCanDeriveToDOM(props.instrumentPageData.canDerive);
-    setSmartContractInputFields(
-      props.instrumentPageData.willProfitShare,
-      props.instrumentPageData.isInstrument
-    );
-
+    dispatch_initSmartContractPage(props);
     const prevButton = getById("SmartContractPage-previous");
     const nextButton = getById("SmartContractPage-next");
 
@@ -247,7 +212,7 @@ export function nextButtonClick(props: State) {
       dispatch_setCreatePages(CreatePages.Networking);
     };
   } else if (props.createPages === CreatePages.Networking) {
-    setPostToDOM(props.networkingPage);
+    dispatch_initNetworkingPage(props);
     const prevButton = getById("NetworkingPage-previous");
     const nextButton = getById("NetworkingPage-next");
 
@@ -272,15 +237,30 @@ export function nextButtonClick(props: State) {
       dispatch_setCreatePages(CreatePages.SummaryPage);
     };
   } else if (props.createPages === CreatePages.SummaryPage) {
-    //TODO: Initialize:
+    let txs: CreatedTransactions;
 
-    // const printPdf = (data: any) => {
-    //   const display = getPDFDisplay();
-    //   display.data = data;
-    // };
+    const pdfFileList = props.pdfPage.PDF as FileList;
 
-    // const pdfFileList = props.pdfPage.PDF as FileList;
-    // readFile(pdfFileList, printPdf, FileType.pdf);
+    //I unlock the create button from here
+    if (
+      pdfFileList?.length === 1 &&
+      pdfFileList[0].type === "application/pdf"
+    ) {
+      //TODO: Get tx-s to get fees
+      const proceed = async (data: any) => {
+        txs = await createTransactionsWithPDF(props, data, true);
+        console.log("TXS");
+        console.log(txs);
+        getById("pdfFee").textContent = txs.pdfTransaction.reward;
+        getById("smartFee").textContent = txs.instrumentContractTx.reward;
+        getById("pageFee").textContent = txs.pageTransaction.reward;
+      };
+
+      readFile(pdfFileList, proceed, FileType.pdf);
+      //Has pdf, I get the transactions in the proceed callback
+    } else {
+      //DOn't have pdf so I can just create the other transactions
+    }
 
     const prevButton = getById("summaryPage-previous");
     const create = getById("create-button");
