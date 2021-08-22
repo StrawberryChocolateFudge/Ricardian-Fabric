@@ -5,13 +5,13 @@ import { onFileSelect } from "./actions/onFileSelect";
 import { renderAcceptOnCLick } from "./actions/renderAcceptButton";
 import {
   disableButton,
+  discardPDF,
   enableButton,
   removeError,
   removeLoadingIndicator,
   renderbalance,
   renderCounter,
   renderError,
-  renderInstrumentSettings,
   renderInstrumentSettingsTooltips,
   renderLoadingIndicator,
   renderPage,
@@ -19,6 +19,23 @@ import {
   renderToolTipHelptextsForCreate,
   renderTransaction,
   renderVersion,
+  revertPrompt,
+  setExpiresDateToDOM,
+  setInstrumentCanDeriveToDOM,
+  setInstrumentNameToDOM,
+  setInstrumentSupplyToDOM,
+  setInstrumentTickerToDOM,
+  setIsIntrumentToDOM,
+  setOnlySignerToDOM,
+  setPDFtoDOM,
+  setPostToDOM,
+  setPriceToDOM,
+  setProfitSharingContractIdToDOM,
+  setSmartContractInputFields,
+  setWalletToDom,
+  setWillProfitShareToDOM,
+  updatePromptError,
+  updatePromptSuccess,
 } from "./render";
 import { renderAcceptButton } from "./render";
 import { attachTermsButtonListeners } from "./actions/bannerButtonListeners";
@@ -28,6 +45,7 @@ import { onPDFFileDropped } from "./actions/onPDFFileDropped";
 import { nextButtonClick } from "./actions/nextButtonClick";
 import { onWalletFileDropped } from "./actions/onWalletFileDropped";
 import { postCheckboxSelect } from "./actions/postCheckboxSelect";
+import { dispatch_renderBalance } from "../dispatch/render";
 
 const Render: Renderer = {
   [RenderType.successMessage]: (props: State) => {},
@@ -38,7 +56,6 @@ const Render: Renderer = {
     renderToolTipHelptextsForCreate();
     if (props.createPages === CreatePages.Agreement) {
       attachExpiryClickAndListener(props);
-      
     } else if (props.createPages === CreatePages.PDF) {
       onPDFFileDropped();
     } else if (props.createPages === CreatePages.SmartContract) {
@@ -102,13 +119,58 @@ const Render: Renderer = {
     renderTerms();
     attachTermsButtonListeners();
   },
-  [RenderType.renderInstrumentSettings]: (props: State) => {
-    renderInstrumentSettings();
-    instrumetsSettingsActions(props);
-    renderInstrumentSettingsTooltips();
-  },
   [RenderType.setInstrument]: (props: State) => {
     renderCreateButtonClick(props);
+  },
+  [RenderType.initAgreementPage]: (props: any) => {
+    if (props.agreementPage.selectedDate !== "") {
+      setExpiresDateToDOM(props.agreementPage.selectedDate.toString());
+      setPriceToDOM(props.agreementPage.price);
+      setOnlySignerToDOM(props.agreementPage.onlySigner);
+      props.editor.setContent(props.agreementPage.content, 0);
+    }
+  },
+  [RenderType.initPDFPage]: (props: State) => {
+    // Initializing the page if pdf is set in state,
+    // that probably means the back button was pushed
+    if (props.pdfPage.PDF !== "" && props.pdfPage.PDF !== null) {
+      setPDFtoDOM(props.pdfPage.PDF);
+      updatePromptSuccess(props.pdfPage.PDF[0] as File);
+    }
+  },
+  [RenderType.discardPdf]: (props: {}) => {
+    discardPDF();
+    revertPrompt();
+  },
+  [RenderType.initWalletPage]: (props: State) => {
+    if (props.walletPage.key !== "") {
+      setWalletToDom(props.walletPage.file);
+      updatePromptSuccess(props.walletPage.file[0] as File);
+      dispatch_renderBalance(props);
+    }
+  },
+  [RenderType.initSmartContractPage]: (props: State) => {
+    setWillProfitShareToDOM(props.instrumentPageData.willProfitShare);
+    setProfitSharingContractIdToDOM(props.instrumentPageData.pstContractId);
+    setIsIntrumentToDOM(props.instrumentPageData.isInstrument);
+    setInstrumentNameToDOM(props.instrumentPageData.name);
+    setInstrumentTickerToDOM(props.instrumentPageData.ticker);
+    setInstrumentSupplyToDOM(props.instrumentPageData.supply);
+    setInstrumentCanDeriveToDOM(props.instrumentPageData.canDerive);
+    setSmartContractInputFields(
+      props.instrumentPageData.willProfitShare,
+      props.instrumentPageData.isInstrument
+    );
+  },
+  [RenderType.initNetworkingPage]: (props: State) => {
+    setPostToDOM(props.networkingPage);
+  },
+  [RenderType.initSummaryPage]: (props: State) => {},
+  [RenderType.promptSuccess]: (props: { file: File | string }) => {
+    updatePromptSuccess(props.file as File);
+  },
+  [RenderType.promptError]: (props: { message: string }) => {
+    updatePromptError(props.message);
   },
 };
 
