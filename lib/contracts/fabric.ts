@@ -10,6 +10,9 @@
 
 //TODO: verified individuals! for verified as human.
 //TODO: verified investors!
+
+// {admins: [], issuers: {}, partners: {}, investors: {}, users: {}}
+
 export const fabricState = (whitelist: Array<string>) => `
 "whitelist": ${whitelist},
 "verifiedIssuers":{},
