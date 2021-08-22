@@ -4,7 +4,6 @@ import { acceptButton } from "./templates/acceptButton";
 import { addressTemplate, balanceTemplate } from "./templates/balance";
 import { CreatePage } from "./templates/createPage";
 import { helperTooltips } from "./templates/helperTooltips";
-import { instrumentSettings } from "./templates/instrumentSettings";
 import { loadingIndicator } from "./templates/loadingIndicator";
 import { redirectCounter } from "./templates/redirectCounter";
 import { termsLayout } from "./templates/terms";
@@ -13,6 +12,8 @@ import {
   copyStringToClipboard,
   getById,
   getPDFDisplay,
+  getPDFInputEl,
+  getPromptEl,
   getPSTCheckboxEl,
   getPSTContractEl,
   instrumentDeriveEl,
@@ -153,12 +154,6 @@ export function renderToolTipHelptextsForCreate() {
   );
 }
 
-export function renderInstrumentSettings() {
-  setBannerDisplayBlock();
-  const layout = getById("overlay-layout");
-  render(instrumentSettings(), layout);
-}
-
 export function renderInstrumentSettingsTooltips() {
   const name = getById("instrument-name-tooltip");
   const ticker = getById("instrument-ticker-tooltip");
@@ -284,4 +279,27 @@ export function setPostToDOM(networkingPage: NetworkingPage) {
 
   redirectEl.checked = networkingPage.redirect;
   webhookEl.checked = networkingPage.webhook;
+}
+
+export function revertPrompt() {
+  const prompt = getPromptEl();
+  prompt.textContent = "Drop PDF here or click to upload";
+  prompt.style.color = "black";
+}
+
+export function updatePromptSuccess(file : File ) {
+  const prompt = getPromptEl();
+  prompt.style.color = "black";
+  prompt.textContent = file.name;
+}
+
+export function updatePromptError(message: string) {
+  const prompt = getPromptEl();
+  prompt.textContent = message;
+  prompt.style.color = "red";
+}
+
+export function discardPDF() {
+  const pdf = getPDFInputEl();
+  pdf.value = "";
 }
