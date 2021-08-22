@@ -41,7 +41,7 @@ import { renderAcceptButton } from "./render";
 import { attachTermsButtonListeners } from "./actions/bannerButtonListeners";
 import { instrumentCheckboxListener } from "./actions/instrumentCheckboxListener";
 import { onPDFFileDropped } from "./actions/onPDFFileDropped";
-import { nextButtonClick } from "./actions/nextButtonClick";
+import { nextButtonClick } from "./actions/pages/nextButtonClick";
 import { onWalletFileDropped } from "./actions/onWalletFileDropped";
 import { postCheckboxSelect } from "./actions/postCheckboxSelect";
 import { dispatch_renderBalance } from "../dispatch/render";
