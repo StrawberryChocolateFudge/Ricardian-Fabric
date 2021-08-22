@@ -1,14 +1,13 @@
 import Arweave from "arweave";
 import { getBalance } from "../../business/bloc";
-import { dispatch_removeError } from "../../dispatch/render";
+import {
+  dispatch_promptError,
+  dispatch_promptSuccess,
+  dispatch_removeError,
+} from "../../dispatch/render";
 import { dispatch_setBalance } from "../../dispatch/stateChange";
 import { FileType, State } from "../../types";
-import {
-  getById,
-  readFile,
-  updatePromptError,
-  updatePromptSuccess,
-} from "../utils";
+import { getById, readFile } from "../utils";
 
 export function onWalletFileDropped(props: State) {
   const walletInput = getById("wallet-input") as HTMLInputElement;
@@ -22,11 +21,11 @@ export function onWalletFileDropped(props: State) {
     const file = walletInput.files[0];
     if (walletInput.files.length === 1 && file.type === "application/json") {
       // It's valid
-      updatePromptSuccess(walletInput.files[0]);
+      dispatch_promptSuccess(walletInput.files[0]);
       dispatch_removeError();
       checkKeyFile(walletInput.files, props.arweave);
     } else {
-      updatePromptError("Invalid wallet,must be a single json file");
+      dispatch_promptError("Invalid wallet,must be a single json file");
     }
   };
 
@@ -46,11 +45,11 @@ export function onWalletFileDropped(props: State) {
     const file = e.dataTransfer.files[0];
     if (e.dataTransfer.files.length === 1 && file.type === "application/json") {
       walletInput.files = e.dataTransfer.files;
-      updatePromptSuccess(e.dataTransfer.files[0]);
+      dispatch_promptSuccess(e.dataTransfer.files[0]);
       dispatch_removeError();
       checkKeyFile(walletInput.files, props.arweave);
     } else {
-      updatePromptError("Invalid file, must be a single pdf");
+      dispatch_promptError("Invalid file, must be a single pdf");
     }
     dropZone.classList.remove("drop-zone--over");
   };
@@ -62,7 +61,7 @@ function checkKeyFile(files: FileList, arweave: Arweave) {
       getBalance(arweave, key);
     } else {
       //IF the key is not RSA, I show an error and disable create!zs
-      updatePromptError("Invalid, must be a valid Arweave key.");
+      dispatch_promptError("Invalid, must be a valid Arweave key.");
       dispatch_setBalance({ balance: 0, address: "" });
     }
   };
