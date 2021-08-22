@@ -11,18 +11,25 @@ import {
 import { getCurrentUrl, getPage } from "../view/utils";
 import {
   getBundleSrcUrl,
+  getCanDeriveFromDataProp,
   getCreatedDateFromDataProp,
   getCreatorAddressDataProp,
   getCurrentPageDataProp,
   getExpiresFromDataProp,
+  getInstrumentContractIdFromDataProp,
+  getInstrumentNameFromDataProp,
+  getInstrumentSupplyFromDataProp,
+  getInstrumentTickerFromDataProp,
+  getIsInstrumentFromDataProp,
   getOnlySignerFromDataProp,
+  getPdfTransactionIdFromDataProp,
   getPostToDataProp,
   getPriceFromDataProp,
+  getPstContractIdFromDataProp,
   getRedirectFromDataProp,
   getVersionFromDataProp,
   getWebhookFromDataProp,
 } from "./dataPropGetters";
-import createNewEditor from "./editor";
 import { setStateHook } from "./setStateHook";
 
 (function InitState() {
@@ -63,7 +70,7 @@ import { setStateHook } from "./setStateHook";
         webhook: false,
         redirect: false,
       },
-      // Acceptable page state
+      // Acceptable,fulfilled page state
       contracttype: getCurrentPageDataProp(pageEl),
       postto: getPostToDataProp(pageEl),
       webhook: getWebhookFromDataProp(pageEl),
@@ -76,6 +83,14 @@ import { setStateHook } from "./setStateHook";
       bundleSrcUrl: getBundleSrcUrl(),
       currentUrl: getCurrentUrl(),
       onlySigner: getOnlySignerFromDataProp(pageEl),
+      pstContractId: getPstContractIdFromDataProp(pageEl),
+      isInstrument: getIsInstrumentFromDataProp(pageEl),
+      instrumentName: getInstrumentNameFromDataProp(pageEl),
+      instrumentTicker: getInstrumentTickerFromDataProp(pageEl),
+      instrumentSupply: getInstrumentSupplyFromDataProp(pageEl),
+      canDerive: getCanDeriveFromDataProp(pageEl),
+      instrumentContractId: getInstrumentContractIdFromDataProp(pageEl),
+      pdfTransactionId: getPdfTransactionIdFromDataProp(pageEl),
     };
 
     const stateHandler = {

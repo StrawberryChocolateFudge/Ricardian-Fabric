@@ -5,7 +5,6 @@ import {
   expiryTemplate,
   issuerTemplate,
 } from "../components/components";
-import { mainDep } from "../components/dependencies";
 import { loadingIndicator } from "../components/loadingIndicator";
 
 export const acceptablePageLayout = (props: AcceptablePageProps) => html`
@@ -62,7 +61,7 @@ export const acceptablePageLayout = (props: AcceptablePageProps) => html`
     }
   </style>
   <body>
-    ${acceptablePage(props)} ${mainDep(props.mainDep.src)}
+    ${acceptablePage(props)}}
   </body>
 `;
 
@@ -79,6 +78,14 @@ const acceptablePage = (props: AcceptablePageProps) => html`
     data-webhook="${props.webhook}"
     data-maindep="${props.mainDep.src}"
     data-onlysigner="${props.onlySigner}"
+    data-pstContractId="${props.pstContractId}"
+    data-isInstrument="${props.isInstrument}"
+    data-instrumentName="${props.instrumentName}"
+    data-instrumentTicker="${props.instrumentTicker}"
+    data-instrumentSupply="${props.instrumentSupply}"
+    data-canDerive="${props.canDerive}"
+    data-instrumentContractId="${props.instrumentContractId}"
+    data-pdfTransactionId="${props.pdfTransactionId}"
     id="page"
   >
     <hr />
@@ -99,4 +106,4 @@ const acceptablePage = (props: AcceptablePageProps) => html`
     <div id="action-container" class="center">${loadingIndicator}</div>
   </div>
 `;
-      // <!-- ${getPriceTemplate(props.price, props.fee)} -->
+// <!-- ${getPriceTemplate(props.price, props.fee)} -->
