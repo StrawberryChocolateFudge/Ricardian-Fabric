@@ -26,7 +26,7 @@ import {
   dispatch_getArweave,
   dispatch_setBalance,
 } from "../dispatch/stateChange";
-import { hitWebhook } from "../fetch";
+import { fetchDependency, hitWebhook } from "../fetch";
 import { AcceptablePageProps, CreatedTransactions, State } from "../types";
 
 import {
@@ -40,6 +40,12 @@ import {
   getAcceptablePageFromVDOM,
   getFulfilledPagefromVDOM,
 } from "../view/vDom";
+import {
+  getSimulatedContractTX,
+  handleExpiresType,
+  handleInstrumentTxId,
+  handlePSTContractId,
+} from "./utils";
 
 const REDIRECT_TIMEOUT = 1000;
 
@@ -74,7 +80,24 @@ export async function createTransactionsWithPDF(
   let instrumentContractTx;
 
   if (toGetFee && isInstrument) {
-    const initContractState = instrumentState({
+    // const initContractState = instrumentState({
+    //   name: instrumentName,
+    //   creator,
+    //   supply: instrumentSupply,
+    //   canDerive,
+    //   initialPrice: parseInt(price),
+    //   ticker: instrumentTicker,
+    // });
+
+    // instrumentContractTx = await simulateCreateContractFromSource(
+    //   //@ts-ignore
+    //   props.arweave,
+    //   props.walletPage.key,
+    //   initContractState,
+    //   instrumentContractSrc
+    // );
+    instrumentContractTx = await getSimulatedContractTX({
+      props,
       name: instrumentName,
       creator,
       supply: instrumentSupply,
@@ -82,19 +105,12 @@ export async function createTransactionsWithPDF(
       initialPrice: parseInt(price),
       ticker: instrumentTicker,
     });
-
-    instrumentContractTx = await simulateCreateContractFromSource(
-      //@ts-ignore
-      props.arweave,
-      props.walletPage.key,
-      initContractState,
-      instrumentContractSrc
-    );
   }
 
   console.log("instrumentTransaction");
   console.log(instrumentContractTx);
-
+  //TODO: Determine if PDF is used in transaction!!
+  //TODO: REFACTOR SO THIS FUNCTION IS NOT ONLY FOR PDF TRANSACTIONS!!
   const pdfTransaction = await createPDFTransaction(
     props.arweave,
     pdfData,
@@ -104,22 +120,26 @@ export async function createTransactionsWithPDF(
   console.log(pdfTransaction);
 
   // Expires can be string or date so I need to handle that!
-  const expiresData = props.agreementPage.selectedDate;
-  let expires = "";
-  if (typeof expiresData !== "string") {
-    const expiresDate = expiresData as Date;
-    expires = expiresDate.toISOString();
-  } else {
-    expires = expiresData;
-  }
+  // const expiresData = props.agreementPage.selectedDate;
+  // let expires = "";
+  // if (typeof expiresData !== "string") {
+  //   const expiresDate = expiresData as Date;
+  //   expires = expiresDate.toISOString();
+  // } else {
+  //   expires = expiresData;
+  // }
+  let expires = handleExpiresType(props);
 
-  const pstContractId = props.instrumentPageData.willProfitShare
-    ? props.instrumentPageData.pstContractId
-    : "NONE";
+  // const pstContractId = props.instrumentPageData.willProfitShare
+  //   ? props.instrumentPageData.pstContractId
+  //   : "NONE";
 
-  const instrumentContractId = instrumentContractTx
-    ? instrumentContractTx.id
-    : "NONE";
+  const pstContractId = handlePSTContractId(props);
+
+  // const instrumentContractId = instrumentContractTx
+  //   ? instrumentContractTx.id
+  //   : "NONE";
+  const instrumentContractId = handleInstrumentTxId(instrumentContractTx);
 
   const data: AcceptablePageProps = {
     domParser: props.domParser,
@@ -160,10 +180,14 @@ export async function createAcceptableContractPage(
   props: State,
   data: AcceptablePageProps
 ): Promise<string> {
+  const src = props.bundleSrcUrl;
+  const code = await fetchDependency(src);
+
   const page = await getAcceptablePageFromVDOM({
     ...data,
     mainDep: {
-      src: props.bundleSrcUrl,
+      src,
+      code,
     },
   });
 
@@ -180,12 +204,12 @@ export async function createAcceptableContract(args: {
 
   //IF needed, deploy the smart contract
   // add the contract ID to the page!
-  const page = await getAcceptablePageFromVDOM({
-    ...args.data,
-    mainDep: {
-      src: args.props.bundleSrcUrl,
-    },
-  });
+  // const page = await getAcceptablePageFromVDOM({
+  //   ...args.data,
+  //   mainDep: {
+  //     src: args.props.bundleSrcUrl,
+  //   },
+  // });
 
   //TODO: handle not enough balance
   // const result = await createTransactionSend(
