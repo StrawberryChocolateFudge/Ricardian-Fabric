@@ -156,6 +156,14 @@ export type State = {
   currentUrl: string;
   version: string;
   onlySigner: string;
+  pstContractId: string;
+  isInstrument: boolean;
+  instrumentName: string;
+  instrumentTicker: string;
+  instrumentSupply: string;
+  canDerive: string;
+  instrumentContractId: string;
+  pdfTransactionId: string;
 };
 
 export type SetHookArgs = {
@@ -166,6 +174,7 @@ export type SetHookArgs = {
 
 type Dependency = {
   src: string;
+  code: string;
 };
 
 export type AcceptablePageProps = {
