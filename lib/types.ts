@@ -1,4 +1,5 @@
 import Arweave from "arweave";
+import Transaction from "arweave/node/lib/transaction";
 
 export enum Events {
   render = "render",
@@ -25,6 +26,15 @@ export enum RenderType {
   renderTerms = "renderTerms",
   renderInstrumentSettings = "renderInstrumentSettings",
   setInstrument = "setInstrument",
+  initAgreementPage = "initAgreementPage",
+  initPDFPage = "initPDFPage",
+  initWalletPage = "initWalletPage",
+  initSmartContractPage = "initSmartContractPage",
+  initNetworkingPage = "initNetworkingPage",
+  initSummaryPage = "initSummaryPage",
+  discardPdf = "discardPdf",
+  promptSuccess = "promptSuccess",
+  promptError = "promptError",
 }
 
 export type Renderer = {
@@ -45,8 +55,16 @@ export type Renderer = {
   [RenderType.redirectCounter]: CallableFunction;
   [RenderType.dateClickListener]: CallableFunction;
   [RenderType.renderTerms]: CallableFunction;
-  [RenderType.renderInstrumentSettings]: CallableFunction;
   [RenderType.setInstrument]: CallableFunction;
+  [RenderType.initAgreementPage]: CallableFunction;
+  [RenderType.initPDFPage]: CallableFunction;
+  [RenderType.initWalletPage]: CallableFunction;
+  [RenderType.initSmartContractPage]: CallableFunction;
+  [RenderType.initNetworkingPage]: CallableFunction;
+  [RenderType.initSummaryPage]: CallableFunction;
+  [RenderType.discardPdf]: CallableFunction;
+  [RenderType.promptSuccess]: CallableFunction;
+  [RenderType.promptError]: CallableFunction;
 };
 
 export enum EventType {
@@ -112,11 +130,12 @@ export type NetworkingPage = {
 export type AgreementPage = {
   price: string;
   onlySigner: string;
-  selectedDate: Date | string;
+  selectedDate: string | Date;
   content: string;
 };
 
 export type State = {
+  // These are for create
   createPages: CreatePages;
   arweave: Arweave;
   domParser: DOMParser;
@@ -126,6 +145,8 @@ export type State = {
   walletPage: WalletPage;
   contracttype: ContractTypes;
   networkingPage: NetworkingPage;
+
+  //These are for acceptable page!
   postto: string;
   webhook: boolean;
   redirect: boolean;
@@ -160,15 +181,16 @@ export type AcceptablePageProps = {
   redirect: boolean;
   mainDep?: Dependency;
   domParser: DOMParser;
-  fee: string;
   legalContract: string;
   onlySigner: string;
   pstContractId: string;
   isInstrument: boolean;
   instrumentName: string;
   instrumentTicker: string;
-  instrumentSupply: string;
-  canDerive: string;
+  instrumentSupply: number;
+  canDerive: number;
+  instrumentContractId: string;
+  pdfTransactionId: string;
 };
 
 export type FulfilledPageProps = {
@@ -201,4 +223,10 @@ export type InstrumentPageData = {
   ticker: string;
   supply: number;
   canDerive: number;
+};
+
+export type CreatedTransactions = {
+  pdfTransaction: Transaction;
+  instrumentContractTx: Transaction;
+  pageTransaction: Transaction;
 };
