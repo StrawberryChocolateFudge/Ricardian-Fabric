@@ -47,3 +47,7 @@ export function getBundleSrcUrl(): string {
 export function getOnlySignerFromDataProp(page: HTMLElement): string {
   return page.dataset.onlysigner;
 }
+
+export function getSourceFromDataProp(page: HTMLElement): string {
+  return page.dataset.dependency;
+}
