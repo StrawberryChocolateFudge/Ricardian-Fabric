@@ -2,6 +2,8 @@ import { html, render } from "lit-html";
 import { ContractTypes, State } from "../types";
 import { acceptButton } from "./templates/acceptButton";
 import { balanceTemplate } from "./templates/balance";
+import { createButton } from "./templates/createButton";
+import { CreateSummary } from "./templates/createSummary";
 import { loadingIndicator } from "./templates/loadingIndicator";
 import { redirectCounter } from "./templates/redirectCounter";
 import { termsLayout } from "./templates/terms";
@@ -79,8 +81,25 @@ export function disableButton(props: State) {
   }
 }
 
+export function renderCreateButton(disabled: boolean) {
+  render(createButton(disabled), getById("button-slot"));
+}
+
 export function renderTerms() {
   setBannerDisplayBlock();
   const layout = getById("overlay-layout");
+  layout.style.height = "80%";
   render(termsLayout(), layout);
+}
+
+export function renderCreateFee(fee: string) {
+  render(CreateSummary(fee), getById("button-slot"));
+}
+
+export function removeButtons() {
+  render(``, getById("button-slot"));
+}
+
+export function removeAcceptedButton() {
+  getById("accept-button").innerHTML = "";
 }
