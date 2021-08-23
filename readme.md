@@ -49,3 +49,16 @@ Webhooks have an optional secret parameter which is a preshared secret that will
 The acceptor will be able to fill it out on the acceptable contract page.
 
 For redirection, there is no secret but you may give a cookie on your website to identify the users who get redirected there. It's up to you!
+
+## Deployment
+
+`yarn build`
+
+After the build, the js dependency must be separately deployed.
+
+The URL to access is must be placed into the data-dependency on page.
+The state must be configured for using this dataprop with getSourceFromDataProp(pageEl)
+
+Then run `yarn inline`
+
+The final bundle.html is ready to be deployed!
