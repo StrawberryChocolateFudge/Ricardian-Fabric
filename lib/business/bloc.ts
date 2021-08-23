@@ -1,3 +1,4 @@
+import Transaction from "arweave/node/lib/transaction";
 import {
   acceptTransactionFree,
   acceptTransactionPay,
@@ -6,10 +7,13 @@ import {
   getArweaveCall,
   getBalanceCall,
   getAddressCall,
+  createTransactionForFee,
+  createTransactionPost,
 } from "../arweave/arweave";
 import {
   dispatch_disableButton,
   dispatch_redirectCounter,
+  dispatch_removeAcceptedButton,
   dispatch_removeLoadingIndicator,
   dispatch_renderError,
   dispatch_renderLoadingIndicator,
@@ -20,7 +24,7 @@ import {
   dispatch_getArweave,
   dispatch_setBalance,
 } from "../dispatch/stateChange";
-import { hitWebhook } from "../fetch";
+import { fetchDependency, hitWebhook } from "../fetch";
 import { AcceptablePageProps, State } from "../types";
 
 import {
@@ -52,6 +56,52 @@ export async function getCreatorWallet(arweave: any, key: any) {
   return await getAddressCall(arweave, key);
 }
 
+export async function createAcceptableContractTX(args: {
+  props: State;
+  key: any;
+  data: AcceptablePageProps;
+}) {
+  dispatch_renderLoadingIndicator("transaction-display");
+  const src = args.props.bundleSrcUrl;
+  const code = "";
+  const page = await getAcceptablePageFromVDOM({
+    ...args.data,
+    mainDep: {
+      src,
+      code,
+    },
+  });
+
+  const tx = await createTransactionForFee(
+    args.props.arweave,
+    args.key,
+    page,
+    args.data.version
+  );
+  dispatch_removeLoadingIndicator("transaction-display");
+
+  return tx;
+}
+
+export async function postTransactionFromCreatePage(
+  props: State,
+  tx: Transaction,
+  key: any
+) {
+  dispatch_renderLoadingIndicator("transaction-display");
+
+  const result = await createTransactionPost(props.arweave, tx);
+  await getBalance(props.arweave, key);
+  if (result.statusCode !== 200) {
+    dispatch_removeLoadingIndicator("transaction-display");
+    dispatch_renderError("An error occured when sending the transaction!");
+  } else {
+    dispatch_renderTransaction(result.path);
+  }
+
+  return result;
+}
+
 export async function createAcceptableContract(args: {
   props: State;
   key: any;
@@ -59,10 +109,13 @@ export async function createAcceptableContract(args: {
 }) {
   dispatch_disableButton(args.props);
   dispatch_renderLoadingIndicator("transaction-display");
+  const src = args.props.bundleSrcUrl;
+  const code = await fetchDependency(src);
   const page = await getAcceptablePageFromVDOM({
     ...args.data,
     mainDep: {
-      src: args.props.bundleSrcUrl,
+      src,
+      code,
     },
   });
   //TODO: handle not enough balance
@@ -130,6 +183,7 @@ export async function acceptContract(props: State, key: any) {
     await handlePost(props, result.id);
     await getBalance(props.arweave, key);
     dispatch_renderTransaction(result.path);
+    dispatch_removeAcceptedButton(props);
   }
 }
 
