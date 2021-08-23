@@ -33,12 +33,11 @@ export default function createNewEditor() {
       ],
       firstButtonClass: "medium-editor-button-first",
       lastButtonClass: "medium-editor-button-last",
-      relativeContainer: getById("editor-control"),
       standardizeSelectionStart: true,
       static: false,
       /* options which only apply when static is true */
       align: "center",
-      sticky: true,
+      sticky: false,
       updateOnEmptySelection: false,
     },
     placeholder: {
