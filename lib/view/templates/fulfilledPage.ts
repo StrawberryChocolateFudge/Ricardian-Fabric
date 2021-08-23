@@ -93,7 +93,6 @@ export const fulfilledPage = (props: FulfilledPageProps) => html`
         ${issuerTemplate(props.creatorAddress)}
         ${getParticipantFromTemplate(props.paidFrom)}
         ${createdDateTemplate(props.createdDate)}
-        ${expiryTemplate(props.expires)}
         ${getPriceTemplate(props.price, props.fee)}
       </tr>
     </table>
