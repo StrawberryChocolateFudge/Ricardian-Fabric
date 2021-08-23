@@ -1,6 +1,7 @@
 import TestWeave from "../../node_modules/testweave-sdk";
 import { CreateTransactionResult } from "../types";
 import Arweave from "arweave";
+import Transaction from "arweave/node/lib/transaction";
 
 const FEE = 5; // This is 0.5 when calculated
 export const TESTADDRESS = "1seRanklLU_1VTGkEk7P0xAwMJfA7owA1JHW5KyZKlY";
@@ -41,17 +42,51 @@ export async function getAddressCall(
   arweave: Arweave,
   key: any
 ): Promise<string> {
-  return await arweave.wallets.jwkToAddress(testweave.rootJWK);
+  return await arweave.wallets.jwkToAddress(key);
 }
 
 export async function getBalanceCall(
   arweave: Arweave,
   key: any
 ): Promise<number> {
-  const address = await getAddressCall(arweave, testweave.rootJWK);
+  const address = await getAddressCall(arweave, key);
   const winston = await arweave.wallets.getBalance(address);
   const result = parseFloat(arweave.ar.winstonToAr(winston));
   return result;
+}
+
+export async function createTransactionForFee(
+  arweave: Arweave,
+  key: any,
+  page: string,
+  version: string
+): Promise<Transaction> {
+  const dataTransaction = await arweave.createTransaction(
+    {
+      data: page,
+    },
+    key
+  );
+  const address = await getAddressCall(arweave, key);
+  dataTransaction.addTag("Content-Type", "text/html");
+  dataTransaction.addTag("Issuer", address);
+  dataTransaction.addTag("App", "Ricardian Fabric");
+  dataTransaction.addTag("Version", version);
+  await arweave.transactions.sign(dataTransaction, key);
+  return dataTransaction;
+}
+
+export async function createTransactionPost(
+  arweave: Arweave,
+  tx: Transaction
+): Promise<CreateTransactionResult> {
+  const response: any = await arweave.transactions.post(tx);
+  //TODO: keys
+  return {
+    statusCode: response.status,
+    id: tx.id,
+    path: `http://localhost:1984/tx/${tx.id}/data.html`,
+  };
 }
 
 export async function createTransactionSend(
@@ -64,7 +99,7 @@ export async function createTransactionSend(
     {
       data: page,
     },
-    testweave.rootJWK
+    key
   );
   const address = await getAddressCall(arweave, key);
   dataTransaction.addTag("Content-Type", "text/html");
@@ -72,10 +107,9 @@ export async function createTransactionSend(
   dataTransaction.addTag("App", "Ricardian Fabric");
   dataTransaction.addTag("version", version);
   //TODO: add a hash of the page to the tags!!
-  await arweave.transactions.sign(dataTransaction, testweave.rootJWK);
+  await arweave.transactions.sign(dataTransaction, key);
   const response: any = await arweave.transactions.post(dataTransaction);
 
-  await arweave.transactions.post(dataTransaction);
   await testweave.mine();
   return {
     statusCode: response.status,
@@ -102,15 +136,14 @@ export async function acceptTransactionPay(arg: {
       target: TESTADDRESS,
       quantity: arweave.ar.arToWinston(arg.quantity),
     },
-    testweave.rootJWK
+    arg.key
   );
   dataTransaction.addTag("Content-Type", "text/html");
   //TODO: ADD MORE TAGS!
-  await arweave.transactions.sign(dataTransaction, testweave.rootJWK);
+  await arweave.transactions.sign(dataTransaction, arg.key);
   const response: any = await arweave.transactions.post(dataTransaction);
 
   await profitShare(arg.arweave, arg.key, arg.quantity);
-  await testweave.mine();
 
   return {
     statusCode: response.status,
@@ -129,13 +162,12 @@ export async function acceptTransactionFree(arg: {
     {
       data: arg.page,
     },
-    testweave.rootJWK
+    arg.key
   );
   dataTransaction.addTag("Content-Type", "text/html");
   //TODO: ADD MORE TAGS
-  await arweave.transactions.sign(dataTransaction, testweave.rootJWK);
+  await arweave.transactions.sign(dataTransaction, arg.key);
   const response: any = await arweave.transactions.post(dataTransaction);
-  await testweave.mine();
 
   return {
     statusCode: response.status,
