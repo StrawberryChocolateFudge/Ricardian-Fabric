@@ -1,10 +1,12 @@
 import { calculateFeeInWinston } from "../../arweave/arweave";
 import {
   createAcceptableContract,
+  createAcceptableContractTX,
   getCreatorWallet,
 } from "../../business/bloc";
 import {
   dispatch_removeError,
+  dispatch_renderCreateFee,
   dispatch_renderError,
 } from "../../dispatch/render";
 import { State } from "../../types";
@@ -36,12 +38,7 @@ export function renderCreateButtonClick(props: State) {
       dispatch_renderError("Only signer address is invalid");
       return;
     }
-    const price = getPrice();
-
-    if (parseFloat(price) < 0) {
-      dispatch_renderError("Price can't be negative!");
-      return;
-    }
+    const price = "NONE";
 
     const webhook = getWebhookCheckbox();
     const redirect = getRedirectCheckbox();
@@ -57,10 +54,10 @@ export function renderCreateButtonClick(props: State) {
     const wallet_file = getById("select-file-input") as HTMLInputElement;
     if (wallet_file.files !== null) {
       const getKey = async (key: any) => {
-        //Here I call the business logic to do stuff with the key and the other values
         const feeInWinston = calculateFeeInWinston(props.arweave, price);
         const fee = props.arweave.ar.winstonToAr(feeInWinston.toString());
-        await createAcceptableContract({
+        //Here I call the business logic to do stuff with the key and the other values
+        const tx = await createAcceptableContractTX({
           props,
           key,
           data: {
@@ -78,6 +75,10 @@ export function renderCreateButtonClick(props: State) {
             onlySigner,
           },
         });
+
+        const txfee = props.arweave.ar.winstonToAr(tx.reward);
+        //Show popup
+        dispatch_renderCreateFee(txfee,props,tx,key);
       };
       readFile(wallet_file.files, getKey);
     }
