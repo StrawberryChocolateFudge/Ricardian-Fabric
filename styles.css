@@ -1,3 +1,6 @@
+@import 'medium-editor/dist/css/themes/default.css';
+@import 'medium-editor/dist/css/medium-editor.css';
+
 body {
   background: radial-gradient(lightgrey 3px, transparent 4px),
     radial-gradient(lightgrey 3px, transparent 4px),
@@ -31,7 +34,7 @@ body {
   flex-direction: column;
   max-width: 350px;
   min-width: 350px;
-  background-color: white;
+  /* background-color: white; */
   margin-bottom: 30px;
   border-radius: 25px;
 }
@@ -72,6 +75,10 @@ body {
   color: darkgrey;
 }
 
+.button-row{
+  display: flex;
+}
+
 #save-contract {
   box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
   border-radius: 20px;
@@ -95,7 +102,7 @@ body {
 #overlay-layout {
   padding-left: 10px;
   padding-right: 10px;
-  height: 80%;
+  /* height: 80%; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -104,8 +111,18 @@ body {
   margin: 0 auto;
   box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
   border-radius: 10px;
+  overflow: auto;
 }
 
 #transaction-display {
   overflow: hidden;
+}
+
+.imgRow{
+  display: flex;
+  flex-direction: row;
+}
+
+.title{
+  color: #a4a4a4;
 }
