@@ -9,15 +9,27 @@
   </head>
   <body class="background">
     <div class="title-row">
-      <h1 class="center">Ricardian Fabric</h1>
-      <h5 class="center">
-        Create and share fulfillable financial contracts with Arweave
-      </h5>
+      <h1 class="center title">Ricardian Fabric</h1>
     </div>
 
-    <div data-version="0.0.1" data-contracttype="create" id="page">
+    <div
+      data-dependency="./main.ts"
+      data-version="0.0.1"
+      data-contracttype="create"
+      id="page"
+    >
+      <div class="imgRow">
+        <img
+          inline
+          height="100px"
+          src="./RicardianFabricLogo.jpg"
+          class="center"
+        />
+      </div>
+      <h5 class="center">
+        Create and share fulfillable contracts with Arweave
+      </h5>
       <hr />
-
       <div class="editable-container">
         <div aria-label="Editor" class="editable"></div>
         <div id="editor-control"></div>
@@ -28,22 +40,7 @@
           <th></th>
           <th></th>
         </tr>
-        <tr>
-          <td>
-            <label aria-labelledby="Price label" for="price-input"
-              >Price:</label
-            >
-          </td>
-          <td>
-            <input
-              aria-label="Input for price"
-              name="price"
-              id="price-input"
-              type="number"
-            />
-            <span> Ar</span>
-          </td>
-        </tr>
+
         <tr>
           <td>
             <label aria-labelledby="only signer field input"
@@ -146,19 +143,11 @@
         class="center"
         id="transaction-display"
       ></div>
-      <button
-        class="center width-100"
-        id="save-contract"
-        disabled
-        role="button"
-        aria-label="Create"
-      >
-        Create
-      </button>
+      <div class="center" id="button-slot"></div>
     </div>
     <div id="overlay">
       <div id="overlay-layout"></div>
     </div>
   </body>
-  <script id="main-script" async inline src="./main.ts"></script>
+  <script id="main-script" inline src="./main.ts"></script>
 </html>
