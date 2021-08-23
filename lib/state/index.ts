@@ -10,6 +10,7 @@ import {
   getPostToDataProp,
   getPriceFromDataProp,
   getRedirectFromDataProp,
+  getSourceFromDataProp,
   getVersionFromDataProp,
   getWebhookFromDataProp,
 } from "./dataPropGetters";
@@ -36,7 +37,7 @@ import { setStateHook } from "./setStateHook";
       expires: getExpiresFromDataProp(pageEl),
       createdDate: getCreatedDateFromDataProp(pageEl),
       version: getVersionFromDataProp(pageEl),
-      bundleSrcUrl: getBundleSrcUrl(),
+      bundleSrcUrl: getBundleSrcUrl(), // for PROD: getSourceFromDataProp(pageEl),
       currentUrl: getCurrentUrl(),
       onlySigner: getOnlySignerFromDataProp(pageEl),
     };
