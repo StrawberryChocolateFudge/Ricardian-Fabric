@@ -7,10 +7,14 @@ import { renderAcceptOnCLick } from "./actions/renderAcceptButton";
 import {
   disableButton,
   enableButton,
+  removeAcceptedButton,
+  removeButtons,
   removeError,
   removeLoadingIndicator,
   renderbalance,
   renderCounter,
+  renderCreateButton,
+  renderCreateFee,
   renderError,
   renderLoadingIndicator,
   renderTerms,
@@ -19,12 +23,15 @@ import {
 } from "./render";
 import { renderAcceptButton } from "./render";
 import { attachTermsButtonListeners } from "./actions/bannerButtonListeners";
+import { setBannerDisplayBlock } from "./utils";
+import { areYouSureButtons } from "./actions/areYouSureButtons";
 
 const Render: Renderer = {
   [RenderType.successMessage]: (props: State) => {},
   [RenderType.errorMessage]: (props: State) => {},
   [RenderType.createPage]: (props: State) => {},
   [RenderType.createButton]: (props: State) => {
+    renderCreateButton(true);
     // The order of attaching listeners is important
     postCheckboxSelect();
     onFileSelect(props);
@@ -72,6 +79,21 @@ const Render: Renderer = {
   [RenderType.renderTerms]: () => {
     renderTerms();
     attachTermsButtonListeners();
+  },
+  [RenderType.createFeeSummary]: (props: any) => {
+    renderCreateFee(props.fee);
+    areYouSureButtons(props);
+  },
+  [RenderType.noButtonPressed]: (props: State) => {
+    renderCreateButton(true);
+    renderCreateButtonClick(props);
+    enableButton(props);
+  },
+  [RenderType.yesButtonPressed]: (props: State) => {
+    removeButtons();
+  },
+  [RenderType.removeAcceptedButton]: (props: State) => {
+    removeAcceptedButton();
   },
 };
 
