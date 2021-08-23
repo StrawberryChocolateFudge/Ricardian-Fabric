@@ -23,6 +23,10 @@ export enum RenderType {
   redirectCounter = "redirectCounter",
   dateClickListener = "dateClickListener",
   renderTerms = "renderTerms",
+  createFeeSummary = "createFeeSummary",
+  noButtonPressed = "noButtonPressed",
+  yesButtonPressed = "yesButtonPressed",
+  removeAcceptedButton = "removeAcceptedButton",
 }
 
 export type Renderer = {
@@ -43,6 +47,10 @@ export type Renderer = {
   [RenderType.redirectCounter]: CallableFunction;
   [RenderType.dateClickListener]: CallableFunction;
   [RenderType.renderTerms]: CallableFunction;
+  [RenderType.createFeeSummary]: CallableFunction;
+  [RenderType.noButtonPressed]: CallableFunction;
+  [RenderType.yesButtonPressed]: CallableFunction;
+  [RenderType.removeAcceptedButton]: CallableFunction;
 };
 
 export enum EventType {
@@ -96,6 +104,7 @@ export type SetHookArgs = {
 
 type Dependency = {
   src: string;
+  code: string;
 };
 
 export type AcceptablePageProps = {
