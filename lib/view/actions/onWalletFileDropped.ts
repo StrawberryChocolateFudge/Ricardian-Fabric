@@ -20,6 +20,12 @@ export function onWalletFileDropped(props: State) {
 
   walletInput.onchange = function () {
     const file = walletInput.files[0];
+    const inputDisabled = walletInput.disabled;
+    if (inputDisabled === true) {
+      dropZone.classList.remove("drop-zone--over");
+
+      return;
+    }
     if (walletInput.files.length === 1 && file.type === "application/json") {
       // It's valid
       dispatch_promptSuccess(walletInput.files[0]);
@@ -44,6 +50,12 @@ export function onWalletFileDropped(props: State) {
   dropZone.ondrop = function (e: DragEvent) {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
+    const inputDisabled = walletInput.disabled;
+    if (inputDisabled === true) {
+      dropZone.classList.remove("drop-zone--over");
+
+      return;
+    }
     if (e.dataTransfer.files.length === 1 && file.type === "application/json") {
       walletInput.files = e.dataTransfer.files;
       dispatch_promptSuccess(e.dataTransfer.files[0]);
