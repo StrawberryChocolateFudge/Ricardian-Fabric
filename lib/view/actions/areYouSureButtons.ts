@@ -1,5 +1,7 @@
 import { postTransactionFromPage } from "../../business/bloc";
 import {
+  dispatch_enableAcceptableInputs,
+  dispatch_enableCreateInputs,
   dispatch_noButtonPressed,
   dispatch_yesButtonPressed,
 } from "../../dispatch/render";
@@ -11,6 +13,8 @@ export function areYouSureButtons(props: any) {
   const yesButton = getById("yes-button");
   noButton.onclick = function () {
     dispatch_noButtonPressed(props);
+    dispatch_enableCreateInputs();
+    dispatch_enableAcceptableInputs();
   };
 
   yesButton.onclick = function () {
