@@ -1,5 +1,6 @@
 import { createFulfilledContractTx, isOnlySigner } from "../../business/bloc";
 import {
+  dispatch_disableAcceptableInputs,
   dispatch_removeError,
   dispatch_renderError,
   dispatch_renderFee,
@@ -18,7 +19,7 @@ export function renderAcceptOnCLick(props: State) {
       if (validSigner) {
         const tx = await createFulfilledContractTx(props, key);
         const txfee = props.arweave.ar.winstonToAr(tx.reward);
-
+        dispatch_disableAcceptableInputs();
         dispatch_renderFee(txfee, props, tx, key);
       } else {
         dispatch_renderError("You are not allowed to sign this contract");
