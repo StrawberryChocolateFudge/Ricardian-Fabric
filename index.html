@@ -14,12 +14,14 @@
 
     <div
       data-dependency="./main.ts"
+      data-logosrc="https://i.ibb.co/dDv44zs/Ricardian-Fabric-Logo.jpg"
       data-version="0.0.1"
       data-contracttype="create"
       id="page"
     >
-      <div class="imgRow">
+      <div id="logo-placeholder" class="imgRow">
         <img
+          id="fabric-logo"
           inline
           height="100px"
           src="./RicardianFabricLogo.jpg"
@@ -34,9 +36,13 @@
         <div aria-label="Editor" class="editable"></div>
         <div id="editor-control"></div>
       </div>
-      <hr />
-      <table aria-label="input field container table" class="center">
+      <table
+        id="input-table"
+        aria-label="input field container table"
+        class="center"
+      >
         <tr>
+          <th></th>
           <th></th>
           <th></th>
         </tr>
@@ -52,7 +58,11 @@
               aria-label="only signer "
               id="onlysigner-input"
               type="text"
+              placeholder="address"
             />
+          </td>
+          <td>
+            <span id="onlysigner-tooltip"></span>
           </td>
         </tr>
         <tr>
@@ -74,6 +84,9 @@
               Never
             </button>
           </td>
+          <td>
+            <span id="expires-tooltip"></span>
+          </td>
         </tr>
         <tr>
           <td>
@@ -85,8 +98,11 @@
               name="postto"
               id="postto-input"
               type="url"
+              placeholder="https://"
             />
-            <span aria-label="/{id} is gonna be appended">/{id}</span>
+          </td>
+          <td>
+            <span id="postto-tooltip"></span>
           </td>
         </tr>
         <tr>
@@ -96,6 +112,8 @@
               for="webhook-checkbox"
               >Webhook:</label
             >
+          </td>
+          <td>
             <input
               aria-label="webhook-checkbox"
               id="webhook-checkbox"
@@ -103,35 +121,43 @@
             />
           </td>
           <td>
+            <span id="webhook-tooltip"></span>
+          </td>
+        </tr>
+        <tr>
+          <td>
             <label
               aria-labelledby="redirect-checkbox-label"
               for="redirect-checkbox"
               >Redirect:</label
             >
+          </td>
+          <td>
             <input
               aria-label="redirect-checkbox"
               id="redirect-checkbox"
               type="checkbox"
             />
           </td>
+          <td>
+            <span id="redirect-tooltip"></span>
+          </td>
         </tr>
-        <tr id="balance"></tr>
       </table>
+      <table id="address" class="center"></table>
+      <table id="balance" class="center"></table>
       <hr />
-      <label
-        aria-labelledby="select wallet label"
-        class="center"
-        id="wallet-label"
-        for="select-file-input"
-        >Wallet
-      </label>
-      <input
-        aria-label="select-walletfile-input"
-        name="select-file-input"
-        class="center"
-        id="select-file-input"
-        type="file"
-      />
+      <div id="wallet-dropzone" class="drop-zone">
+        <span id="drop-prompt" class="drop-zone__prompt"
+          >Drop Your wallet here or click to select it</span
+        >
+        <input
+          type="file"
+          name="wallet"
+          id="wallet-input"
+          class="drop-zone__input"
+        />
+      </div>
       <hr />
       <div
         aria-label="error-display-slot"
