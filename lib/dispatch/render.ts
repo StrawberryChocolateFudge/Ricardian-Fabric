@@ -1,4 +1,4 @@
-import { RenderType, State } from "../types";
+import { FeeType, RenderType, State } from "../types";
 import { dispatch } from "./dispatch";
 import { Events } from "../types";
 import Transaction from "arweave/node/lib/transaction";
@@ -94,14 +94,14 @@ export function dispatch_renderTerms() {
   });
 }
 
-export function dispatch_renderCreateFee(
+export function dispatch_renderFee(
   fee: string,
   props: State,
   tx: Transaction,
   key: any
 ) {
   dispatch(Events.render, {
-    type: RenderType.createFeeSummary,
+    type: RenderType.feeSummary,
     props: { ...props, fee, tx, key },
   });
 }
@@ -123,6 +123,25 @@ export function dispatch_yesButtonPressed(props: any) {
 export function dispatch_removeAcceptedButton(props: State) {
   dispatch(Events.render, {
     type: RenderType.removeAcceptedButton,
+    props,
+  });
+}
+export function dispatch_promptSuccess(file: File | string) {
+  dispatch(Events.render, {
+    type: RenderType.promptSuccess,
+    props: { file },
+  });
+}
+export function dispatch_promptError(message: string) {
+  dispatch(Events.render, {
+    type: RenderType.promptError,
+    props: { message },
+  });
+}
+
+export function dispatch_renderAddress(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.renderAddress,
     props,
   });
 }
