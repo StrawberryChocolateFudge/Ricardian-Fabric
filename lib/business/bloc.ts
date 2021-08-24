@@ -1,19 +1,16 @@
 import Transaction from "arweave/node/lib/transaction";
 import {
-  acceptTransactionFree,
-  acceptTransactionPay,
   calculateFeeInAr,
-  createTransactionSend,
   getArweaveCall,
   getBalanceCall,
   getAddressCall,
-  createTransactionForFee,
-  createTransactionPost,
+  transactionPost,
+  createAcceptablePageTransaction,
+  fulfilledTransactionCall,
 } from "../arweave/arweave";
 import {
   dispatch_disableButton,
   dispatch_redirectCounter,
-  dispatch_removeAcceptedButton,
   dispatch_removeLoadingIndicator,
   dispatch_renderError,
   dispatch_renderLoadingIndicator,
@@ -24,8 +21,8 @@ import {
   dispatch_getArweave,
   dispatch_setBalance,
 } from "../dispatch/stateChange";
-import { fetchDependency, hitWebhook } from "../fetch";
-import { AcceptablePageProps, State } from "../types";
+import { hitWebhook } from "../fetch";
+import { AcceptablePageProps, ContractTypes, State } from "../types";
 
 import {
   getAcceptableContract,
@@ -56,7 +53,7 @@ export async function getCreatorWallet(arweave: any, key: any) {
   return await getAddressCall(arweave, key);
 }
 
-export async function createAcceptableContractTX(args: {
+export async function createAcceptablePageContractTX(args: {
   props: State;
   key: any;
   data: AcceptablePageProps;
@@ -72,7 +69,7 @@ export async function createAcceptableContractTX(args: {
     },
   });
 
-  const tx = await createTransactionForFee(
+  const tx = await createAcceptablePageTransaction(
     args.props.arweave,
     args.key,
     page,
@@ -83,108 +80,45 @@ export async function createAcceptableContractTX(args: {
   return tx;
 }
 
-export async function postTransactionFromCreatePage(
+export async function createFulfilledContractTx(
+  props: State,
+  key: any
+): Promise<Transaction> {
+  dispatch_renderLoadingIndicator("transaction-display");
+  dispatch_disableButton(props);
+  const page = await fulfilledPage({ props, ar: "NONE", key });
+
+  const tx = await fulfilledTransactionCall(
+    props.arweave,
+    key,
+    page,
+    props.version
+  );
+  dispatch_removeLoadingIndicator("transaction-display");
+  return tx;
+}
+
+export async function postTransactionFromPage(
   props: State,
   tx: Transaction,
   key: any
 ) {
   dispatch_renderLoadingIndicator("transaction-display");
 
-  const result = await createTransactionPost(props.arweave, tx);
-  await getBalance(props.arweave, key);
+  const result = await transactionPost(props.arweave, tx);
   if (result.statusCode !== 200) {
     dispatch_removeLoadingIndicator("transaction-display");
     dispatch_renderError("An error occured when sending the transaction!");
   } else {
     dispatch_renderTransaction(result.path);
+
+    adjustBalance(props, key, tx.reward);
+    if (props.contracttype === ContractTypes.acceptable) {
+      await handlePost(props, result.id);
+    }
   }
 
   return result;
-}
-
-export async function createAcceptableContract(args: {
-  props: State;
-  key: any;
-  data: AcceptablePageProps;
-}) {
-  dispatch_disableButton(args.props);
-  dispatch_renderLoadingIndicator("transaction-display");
-  const src = args.props.bundleSrcUrl;
-  const code = await fetchDependency(src);
-  const page = await getAcceptablePageFromVDOM({
-    ...args.data,
-    mainDep: {
-      src,
-      code,
-    },
-  });
-  //TODO: handle not enough balance
-  const result = await createTransactionSend(
-    args.props.arweave,
-    args.key,
-    page,
-    args.data.version
-  );
-  await getBalance(args.props.arweave, args.key);
-  if (result.statusCode !== 200) {
-    dispatch_removeLoadingIndicator("transaction-display");
-    dispatch_renderError("An error occured when sending the transaction!");
-  } else {
-    dispatch_renderTransaction(result.path);
-  }
-
-  return result;
-}
-
-export async function acceptAndPayContract(data: {
-  props: State;
-  ar: string;
-  key: any;
-}) {
-  const props = data.props;
-
-  dispatch_disableButton(props);
-  dispatch_renderLoadingIndicator("transaction-display");
-  const page = await fulfilledPage(data);
-  const result = await acceptTransactionPay({
-    arweave: data.props.arweave,
-    key: data.key,
-    page,
-    target: props.creatorAddress,
-    quantity: data.ar,
-  });
-
-  if (result.statusCode !== 200) {
-    dispatch_removeLoadingIndicator("transaction-display");
-    dispatch_renderError("An error occured when sending the transaction!");
-  } else {
-    await handlePost(props, result.id);
-    await getBalance(props.arweave, data.key);
-    dispatch_renderTransaction(result.path);
-  }
-  //then I can redirect when I got the transaction id in the result
-}
-
-export async function acceptContract(props: State, key: any) {
-  dispatch_renderLoadingIndicator("transaction-display");
-  dispatch_disableButton(props);
-  const page = await fulfilledPage({ props, ar: "NONE", key });
-
-  const result = await acceptTransactionFree({
-    arweave: props.arweave,
-    key,
-    page,
-  });
-
-  if (result.statusCode !== 200) {
-    dispatch_removeLoadingIndicator("transaction-display");
-    dispatch_renderError("An error occured when sending the transaction!");
-  } else {
-    await handlePost(props, result.id);
-    await getBalance(props.arweave, key);
-    dispatch_renderTransaction(result.path);
-    dispatch_removeAcceptedButton(props);
-  }
 }
 
 export async function isOnlySigner(props: State, key: any): Promise<boolean> {
@@ -199,6 +133,21 @@ export async function isOnlySigner(props: State, key: any): Promise<boolean> {
       return false;
     }
   }
+}
+
+async function adjustBalance(props: State, key: any, reward: string) {
+  console.log(props)
+  const balanceInWinston = props.arweave.ar.arToWinston(
+    props.balance.toString()
+  );
+  const rewardInWinston = parseInt(reward);
+  const balanceAsInt = parseInt(balanceInWinston);
+  const newBalance = balanceAsInt - rewardInWinston;
+  const newBalanceInAR = props.arweave.ar.winstonToAr(newBalance.toString());
+  dispatch_setBalance({
+    balance: parseFloat(newBalanceInAR),
+    address: props.address,
+  });
 }
 
 async function handlePost(props: State, id: string) {
@@ -244,6 +193,7 @@ async function fulfilledPage(data: { props: State; ar: string; key: any }) {
     post: props.postto,
     webhook: props.webhook,
     redirect: props.redirect,
+    logoSrc: props.logoSrc,
   });
 }
 
