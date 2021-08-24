@@ -1,6 +1,7 @@
 import { html } from "lit-html";
 import { State } from "../../types";
 import { didExpire } from "../utils";
+import { helperTooltips } from "./helperTooltips";
 
 const showSecret = (props: State) => {
   //If it's posting to webhook, we can post a secret identifier
@@ -9,6 +10,11 @@ const showSecret = (props: State) => {
       <td aria-label="secret-label">Secret:</td>
       <td>
         <input aria-label="secret-input-label" id="secret-input" type="text" />
+      </td>
+      <td>
+        ${helperTooltips(
+          "A preshared secret, to find out more, ask the issuer!"
+        )}
       </td>
     </tr>`;
   }
@@ -44,8 +50,7 @@ export const acceptTools = (props: State) => {
               Expired
             </div>
           `
-        : html`
-            <table class="center">
+        : html` <table class="center">
               <tr>
                 <th></th>
                 <th></th>
