@@ -8,7 +8,7 @@ export const getPriceTemplate = (
     const formattedPrice = price === "NONE" ? "" : `${price} Ar`;
     return html` <tr>
         <td>
-          <label aria-label="price label">Price:</label>
+          <label aria-labelledby="price label">Price:</label>
         </td>
         <td>
           <div aria-label="price">${formattedPrice}</div>
@@ -16,7 +16,7 @@ export const getPriceTemplate = (
       </tr>
       <tr>
         <td>
-          <label aria-label="fee label">Fee:</label>
+          <label aria-labelledby="fee label">Fee:</label>
         </td>
         <td aria-label="fee">${fee} Ar</td>
       </tr>`;
@@ -25,33 +25,44 @@ export const getPriceTemplate = (
 
 export const createdDateTemplate = (date: string) => {
   return html` <tr>
-    <td aria-label="created date label">Created:</td>
+    <td aria-labelledby="created date label">Created:</td>
     <td aria-label="created date">${date}</td>
+  </tr>`;
+};
+
+export const signedDateTemplate = (date: string) => {
+  return html` <tr>
+    <td aria-labelledby="signed date label">Signed on:</td>
+    <td aria-label="signed date">${date}</td>
   </tr>`;
 };
 
 export const issuerTemplate = (address: string) => {
   return html`
     <tr>
-      <td aria-label="issuer label">Issuer:</td>
+      <td aria-labelledby="issuer label">Issuer:</td>
       <td aria-label="address">${address}</td>
+      <td></td>
     </tr>
   `;
 };
 
 export const expiryTemplate = (date: string) => html` <tr>
-  <td aria-label="expires label">Expires:</td>
+  <td aria-labelledby="expires label">Expires:</td>
   <td aria-label="date">${date}</td>
+  <td></td>
 </tr>`;
 
 export const getParticipantFromTemplate = (paidFrom: string) => html`<tr>
-  <td aria-label="participant label">Participant:</td>
+  <td aria-labelledby="participant label">Participant:</td>
   <td aria-label="participant">${paidFrom}</td>
+  <td></td>
 </tr>`;
 
 export const parentUrl = (url: string) => html`
   <tr>
-    <td aria-label="accepted at url label">Accepted at</td>
+    <td aria-labelledby="accepted at url label">Parent:</td>
     <td><a aria-label="accepted at url ${url}" href="${url}">${url}</a></td>
+    <td></td>
   </tr>
 `;
