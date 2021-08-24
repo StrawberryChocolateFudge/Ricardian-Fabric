@@ -56,9 +56,11 @@ For redirection, there is no secret but you may give a cookie on your website to
 
 After the build, the js dependency must be separately deployed.
 
-The URL to access is must be placed into the data-dependency on page.
+
+The URL to access it must be placed into the data-dependency on page.
 The state must be configured for using this dataprop with getSourceFromDataProp(pageEl)
 
+The same goes for the logo. it must be separately deployed and the url placed in the data-logo dataprop
 Then run `yarn inline`
 
 The final bundle.html is ready to be deployed!
