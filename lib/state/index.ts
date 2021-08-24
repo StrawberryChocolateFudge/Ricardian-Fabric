@@ -6,6 +6,8 @@ import {
   getCreatorAddressDataProp,
   getCurrentPageDataProp,
   getExpiresFromDataProp,
+  getImgSrcUrl,
+  getLogoSrcFromDataProp,
   getOnlySignerFromDataProp,
   getPostToDataProp,
   getPriceFromDataProp,
@@ -40,6 +42,7 @@ import { setStateHook } from "./setStateHook";
       bundleSrcUrl: getBundleSrcUrl(), // for PROD: getSourceFromDataProp(pageEl),
       currentUrl: getCurrentUrl(),
       onlySigner: getOnlySignerFromDataProp(pageEl),
+      logoSrc: getImgSrcUrl(), //getLogoSrcFromDataProp(pageEl),
     };
 
     const stateHandler = {
