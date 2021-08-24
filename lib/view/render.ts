@@ -166,3 +166,83 @@ export function renderTooltips() {
     redirect
   );
 }
+
+export function disableCreateInputs() {
+  const editor = getById("editor") as HTMLInputElement;
+  const onlySigner = getById("onlysigner-input") as HTMLInputElement;
+  const expires = getById("expires-input") as HTMLInputElement;
+  const never = getById("expires-reset") as HTMLInputElement;
+  const postto = getById("postto-input") as HTMLInputElement;
+  const webhook = getById("webhook-checkbox") as HTMLInputElement;
+  const redirect = getById("redirect-checkbox") as HTMLInputElement;
+  const walletInput = getById("wallet-input") as HTMLInputElement;
+  const walletDropzone = getById("wallet-dropzone") as HTMLDivElement;
+  editor.contentEditable = "false";
+  editor.style.cursor = "not-allowed";
+  onlySigner.disabled = true;
+  onlySigner.style.cursor = "not-allowed";
+  expires.disabled = true;
+  expires.style.cursor = "not-allowed";
+  never.disabled = true;
+  never.style.cursor = "not-allowed";
+  postto.disabled = true;
+  postto.style.cursor = "not-allowed";
+  webhook.disabled = true;
+  webhook.style.cursor = "not-allowed";
+  redirect.disabled = true;
+  redirect.style.cursor = "not-allowed";
+  walletInput.disabled = true;
+  walletInput.style.cursor = "not-allowed";
+  walletDropzone.style.cursor = "not-allowed";
+}
+export function enableCreateInputs() {
+  const editor = getById("editor") as HTMLInputElement;
+  const onlySigner = getById("onlysigner-input") as HTMLInputElement;
+  const expires = getById("expires-input") as HTMLInputElement;
+  const never = getById("expires-reset") as HTMLInputElement;
+  const postto = getById("postto-input") as HTMLInputElement;
+  const webhook = getById("webhook-checkbox") as HTMLInputElement;
+  const redirect = getById("redirect-checkbox") as HTMLInputElement;
+  const walletInput = getById("wallet-input") as HTMLInputElement;
+  const walletDropzone = getById("wallet-dropzone") as HTMLDivElement;
+
+  editor.contentEditable = "true";
+  editor.style.cursor = "text";
+  onlySigner.disabled = false;
+  onlySigner.style.cursor = "text";
+  expires.disabled = false;
+  expires.style.cursor = "pointer";
+  never.disabled = false;
+  never.style.cursor = "pointer";
+  postto.disabled = false;
+  postto.style.cursor = "text";
+  webhook.disabled = false;
+  webhook.style.cursor = "pointer";
+  redirect.disabled = false;
+  redirect.style.cursor = "pointer";
+  walletInput.disabled = false;
+  walletInput.style.cursor = "pointer";
+  walletDropzone.style.cursor = "pointer";
+}
+
+export function disableAcceptableInputs() {
+  const walletInput = getById("wallet-input") as HTMLInputElement;
+  const walletDropzone = getById("wallet-dropzone") as HTMLDivElement;
+  const secret = getById("secret-input") as HTMLInputElement;
+  walletInput.disabled = true;
+  walletInput.style.cursor = "not-allowed";
+  walletDropzone.style.cursor = "not-allowed";
+  secret.disabled = true;
+  secret.style.cursor = "not-allowed";
+}
+
+export function enableAcceptableInputs() {
+  const walletInput = getById("wallet-input") as HTMLInputElement;
+  const walletDropzone = getById("wallet-dropzone") as HTMLDivElement;
+  const secret = getById("secret-input") as HTMLInputElement;
+  walletInput.disabled = false;
+  walletInput.style.cursor = "pointer";
+  walletDropzone.style.cursor = "pointer";
+  secret.disabled = false;
+  secret.style.cursor = "text";
+}
