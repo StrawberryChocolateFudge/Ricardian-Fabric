@@ -14,7 +14,7 @@ const showSecret = (props: State) => {
   }
 };
 
-export const acceptButton = (props: State) => {
+export const acceptTools = (props: State) => {
   //Determine if expires is in the past or never
   const expired = didExpire(props.expires);
 
@@ -44,43 +44,52 @@ export const acceptButton = (props: State) => {
               Expired
             </div>
           `
-        : html` <table class="center">
+        : html`
+            <table class="center">
               <tr>
                 <th></th>
                 <th></th>
               </tr>
               ${showSecret(props)}
-              <tr>
-                <td>
-                  <label
-                    aria-label="select wallet label"
-                    id="select-file-label"
-                    for="select-file-input"
-                    >Wallet</label
-                  >
-                </td>
-                <td>
-                  <input
-                    aria-label="select wallet"
-                    name="select-file-input"
-                    id="select-file-input"
-                    type="file"
-                  />
-                </td>
-              </tr>
             </table>
             <hr />
+            <div id="wallet-dropzone" class="drop-zone">
+              <span id="drop-prompt" class="drop-zone__prompt"
+                >Drop Your wallet here or click to select it</span
+              >
+              <input
+                type="file"
+                name="wallet"
+                id="wallet-input"
+                class="drop-zone__input"
+              />
+            </div>
+            <hr />
+            <div
+              aria-label="error-display-slot"
+              class="center red"
+              id="error-display"
+            ></div>
+            <div
+              aria-label="transaction-display-slot"
+              class="center"
+              id="transaction-display"
+            ></div>
             <div class="center red" id="error-display"></div>
             <div class="center" id="redirect-display"></div>
             <div class="center" id="transaction-display"></div>
-            <button
-              aria-label="Accept and Sign"
-              name="sign"
-              id="accept-button"
-              class="center width-200"
-              disabled
-            >
-              Accept and Sign
-            </button>`}
+            <div class="center" id="button-slot"></div>`}
     </div>`;
 };
+
+export const AcceptButton = () => html`
+  <button
+    aria-label="Accept and Sign"
+    name="sign"
+    id="accept-button"
+    class="center width-200"
+    disabled
+  >
+    Accept
+  </button>
+`;
