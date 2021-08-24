@@ -8,6 +8,7 @@ import {
   dispatch_removeError,
   dispatch_renderFee,
   dispatch_renderError,
+  dispatch_disableCreateInputs,
 } from "../../dispatch/render";
 import { FeeType, FileType, State } from "../../types";
 import {
@@ -79,6 +80,8 @@ export function renderCreateButtonClick(props: State) {
         });
 
         const txfee = props.arweave.ar.winstonToAr(tx.reward);
+        dispatch_disableCreateInputs();
+
         //Show popup
         dispatch_renderFee(txfee, props, tx, key);
       };
