@@ -8,6 +8,7 @@ import {
 } from "./components";
 import { mainDep } from "./dependencies";
 import { loadingIndicator } from "./loadingIndicator";
+import { Logo } from "./logo";
 
 export const acceptablePageLayout = (props: AcceptablePageProps) => html`
   <style>
@@ -61,6 +62,54 @@ export const acceptablePageLayout = (props: AcceptablePageProps) => html`
     .title {
       color: #f2f2f2;
     }
+    .imgRow {
+      display: flex;
+      flex-direction: row;
+    }
+    .drop-zone {
+      margin: 0 auto;
+      max-width: 200px;
+      min-width: 200px;
+      height: 200px;
+      padding: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-family: "Quicksand", sans-serif;
+      font-weight: 500;
+      font-size: 20px;
+      cursor: pointer;
+      color: #cccccc;
+      border: 4px dashed #cccccc;
+      border-radius: 10px;
+    }
+    .drop-zone--over {
+      border-style: solid;
+    }
+    .drop-zone__input {
+      display: none;
+    }
+    #display-table {
+      font-family: Arial, Helvetica, sans-serif;
+      border-collapse: collapse;
+    }
+
+    #display-table tr {
+      background-color: #f2f2f2;
+    }
+
+    #display-table tr:hover {
+      background-color: white;
+    }
+
+    #display-table th {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      text-align: left;
+      background-color: white;
+      color: white;
+    }
   </style>
   <body>
     ${acceptablePage(props)} ${mainDep(props.mainDep.src)}
@@ -82,12 +131,13 @@ const acceptablePage = (props: AcceptablePageProps) => html`
     data-onlysigner="${props.onlySigner}"
     id="page"
   >
+    ${Logo(props.logoSrc)}
     <hr />
     <h5 aria-label="Carefully read the contract bellow" class="center">
       Carefully read the contract bellow
     </h5>
     <div class="center" id="contract-display"></div>
-    <table class="center">
+    <table id="display-table" class="center">
       <tr>
         <th></th>
         <th></th>
@@ -95,9 +145,10 @@ const acceptablePage = (props: AcceptablePageProps) => html`
       ${issuerTemplate(props.creatorAddress)}
       ${createdDateTemplate(props.createdDate)} ${expiryTemplate(props.expires)}
       ${getPriceTemplate(props.price, props.fee)}
-      <tr id="balance" class="center"></tr>
     </table>
-    <hr />
+    <table id="address" class="center"></table>
+    <table id="balance" class="center"></table>
+
     <div id="action-container" class="center">${loadingIndicator}</div>
   </div>
 `;
