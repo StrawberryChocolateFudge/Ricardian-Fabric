@@ -1,5 +1,5 @@
-@import 'medium-editor/dist/css/themes/default.css';
-@import 'medium-editor/dist/css/medium-editor.css';
+@import "medium-editor/dist/css/themes/default.css";
+@import "medium-editor/dist/css/medium-editor.css";
 
 body {
   background: radial-gradient(lightgrey 3px, transparent 4px),
@@ -75,7 +75,7 @@ body {
   color: darkgrey;
 }
 
-.button-row{
+.button-row {
   display: flex;
 }
 
@@ -118,11 +118,58 @@ body {
   overflow: hidden;
 }
 
-.imgRow{
+.imgRow {
   display: flex;
   flex-direction: row;
 }
 
-.title{
+.title {
   color: #a4a4a4;
+}
+
+.drop-zone {
+  margin: 0 auto;
+  max-width: 200px;
+  min-width: 200px;
+  height: 200px;
+  padding: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: "Quicksand", sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  cursor: pointer;
+  color: #cccccc;
+  border: 4px dashed #cccccc;
+  border-radius: 10px;
+}
+.drop-zone--over {
+  border-style: solid;
+}
+.drop-zone__input {
+  display: none;
+}
+
+#input-table {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  /* width: 100%; */
+}
+
+#input-table tr {
+  background-color: #f2f2f2;
+}
+
+#input-table tr:hover {
+  background-color: white;
+}
+
+#input-table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: white;
+  color: white;
 }
