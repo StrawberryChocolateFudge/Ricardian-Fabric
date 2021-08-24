@@ -7,6 +7,7 @@ import {
   getPriceTemplate,
   issuerTemplate,
 } from "./components";
+import { Logo } from "./logo";
 
 export const fulfilledPageLayout = (props: FulfilledPageProps) => html`
   <style>
@@ -60,6 +61,10 @@ export const fulfilledPageLayout = (props: FulfilledPageProps) => html`
     .title {
       color: #f2f2f2;
     }
+    .imgRow {
+      display: flex;
+      flex-direction: row;
+    }
   </style>
 
   <body>
@@ -83,6 +88,7 @@ export const fulfilledPage = (props: FulfilledPageProps) => html`
     data-fee="${props.fee}"
     id="page"
   >
+    ${Logo(props.logoSrc)}
     <hr />
     <h5 aria-label="Signed Contract" class="center">Signed Contract</h5>
     <div class="center" id="contract-display"></div>
