@@ -4,7 +4,6 @@ import Arweave from "arweave";
 import Transaction from "arweave/node/lib/transaction";
 
 const FEE = 5; // This is 0.5 when calculated
-export const TESTADDRESS = "1seRanklLU_1VTGkEk7P0xAwMJfA7owA1JHW5KyZKlY";
 let testweave: TestWeave;
 
 export function calculateFeeInWinston(arweave: Arweave, price: string): number {
@@ -55,7 +54,7 @@ export async function getBalanceCall(
   return result;
 }
 
-export async function createTransactionForFee(
+export async function createAcceptablePageTransaction(
   arweave: Arweave,
   key: any,
   page: string,
@@ -67,111 +66,40 @@ export async function createTransactionForFee(
     },
     key
   );
-  const address = await getAddressCall(arweave, key);
   dataTransaction.addTag("Content-Type", "text/html");
-  dataTransaction.addTag("Issuer", address);
   dataTransaction.addTag("App", "Ricardian Fabric");
   dataTransaction.addTag("Version", version);
   await arweave.transactions.sign(dataTransaction, key);
   return dataTransaction;
 }
 
-export async function createTransactionPost(
-  arweave: Arweave,
-  tx: Transaction
-): Promise<CreateTransactionResult> {
-  const response: any = await arweave.transactions.post(tx);
-  //TODO: keys
-  return {
-    statusCode: response.status,
-    id: tx.id,
-    path: `http://localhost:1984/tx/${tx.id}/data.html`,
-  };
-}
-
-export async function createTransactionSend(
+export async function fulfilledTransactionCall(
   arweave: Arweave,
   key: any,
   page: string,
   version: string
-): Promise<CreateTransactionResult> {
+): Promise<Transaction> {
   const dataTransaction = await arweave.createTransaction(
     {
       data: page,
     },
     key
   );
-  const address = await getAddressCall(arweave, key);
   dataTransaction.addTag("Content-Type", "text/html");
-  dataTransaction.addTag("Issuer", address);
   dataTransaction.addTag("App", "Ricardian Fabric");
-  dataTransaction.addTag("version", version);
-  //TODO: add a hash of the page to the tags!!
+  dataTransaction.addTag("Version", version);
   await arweave.transactions.sign(dataTransaction, key);
-  const response: any = await arweave.transactions.post(dataTransaction);
-
-  await testweave.mine();
-  return {
-    statusCode: response.status,
-    id: dataTransaction.id,
-    path: `http://localhost:1984/tx/${dataTransaction.id}/data.html`,
-  };
+  return dataTransaction;
 }
 
-export async function profitShare(arweave: Arweave, key: any, price: string) {
-  const fee = calculateFeeInWinston(arweave, price);
-}
-
-export async function acceptTransactionPay(arg: {
-  arweave: Arweave;
-  key: any;
-  page: string;
-  target: string;
-  quantity: string;
-}) {
-  const arweave = arg.arweave;
-  const dataTransaction = await arweave.createTransaction(
-    {
-      data: arg.page,
-      target: TESTADDRESS,
-      quantity: arweave.ar.arToWinston(arg.quantity),
-    },
-    arg.key
-  );
-  dataTransaction.addTag("Content-Type", "text/html");
-  //TODO: ADD MORE TAGS!
-  await arweave.transactions.sign(dataTransaction, arg.key);
-  const response: any = await arweave.transactions.post(dataTransaction);
-
-  await profitShare(arg.arweave, arg.key, arg.quantity);
-
+export async function transactionPost(
+  arweave: Arweave,
+  tx: Transaction
+): Promise<CreateTransactionResult> {
+  const response: any = await arweave.transactions.post(tx);
   return {
     statusCode: response.status,
-    id: dataTransaction.id,
-    path: `http://localhost:1984/tx/${dataTransaction.id}/data.html`,
-  };
-}
-
-export async function acceptTransactionFree(arg: {
-  arweave: Arweave;
-  key: any;
-  page: any;
-}) {
-  const arweave = arg.arweave;
-  const dataTransaction = await arweave.createTransaction(
-    {
-      data: arg.page,
-    },
-    arg.key
-  );
-  dataTransaction.addTag("Content-Type", "text/html");
-  //TODO: ADD MORE TAGS
-  await arweave.transactions.sign(dataTransaction, arg.key);
-  const response: any = await arweave.transactions.post(dataTransaction);
-
-  return {
-    statusCode: response.status,
-    id: dataTransaction.id,
-    path: `http://localhost:1984/tx/${dataTransaction.id}/data.html`,
+    id: tx.id,
+    path: `http://localhost:1984/tx/${tx.id}/data.html`,
   };
 }
