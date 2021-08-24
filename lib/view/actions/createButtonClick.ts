@@ -1,19 +1,18 @@
 import { calculateFeeInWinston } from "../../arweave/arweave";
 import {
-  createAcceptableContract,
-  createAcceptableContractTX,
+  createAcceptablePageContractTX,
   getCreatorWallet,
 } from "../../business/bloc";
 import {
+  dispatch_disableButton,
   dispatch_removeError,
-  dispatch_renderCreateFee,
+  dispatch_renderFee,
   dispatch_renderError,
 } from "../../dispatch/render";
-import { State } from "../../types";
+import { FeeType, FileType, State } from "../../types";
 import {
   getById,
   getExpires,
-  getPrice,
   getPostTo,
   readFile,
   getWebhookCheckbox,
@@ -29,6 +28,7 @@ export function renderCreateButtonClick(props: State) {
 
     if (expired) {
       dispatch_renderError("Date expired!");
+      dispatch_disableButton(props);
       return;
     }
 
@@ -51,13 +51,14 @@ export function renderCreateButtonClick(props: State) {
       }
     }
 
-    const wallet_file = getById("select-file-input") as HTMLInputElement;
+    const wallet_file = getById("wallet-input") as HTMLInputElement;
+
     if (wallet_file.files !== null) {
       const getKey = async (key: any) => {
         const feeInWinston = calculateFeeInWinston(props.arweave, price);
         const fee = props.arweave.ar.winstonToAr(feeInWinston.toString());
         //Here I call the business logic to do stuff with the key and the other values
-        const tx = await createAcceptableContractTX({
+        const tx = await createAcceptablePageContractTX({
           props,
           key,
           data: {
@@ -73,14 +74,16 @@ export function renderCreateButtonClick(props: State) {
             creatorAddress: await getCreatorWallet(props.arweave, key),
             fee,
             onlySigner,
+            logoSrc: props.logoSrc,
           },
         });
 
         const txfee = props.arweave.ar.winstonToAr(tx.reward);
         //Show popup
-        dispatch_renderCreateFee(txfee,props,tx,key);
+        dispatch_renderFee(txfee, props, tx, key);
       };
-      readFile(wallet_file.files, getKey);
+      readFile(wallet_file.files, getKey, FileType.key);
     }
   };
 }
+
