@@ -30,33 +30,42 @@ export enum RenderType {
   promptSuccess = "promptSuccess",
   promptError = "promptError",
   renderAddress = "renderAddress",
+  disableCreateInputs = "disableCreateInputs",
+  enableCreateInputs = "enableCreateInputs",
+  disableAcceptableInputs = "disableAcceptableInputs",
+  enableAcceptableInputs = "enableAcceptableInputs",
 }
+type RenderFunction = (props: any) => void;
 
 export type Renderer = {
-  [RenderType.successMessage]: CallableFunction;
-  [RenderType.errorMessage]: CallableFunction;
-  [RenderType.createPage]: CallableFunction;
-  [RenderType.createButton]: CallableFunction;
-  [RenderType.acceptButton]: CallableFunction;
-  [RenderType.balance]: CallableFunction;
-  [RenderType.addLoadingIndicator]: CallableFunction;
-  [RenderType.removeLoadingIndicator]: CallableFunction;
-  [RenderType.transaction]: CallableFunction;
-  [RenderType.renderError]: CallableFunction;
-  [RenderType.removeError]: CallableFunction;
-  [RenderType.enableButton]: CallableFunction;
-  [RenderType.disableButton]: CallableFunction;
-  [RenderType.version]: CallableFunction;
-  [RenderType.redirectCounter]: CallableFunction;
-  [RenderType.dateClickListener]: CallableFunction;
-  [RenderType.renderTerms]: CallableFunction;
-  [RenderType.feeSummary]: CallableFunction;
-  [RenderType.noButtonPressed]: CallableFunction;
-  [RenderType.yesButtonPressed]: CallableFunction;
-  [RenderType.removeAcceptedButton]: CallableFunction;
-  [RenderType.promptSuccess]: CallableFunction;
-  [RenderType.promptError]: CallableFunction;
-  [RenderType.renderAddress]: CallableFunction;
+  [RenderType.successMessage]: RenderFunction;
+  [RenderType.errorMessage]: RenderFunction;
+  [RenderType.createPage]: RenderFunction;
+  [RenderType.createButton]: RenderFunction;
+  [RenderType.acceptButton]: RenderFunction;
+  [RenderType.balance]: RenderFunction;
+  [RenderType.addLoadingIndicator]: RenderFunction;
+  [RenderType.removeLoadingIndicator]: RenderFunction;
+  [RenderType.transaction]: RenderFunction;
+  [RenderType.renderError]: RenderFunction;
+  [RenderType.removeError]: RenderFunction;
+  [RenderType.enableButton]: RenderFunction;
+  [RenderType.disableButton]: RenderFunction;
+  [RenderType.version]: RenderFunction;
+  [RenderType.redirectCounter]: RenderFunction;
+  [RenderType.dateClickListener]: RenderFunction;
+  [RenderType.renderTerms]: RenderFunction;
+  [RenderType.feeSummary]: RenderFunction;
+  [RenderType.noButtonPressed]: RenderFunction;
+  [RenderType.yesButtonPressed]: RenderFunction;
+  [RenderType.removeAcceptedButton]: RenderFunction;
+  [RenderType.promptSuccess]: RenderFunction;
+  [RenderType.promptError]: RenderFunction;
+  [RenderType.renderAddress]: RenderFunction;
+  [RenderType.disableCreateInputs]: RenderFunction;
+  [RenderType.enableCreateInputs]: RenderFunction;
+  [RenderType.disableAcceptableInputs]: RenderFunction;
+  [RenderType.enableAcceptableInputs]: RenderFunction;
 };
 
 export enum EventType {
