@@ -5,8 +5,12 @@ import { onFileSelect } from "./actions/onFileSelect";
 import { postCheckboxSelect } from "./actions/postCheckboxSelect";
 import { renderAcceptOnCLick } from "./actions/renderAcceptButton";
 import {
+  disableAcceptableInputs,
   disableButton,
+  disableCreateInputs,
+  enableAcceptableInputs,
   enableButton,
+  enableCreateInputs,
   removeAcceptedButton,
   removeButtons,
   removeError,
@@ -107,8 +111,14 @@ const Render: Renderer = {
   },
 
   [RenderType.noButtonPressed]: (props: State) => {
-    renderCreateButton(true);
-    renderCreateButtonClick(props);
+    if (props.contracttype === ContractTypes.create) {
+      renderCreateButton(true);
+      renderCreateButtonClick(props);
+    } else if (props.contracttype === ContractTypes.acceptable) {
+      renderAcceptButton(props);
+      renderAcceptOnCLick(props);
+    }
+
     enableButton(props);
   },
   [RenderType.yesButtonPressed]: (props: State) => {
@@ -122,6 +132,18 @@ const Render: Renderer = {
   },
   [RenderType.promptError]: (props: { message: string }) => {
     updatePromptError(props.message);
+  },
+  [RenderType.disableCreateInputs]: (props: {}) => {
+    disableCreateInputs();
+  },
+  [RenderType.enableCreateInputs]: (props: {}) => {
+    enableCreateInputs();
+  },
+  [RenderType.disableAcceptableInputs]: (props: {}) => {
+    disableAcceptableInputs();
+  },
+  [RenderType.enableAcceptableInputs]: (props: {}) => {
+    enableAcceptableInputs();
   },
 };
 
