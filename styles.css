@@ -26,6 +26,7 @@ body {
     #fff;
   background-size: 109px 109px, 109px 109px, 100% 6px, 109px 109px, 109px 109px;
   background-position: 54px 55px, 0px 0px, 0px 0px, 0px 0px, 0px 0px;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .title-row {
@@ -172,4 +173,20 @@ body {
   text-align: left;
   background-color: white;
   color: white;
+}
+#expires-reset {
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  background-color: white;
+  color: black;
+}
+
+.cursor-text {
+  cursor: text;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
