@@ -1,3 +1,5 @@
+import { FileType } from "../types";
+
 const storageKEY = "RicardianFabric";
 
 export function getById(id: string): HTMLElement {
@@ -27,19 +29,31 @@ export function getFromUrl() {
   return window.location.pathname;
 }
 
-export function readFile(files: FileList, getKey: CallableFunction) {
+export function readFile(
+  files: FileList,
+  getContent: CallableFunction,
+  fileType: FileType
+) {
   const reader = new FileReader();
 
-  reader.onload = function (e: ProgressEvent) {
-    const key = getKeyFromFile(e);
-    getKey(key);
-  };
+  if (fileType === FileType.key) {
+    reader.onload = function (e: ProgressEvent) {
+      const data = getKeyFromFile(e);
+      getContent(data);
+    };
 
-  reader.onerror = function (e) {
-    console.log(e);
-  };
+    reader.onerror = function (e) {
+      console.log(e);
+    };
 
-  reader.readAsText(files[0], "UFT-8");
+    reader.readAsText(files[0], "UFT-8");
+  } else if (fileType === FileType.pdf) {
+    reader.readAsDataURL(files[0]);
+
+    reader.onloadend = function (event) {
+      getContent(event.target.result);
+    };
+  }
 }
 
 export function getKeyFromFile(fileEvent: ProgressEvent) {
@@ -158,4 +172,8 @@ export function getTermsAccepted(): boolean {
   } else {
     return parsed.termsAccepted;
   }
+}
+
+export function getPromptEl(): HTMLElement {
+  return getById("drop-prompt");
 }
