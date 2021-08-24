@@ -25,7 +25,7 @@ export const CreateSummary = (fee: string) => {
     </style>
     <div class="center">
       <p class="center">Are you sure?</p>
-      <p>Transaction Fee: <span>${fee}</span>Ar</p>
+      <p>Transaction Fee: <span>${fee}</span> Ar</p>
       <div class="button-row">
         <button id="no-button">No</button> <button id="yes-button">Yes</button>
       </div>
