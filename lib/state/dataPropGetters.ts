@@ -44,10 +44,19 @@ export function getBundleSrcUrl(): string {
   return mainScript.src;
 }
 
+export function getImgSrcUrl(): string {
+  const img = getById("fabric-logo") as HTMLScriptElement;
+  return img.src;
+}
+
 export function getOnlySignerFromDataProp(page: HTMLElement): string {
   return page.dataset.onlysigner;
 }
 
 export function getSourceFromDataProp(page: HTMLElement): string {
   return page.dataset.dependency;
+}
+
+export function getLogoSrcFromDataProp(page: HTMLElement): string {
+  return page.dataset.logosrc;
 }
