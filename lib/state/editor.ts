@@ -1,7 +1,8 @@
 import MediumEditor from "medium-editor";
-import { getById } from "../view/utils";
+
 
 export default function createNewEditor() {
+  //@ts-ignore
   const editor = new MediumEditor(".editable", {
     imageDragging: false,
     toolbar: {
