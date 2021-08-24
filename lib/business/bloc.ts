@@ -136,7 +136,6 @@ export async function isOnlySigner(props: State, key: any): Promise<boolean> {
 }
 
 async function adjustBalance(props: State, key: any, reward: string) {
-  console.log(props)
   const balanceInWinston = props.arweave.ar.arToWinston(
     props.balance.toString()
   );
