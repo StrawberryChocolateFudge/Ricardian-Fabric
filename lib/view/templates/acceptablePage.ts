@@ -38,6 +38,7 @@ export const acceptablePageLayout = (props: AcceptablePageProps) => html`
       background-size: 109px 109px, 109px 109px, 100% 6px, 109px 109px,
         109px 109px;
       background-position: 54px 55px, 0px 0px, 0px 0px, 0px 0px, 0px 0px;
+      font-family: Arial, Helvetica, sans-serif;
     }
     .center {
       margin: 0 auto;
@@ -109,6 +110,9 @@ export const acceptablePageLayout = (props: AcceptablePageProps) => html`
       text-align: left;
       background-color: white;
       color: white;
+    }
+    #secret-input {
+      cursor: text;
     }
   </style>
   <body>
