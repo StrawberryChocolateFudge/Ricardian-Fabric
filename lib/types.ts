@@ -23,10 +23,13 @@ export enum RenderType {
   redirectCounter = "redirectCounter",
   dateClickListener = "dateClickListener",
   renderTerms = "renderTerms",
-  createFeeSummary = "createFeeSummary",
+  feeSummary = "feeSummary",
   noButtonPressed = "noButtonPressed",
   yesButtonPressed = "yesButtonPressed",
   removeAcceptedButton = "removeAcceptedButton",
+  promptSuccess = "promptSuccess",
+  promptError = "promptError",
+  renderAddress = "renderAddress",
 }
 
 export type Renderer = {
@@ -47,10 +50,13 @@ export type Renderer = {
   [RenderType.redirectCounter]: CallableFunction;
   [RenderType.dateClickListener]: CallableFunction;
   [RenderType.renderTerms]: CallableFunction;
-  [RenderType.createFeeSummary]: CallableFunction;
+  [RenderType.feeSummary]: CallableFunction;
   [RenderType.noButtonPressed]: CallableFunction;
   [RenderType.yesButtonPressed]: CallableFunction;
   [RenderType.removeAcceptedButton]: CallableFunction;
+  [RenderType.promptSuccess]: CallableFunction;
+  [RenderType.promptError]: CallableFunction;
+  [RenderType.renderAddress]: CallableFunction;
 };
 
 export enum EventType {
@@ -94,6 +100,7 @@ export type State = {
   currentUrl: string;
   version: string;
   onlySigner: string;
+  logoSrc: string;
 };
 
 export type SetHookArgs = {
@@ -121,6 +128,7 @@ export type AcceptablePageProps = {
   fee: string;
   legalContract: string;
   onlySigner: string;
+  logoSrc: string;
 };
 
 export type FulfilledPageProps = {
@@ -137,6 +145,7 @@ export type FulfilledPageProps = {
   legalContract: string;
   paidFrom: string;
   parentUrl: string;
+  logoSrc: string;
 };
 
 export type CreateTransactionResult = {
@@ -144,3 +153,12 @@ export type CreateTransactionResult = {
   statusCode: number;
   path: string;
 };
+export enum FileType {
+  key = "key",
+  pdf = "pdf",
+}
+
+export enum FeeType {
+  createPage,
+  acceptPage,
+}
