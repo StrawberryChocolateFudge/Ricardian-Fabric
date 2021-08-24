@@ -33,7 +33,7 @@
       </h5>
       <hr />
       <div class="editable-container">
-        <div aria-label="Editor" class="editable"></div>
+        <div id="editor" aria-label="Editor" class="cursor-text editable"></div>
         <div id="editor-control"></div>
       </div>
       <table
@@ -58,6 +58,7 @@
               aria-label="only signer "
               id="onlysigner-input"
               type="text"
+              class="cursor-text"
               placeholder="address"
             />
           </td>
@@ -74,11 +75,13 @@
               aria-label="expires date input"
               name="expires"
               id="expires-input"
+              class="cursor-pointer"
               type="date"
             />
             <button
               aria-label="never expires button"
               name="never"
+              class="cursor-pointer"
               id="expires-reset"
             >
               Never
@@ -99,6 +102,7 @@
               id="postto-input"
               type="url"
               placeholder="https://"
+              class="cursor-text"
             />
           </td>
           <td>
@@ -118,6 +122,7 @@
               aria-label="webhook-checkbox"
               id="webhook-checkbox"
               type="checkbox"
+              class="cursor-pointer"
             />
           </td>
           <td>
@@ -137,6 +142,7 @@
               aria-label="redirect-checkbox"
               id="redirect-checkbox"
               type="checkbox"
+              class="cursor-pointer"
             />
           </td>
           <td>
@@ -155,7 +161,7 @@
           type="file"
           name="wallet"
           id="wallet-input"
-          class="drop-zone__input"
+          class="cursor-pointer drop-zone__input"
         />
       </div>
       <hr />
