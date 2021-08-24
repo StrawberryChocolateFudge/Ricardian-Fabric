@@ -1,11 +1,10 @@
 import { html } from "lit-html";
 import { FulfilledPageProps } from "../../types";
 import {
-  createdDateTemplate,
-  expiryTemplate,
   getParticipantFromTemplate,
-  getPriceTemplate,
   issuerTemplate,
+  parentUrl,
+  signedDateTemplate,
 } from "./components";
 import { Logo } from "./logo";
 
@@ -37,6 +36,7 @@ export const fulfilledPageLayout = (props: FulfilledPageProps) => html`
       background-size: 109px 109px, 109px 109px, 100% 6px, 109px 109px,
         109px 109px;
       background-position: 54px 55px, 0px 0px, 0px 0px, 0px 0px, 0px 0px;
+      font-family: Arial, Helvetica, sans-serif;
     }
     .center {
       margin: 0 auto;
@@ -65,6 +65,26 @@ export const fulfilledPageLayout = (props: FulfilledPageProps) => html`
       display: flex;
       flex-direction: row;
     }
+    #display-table {
+      font-family: Arial, Helvetica, sans-serif;
+      border-collapse: collapse;
+    }
+
+    #display-table tr {
+      background-color: #f2f2f2;
+    }
+
+    #display-table tr:hover {
+      background-color: white;
+    }
+
+    #display-table th {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      text-align: left;
+      background-color: white;
+      color: white;
+    }
   </style>
 
   <body>
@@ -92,14 +112,14 @@ export const fulfilledPage = (props: FulfilledPageProps) => html`
     <hr />
     <h5 aria-label="Signed Contract" class="center">Signed Contract</h5>
     <div class="center" id="contract-display"></div>
-    <table class="center">
+    <table id="display-table" class="center">
       <tr>
+        <th></th>
         <th></th>
         <th></th>
         ${issuerTemplate(props.creatorAddress)}
         ${getParticipantFromTemplate(props.paidFrom)}
-        ${createdDateTemplate(props.createdDate)}
-        ${getPriceTemplate(props.price, props.fee)}
+        ${signedDateTemplate(props.createdDate)} ${parentUrl(props.parentUrl)}
       </tr>
     </table>
     <hr />
