@@ -1,18 +1,37 @@
 import { html, render } from "lit-html";
-import { ContractTypes, State } from "../types";
-import { acceptButton } from "./templates/acceptButton";
-import { balanceTemplate } from "./templates/balance";
-import { helperTooltips } from "./templates/helperTooltips";
-import { instrumentSettings } from "./templates/instrumentSettings";
-import { loadingIndicator } from "./templates/loadingIndicator";
-import { redirectCounter } from "./templates/redirectCounter";
-import { termsLayout } from "./templates/terms";
-import { transactionUrl } from "./templates/transaction";
-import { copyStringToClipboard, getById, setBannerDisplayBlock } from "./utils";
+import { ContractTypes, NetworkingPage, State } from "../types";
+import { acceptButton } from "./templates/acceptable/acceptButton";
+import { addressTemplate, balanceTemplate } from "./templates/components/balance";
+import { CreatePage } from "./templates/pages/createPage";
+import { helperTooltips } from "./templates/components/helperTooltips";
+import { loadingIndicator } from "./templates/components/loadingIndicator";
+import { redirectCounter } from "./templates/components/redirectCounter";
+import { termsLayout } from "./templates/components/terms";
+import { transactionUrl } from "./templates/components/transaction";
+import {
+  copyStringToClipboard,
+  getById,
+  getPDFDisplay,
+  getPDFInputEl,
+  getPromptEl,
+  getPSTCheckboxEl,
+  getPSTContractEl,
+  instrumentDeriveEl,
+  instrumentNameEl,
+  instrumentSupplyEl,
+  instrumentTickerEl,
+  isInstrumentEl,
+} from "./utils";
 
-export async function renderbalance(balance: number) {
+export async function renderPage(props: State) {
+  render(CreatePage(props), getById("page"));
+}
+
+export async function renderbalance(balance: number, address: string) {
   const balanceEl = getById("balance");
+  const addressEl = getById("address");
   render(balanceTemplate(balance), balanceEl);
+  render(addressTemplate(address), addressEl);
 }
 
 export function renderAcceptButton(props: State) {
@@ -96,12 +115,14 @@ export function renderToolTipHelptextsForCreate() {
   const posttoTooltip = getById("postTo-tooltip");
   const webhookTooltip = getById("webhook-tooltip");
   render(
-    helperTooltips(`Price in Ar. The 0.5% fee is not included.`),
+    helperTooltips(
+      `Price in Ar. It must be under the legal limit allowed by your local regulation. The 0.5% fee is not included.`
+    ),
     pricetooltip
   );
   render(
     helperTooltips(
-      "Profit sharing contract id.\n0.2% fee in Ar will be transferred to a random token holder.\nThis is unavailabe if you are issuing instruments."
+      "Profit sharing contract id.\nAn extra 0.2% fee will be added and will be transferred to a random token holder.\n"
     ),
     psttooltip
   );
@@ -116,7 +137,7 @@ export function renderToolTipHelptextsForCreate() {
     onlysignerTooltip
   );
   render(
-    helperTooltips("The contract expires always at midnight"),
+    helperTooltips("Required field. The contract expires always at midnight"),
     expiresTooltip
   );
   render(
@@ -133,12 +154,6 @@ export function renderToolTipHelptextsForCreate() {
   );
 }
 
-export function renderInstrumentSettings() {
-  setBannerDisplayBlock();
-  const layout = getById("overlay-layout");
-  render(instrumentSettings(), layout);
-}
-
 export function renderInstrumentSettingsTooltips() {
   const name = getById("instrument-name-tooltip");
   const ticker = getById("instrument-ticker-tooltip");
@@ -152,4 +167,139 @@ export function renderInstrumentSettingsTooltips() {
     supply
   );
   render(helperTooltips("Amount of PSTs derived per instrument"), derive);
+}
+
+export function setSmartContractInputFields(
+  pstCheckboxState: boolean,
+  instrumentCheckboxState: boolean
+) {
+  const pstContractInput = getPSTContractEl();
+  const nameEl = instrumentNameEl();
+  const tickerEl = instrumentTickerEl();
+  const supplyEl = instrumentSupplyEl();
+  const canDeriveEl = instrumentDeriveEl();
+
+  if (instrumentCheckboxState) {
+    nameEl.disabled = false;
+    tickerEl.disabled = false;
+    supplyEl.disabled = false;
+    canDeriveEl.disabled = false;
+  } else {
+    nameEl.disabled = true;
+    tickerEl.disabled = true;
+    supplyEl.disabled = true;
+    canDeriveEl.disabled = true;
+  }
+
+  if (pstCheckboxState) {
+    pstContractInput.disabled = false;
+  } else {
+    pstContractInput.disabled = true;
+  }
+}
+
+export function setProfitSharingContractIdToDOM(id: string) {
+  getPSTContractEl().value = id;
+}
+
+export function setIsIntrumentToDOM(isIns: boolean) {
+  isInstrumentEl().checked = isIns;
+}
+
+export function setWillProfitShareToDOM(willShare: boolean) {
+  getPSTCheckboxEl().checked = willShare;
+}
+
+export function setInstrumentNameToDOM(name: string) {
+  instrumentNameEl().value = name;
+}
+
+export function setInstrumentTickerToDOM(ticker: string) {
+  instrumentTickerEl().value = ticker;
+}
+
+export function setInstrumentSupplyToDOM(supply: number) {
+  instrumentSupplyEl().valueAsNumber = supply;
+}
+
+export function setInstrumentCanDeriveToDOM(canDerive: number) {
+  instrumentDeriveEl().valueAsNumber = canDerive;
+}
+
+export function setPDFDisplay() {
+  const pdfDisplay = getPDFDisplay();
+}
+
+export function setBannerDisplayBlock() {
+  getById("overlay").style.display = "block";
+}
+
+export function setOnlySignerToDOM(onlySigner: string) {
+  const onlySignerEl = getById("onlysigner-input") as HTMLInputElement;
+  if (onlySigner !== "NONE") {
+    onlySignerEl.value = onlySigner;
+  }
+}
+
+export function setPriceToDOM(price: string) {
+  const priceEl = getById("price-input") as HTMLInputElement;
+  if (price !== "NONE") {
+    priceEl.value = price;
+  }
+}
+
+export function setExpiresDateToDOM(date: string) {
+  const dateEl = getById("expires-input") as HTMLInputElement;
+  if (date !== "NEVER") {
+    dateEl.valueAsDate = new Date(date);
+  }
+}
+
+export function setPDFtoDOM(fileList: FileList | string) {
+  const pdfEl = getById("pdf-input") as HTMLInputElement;
+  if (typeof fileList !== "string") {
+    pdfEl.files = fileList;
+  }
+}
+
+export function setWalletToDom(fileList: FileList | string) {
+  const walletInputEl = getById("wallet-input") as HTMLInputElement;
+  if (typeof fileList !== "string") {
+    walletInputEl.files = fileList;
+  }
+}
+
+export function setPostToDOM(networkingPage: NetworkingPage) {
+  const postTo = getById("postto-input") as HTMLInputElement;
+
+  postTo.value = networkingPage.postto === "NONE" ? "" : networkingPage.postto;
+
+  const redirectEl = getById("redirect-checkbox") as HTMLInputElement;
+  const webhookEl = getById("webhook-checkbox") as HTMLInputElement;
+
+  redirectEl.checked = networkingPage.redirect;
+  webhookEl.checked = networkingPage.webhook;
+}
+
+export function revertPrompt() {
+  const prompt = getPromptEl();
+  prompt.textContent = "Drop PDF here or click to upload";
+  prompt.style.color = "black";
+}
+
+export function updatePromptSuccess(file: File) {
+  const prompt = getPromptEl();
+  prompt.style.color = "black";
+  prompt.textContent = file.name;
+}
+
+export function updatePromptError(message: string) {
+  const prompt = getPromptEl();
+  prompt.textContent = message;
+  prompt.style.color = "red";
+}
+
+export function discardPDF() {
+  const pdf = getPDFInputEl();
+  pdf.value = "";
 }

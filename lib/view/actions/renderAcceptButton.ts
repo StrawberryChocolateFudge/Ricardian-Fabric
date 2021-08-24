@@ -7,7 +7,7 @@ import {
   dispatch_removeError,
   dispatch_renderError,
 } from "../../dispatch/render";
-import { State } from "../../types";
+import { FileType, State } from "../../types";
 import { getById, readFile } from "../utils";
 
 export function renderAcceptOnCLick(props: State) {
@@ -33,6 +33,6 @@ export function renderAcceptOnCLick(props: State) {
         dispatch_renderError("You are not allowed to sign this contract");
       }
     };
-    readFile(wallet_file.files, getKey);
+    readFile(wallet_file.files, getKey, FileType.key);
   };
 }

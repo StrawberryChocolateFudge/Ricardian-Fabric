@@ -1,8 +1,8 @@
 import { html, render } from "lit-html";
 import { AcceptablePageProps, FulfilledPageProps } from "../types";
-import { acceptablePageLayout } from "./templates/acceptablePage";
-import { fulfilledPageLayout } from "./templates/fulfilledPage";
-import { initialStringDom } from "./templates/initialDom";
+import { acceptablePageLayout } from "./templates/acceptable/acceptablePage";
+import { fulfilledPageLayout } from "./templates/fulfilled/fulfilledPage";
+import { initialStringDom } from "./templates/components/initialDom";
 
 export async function getAcceptablePageFromVDOM(
   pageProps: AcceptablePageProps
@@ -11,8 +11,18 @@ export async function getAcceptablePageFromVDOM(
   render(acceptablePageLayout(pageProps), doc.body);
   // The legal contract HTML is sanitized by the editor
   doc.getElementById("contract-display").innerHTML = pageProps.legalContract;
-  //TODO: I need to inline the script dependency here!!
-  //with document.createTextNode?
+  // I need to inline the script dependency here!zzs
+  // TODO: UNTESTED!
+  const script = document.createElement("script");
+  script.type = "text/javascript";
+  const code = pageProps.mainDep.code;
+  try {
+    script.appendChild(document.createTextNode(code));
+    doc.body.appendChild(script);
+  } catch (e) {
+    script.text = code;
+    doc.body.appendChild(script);
+  }
 
   return serialize(doc);
 }

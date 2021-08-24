@@ -1,3 +1,5 @@
+import { FileType } from "../types";
+
 const storageKEY = "RicardianFabric";
 
 export function getById(id: string): HTMLElement {
@@ -27,19 +29,31 @@ export function getFromUrl() {
   return window.location.pathname;
 }
 
-export function readFile(files: FileList, getKey: CallableFunction) {
+export function readFile(
+  files: FileList,
+  getContent: CallableFunction,
+  fileType: FileType
+) {
   const reader = new FileReader();
 
-  reader.onload = function (e: ProgressEvent) {
-    const key = getKeyFromFile(e);
-    getKey(key);
-  };
+  if (fileType === FileType.key) {
+    reader.onload = function (e: ProgressEvent) {
+      const data = getKeyFromFile(e);
+      getContent(data);
+    };
 
-  reader.onerror = function (e) {
-    console.log(e);
-  };
+    reader.onerror = function (e) {
+      console.log(e);
+    };
 
-  reader.readAsText(files[0], "UFT-8");
+    reader.readAsText(files[0], "UFT-8");
+  } else if (fileType === FileType.pdf) {
+    reader.readAsDataURL(files[0]);
+
+    reader.onloadend = function (event) {
+      getContent(event.target.result);
+    };
+  }
 }
 
 export function getKeyFromFile(fileEvent: ProgressEvent) {
@@ -117,9 +131,100 @@ export function getExpires(): string {
   return new Date(acceptableTill.value).toISOString();
 }
 
+export function getPDF(): FileList {
+  const pdf = getPDFInputEl();
+  if (pdf.files.length === 1 && pdf.files[0].type === "application/pdf") {
+    return pdf.files;
+  } else {
+    return null;
+  }
+}
+
+
+export function getWallet(): FileList {
+  const wallet = getById("wallet-input") as HTMLInputElement;
+
+  if (
+    wallet.files.length === 1 &&
+    wallet.files[0].type === "application/json"
+  ) {
+    return wallet.files;
+  } else {
+    return null;
+  }
+}
+
 export function getSecret(): string {
   const secret = getById("secret-input") as HTMLInputElement;
   return secret.value;
+}
+
+export function getProfitSharingContractId(): string {
+  return getPSTContractEl().value;
+}
+
+export function isPSTUser(): boolean {
+  return getPSTCheckboxEl().checked;
+}
+
+export function getIsInstrument(): boolean {
+  return isInstrumentEl().checked;
+}
+
+export function getInstrumentName(): string {
+  return instrumentNameEl().value;
+}
+
+export function getInstrumentTicker(): string {
+  return instrumentTickerEl().value;
+}
+
+export function getInstrumentSupply(): string {
+  return instrumentSupplyEl().value;
+}
+
+export function getInstrumentCanDerive(): string {
+  return instrumentDeriveEl().value;
+}
+
+export function getPDFInputEl(): HTMLInputElement {
+  return getById("pdf-input") as HTMLInputElement;
+}
+
+export function getPSTCheckboxEl(): HTMLInputElement {
+  return getById("is-profitsharing") as HTMLInputElement;
+}
+
+export function getPSTContractEl(): HTMLInputElement {
+  return getById("pstContractId") as HTMLInputElement;
+}
+
+export function isInstrumentEl(): HTMLInputElement {
+  return getById("is-crypto-instrument") as HTMLInputElement;
+}
+
+export function instrumentNameEl(): HTMLInputElement {
+  return getById("instrument-name-input") as HTMLInputElement;
+}
+
+export function instrumentTickerEl(): HTMLInputElement {
+  return getById("instrument-ticker-input") as HTMLInputElement;
+}
+
+export function instrumentSupplyEl(): HTMLInputElement {
+  return getById("instrument-supply-input") as HTMLInputElement;
+}
+
+export function instrumentDeriveEl(): HTMLInputElement {
+  return getById("instrument-derive-input") as HTMLInputElement;
+}
+
+export function getPDFDisplay(): HTMLObjectElement {
+  return getById("pdfDisplay") as HTMLObjectElement;
+}
+
+export function getPromptEl(): HTMLElement {
+  return getById("drop-prompt");
 }
 
 export function redirect(url: string) {
@@ -140,10 +245,6 @@ export function copyStringToClipboard(str: string) {
   document.execCommand("copy");
   // Remove temporary element
   document.body.removeChild(el);
-}
-
-export function setBannerDisplayBlock() {
-  getById("overlay").style.display = "block";
 }
 
 export function setTermsAccepted(termsAccepted: boolean) {

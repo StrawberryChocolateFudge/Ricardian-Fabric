@@ -14,20 +14,25 @@
 // TODO: on Derivatives transfer, credit the creator and the community with a fee
 // TODO: on transfer and accept trade, I need to send some dividends to the creator!
 
-export const instrumentState = (
-  name: string,
-  creator: string,
-  supply: number,
-  initialPrice: number,
-  id: string,
-  canDerive: number, //This will specify how many derivatives can be created for trade from the instrument,
-  ticker: string
-) => `
+export const instrumentState = ({
+  name,
+  creator,
+  supply,
+  initialPrice,
+  canDerive,
+  ticker,
+}: {
+  name: string;
+  creator: string;
+  supply: number;
+  initialPrice: number;
+  canDerive: number; //This will specify how many derivatives can be created for trade from the instrument,
+  ticker: string;
+}) => `
 {
 	"name" : "${name}",
   "ticker":${ticker}",
   "creator": "${creator}",
-  "id" : "${id}",
   "instrument":{
 	  "initialPrice": "${initialPrice}",
 	  "supply": ${supply},
@@ -41,7 +46,7 @@ export const instrumentState = (
   "trade":{}
 }`;
 
-export const instrumentContract = `
+export const instrumentContractSrc = `
 
 export async function handle(state, action) {
   const input = action.input;

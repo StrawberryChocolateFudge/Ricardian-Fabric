@@ -1,6 +1,13 @@
-import { RenderType, State } from "../types";
+import { CreatePages, RenderType, State } from "../types";
 import { dispatch } from "./dispatch";
 import { Events } from "../types";
+
+export function dispatch_createPage(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.createPage,
+    props,
+  });
+}
 
 export function dispatch_renderCreateButton(props: State) {
   dispatch(Events.render, {
@@ -97,5 +104,74 @@ export function dispatch_renderInstrumentSettings(props: State) {
   dispatch(Events.render, {
     type: RenderType.renderInstrumentSettings,
     props,
+  });
+}
+
+export function dispatch_instrumentsSetRerender(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.setInstrument,
+    props,
+  });
+}
+
+export function dispatch_initAgreementPage(props: State, editor: any) {
+  dispatch(Events.render, {
+    type: RenderType.initAgreementPage,
+    props: { ...props, editor },
+  });
+}
+
+export function dispatch_initPDFPage(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.initPDFPage,
+    props,
+  });
+}
+
+export function dispatch_initWalletPage(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.initWalletPage,
+    props,
+  });
+}
+
+export function dispatch_initSmartContractPage(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.initSmartContractPage,
+    props,
+  });
+}
+
+export function dispatch_initNetworkingPage(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.initNetworkingPage,
+    props,
+  });
+}
+
+export function dispatch_initSummaryPage(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.initSummaryPage,
+    props,
+  });
+}
+
+export function dispatch_discardPdf() {
+  dispatch(Events.render, {
+    type: RenderType.discardPdf,
+    props: {},
+  });
+}
+
+export function dispatch_promptSuccess(file: File | string) {
+  dispatch(Events.render, {
+    type: RenderType.promptSuccess,
+    props: { file },
+  });
+}
+export function dispatch_promptError(message: string) {
+  dispatch(Events.render, {
+    type: RenderType.promptError,
+    props: { message },
   });
 }

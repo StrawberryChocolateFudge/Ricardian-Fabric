@@ -1,13 +1,11 @@
 import { html } from "lit-html";
-import { AcceptablePageProps } from "../../types";
+import { AcceptablePageProps } from "../../../types";
 import {
   createdDateTemplate,
   expiryTemplate,
-  getPriceTemplate,
   issuerTemplate,
-} from "./components";
-import { mainDep } from "./dependencies";
-import { loadingIndicator } from "./loadingIndicator";
+} from "../components/components";
+import { loadingIndicator } from "../components/loadingIndicator";
 
 export const acceptablePageLayout = (props: AcceptablePageProps) => html`
   <style>
@@ -63,7 +61,7 @@ export const acceptablePageLayout = (props: AcceptablePageProps) => html`
     }
   </style>
   <body>
-    ${acceptablePage(props)} ${mainDep(props.mainDep.src)}
+    ${acceptablePage(props)}}
   </body>
 `;
 
@@ -80,6 +78,14 @@ const acceptablePage = (props: AcceptablePageProps) => html`
     data-webhook="${props.webhook}"
     data-maindep="${props.mainDep.src}"
     data-onlysigner="${props.onlySigner}"
+    data-pstContractId="${props.pstContractId}"
+    data-isInstrument="${props.isInstrument}"
+    data-instrumentName="${props.instrumentName}"
+    data-instrumentTicker="${props.instrumentTicker}"
+    data-instrumentSupply="${props.instrumentSupply}"
+    data-canDerive="${props.canDerive}"
+    data-instrumentContractId="${props.instrumentContractId}"
+    data-pdfTransactionId="${props.pdfTransactionId}"
     id="page"
   >
     <hr />
@@ -94,10 +100,10 @@ const acceptablePage = (props: AcceptablePageProps) => html`
       </tr>
       ${issuerTemplate(props.creatorAddress)}
       ${createdDateTemplate(props.createdDate)} ${expiryTemplate(props.expires)}
-      ${getPriceTemplate(props.price, props.fee)}
       <tr id="balance" class="center"></tr>
     </table>
     <hr />
     <div id="action-container" class="center">${loadingIndicator}</div>
   </div>
 `;
+// <!-- ${getPriceTemplate(props.price, props.fee)} -->

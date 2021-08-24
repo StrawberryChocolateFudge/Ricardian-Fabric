@@ -5,7 +5,7 @@ import {
   dispatch_removeError,
   dispatch_renderError,
 } from "../../dispatch/render";
-import { State } from "../../types";
+import { FileType, State } from "../../types";
 import { getById, readFile } from "../utils";
 
 export function onFileSelect(props: State) {
@@ -25,7 +25,7 @@ export function onFileSelect(props: State) {
             dispatch_disableButton(props);
           }
         };
-        readFile(fileInput.files, getKey);
+        readFile(fileInput.files, getKey, FileType.key);
       } else {
         //If multiple files are selected, I show and error
         dispatch_renderError("You need to select 1 file!");

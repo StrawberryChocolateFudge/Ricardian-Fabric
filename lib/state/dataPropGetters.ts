@@ -47,3 +47,31 @@ export function getBundleSrcUrl(): string {
 export function getOnlySignerFromDataProp(page: HTMLElement): string {
   return page.dataset.onlysigner;
 }
+
+export function getPstContractIdFromDataProp(page: HTMLElement): string {
+  return page.dataset.pstContractId;
+}
+
+export function getIsInstrumentFromDataProp(page: HTMLElement): boolean {
+  return page.dataset.isInstrument === "true";
+}
+export function getInstrumentNameFromDataProp(page: HTMLElement): string {
+  return page.dataset.instrumentName;
+}
+
+export function getInstrumentTickerFromDataProp(page: HTMLElement): string {
+  return page.dataset.instrumentTicker;
+}
+export function getInstrumentSupplyFromDataProp(page: HTMLElement): string {
+  return page.dataset.instrumentSupply;
+}
+
+export function getCanDeriveFromDataProp(page: HTMLElement): string {
+  return page.dataset.canDerive;
+}
+export function getInstrumentContractIdFromDataProp(page: HTMLElement): string {
+  return page.dataset.instrumentContractId;
+}
+export function getPdfTransactionIdFromDataProp(page: HTMLElement): string {
+  return page.dataset.pdfTransactionId;
+}
