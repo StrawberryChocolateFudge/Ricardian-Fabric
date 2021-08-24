@@ -145,3 +145,29 @@ export function dispatch_renderAddress(props: State) {
     props,
   });
 }
+
+export function dispatch_disableCreateInputs() {
+  dispatch(Events.render, {
+    type: RenderType.disableCreateInputs,
+    props: {},
+  });
+}
+export function dispatch_enableCreateInputs() {
+  dispatch(Events.render, {
+    type: RenderType.enableCreateInputs,
+    props: {},
+  });
+}
+
+export function dispatch_disableAcceptableInputs() {
+  dispatch(Events.render, {
+    type: RenderType.disableAcceptableInputs,
+    props: {},
+  });
+}
+export function dispatch_enableAcceptableInputs() {
+  dispatch(Events.render, {
+    type: RenderType.enableAcceptableInputs,
+    props: {},
+  });
+}
