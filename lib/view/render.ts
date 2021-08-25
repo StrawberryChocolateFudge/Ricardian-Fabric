@@ -151,20 +151,17 @@ export function renderTooltips() {
   render(helperTooltips("The contract expires always at midnight"), expires);
   render(
     helperTooltips(
-      "Posts to the url with path /{id}. Choose bellow the preferred method."
+      "Posts to the url to path/{id}. Choose bellow the preferred method."
     ),
     postto
   );
   render(
     helperTooltips(
-      "The webhook option offers an extra field on the contract for a pre-shared secret. It will be posted as {secret : string} to /{id}"
+      "The webhook option offers an extra field on the contract for a pre-shared secret. It will be posted as {secret : string}"
     ),
     webhook
   );
-  render(
-    helperTooltips("The contract redirects in 5 seconds to path /{id}."),
-    redirect
-  );
+  render(helperTooltips("The contract redirects in 5 seconds."), redirect);
 }
 
 export function disableCreateInputs() {
