@@ -1,3 +1,4 @@
+import { decomissioned } from "../business/bloc";
 import {
   dispatch_attachDateClickListener,
   dispatch_renderAcceptButton,
@@ -15,6 +16,7 @@ export const setStateHook = {
       const clone = cloneState(args.obj);
       dispatch_renderCreateButton(clone);
       dispatch_renderVersion(clone.version);
+      decomissioned();
     } else if (currentPage === ContractTypes.acceptable) {
       dispatch_renderAcceptButton(cloneState(args.obj));
     }
