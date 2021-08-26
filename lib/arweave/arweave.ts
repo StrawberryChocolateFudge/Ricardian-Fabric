@@ -67,8 +67,8 @@ export async function createAcceptablePageTransaction(
     key
   );
   dataTransaction.addTag("Content-Type", "text/html");
-  dataTransaction.addTag("App", "Ricardian Fabric");
-  dataTransaction.addTag("Version", version);
+  dataTransaction.addTag("App-Name", "Ricardian Fabric");
+  dataTransaction.addTag("App-Version", version);
   await arweave.transactions.sign(dataTransaction, key);
   return dataTransaction;
 }
@@ -86,8 +86,8 @@ export async function fulfilledTransactionCall(
     key
   );
   dataTransaction.addTag("Content-Type", "text/html");
-  dataTransaction.addTag("App", "Ricardian Fabric");
-  dataTransaction.addTag("Version", version);
+  dataTransaction.addTag("App-Name", "Ricardian Fabric");
+  dataTransaction.addTag("App-Version", version);
   await arweave.transactions.sign(dataTransaction, key);
   return dataTransaction;
 }
