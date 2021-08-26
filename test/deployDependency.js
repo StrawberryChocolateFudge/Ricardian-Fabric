@@ -13,7 +13,7 @@ const fs = require("fs");
   const testWeave = await TestWeave.default.init(arweave);
 
   let data = fs.readFileSync(
-    "/home/user/Development/web3/ricardian/dist/main.0d52e1b9.js",
+    "filepath",
     { encoding: "utf8" }
   );
   let transaction = await arweave.createTransaction(
