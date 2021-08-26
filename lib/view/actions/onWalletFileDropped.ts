@@ -1,13 +1,15 @@
 import Arweave from "arweave";
-import { getBalance } from "../../business/bloc";
+import { getBalance, isOnlySigner } from "../../business/bloc";
 import {
+  dispatch_disableButton,
   dispatch_enableButton,
   dispatch_promptError,
   dispatch_promptSuccess,
   dispatch_removeError,
+  dispatch_renderError,
 } from "../../dispatch/render";
 import { dispatch_setBalance } from "../../dispatch/stateChange";
-import { FileType, State } from "../../types";
+import { ContractTypes, FileType, State } from "../../types";
 import { getById, readFile } from "../utils";
 
 export function onWalletFileDropped(props: State) {
@@ -69,10 +71,22 @@ export function onWalletFileDropped(props: State) {
 }
 
 function checkKeyFile(files: FileList, arweave: Arweave, props: State) {
+  //TODO: check if it's encrypted and if not, offer to do it!
+
   const getKey = async (key: any) => {
+    dispatch_disableButton(props);
     if (key !== undefined && key.kty === "RSA") {
-      console.log("balance");
       await getBalance(arweave, key);
+
+      if (props.contracttype === ContractTypes.acceptable) {
+        const validSigner = await isOnlySigner(props, key);
+
+        if (!validSigner) {
+          dispatch_renderError("You are not allowed to sign this contract");
+          return;
+        }
+      }
+
       dispatch_enableButton(props);
     } else {
       //IF the key is not RSA, I show an error and disable create!zs

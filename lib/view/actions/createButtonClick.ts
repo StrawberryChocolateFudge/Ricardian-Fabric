@@ -1,6 +1,7 @@
 import { calculateFeeInWinston } from "../../arweave/arweave";
 import {
   createAcceptablePageContractTX,
+  DECOMISSIONDATE,
   getCreatorWallet,
 } from "../../business/bloc";
 import {
@@ -20,6 +21,7 @@ import {
   getRedirectCheckbox,
   didExpire,
   getOnlySigner,
+  getTermsCheckbox,
 } from "../utils";
 export function renderCreateButtonClick(props: State) {
   getById("save-contract").onclick = function () {
@@ -50,6 +52,25 @@ export function renderCreateButtonClick(props: State) {
         dispatch_renderError("Post to, where?");
         return;
       }
+    }
+
+    //DECOMISSIONING!
+    const isDecomissioned = new Date() > new Date(DECOMISSIONDATE);
+    if (isDecomissioned) {
+      dispatch_renderError(
+        "The app has been decomissioned. Check ricardianfabric.com for newer versions!"
+      );
+      return;
+    }
+
+    //Terms and agreements need to be accepted again with a checkbox
+    const termsCheckbox = getTermsCheckbox();
+
+    if (!termsCheckbox.checked) {
+      dispatch_renderError(
+        "You must check the checkbox to agree to the terms."
+      );
+      return;
     }
 
     const wallet_file = getById("wallet-input") as HTMLInputElement;
@@ -89,4 +110,3 @@ export function renderCreateButtonClick(props: State) {
     }
   };
 }
-

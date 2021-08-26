@@ -5,8 +5,9 @@ const termsAndConditions = () => html`
   <p>Documents created with it may be applicable by law.</p>
   <p>
     Any information entered will be publicly available permanently so it is
-    highly discouraged to use any sensitive personal information.
+    highly discouraged to use any personal information.
   </p>
+  <p>You shall not enter any sensitive information.</p>
   <p>
     By clicking accept, you agree you will not bring suit against the creator of
     Ricardian Fabric for any reason.
@@ -20,7 +21,16 @@ const termsAndConditions = () => html`
     property or violates anyone's rights or brings harm to others.
   </p>
   <p>
-    You are solely responsible for any content created with this application.
+    You agree to stay compliant with your local laws related to data protection
+    and crypto.
+  </p>
+  <p>
+    The issuer is solely responsible for any agreements conducted through this
+    application.
+  </p>
+  <p>
+    The deployed websites are owned by the issuer and the participant and not by
+    Ricardian Fabric.
   </p>
 `;
 

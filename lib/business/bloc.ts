@@ -37,6 +37,7 @@ import {
 } from "../view/vDom";
 
 const REDIRECT_TIMEOUT = 1000;
+export const DECOMISSIONDATE = "2022-01-01";
 
 export async function getArweave() {
   const arweave = await getArweaveCall();
@@ -155,7 +156,12 @@ async function handlePost(props: State, id: string) {
     return;
   }
   const getURLWithId = (url: string, id: string) => {
-    return url + "/" + id;
+    // If the url ends with /
+    if (url.slice(-1) === "/") {
+      return url + id;
+    } else {
+      return url + "/" + id;
+    }
   };
 
   if (props.webhook) {
@@ -200,5 +206,14 @@ export function showBanner() {
   const termsAccepted = getTermsAccepted();
   if (termsAccepted !== true) {
     dispatch_renderTerms();
+  }
+}
+
+export function decomissioned() {
+  const isDecomissioned = new Date() > new Date(DECOMISSIONDATE);
+  if (isDecomissioned) {
+    dispatch_renderError(
+      "The app has been decomissioned. Check ricardianfabric.com for newer versions!"
+    );
   }
 }

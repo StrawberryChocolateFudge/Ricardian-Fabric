@@ -34,12 +34,14 @@ import { renderAcceptTools } from "./render";
 import { attachTermsButtonListeners } from "./actions/bannerButtonListeners";
 import { areYouSureButtons } from "./actions/areYouSureButtons";
 import { onWalletFileDropped } from "./actions/onWalletFileDropped";
+import { createPageAgreeTerms } from "./actions/createPageAgreeTerms";
 
 const Render: Renderer = {
   [RenderType.successMessage]: (props: State) => {},
   [RenderType.errorMessage]: (props: State) => {},
   [RenderType.createPage]: (props: State) => {},
   [RenderType.createButton]: (props: State) => {
+    createPageAgreeTerms();
     renderCreateButton(true);
     // The order of attaching listeners is important
     postCheckboxSelect();

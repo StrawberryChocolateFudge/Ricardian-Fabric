@@ -13,14 +13,14 @@ const fs = require("fs");
   const testWeave = await TestWeave.default.init(arweave);
 
   let data = fs.readFileSync(
-    "/home/user/Development/web3/ricardian/dist/main.0d52e1b9.js",
-    { encoding: "utf8" }
+    "/home/user/Development/web3/ricardian/RicardianFabricLogo.jpg",
+    {encoding: "base64"}
   );
   let transaction = await arweave.createTransaction(
     { data: data },
     testWeave.rootJWK
   );
-  transaction.addTag("Content-Type", "text/javascript");
+  transaction.addTag("Content-Type", "image/jpeg");
   await arweave.transactions.sign(transaction, testWeave.rootJWK);
   let uploader = await arweave.transactions.getUploader(transaction);
 
@@ -35,4 +35,3 @@ const fs = require("fs");
   await testWeave.mine();
   console.log(`http://localhost:1984/tx/${transaction.id}/data.html`);
 })();
-

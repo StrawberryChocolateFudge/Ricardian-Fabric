@@ -151,17 +151,20 @@ export function renderTooltips() {
   render(helperTooltips("The contract expires always at midnight"), expires);
   render(
     helperTooltips(
-      "Posts to the url to path/{id}. Choose bellow the preferred method."
+      "POST or GET this url with /{transactionid} appended. Choose bellow the preferred method."
     ),
     postto
   );
   render(
     helperTooltips(
-      "The webhook option offers an extra field on the contract for a pre-shared secret. It will be posted as {secret : string}"
+      "A POST request with a pre-shared secret users can enter. The body is {secret : string}"
     ),
     webhook
   );
-  render(helperTooltips("The contract redirects in 5 seconds."), redirect);
+  render(
+    helperTooltips("GET request. The contract redirects in 5 seconds."),
+    redirect
+  );
 }
 
 export function disableCreateInputs() {
@@ -174,6 +177,7 @@ export function disableCreateInputs() {
   const redirect = getById("redirect-checkbox") as HTMLInputElement;
   const walletInput = getById("wallet-input") as HTMLInputElement;
   const walletDropzone = getById("wallet-dropzone") as HTMLDivElement;
+  const termsCheckbox = getById("terms-checkbox") as HTMLInputElement;
   editor.contentEditable = "false";
   editor.style.cursor = "not-allowed";
   onlySigner.disabled = true;
@@ -191,6 +195,8 @@ export function disableCreateInputs() {
   walletInput.disabled = true;
   walletInput.style.cursor = "not-allowed";
   walletDropzone.style.cursor = "not-allowed";
+  termsCheckbox.disabled = true;
+  termsCheckbox.style.cursor = "not-allowed";
 }
 export function enableCreateInputs() {
   const editor = getById("editor") as HTMLInputElement;
@@ -202,6 +208,7 @@ export function enableCreateInputs() {
   const redirect = getById("redirect-checkbox") as HTMLInputElement;
   const walletInput = getById("wallet-input") as HTMLInputElement;
   const walletDropzone = getById("wallet-dropzone") as HTMLDivElement;
+  const termsCheckbox = getById("terms-checkbox") as HTMLInputElement;
 
   editor.contentEditable = "true";
   editor.style.cursor = "text";
@@ -220,6 +227,8 @@ export function enableCreateInputs() {
   walletInput.disabled = false;
   walletInput.style.cursor = "pointer";
   walletDropzone.style.cursor = "pointer";
+  termsCheckbox.disabled = false;
+  termsCheckbox.style.cursor = "pointer";
 }
 
 export function disableAcceptableInputs() {

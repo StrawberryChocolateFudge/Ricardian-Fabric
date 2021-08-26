@@ -62,7 +62,7 @@ export function getKeyFromFile(fileEvent: ProgressEvent) {
     const key = JSON.parse(fileReader.result as string);
     return key;
   } catch (e) {
-    // TODO: validation error
+    console.log(e);
   }
 }
 
@@ -96,6 +96,7 @@ function handleHTTPS(url: string) {
   if (url === "") {
     return url;
   }
+  // get the first 4 characters to see if it's http protocol
   const slice = url.substring(0, 4);
   if (slice === "http") {
     return url;
@@ -176,4 +177,8 @@ export function getTermsAccepted(): boolean {
 
 export function getPromptEl(): HTMLElement {
   return getById("drop-prompt");
+}
+
+export function getTermsCheckbox(): HTMLInputElement {
+  return getById("terms-checkbox") as HTMLInputElement;
 }
