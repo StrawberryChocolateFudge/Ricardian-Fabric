@@ -188,3 +188,17 @@ body {
 .cursor-pointer {
   cursor: pointer;
 }
+
+#terms-checkbox-label {
+  cursor: pointer;
+  background-color: #f2f2f2;
+  border-radius: 20px;
+}
+
+#terms-checkbox {
+  cursor: pointer;
+}
+
+.marginBottom-10 {
+  margin-bottom: 10px;
+}
