@@ -30,7 +30,7 @@ const termsAndConditions = () => html`
   </p>
   <p>
     The deployed websites are owned by the issuer and the participant and not by
-    Ricardian Fabric.
+    the creators of Ricardian Fabric.
   </p>
 `;
 
