@@ -13,7 +13,7 @@ const fs = require("fs");
   const testWeave = await TestWeave.default.init(arweave);
 
   let data = fs.readFileSync(
-    "/home/user/Development/web3/ricardian/RicardianFabricLogo.jpg",
+    "",
     {encoding: "base64"}
   );
   let transaction = await arweave.createTransaction(
