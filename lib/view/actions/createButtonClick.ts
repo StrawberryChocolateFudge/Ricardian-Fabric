@@ -58,7 +58,7 @@ export function renderCreateButtonClick(props: State) {
     const isDecomissioned = new Date() > new Date(DECOMISSIONDATE);
     if (isDecomissioned) {
       dispatch_renderError(
-        "The app has been decomissioned. Check ricardianfabric.com for newer versions!"
+        "This app has been decomissioned. Check ricardianfabric.com for newer versions!"
       );
       return;
     }
