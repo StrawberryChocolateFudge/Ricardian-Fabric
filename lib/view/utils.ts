@@ -59,8 +59,7 @@ export function readFile(
 export function getKeyFromFile(fileEvent: ProgressEvent) {
   try {
     const fileReader: FileReader = fileEvent.target as FileReader;
-    const key = JSON.parse(fileReader.result as string);
-    return key;
+    return JSON.parse(fileReader.result as string);
   } catch (e) {
     console.log(e);
   }
