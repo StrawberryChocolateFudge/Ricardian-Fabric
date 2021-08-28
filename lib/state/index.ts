@@ -11,6 +11,7 @@ import {
   getPostToDataProp,
   getPriceFromDataProp,
   getRedirectFromDataProp,
+  getSourceFromDataProp,
   getVersionFromDataProp,
   getWebhookFromDataProp,
 } from "./dataPropGetters";
@@ -37,10 +38,10 @@ import { setStateHook } from "./setStateHook";
       expires: getExpiresFromDataProp(pageEl),
       createdDate: getCreatedDateFromDataProp(pageEl),
       version: getVersionFromDataProp(pageEl),
-      bundleSrcUrl: getBundleSrcUrl(), // for PROD: getSourceFromDataProp(pageEl),
+      bundleSrcUrl: getSourceFromDataProp(pageEl),
       currentUrl: getCurrentUrl(),
       onlySigner: getOnlySignerFromDataProp(pageEl),
-      logoSrc: getImgSrcUrl(), //getLogoSrcFromDataProp(pageEl),
+      logoSrc: getImgSrcUrl(),
     };
 
     const stateHandler = {
