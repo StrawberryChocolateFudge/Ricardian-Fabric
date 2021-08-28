@@ -17,8 +17,8 @@ export function areYouSureButtons(props: any) {
     dispatch_enableAcceptableInputs();
   };
 
-  yesButton.onclick = function () {
-    postTransactionFromPage(props as State, props.tx, props.key);
+  yesButton.onclick = async function () {
+    await postTransactionFromPage(props as State, props.tx, props.key);
     dispatch_yesButtonPressed(props);
   };
 }

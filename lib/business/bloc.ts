@@ -113,7 +113,7 @@ export async function postTransactionFromPage(
   } else {
     dispatch_renderTransaction(result.path);
 
-    adjustBalance(props, key, tx.reward);
+    await adjustBalance(props, key, tx.reward);
     if (props.contracttype === ContractTypes.acceptable) {
       await handlePost(props, result.id);
     }
