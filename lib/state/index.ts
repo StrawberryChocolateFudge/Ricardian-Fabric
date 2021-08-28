@@ -47,7 +47,6 @@ import { setStateHook } from "./setStateHook";
       set: function (obj: State, prop: string, value: any) {
         obj[prop] = value;
         setStateHook[prop]({ obj, prop, value });
-        console.log(obj);
         return true;
       },
     };

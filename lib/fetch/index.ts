@@ -13,9 +13,8 @@ export async function hitWebhook(url: string, secret: string) {
         secret,
       }),
     });
-
-    const json = await response.json();
-    console.log(json);
+    // I don't need the response right now, just want to trigger a webhook
+    // const json = await response.json();
   } catch (error) {
     console.log(error);
   }

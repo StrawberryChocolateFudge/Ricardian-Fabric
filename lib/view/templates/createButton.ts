@@ -1,7 +1,6 @@
 import { html } from "lit-html";
 
 export const createButton = (disabled: boolean) => {
-  console.log(disabled)
   if (disabled) {
     return html`
       <button
