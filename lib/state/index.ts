@@ -1,4 +1,4 @@
-import { Events, EventType, State, StateProperties } from "../types";
+import { Events, EventType, State } from "../types";
 import { getCurrentUrl, getPage } from "../view/utils";
 import {
   getBundleSrcUrl,
