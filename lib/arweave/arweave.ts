@@ -50,8 +50,7 @@ export async function getBalanceCall(
 ): Promise<number> {
   const address = await getAddressCall(arweave, key);
   const winston = await arweave.wallets.getBalance(address);
-  const result = parseFloat(arweave.ar.winstonToAr(winston));
-  return result;
+  return parseFloat(arweave.ar.winstonToAr(winston));
 }
 
 export async function createAcceptablePageTransaction(
