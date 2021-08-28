@@ -11,7 +11,7 @@ import {
   dispatch_renderError,
   dispatch_disableCreateInputs,
 } from "../../dispatch/render";
-import { FeeType, FileType, State } from "../../types";
+import { FileType, State } from "../../types";
 import {
   getById,
   getExpires,
