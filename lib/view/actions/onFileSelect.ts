@@ -19,7 +19,7 @@ export function onFileSelect(props: State) {
           if (key !== undefined && key.kty === "RSA") {
             //IF the key is not RSA, I show an error and disable create!
             dispatch_enableButton(props);
-            getBalance(props.arweave, key);
+            await getBalance(props.arweave, key);
           } else {
             dispatch_renderError("Invalid key file");
             dispatch_disableButton(props);

@@ -7,12 +7,10 @@ import {
   getCurrentPageDataProp,
   getExpiresFromDataProp,
   getImgSrcUrl,
-  getLogoSrcFromDataProp,
   getOnlySignerFromDataProp,
   getPostToDataProp,
   getPriceFromDataProp,
   getRedirectFromDataProp,
-  getSourceFromDataProp,
   getVersionFromDataProp,
   getWebhookFromDataProp,
 } from "./dataPropGetters";

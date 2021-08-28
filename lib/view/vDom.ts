@@ -1,4 +1,4 @@
-import { html, render } from "lit-html";
+import { render } from "lit-html";
 import { AcceptablePageProps, FulfilledPageProps } from "../types";
 import { acceptablePageLayout } from "./templates/acceptablePage";
 import { fulfilledPageLayout } from "./templates/fulfilledPage";
@@ -23,8 +23,7 @@ export async function getFulfilledPagefromVDOM(pageProps: FulfilledPageProps) {
 }
 
 function parseDOMfromString(parser: DOMParser, initialDom: string): Document {
-  const doc = parser.parseFromString(initialDom, "text/html");
-  return doc;
+  return parser.parseFromString(initialDom, "text/html");
 }
 
 function serialize(doc: Document): string {

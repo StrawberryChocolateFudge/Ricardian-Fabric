@@ -1,7 +1,6 @@
 import { ContractTypes, Events, Renderer, RenderType, State } from "../types";
 import { renderCreateButtonClick } from "./actions/createButtonClick";
 import { attachExpiryClickAndListener } from "./actions/attachExpiryClickAndListener";
-import { onFileSelect } from "./actions/onFileSelect";
 import { postCheckboxSelect } from "./actions/postCheckboxSelect";
 import { renderAcceptOnCLick } from "./actions/renderAcceptButton";
 import {

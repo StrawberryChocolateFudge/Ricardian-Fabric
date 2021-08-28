@@ -3,7 +3,7 @@ import MediumEditor from "medium-editor";
 
 export default function createNewEditor() {
   //@ts-ignore
-  const editor = new MediumEditor(".editable", {
+  return new MediumEditor(".editable", {
     imageDragging: false,
     toolbar: {
       /* These are the default options for the toolbar,
@@ -46,5 +46,4 @@ export default function createNewEditor() {
       hideOnClick: false,
     },
   });
-  return editor;
 }

@@ -143,7 +143,7 @@ export function redirect(url: string) {
 
 export function copyStringToClipboard(str: string) {
   // Create new element
-  var el = document.createElement("textarea");
+  const el = document.createElement("textarea");
   // Set value (string to be copied)
   el.value = str;
   // Set non-editable to avoid focus and move outside of view

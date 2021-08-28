@@ -1,4 +1,4 @@
-import { FeeType, RenderType, State } from "../types";
+import { RenderType, State } from "../types";
 import { dispatch } from "./dispatch";
 import { Events } from "../types";
 import Transaction from "arweave/node/lib/transaction";
