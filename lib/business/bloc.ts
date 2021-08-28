@@ -126,17 +126,12 @@ export async function isOnlySigner(props: State, key: any): Promise<boolean> {
   const onlySigner = props.onlySigner;
   if (onlySigner === "NONE") {
     return true;
-  } else {
-    const address = await getAddressCall(props.arweave, key);
-    if (onlySigner === address) {
-      return true;
-    } else {
-      return false;
-    }
   }
+  const address = await getAddressCall(props.arweave, key);
+  return onlySigner === address;
 }
 
-async function adjustBalance(props: State, key: any, reward: string) {
+function adjustBalance(props: State, key: any, reward: string) {
   const balanceInWinston = props.arweave.ar.arToWinston(
     props.balance.toString()
   );
@@ -165,7 +160,7 @@ async function handlePost(props: State, id: string) {
   };
 
   if (props.webhook) {
-    hitWebhook(getURLWithId(url, id), getSecret());
+    await hitWebhook(getURLWithId(url, id), getSecret());
   } else if (props.redirect) {
     // I show a countback and redirect
     let counter = 1;
