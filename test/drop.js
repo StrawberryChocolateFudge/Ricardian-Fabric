@@ -12,7 +12,7 @@ const TestWeave = require("testweave-sdk");
 
   const testWeave = await TestWeave.default.init(arweave);
   await testWeave.drop(
-    "address here",
+    "ENTER YOUR ADDRESS HERE",
     "10000000000"
   );
   console.log("mining...");
