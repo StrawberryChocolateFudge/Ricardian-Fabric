@@ -5,6 +5,11 @@ A tool that helps to create payable, handwritten, machine processable financial 
 
 This branch (firstImpl) is for Ricardian Fabric Lite, the version without payments and things that require KYC.
 
+Link:
+https://arweave.net/4tj8jz4YJFoYD_Mqlq7PCyDyzqZPiKUqgb3Qz8rjsMU
+
+The latest version of of the firstImpl branch is deployed to the address above.
+
 ## Use
 
 Run the front end
