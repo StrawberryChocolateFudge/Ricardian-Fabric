@@ -5,7 +5,7 @@ import Transaction from "arweave/node/lib/transaction";
 
 const FEE = 5; // This is 0.5 when calculated
 // let testweave: TestWeave;
-const HOST = "arweave.net"
+const HOST = "arweave.net";
 export function calculateFeeInWinston(arweave: Arweave, price: string): number {
   const winston = arweave.ar.arToWinston(price);
   return (parseInt(winston) / 1000) * FEE;
@@ -67,6 +67,7 @@ export async function createAcceptablePageTransaction(
   );
   dataTransaction.addTag("Content-Type", "text/html");
   dataTransaction.addTag("App-Name", "Ricardian Fabric");
+  dataTransaction.addTag("Contract-Type", "Acceptable");
   dataTransaction.addTag("App-Version", version);
   await arweave.transactions.sign(dataTransaction, key);
   return dataTransaction;
@@ -86,6 +87,7 @@ export async function fulfilledTransactionCall(
   );
   dataTransaction.addTag("Content-Type", "text/html");
   dataTransaction.addTag("App-Name", "Ricardian Fabric");
+  dataTransaction.addTag("Contract-Type", "Fulfilled");
   dataTransaction.addTag("App-Version", version);
   await arweave.transactions.sign(dataTransaction, key);
   return dataTransaction;
@@ -99,6 +101,6 @@ export async function transactionPost(
   return {
     statusCode: response.status,
     id: tx.id,
-    path: `https://${HOST}/${tx.id}/data.html`,
+    path: `https://${HOST}/${tx.id}`,
   };
 }
