@@ -60,7 +60,7 @@ export const acceptTools = (props: State) => {
             <hr />
             <div id="wallet-dropzone" class="drop-zone">
               <span id="drop-prompt" class="drop-zone__prompt"
-                >Drop Your wallet here or click to select it</span
+                >Drop Your Wallet Here Or Click To Select It</span
               >
               <input
                 type="file"
