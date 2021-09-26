@@ -30,10 +30,7 @@ import {
   setPDFtoDOM,
   setPostToDOM,
   setPriceToDOM,
-  setProfitSharingContractIdToDOM,
-  setSmartContractInputFields,
   setWalletToDom,
-  setWillProfitShareToDOM,
   updatePromptError,
   updatePromptSuccess,
 } from "./render";
@@ -45,13 +42,16 @@ import { nextButtonClick } from "./actions/pages/nextButtonClick";
 import { onWalletFileDropped } from "./actions/onWalletFileDropped";
 import { postCheckboxSelect } from "./actions/postCheckboxSelect";
 import { dispatch_renderBalance } from "../dispatch/render";
+import { managerSwitch } from "./actions/pages/managerSwitch";
 
 const Render: Renderer = {
   [RenderType.successMessage]: (props: State) => {},
   [RenderType.errorMessage]: (props: State) => {},
   [RenderType.createPage]: (props: State) => {
     renderPage(props);
+    //TODO: rename nextButtonClick
     nextButtonClick(props);
+    managerSwitch(props);
     renderToolTipHelptextsForCreate();
     if (props.createPages === CreatePages.Agreement) {
       attachExpiryClickAndListener(props);
@@ -108,9 +108,11 @@ const Render: Renderer = {
     renderTerms();
     attachTermsButtonListeners();
   },
+
   [RenderType.setInstrument]: (props: State) => {
     renderCreateButtonClick(props);
   },
+
   [RenderType.initAgreementPage]: (props: any) => {
     if (props.agreementPage.selectedDate !== "") {
       setExpiresDateToDOM(props.agreementPage.selectedDate.toString());
@@ -139,17 +141,17 @@ const Render: Renderer = {
     }
   },
   [RenderType.initSmartContractPage]: (props: State) => {
-    setWillProfitShareToDOM(props.instrumentPageData.willProfitShare);
-    setProfitSharingContractIdToDOM(props.instrumentPageData.pstContractId);
+    // setWillProfitShareToDOM(props.instrumentPageData.willProfitShare);
+    // setProfitSharingContractIdToDOM(props.instrumentPageData.pstContractId);
     setIsIntrumentToDOM(props.instrumentPageData.isInstrument);
     setInstrumentNameToDOM(props.instrumentPageData.name);
     setInstrumentTickerToDOM(props.instrumentPageData.ticker);
     setInstrumentSupplyToDOM(props.instrumentPageData.supply);
     setInstrumentCanDeriveToDOM(props.instrumentPageData.canDerive);
-    setSmartContractInputFields(
-      props.instrumentPageData.willProfitShare,
-      props.instrumentPageData.isInstrument
-    );
+    // setSmartContractInputFields(
+    //   props.instrumentPageData.willProfitShare,
+    //   props.instrumentPageData.isInstrument
+    // );
   },
   [RenderType.initNetworkingPage]: (props: State) => {
     setPostToDOM(props.networkingPage);
