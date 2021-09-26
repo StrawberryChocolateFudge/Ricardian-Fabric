@@ -1,10 +1,10 @@
+import { goToCreateRoutes } from "../../../dispatch/dispatch";
 import {
   dispatch_discardPdf,
   dispatch_initPDFPage,
   dispatch_removeError,
 } from "../../../dispatch/render";
 import {
-  dispatch_setCreatePages,
   dispatch_setPdfPageData,
 } from "../../../dispatch/stateChange";
 import { CreatePages, PDFPage, State } from "../../../types";
@@ -16,7 +16,7 @@ export function pdfPage(props: State) {
   const nextButton = getById("EditPage-next");
   const discardButton = getById("discard-button");
   prevButton.onclick = function () {
-    dispatch_setCreatePages(CreatePages.Agreement);
+    goToCreateRoutes();
   };
 
   discardButton.onclick = function () {
@@ -34,6 +34,6 @@ export function pdfPage(props: State) {
     };
 
     dispatch_setPdfPageData(pdfPageData);
-    dispatch_setCreatePages(CreatePages.AddWallet);
+    goToCreateRoutes();
   };
 }
