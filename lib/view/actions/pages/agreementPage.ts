@@ -37,10 +37,7 @@ export function agreementPage(props: State){
       const content = editor.getContent();
 
       dispatch_setAgreementsPageData({
-        price,
-        onlySigner,
         selectedDate: expires,
-        content,
       });
       dispatch_setCreatePages(CreatePages.PDF);
     };
