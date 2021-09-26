@@ -1,11 +1,15 @@
 import {
+  AccountantPage,
   AgreementPage,
   CreatePages,
   Events,
   EventType,
   InstrumentPageData,
+  ManagementSlider,
+  ManagerPages,
   NetworkingPage,
   PDFPage,
+  SemanticsInput,
   State,
 } from "../types";
 import { getCurrentUrl, getPage } from "../view/utils";
@@ -38,38 +42,77 @@ import { setStateHook } from "./setStateHook";
 
     const state: State = {
       // CreatePage state
-      createPages: CreatePages.Agreement,
+      createPages: CreatePages.Routes,
+      managerPages: ManagerPages.Routes,
+      managementSlider: ManagementSlider.OFF,
+      accountantOn: AccountantPage.OFF,
       arweave: undefined,
       domParser: new DOMParser(),
+
+      // Create pages state:
       agreementPage: {
-        price: "",
-        onlySigner: "",
         selectedDate: "",
-        content: "",
       },
-      pdfPage: {
-        PDF: "",
-      },
+
       walletPage: {
         address: "",
         balance: 0,
         key: "",
         file: "",
+        arconnect: false,
       },
-      instrumentPageData: {
-        pstContractId: "",
-        isInstrument: false,
+
+      pdfPage: {
+        PDF: "",
+      },
+
+      signerPage: {
+        onlySigner: "",
+        availableCountries: [],
+      },
+
+      semanticsPage: {
+        title: "",
+        semanticsInput: SemanticsInput.Docx,
+        content: "",
+      },
+
+      paymentPage: {
+        price: "",
         willProfitShare: false,
+        pstContractId: "",
+      },
+
+      inputsPage: {
+        requiredInputs: [],
+      },
+      NFTPage: {
+        title: "",
+        name: "",
+        description: "",
+        ticker: "",
+      },
+
+      instrumentPageData: {
+        isInstrument: false,
         name: "",
         ticker: "",
         supply: 0,
         canDerive: 0,
       },
+
       networkingPage: {
         postto: "",
         webhook: false,
         redirect: false,
       },
+
+      // Manager pages
+      historyPageData: {
+        acceptable: [],
+        signed: [],
+      },
+
       // Acceptable,fulfilled page state
       contracttype: getCurrentPageDataProp(pageEl),
       postto: getPostToDataProp(pageEl),
@@ -116,6 +159,7 @@ import { setStateHook } from "./setStateHook";
         file: "",
         balance: value.balance,
         address: value.address,
+        arconnect: value.arconnect,
       };
     },
     [EventType.setSelectedDate]: (value: { date: Date | string }) => {
@@ -144,12 +188,13 @@ import { setStateHook } from "./setStateHook";
     [EventType.setKey]: (value: { key: any; file: FileList }) => {
       const balance = stateContainer.walletPage.balance;
       const address = stateContainer.walletPage.address;
-
+      const arconnect = stateContainer.walletPage.arconnect;
       stateContainer.walletPage = {
         balance,
         address,
         key: value.key,
         file: value.file,
+        arconnect,
       };
       console.log(stateContainer.walletPage);
     },
@@ -162,6 +207,9 @@ import { setStateHook } from "./setStateHook";
       networkingPage: NetworkingPage;
     }) => {
       stateContainer.networkingPage = value.networkingPage;
+    },
+    [EventType.setManagementSwitch]: (value: { to: ManagementSlider }) => {
+      stateContainer.managementSlider = value.to;
     },
   };
 
