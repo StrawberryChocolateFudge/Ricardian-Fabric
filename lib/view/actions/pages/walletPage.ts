@@ -1,3 +1,4 @@
+import { goToCreateRoutes } from "../../../dispatch/dispatch";
 import {
   dispatch_initWalletPage,
   dispatch_removeError,
@@ -16,7 +17,7 @@ export function walletPage(props: State) {
   const nextButton = getById("AddWalletPage-next");
 
   prevButton.onclick = function (e: Event) {
-    dispatch_setCreatePages(CreatePages.PDF);
+  goToCreateRoutes();
   };
 
   nextButton.onclick = function (e: Event) {
@@ -32,7 +33,7 @@ export function walletPage(props: State) {
     const getKey = async (key: any) => {
       if (key !== undefined && key.kty === "RSA") {
         dispatch_setKey(key, wallet);
-        dispatch_setCreatePages(CreatePages.SmartContract);
+        goToCreateRoutes();
       } else {
         dispatch_renderError("Invalid key!");
         //IF the key is not RSA, I show an error.
