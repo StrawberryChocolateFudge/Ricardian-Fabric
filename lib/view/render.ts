@@ -2,12 +2,12 @@ import { html, render } from "lit-html";
 import { ContractTypes, NetworkingPage, State } from "../types";
 import { acceptButton } from "./templates/acceptable/acceptButton";
 import { addressTemplate, balanceTemplate } from "./templates/components/balance";
-import { CreatePage } from "./templates/pages/createPage";
 import { helperTooltips } from "./templates/components/helperTooltips";
 import { loadingIndicator } from "./templates/components/loadingIndicator";
 import { redirectCounter } from "./templates/components/redirectCounter";
 import { termsLayout } from "./templates/components/terms";
 import { transactionUrl } from "./templates/components/transaction";
+import { Router } from "./templates/pages/router";
 import {
   copyStringToClipboard,
   getById,
@@ -24,7 +24,7 @@ import {
 } from "./utils";
 
 export async function renderPage(props: State) {
-  render(CreatePage(props), getById("page"));
+  render(Router(props), getById("page"));
 }
 
 export async function renderbalance(balance: number, address: string) {
