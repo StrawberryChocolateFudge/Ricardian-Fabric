@@ -111,9 +111,7 @@ export async function createPageTransaction(arg: {
     },
     testweave.rootJWK
   );
-  const address = await getAddressCall(arg.arweave, arg.key);
   dataTransaction.addTag("Content-Type", "text/html");
-  dataTransaction.addTag("Issuer", address);
   dataTransaction.addTag("App", "Ricardian Fabric");
   dataTransaction.addTag("version", arg.version);
   await arg.arweave.transactions.sign(dataTransaction, testweave.rootJWK);
