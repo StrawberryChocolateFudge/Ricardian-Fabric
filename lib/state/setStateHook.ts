@@ -32,6 +32,9 @@ export const setStateHook = {
     dispatch_createPage(cloneState(args.obj));
   },
   [StateProperties.networkingPage]: (args: SetHookArgs) => {},
+  [StateProperties.managementSlider]: (args: SetHookArgs) => {
+    dispatch_createPage(cloneState(args.obj));
+  },
 };
 
 function cloneState(state: State) {
