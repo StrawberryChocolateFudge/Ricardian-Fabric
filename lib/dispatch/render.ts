@@ -1,4 +1,4 @@
-import { CreatePages, RenderType, State } from "../types";
+import { CreatePages, ManagementSlider, RenderType, State } from "../types";
 import { dispatch } from "./dispatch";
 import { Events } from "../types";
 
@@ -9,12 +9,6 @@ export function dispatch_createPage(props: State) {
   });
 }
 
-export function dispatch_renderCreateButton(props: State) {
-  dispatch(Events.render, {
-    type: RenderType.createButton,
-    props,
-  });
-}
 
 export function dispatch_renderAcceptButton(props: State) {
   dispatch(Events.render, { type: RenderType.acceptButton, props });
