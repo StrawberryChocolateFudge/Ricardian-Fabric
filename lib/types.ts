@@ -23,14 +23,17 @@ export enum RenderType {
   redirectCounter = "redirectCounter",
   dateClickListener = "dateClickListener",
   renderTerms = "renderTerms",
+
   renderInstrumentSettings = "renderInstrumentSettings",
   setInstrument = "setInstrument",
+
   initAgreementPage = "initAgreementPage",
   initPDFPage = "initPDFPage",
   initWalletPage = "initWalletPage",
   initSmartContractPage = "initSmartContractPage",
   initNetworkingPage = "initNetworkingPage",
   initSummaryPage = "initSummaryPage",
+
   discardPdf = "discardPdf",
   promptSuccess = "promptSuccess",
   promptError = "promptError",
@@ -54,12 +57,14 @@ export type Renderer = {
   [RenderType.dateClickListener]: CallableFunction;
   [RenderType.renderTerms]: CallableFunction;
   [RenderType.setInstrument]: CallableFunction;
+
   [RenderType.initAgreementPage]: CallableFunction;
   [RenderType.initPDFPage]: CallableFunction;
   [RenderType.initWalletPage]: CallableFunction;
   [RenderType.initSmartContractPage]: CallableFunction;
   [RenderType.initNetworkingPage]: CallableFunction;
   [RenderType.initSummaryPage]: CallableFunction;
+
   [RenderType.discardPdf]: CallableFunction;
   [RenderType.promptSuccess]: CallableFunction;
   [RenderType.promptError]: CallableFunction;
@@ -77,6 +82,7 @@ export enum EventType {
   setInstrumentPageData = "setInstrumentPageData",
   setKey = "setKey",
   setNetworkingPage = "setNetworkingPage",
+  setManagementSwitch = "setManagementSwitch",
 }
 
 export enum StateProperties {
@@ -87,6 +93,7 @@ export enum StateProperties {
   walletPage = "walletPage",
   instrumentPageData = "instrumentPageData",
   networkingPage = "networkingPage",
+  managementSlider = "managementSlider",
 }
 
 export enum ContractTypes {
@@ -96,12 +103,36 @@ export enum ContractTypes {
 }
 
 export enum CreatePages {
+  Routes = "Routes",
   Agreement = "Agreement",
+  Semantics = "Semantics",
+  Signer = "Signer",
+  Payments = "Payments",
+  NFT = "NFT",
+  Inputs = "Inputs",
+  Instrument = "Instrument",
   PDF = "PDF",
   AddWallet = "AddWallet",
   SmartContract = "SmartContract",
   Networking = "Networking",
   SummaryPage = "SummaryPage",
+}
+
+export enum ManagerPages {
+  Routes = "Routes",
+  Topup = "Topup",
+  History = "History",
+  Identity = "Identity",
+  Messages = "Messages",
+  NFT = "NFT",
+  Instruments = "Instruments",
+  Derivatives = "Derivatives",
+  Governance = "Governance",
+}
+
+export enum ManagementSlider {
+  ON,
+  OFF,
 }
 
 export enum FileType {
@@ -117,6 +148,7 @@ export type WalletPage = {
   address: string;
   key: any;
   file: FileList | string;
+  arconnect: boolean;
 };
 
 export type NetworkingPage = {
@@ -126,25 +158,130 @@ export type NetworkingPage = {
 };
 
 export type AgreementPage = {
-  price: string;
-  onlySigner: string;
+  // price: string;
+  // onlySigner: string;
   selectedDate: string | Date;
+  // content: string;
+};
+
+export enum SemanticsInput {
+  Docx,
+  type,
+}
+
+export type SemanticsPage = {
+  title: string;
+  semanticsInput: SemanticsInput;
   content: string;
 };
 
+export type SignerPage = {
+  onlySigner: string;
+  availableCountries: Array<string>;
+};
+
+export type PaymentPage = {
+  price: string;
+  willProfitShare: boolean;
+  pstContractId: string;
+};
+
+export type InputsPage = {
+  requiredInputs: Array<string>;
+};
+
+export type NFTPage = {
+  title: string;
+  name: string;
+  description: string;
+  ticker: string;
+};
+
+export type InstrumentPageData = {
+  // pstContractId: string;
+  // willProfitShare: boolean;
+  isInstrument: boolean;
+  name: string;
+  ticker: string;
+  supply: number;
+  canDerive: number;
+};
+
+export type HistoryPageData = {
+  acceptable: Array<string>;
+  signed: Array<string>;
+};
+
+export enum AccountType {
+  pro,
+  enterprise,
+}
+export type Topup = {
+  accountType: AccountType;
+  expires: string;
+};
+
+export type Signup = {
+  email: string;
+  firstName: string;
+  lastName: string;
+  address: string;
+  addressLine2: string;
+  zip: string;
+  city: string;
+  country: string;
+  phone: string;
+  acceptedTerms: string;
+};
+
+export enum MessageType {
+  kyc = "kyc",
+  agreementSigned = "agreementSigned",
+}
+
+export type Message = {
+  title: string;
+  type: MessageType;
+  content: string;
+};
+
+export type Messages = {
+  data: Array<Message>;
+};
+
+export enum AccountantPage {
+  ON,
+  OFF,
+}
+
 export type State = {
   // These are for create
-  createPages: CreatePages;
+  createPages: CreatePages; // These are the create pages
+  managerPages: ManagerPages; // These are the management pages
+  managementSlider: ManagementSlider; //Decides if the management UI is on or off
+  accountantOn: AccountantPage;
   arweave: Arweave;
   domParser: DOMParser;
-  agreementPage: AgreementPage;
-  pdfPage: PDFPage;
-  instrumentPageData: InstrumentPageData;
-  walletPage: WalletPage;
-  contracttype: ContractTypes;
-  networkingPage: NetworkingPage;
 
-  //These are for acceptable page!
+  // This is the create page data:
+  agreementPage: AgreementPage;
+  walletPage: WalletPage;
+  pdfPage: PDFPage;
+  signerPage: SignerPage;
+  semanticsPage: SemanticsPage;
+  paymentPage: PaymentPage;
+  inputsPage: InputsPage;
+  networkingPage: NetworkingPage;
+  NFTPage: NFTPage;
+  instrumentPageData: InstrumentPageData;
+
+  // This is the manager page data:
+  historyPageData: HistoryPageData;
+
+  // This is to evaluate the current contract's type
+  contracttype: ContractTypes;
+
+  // These are for acceptable page!
   postto: string;
   webhook: boolean;
   redirect: boolean;
@@ -220,16 +357,6 @@ export type CreateTransactionResult = {
   id: string;
   statusCode: number;
   path: string;
-};
-
-export type InstrumentPageData = {
-  pstContractId: string;
-  willProfitShare: boolean;
-  isInstrument: boolean;
-  name: string;
-  ticker: string;
-  supply: number;
-  canDerive: number;
 };
 
 export type CreatedTransactions = {
