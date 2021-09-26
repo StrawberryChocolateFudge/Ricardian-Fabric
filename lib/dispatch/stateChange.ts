@@ -4,6 +4,7 @@ import {
   Events,
   EventType,
   InstrumentPageData,
+  ManagementSlider,
   NetworkingPage,
   PDFPage,
 } from "../types";
@@ -78,5 +79,12 @@ export function dispatch_setEditor(editor: any) {
   dispatch(Events.stateChange, {
     type: EventType.setEditor,
     value: { editor },
+  });
+}
+
+export function dispatch_managerSwitch(to: ManagementSlider) {
+  dispatch(Events.stateChange, {
+    type: EventType.setManagementSwitch,
+    value: { to },
   });
 }
