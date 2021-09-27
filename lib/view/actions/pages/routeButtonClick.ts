@@ -4,28 +4,32 @@ import {
   ManagerPages,
   State,
 } from "../../../types";
-import { agreementPage } from "./agreementPage";
-import { createRouter } from "./createRouter";
-import { inputsPage } from "./inputsPage";
-import { networkingPage } from "./networkingPage";
-import { nftPage } from "./nftPage";
-import { paymentsPage } from "./paymentsPage";
-import { pdfPage } from "./pdfPage";
-import { semanticsPage } from "./semanticsPage";
-import { signerPage } from "./signerPage";
+import { agreementPage } from "./createRoutes/agreementPage";
+import { attachExpiryListener, createRouter } from "./createRouter";
+import { inputsPage } from "./createRoutes/inputsPage";
+import { networkingPage } from "./createRoutes/networkingPage";
+import { nftPage } from "./createRoutes/nftPage";
+import { paymentsPage } from "./createRoutes/paymentsPage";
+import { pdfPage } from "./createRoutes/pdfPage";
+import { semanticsPage } from "./createRoutes/semanticsPage";
+import { signerPage } from "./createRoutes/signerPage";
 import { summaryPage } from "./summaryPage";
-import { walletPage } from "./walletPage";
+import { onWalletFileDropped, walletPage } from "./createRoutes/walletPage";
+import { managementRouter } from "./managementRouter";
+import { accountantRouter } from "./accountantRoutes/accountantRouter";
 
-export function nextButtonClick(props: State) {
+export function routeButtonClick(props: State) {
   if (props.managementSlider === ManagementSlider.OFF) {
     if (props.createPages === CreatePages.Routes) {
       createRouter(props);
+      attachExpiryListener(props);
     } else if (props.createPages === CreatePages.Agreement) {
       agreementPage(props);
     } else if (props.createPages === CreatePages.PDF) {
       pdfPage(props);
     } else if (props.createPages === CreatePages.AddWallet) {
       walletPage(props);
+      onWalletFileDropped(props);
     } else if (props.createPages === CreatePages.Semantics) {
       semanticsPage(props);
     } else if (props.createPages === CreatePages.Signer) {
@@ -43,6 +47,9 @@ export function nextButtonClick(props: State) {
     }
   } else {
     if (props.managerPages === ManagerPages.Routes) {
+      managementRouter(props);
+    } else if (props.managerPages === ManagerPages.Accountant) {
+      accountantRouter(props);
     }
   }
 }

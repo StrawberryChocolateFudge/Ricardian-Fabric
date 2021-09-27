@@ -1,6 +1,6 @@
-import { goToCreateRoutes } from "../../../dispatch/dispatch";
-import { State } from "../../../types";
-import { getById } from "../../utils";
+import { goToCreateRoutes } from "../../../../dispatch/dispatch";
+import { State } from "../../../../types";
+import { getById } from "../../../utils";
 
 export function inputsPage(props: State) {
   // ToDo: init

@@ -20,7 +20,7 @@ export const CreateRouterUI = () => html`
     </button>
     <button class="routes-buttons" id="nftButton"><h2>NFT</h2></button>
     <button class="routes-buttons" id="inputsButton"><h2>Inputs</h2></button>
-    <button class="routes-buttons" id="instrumentButton" disabled>
+    <button class="routes-buttons" id="instrumentButton" >
       <h2>Instrument</h2>
     </button>
   </div>

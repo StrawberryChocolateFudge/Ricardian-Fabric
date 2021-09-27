@@ -66,7 +66,7 @@ export const PaymentsPage = () =>
             name="accountantAddress"
             id="accountantAddress"
             type="text"
-            placeholder="arweave address"
+            placeholder="contract id"
           />
         </td>
         <td><span id="accountantAddress-tooltip"></span></td>

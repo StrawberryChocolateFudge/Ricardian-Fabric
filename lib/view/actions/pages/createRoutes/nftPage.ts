@@ -1,6 +1,6 @@
-import { goToCreateRoutes } from "../../../dispatch/dispatch";
-import { State } from "../../../types";
-import { getById } from "../../utils";
+import { goToCreateRoutes } from "../../../../dispatch/dispatch";
+import { State } from "../../../../types";
+import { getById } from "../../../utils";
 
 export function nftPage(props: State) {
   //Dispatch the initialization

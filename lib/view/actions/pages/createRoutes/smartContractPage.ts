@@ -2,12 +2,12 @@ import {
   dispatch_initSmartContractPage,
   dispatch_removeError,
   dispatch_renderError,
-} from "../../../dispatch/render";
+} from "../../../../dispatch/render";
 import {
   dispatch_instrumentPageData,
   dispatch_setCreatePages,
-} from "../../../dispatch/stateChange";
-import { CreatePages, State } from "../../../types";
+} from "../../../../dispatch/stateChange";
+import { CreatePages, State } from "../../../../types";
 import {
   getById,
   getInstrumentCanDerive,
@@ -17,7 +17,7 @@ import {
   getIsInstrument,
   getProfitSharingContractId,
   isPSTUser,
-} from "../../utils";
+} from "../../../utils";
 
 export function smartContractPage(props: State) {
   dispatch_initSmartContractPage(props);
@@ -75,8 +75,6 @@ export function smartContractPage(props: State) {
 
     dispatch_instrumentPageData({
       isInstrument,
-      willProfitShare,
-      pstContractId,
       name,
       ticker,
       canDerive,

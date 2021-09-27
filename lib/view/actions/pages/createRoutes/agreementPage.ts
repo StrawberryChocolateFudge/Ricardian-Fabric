@@ -1,8 +1,8 @@
-import { dispatch_initAgreementPage, dispatch_removeError, dispatch_renderError } from "../../../dispatch/render";
-import { dispatch_setAgreementsPageData, dispatch_setCreatePages } from "../../../dispatch/stateChange";
-import createNewEditor from "../../../state/editor";
-import { CreatePages, State } from "../../../types";
-import { didExpire, getById, getExpires, getOnlySigner, getPrice } from "../../utils";
+import { dispatch_initAgreementPage, dispatch_removeError, dispatch_renderError } from "../../../../dispatch/render";
+import { dispatch_setAgreementsPageData, dispatch_setCreatePages } from "../../../../dispatch/stateChange";
+import createNewEditor from "../../../../state/editor";
+import { CreatePages, State } from "../../../../types";
+import { didExpire, getById, getExpires, getOnlySigner, getPrice } from "../../../utils";
 
 export function agreementPage(props: State){
    const editor = createNewEditor();

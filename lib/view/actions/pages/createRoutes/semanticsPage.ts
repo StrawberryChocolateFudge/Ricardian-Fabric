@@ -1,7 +1,7 @@
-import { goToCreateRoutes } from "../../../dispatch/dispatch";
-import createNewEditor from "../../../state/editor";
-import { State } from "../../../types";
-import { getById } from "../../utils";
+import { goToCreateRoutes } from "../../../../dispatch/dispatch";
+import createNewEditor from "../../../../state/editor";
+import { State } from "../../../../types";
+import { getById } from "../../../utils";
 
 export function semanticsPage(props: State) {
   console.log("semantics page runs");

@@ -19,16 +19,15 @@ export const ManagerRoutes = () => html`
     <button class="routes-buttons" id="nftManagerButton">
       <h2>NFT</h2>
     </button>
-    <button class="routes-buttons" id="instrumentManagerButton" disabled>
+    <button class="routes-buttons" id="instrumentManagerButton">
       <h2>Instrument</h2>
     </button>
-    <button class="routes-buttons" id="derivativesManagementButton" disabled>
+    <button class="routes-buttons" id="derivativesManagementButton">
       <h2>Derivatives</h2>
     </button>
     <button class="routes-buttons" id="governanceButton">
       <h2>Governance</h2>
     </button>
+    <button class="routes-buttons" id="accountantButton"><h2>Accountant</h2></button>
   </div>
-      <button class="accountant-button" id="accountantPageButton" >Accountant</button>
-
 `;
