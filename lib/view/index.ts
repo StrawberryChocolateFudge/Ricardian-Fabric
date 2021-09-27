@@ -1,4 +1,4 @@
-import {Events, Renderer, RenderType, State } from "../types";
+import { Events, Renderer, RenderType, State } from "../types";
 import { renderAcceptOnCLick } from "./actions/renderAcceptButton";
 import {
   disableButton,
@@ -9,7 +9,6 @@ import {
   renderbalance,
   renderCounter,
   renderError,
-  renderInstrumentSettingsTooltips,
   renderLoadingIndicator,
   renderPage,
   renderTerms,
@@ -27,6 +26,7 @@ import {
   setPDFtoDOM,
   setPostToDOM,
   setPriceToDOM,
+  setSemanticsTitleToDOM,
   setWalletToDom,
   updatePromptError,
   updatePromptSuccess,
@@ -39,11 +39,6 @@ import { attachTermsButtonListeners } from "./actions/pages/terms/bannerButtonLi
 import { onWalletFileSelect } from "./actions/pages/createRoutes/walletPage";
 
 const Render: Renderer = {
-  //TODO: SUCCESS AND ERROR MESSAGE ARE DEPRECATED?
-  [RenderType.successMessage]: (props: State) => {},
-  [RenderType.errorMessage]: (props: State) => {},
-  
-  
   [RenderType.createPage]: (props: State) => {
     renderPage(props);
     routeButtonClick(props);
@@ -83,7 +78,6 @@ const Render: Renderer = {
     disableButton(props);
   },
 
-
   [RenderType.version]: (props: { version: string }) => {
     renderVersion(props.version);
   },
@@ -95,7 +89,6 @@ const Render: Renderer = {
   [RenderType.dateClickListener]: (props: State) => {
     // attachExpiryClickAndListener(props);
   },
-
 
   [RenderType.renderTerms]: () => {
     renderTerms();
@@ -129,11 +122,21 @@ const Render: Renderer = {
     revertPrompt();
   },
   [RenderType.initWalletPage]: (props: State) => {
+    setWalletToDom(props.walletPage);
     if (props.walletPage.key !== "") {
-      setWalletToDom(props.walletPage.file);
       updatePromptSuccess(props.walletPage.file[0] as File);
       dispatch_renderBalance(props);
     }
+  },
+  [RenderType.initSemanticsPage]: ({
+    props,
+    editor,
+  }: {
+    props: State;
+    editor: any;
+  }) => {
+    editor.setContent(props.semanticsPage.content, 0);
+    setSemanticsTitleToDOM(props.semanticsPage.title);
   },
   [RenderType.initSmartContractPage]: (props: State) => {
     // setWillProfitShareToDOM(props.instrumentPageData.willProfitShare);
@@ -153,8 +156,6 @@ const Render: Renderer = {
   },
   [RenderType.initSummaryPage]: (props: State) => {},
 
-
-
   //Showing success and error on the PDF,Wallet and Docx droppers
   [RenderType.promptSuccess]: (props: { file: File | string }) => {
     updatePromptSuccess(props.file as File);
@@ -169,5 +170,3 @@ document.body.addEventListener(Events.render, (e: any) => {
   const props: State = e.detail.props;
   Render[type](props);
 });
-
-
