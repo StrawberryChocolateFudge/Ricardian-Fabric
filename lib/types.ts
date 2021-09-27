@@ -79,6 +79,8 @@ export enum EventType {
   setSelectedDate = "setSelectedDate",
   setPdfPageData = "setPdfPageData",
   setCreatePages = "setCreatePages",
+  setManagerPages = "setManagerPages",
+  setAccountantPages = "setAccountantPages",
   setInstrumentPageData = "setInstrumentPageData",
   setKey = "setKey",
   setNetworkingPage = "setNetworkingPage",
@@ -90,6 +92,8 @@ export enum StateProperties {
   agreementPage = "agreementPage",
   pdfPage = "pdfPage",
   createPages = "createPages",
+  managerPages = "managerPages",
+  accountantPages = "accountantPages",
   walletPage = "walletPage",
   instrumentPageData = "instrumentPageData",
   networkingPage = "networkingPage",
@@ -128,6 +132,7 @@ export enum ManagerPages {
   Instruments = "Instruments",
   Derivatives = "Derivatives",
   Governance = "Governance",
+  Accountant = "Accountant",
 }
 
 export enum ManagementSlider {
@@ -250,16 +255,19 @@ export type Messages = {
 };
 
 export enum AccountantPage {
-  ON,
-  OFF,
+  ROUTER,
+  KYC,
+  FEES,
+  RESALE,
+  TRADE,
 }
 
 export type State = {
   // These are for create
   createPages: CreatePages; // These are the create pages
   managerPages: ManagerPages; // These are the management pages
+  accountantPages: AccountantPage;
   managementSlider: ManagementSlider; //Decides if the management UI is on or off
-  accountantOn: AccountantPage;
   arweave: Arweave;
   domParser: DOMParser;
 
