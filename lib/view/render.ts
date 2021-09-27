@@ -1,7 +1,10 @@
 import { html, render } from "lit-html";
-import { ContractTypes, NetworkingPage, State } from "../types";
+import { ContractTypes, NetworkingPage, State, WalletPage } from "../types";
 import { acceptButton } from "./templates/acceptable/acceptButton";
-import { addressTemplate, balanceTemplate } from "./templates/components/balance";
+import {
+  addressTemplate,
+  balanceTemplate,
+} from "./templates/components/balance";
 import { helperTooltips } from "./templates/components/helperTooltips";
 import { loadingIndicator } from "./templates/components/loadingIndicator";
 import { redirectCounter } from "./templates/components/redirectCounter";
@@ -262,11 +265,17 @@ export function setPDFtoDOM(fileList: FileList | string) {
   }
 }
 
-export function setWalletToDom(fileList: FileList | string) {
+export function setWalletToDom(walletPage: WalletPage) {
   const walletInputEl = getById("wallet-input") as HTMLInputElement;
-  if (typeof fileList !== "string") {
-    walletInputEl.files = fileList;
+  if (typeof walletPage.file !== "string") {
+    walletInputEl.files = walletPage.file;
   }
+
+  const isWalletFile = getById("isWalletFile") as HTMLInputElement;
+  const isArConnect = getById("isArConnect") as HTMLInputElement;
+
+  isWalletFile.checked = walletPage.isWalletFile;
+  isArConnect.checked = walletPage.arconnect;
 }
 
 export function setPostToDOM(networkingPage: NetworkingPage) {
@@ -280,6 +289,12 @@ export function setPostToDOM(networkingPage: NetworkingPage) {
   redirectEl.checked = networkingPage.redirect;
   webhookEl.checked = networkingPage.webhook;
 }
+
+export function setSemanticsTitleToDOM(title: string){
+  const titleEl = getById("semanticsTitle") as HTMLInputElement;
+  titleEl.value = title;
+}
+
 
 export function revertPrompt() {
   const prompt = getPromptEl();
