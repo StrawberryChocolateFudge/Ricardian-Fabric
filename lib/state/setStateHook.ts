@@ -41,6 +41,9 @@ export const setStateHook = {
   [StateProperties.managementSlider]: (args: SetHookArgs) => {
     dispatch_createPage(cloneState(args.obj));
   },
+  [StateProperties.semanticsPage]: (args: SetHookArgs) =>{
+  
+  },
 };
 
 function cloneState(state: State) {
