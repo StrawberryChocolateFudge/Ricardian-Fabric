@@ -9,6 +9,8 @@ import {
   ManagerPages,
   NetworkingPage,
   PDFPage,
+  SemanticsPage,
+  WalletPage,
 } from "../types";
 import { dispatch } from "./dispatch";
 
@@ -37,6 +39,13 @@ export function dispatch_setAgreementsPageData(agreementsData: AgreementPage) {
   dispatch(Events.stateChange, {
     type: EventType.setAgreementsPageData,
     value: { agreementsData },
+  });
+}
+
+export function dispatch_setSemanticsPageData(semanticsData: SemanticsPage) {
+  dispatch(Events.stateChange, {
+    type: EventType.setSemanticsPageData,
+    value: { semanticsData },
   });
 }
 
@@ -77,10 +86,10 @@ export function dispatch_instrumentPageData(
   });
 }
 
-export function dispatch_setKey(key: any, file: FileList) {
+export function dispatch_setWallet(walletPage: WalletPage) {
   dispatch(Events.stateChange, {
-    type: EventType.setKey,
-    value: { key, file },
+    type: EventType.setWallet,
+    value: { walletPage },
   });
 }
 
