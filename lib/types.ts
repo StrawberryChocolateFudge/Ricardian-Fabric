@@ -27,9 +27,11 @@ export enum RenderType {
   renderInstrumentSettings = "renderInstrumentSettings",
   setInstrument = "setInstrument",
 
+  initWalletPage = "initWalletPage",
+  initSemanticsPage = "initSemanticsPage",
+
   initAgreementPage = "initAgreementPage",
   initPDFPage = "initPDFPage",
-  initWalletPage = "initWalletPage",
   initSmartContractPage = "initSmartContractPage",
   initNetworkingPage = "initNetworkingPage",
   initSummaryPage = "initSummaryPage",
@@ -40,8 +42,6 @@ export enum RenderType {
 }
 
 export type Renderer = {
-  [RenderType.successMessage]: CallableFunction;
-  [RenderType.errorMessage]: CallableFunction;
   [RenderType.createPage]: CallableFunction;
   [RenderType.acceptButton]: CallableFunction;
   [RenderType.balance]: CallableFunction;
@@ -58,9 +58,10 @@ export type Renderer = {
   [RenderType.renderTerms]: CallableFunction;
   [RenderType.setInstrument]: CallableFunction;
 
+  [RenderType.initWalletPage]: CallableFunction;
+  [RenderType.initSemanticsPage]: CallableFunction;
   [RenderType.initAgreementPage]: CallableFunction;
   [RenderType.initPDFPage]: CallableFunction;
-  [RenderType.initWalletPage]: CallableFunction;
   [RenderType.initSmartContractPage]: CallableFunction;
   [RenderType.initNetworkingPage]: CallableFunction;
   [RenderType.initSummaryPage]: CallableFunction;
@@ -75,6 +76,7 @@ export enum EventType {
   setEditor = "setEditor",
   setBalance = "setBalance",
   setAgreementsPageData = "setAgreementsPageData",
+  setSemanticsPageData = "setSemanticsPageData",
   setWalletAddress = "setWalletAddress",
   setSelectedDate = "setSelectedDate",
   setPdfPageData = "setPdfPageData",
@@ -82,7 +84,7 @@ export enum EventType {
   setManagerPages = "setManagerPages",
   setAccountantPages = "setAccountantPages",
   setInstrumentPageData = "setInstrumentPageData",
-  setKey = "setKey",
+  setWallet = "setWallet",
   setNetworkingPage = "setNetworkingPage",
   setManagementSwitch = "setManagementSwitch",
 }
@@ -90,6 +92,7 @@ export enum EventType {
 export enum StateProperties {
   arweave = "arweave",
   agreementPage = "agreementPage",
+  semanticsPage="semanticsPage",
   pdfPage = "pdfPage",
   createPages = "createPages",
   managerPages = "managerPages",
@@ -98,6 +101,7 @@ export enum StateProperties {
   instrumentPageData = "instrumentPageData",
   networkingPage = "networkingPage",
   managementSlider = "managementSlider",
+
 }
 
 export enum ContractTypes {
@@ -154,6 +158,7 @@ export type WalletPage = {
   key: any;
   file: FileList | string;
   arconnect: boolean;
+  isWalletFile: boolean;
 };
 
 export type NetworkingPage = {
@@ -169,14 +174,8 @@ export type AgreementPage = {
   // content: string;
 };
 
-export enum SemanticsInput {
-  Docx,
-  type,
-}
-
 export type SemanticsPage = {
   title: string;
-  semanticsInput: SemanticsInput;
   content: string;
 };
 
