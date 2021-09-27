@@ -115,6 +115,13 @@ export function dispatch_initAgreementPage(props: State, editor: any) {
   });
 }
 
+export function dispatch_initSemanticsPage(props: State, editor: any) {
+  dispatch(Events.render, {
+    type: RenderType.initSemanticsPage,
+    props: { props, editor },
+  });
+}
+
 export function dispatch_initPDFPage(props: State) {
   dispatch(Events.render, {
     type: RenderType.initPDFPage,
