@@ -1,10 +1,12 @@
 import {
+  AccountantPage,
   AgreementPage,
   CreatePages,
   Events,
   EventType,
   InstrumentPageData,
   ManagementSlider,
+  ManagerPages,
   NetworkingPage,
   PDFPage,
 } from "../types";
@@ -50,6 +52,20 @@ export function dispatch_setCreatePages(createPage: CreatePages) {
     type: EventType.setCreatePages,
     value: { createPage },
   });
+}
+
+export function dispatch_setManagerPages(managerPage: ManagerPages) {
+  dispatch(Events.stateChange, {
+    type: EventType.setManagerPages,
+    value: { managerPage },
+  });
+}
+
+export function dispatch_setAccountantPages(accountantPage: AccountantPage){
+  dispatch(Events.stateChange,{
+    type: EventType.setAccountantPages,
+    value: {accountantPage}
+  })
 }
 
 export function dispatch_instrumentPageData(

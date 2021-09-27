@@ -44,8 +44,8 @@ import { setStateHook } from "./setStateHook";
       // CreatePage state
       createPages: CreatePages.Routes,
       managerPages: ManagerPages.Routes,
+      accountantPages: AccountantPage.ROUTER,
       managementSlider: ManagementSlider.OFF,
-      accountantOn: AccountantPage.OFF,
       arweave: undefined,
       domParser: new DOMParser(),
 
@@ -184,6 +184,12 @@ import { setStateHook } from "./setStateHook";
     },
     [EventType.setCreatePages]: (value: { createPage: CreatePages }) => {
       stateContainer.createPages = value.createPage;
+    },
+    [EventType.setManagerPages]: (value: { managerPage }) => {
+      stateContainer.managerPages = value.managerPage;
+    },
+    [EventType.setAccountantPages]: (value: { accountantPage }) => {
+      stateContainer.accountantPages = value.accountantPage;
     },
     [EventType.setKey]: (value: { key: any; file: FileList }) => {
       const balance = stateContainer.walletPage.balance;
