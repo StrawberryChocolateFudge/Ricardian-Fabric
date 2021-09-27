@@ -10,16 +10,32 @@ import {
   dispatch_removeError,
   dispatch_renderError,
 } from "../../../../dispatch/render";
-import { dispatch_setBalance, dispatch_setKey } from "../../../../dispatch/stateChange";
-import { FileType, State } from "../../../../types";
+import {
+  dispatch_setBalance,
+  dispatch_setWallet,
+} from "../../../../dispatch/stateChange";
+import { FileType, State, WalletPage } from "../../../../types";
 import { getById, getWallet, readFile } from "../../../utils";
 
 export function walletPage(props: State) {
   dispatch_initWalletPage(props);
-  // onWalletFileSelect(props);
   onWalletFileDropped(props);
   const prevButton = getById("AddWalletPage-previous");
   const nextButton = getById("AddWalletPage-next");
+  const isWalletFile = getById("isWalletFile") as HTMLInputElement;
+  const isArConnect = getById("isArConnect") as HTMLInputElement;
+
+  isWalletFile.onclick = function (e: Event) {
+    if (isWalletFile.checked) {
+      isArConnect.checked = false;
+    }
+  };
+
+  isArConnect.onclick = function (e: Event) {
+    if (isArConnect.checked) {
+      isWalletFile.checked = false;
+    }
+  };
 
   prevButton.onclick = function (e: Event) {
     goToCreateRoutes();
@@ -28,27 +44,47 @@ export function walletPage(props: State) {
   nextButton.onclick = function (e: Event) {
     dispatch_removeError();
 
-    const wallet = getWallet();
+    if (isWalletFile.checked) {
+      const wallet = getWallet();
 
-    if (wallet === null) {
-      dispatch_renderError("You must add your wallet first!");
-      return;
-    }
-
-    const getKey = async (key: any) => {
-      if (key !== undefined && key.kty === "RSA") {
-        dispatch_setKey(key, wallet);
-        goToCreateRoutes();
-      } else {
-        dispatch_renderError("Invalid key!");
-        //IF the key is not RSA, I show an error.
+      if (wallet === null) {
+        dispatch_renderError("You must add your wallet first!");
+        return;
       }
-    };
 
-    readFile(wallet, getKey, FileType.key);
+      const getKey = async (key: any) => {
+        if (key !== undefined && key.kty === "RSA") {
+          const walletPage: WalletPage = {
+            balance: 0,
+            address: "",
+            key,
+            file: wallet,
+            arconnect: isArConnect.checked,
+            isWalletFile: isWalletFile.checked,
+          };
+          dispatch_setWallet(walletPage);
+          goToCreateRoutes();
+        } else {
+          dispatch_renderError("Invalid key!");
+          //IF the key is not RSA, I show an error.
+        }
+      };
+
+      readFile(wallet, getKey, FileType.key);
+    } else if (isArConnect.checked) {
+      const walletPage: WalletPage = {
+        balance: 0,
+        address: "",
+        key: "",
+        file: "",
+        arconnect: isArConnect.checked,
+        isWalletFile: isWalletFile.checked,
+      };
+      dispatch_setWallet(walletPage);
+      goToCreateRoutes();
+    }
   };
 }
-
 
 //THis is used in the acceptable,
 //NEED TO DEPRECATE THIS FOR THE ONE BELLOW ON THE ACCEPTABLE PAGE
@@ -80,7 +116,6 @@ export function onWalletFileSelect(props: State) {
     }
   };
 }
-
 
 export function onWalletFileDropped(props: State) {
   const walletInput = getById("wallet-input") as HTMLInputElement;
