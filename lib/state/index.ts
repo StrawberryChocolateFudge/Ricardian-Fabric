@@ -9,8 +9,8 @@ import {
   ManagerPages,
   NetworkingPage,
   PDFPage,
-  SemanticsInput,
   State,
+  WalletPage,
 } from "../types";
 import { getCurrentUrl, getPage } from "../view/utils";
 import {
@@ -60,6 +60,7 @@ import { setStateHook } from "./setStateHook";
         key: "",
         file: "",
         arconnect: false,
+        isWalletFile: false,
       },
 
       pdfPage: {
@@ -73,7 +74,6 @@ import { setStateHook } from "./setStateHook";
 
       semanticsPage: {
         title: "",
-        semanticsInput: SemanticsInput.Docx,
         content: "",
       },
 
@@ -154,12 +154,14 @@ import { setStateHook } from "./setStateHook";
       stateContainer.arweave = value;
     },
     [EventType.setBalance]: (value: any) => {
+      //This is setting the balance displayed
       stateContainer.walletPage = {
-        key: "",
-        file: "",
+        key: stateContainer.walletPage.key,
+        file: stateContainer.walletPage.file,
         balance: value.balance,
         address: value.address,
-        arconnect: value.arconnect,
+        arconnect: stateContainer.walletPage.arconnect,
+        isWalletFile: stateContainer.walletPage.isWalletFile,
       };
     },
     [EventType.setSelectedDate]: (value: { date: Date | string }) => {
@@ -173,6 +175,9 @@ import { setStateHook } from "./setStateHook";
       agreementsData: AgreementPage;
     }) => {
       stateContainer.agreementPage = value.agreementsData;
+    },
+    [EventType.setSemanticsPageData]: (value: { semanticsData }) => {
+      stateContainer.semanticsPage = value.semanticsData;
     },
     [EventType.setInstrumentPageData]: (value: {
       instrumentpageData: InstrumentPageData;
@@ -191,18 +196,18 @@ import { setStateHook } from "./setStateHook";
     [EventType.setAccountantPages]: (value: { accountantPage }) => {
       stateContainer.accountantPages = value.accountantPage;
     },
-    [EventType.setKey]: (value: { key: any; file: FileList }) => {
+    [EventType.setWallet]: (value: { walletPage: WalletPage }) => {
       const balance = stateContainer.walletPage.balance;
       const address = stateContainer.walletPage.address;
-      const arconnect = stateContainer.walletPage.arconnect;
+
       stateContainer.walletPage = {
         balance,
         address,
-        key: value.key,
-        file: value.file,
-        arconnect,
+        key: value.walletPage.key,
+        file: value.walletPage.file,
+        arconnect: value.walletPage.arconnect,
+        isWalletFile: value.walletPage.isWalletFile,
       };
-      console.log(stateContainer.walletPage);
     },
     [EventType.setInstrumentPageData]: (value: {
       instrumentPageData: InstrumentPageData;
