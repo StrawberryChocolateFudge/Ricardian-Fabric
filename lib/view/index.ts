@@ -1,7 +1,4 @@
-import { CreatePages, Events, Renderer, RenderType, State } from "../types";
-import { renderCreateButtonClick } from "./actions/createButtonClick";
-import { attachExpiryClickAndListener } from "./actions/attachExpiryClickAndListener";
-import { onFileSelect } from "./actions/onFileSelect";
+import {Events, Renderer, RenderType, State } from "../types";
 import { renderAcceptOnCLick } from "./actions/renderAcceptButton";
 import {
   disableButton,
@@ -35,40 +32,28 @@ import {
   updatePromptSuccess,
 } from "./render";
 import { renderAcceptButton } from "./render";
-import { attachTermsButtonListeners } from "./actions/bannerButtonListeners";
-import { instrumentCheckboxListener } from "./actions/instrumentCheckboxListener";
-import { onPDFFileDropped } from "./actions/onPDFFileDropped";
-import { nextButtonClick } from "./actions/pages/nextButtonClick";
-import { onWalletFileDropped } from "./actions/onWalletFileDropped";
-import { postCheckboxSelect } from "./actions/postCheckboxSelect";
 import { dispatch_renderBalance } from "../dispatch/render";
 import { managerSwitch } from "./actions/pages/managerSwitch";
+import { routeButtonClick } from "./actions/pages/routeButtonClick";
+import { attachTermsButtonListeners } from "./actions/pages/terms/bannerButtonListeners";
+import { onWalletFileSelect } from "./actions/pages/createRoutes/walletPage";
 
 const Render: Renderer = {
+  //TODO: SUCCESS AND ERROR MESSAGE ARE DEPRECATED?
   [RenderType.successMessage]: (props: State) => {},
   [RenderType.errorMessage]: (props: State) => {},
+  
+  
   [RenderType.createPage]: (props: State) => {
     renderPage(props);
-    //TODO: rename nextButtonClick
-    nextButtonClick(props);
+    routeButtonClick(props);
     managerSwitch(props);
     renderToolTipHelptextsForCreate();
-    if (props.createPages === CreatePages.Agreement) {
-      attachExpiryClickAndListener(props);
-    } else if (props.createPages === CreatePages.PDF) {
-      onPDFFileDropped();
-    } else if (props.createPages === CreatePages.SmartContract) {
-      renderInstrumentSettingsTooltips();
-      instrumentCheckboxListener(props);
-    } else if (props.createPages === CreatePages.AddWallet) {
-      onWalletFileDropped(props);
-    } else if (props.createPages === CreatePages.Networking) {
-      postCheckboxSelect();
-    }
   },
   [RenderType.acceptButton]: (props: State) => {
     renderAcceptButton(props);
-    onFileSelect(props);
+    //TODO: THE WALLET PAGE FOR THE ACCEPTABLE
+    onWalletFileSelect(props);
     renderAcceptOnCLick(props);
   },
   [RenderType.balance]: (props: State) => {
@@ -89,30 +74,40 @@ const Render: Renderer = {
   [RenderType.removeError]: () => {
     removeError();
   },
+
+  //ENABLE AND DISABLE BUTTON MIGHT CHANGE
   [RenderType.enableButton]: (props: State) => {
     enableButton(props);
   },
   [RenderType.disableButton]: (props: State) => {
     disableButton(props);
   },
+
+
   [RenderType.version]: (props: { version: string }) => {
     renderVersion(props.version);
   },
   [RenderType.redirectCounter]: (props: { count: number }) => {
     renderCounter(props.count);
   },
+
+  //TODO: deprecated
   [RenderType.dateClickListener]: (props: State) => {
-    attachExpiryClickAndListener(props);
+    // attachExpiryClickAndListener(props);
   },
+
+
   [RenderType.renderTerms]: () => {
     renderTerms();
     attachTermsButtonListeners();
   },
 
   [RenderType.setInstrument]: (props: State) => {
-    renderCreateButtonClick(props);
+    //TODO: What is this? remove it??
+    // renderCreateButtonClick(props);
   },
 
+  //Initializing the pages with an event
   [RenderType.initAgreementPage]: (props: any) => {
     if (props.agreementPage.selectedDate !== "") {
       setExpiresDateToDOM(props.agreementPage.selectedDate.toString());
@@ -157,6 +152,10 @@ const Render: Renderer = {
     setPostToDOM(props.networkingPage);
   },
   [RenderType.initSummaryPage]: (props: State) => {},
+
+
+
+  //Showing success and error on the PDF,Wallet and Docx droppers
   [RenderType.promptSuccess]: (props: { file: File | string }) => {
     updatePromptSuccess(props.file as File);
   },
@@ -170,3 +169,5 @@ document.body.addEventListener(Events.render, (e: any) => {
   const props: State = e.detail.props;
   Render[type](props);
 });
+
+
