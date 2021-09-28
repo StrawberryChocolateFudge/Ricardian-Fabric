@@ -10,6 +10,7 @@ import {
   NetworkingPage,
   PDFPage,
   SemanticsPage,
+  SignerPage,
   WalletPage,
 } from "../types";
 import { dispatch } from "./dispatch";
@@ -46,6 +47,13 @@ export function dispatch_setSemanticsPageData(semanticsData: SemanticsPage) {
   dispatch(Events.stateChange, {
     type: EventType.setSemanticsPageData,
     value: { semanticsData },
+  });
+}
+
+export function dispatch_setSignerPageData(signerData : SignerPage){
+   dispatch(Events.stateChange, {
+    type: EventType.setSignerPageData,
+    value: { signerData },
   });
 }
 
