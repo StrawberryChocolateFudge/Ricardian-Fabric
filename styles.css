@@ -76,10 +76,6 @@ body {
   color: red;
 }
 
-
-
-
-
 .editable {
   background: #f2f2f2;
 }
@@ -155,7 +151,7 @@ body {
 /* FILE Dropper  END*/
 
 /* Switch title row */
-.titleSliderRow{
+.titleSliderRow {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -169,7 +165,7 @@ body {
   height: 34px;
 }
 
-.switch input { 
+.switch input {
   opacity: 0;
   width: 0;
   height: 0;
@@ -183,8 +179,8 @@ body {
   right: 0;
   bottom: 0;
   background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 
 .slider:before {
@@ -195,16 +191,16 @@ body {
   left: 4px;
   bottom: 4px;
   background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 
 input:checked + .slider {
-  background-color: #2196F3;
+  background-color: #2196f3;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+  box-shadow: 0 0 1px #2196f3;
 }
 
 input:checked + .slider:before {
@@ -224,7 +220,7 @@ input:checked + .slider:before {
 /*  MANAGER UI SWITCH END */
 
 /*Routes Buttons container */
-.routes-buttons-container{
+.routes-buttons-container {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -232,7 +228,7 @@ input:checked + .slider:before {
   align-content: flex-start;
 }
 
-.routes-buttons{
+.routes-buttons {
   width: 200px;
   height: 180px;
   margin-left: 30px;
@@ -241,11 +237,40 @@ input:checked + .slider:before {
   border-radius: 25px;
 }
 
-.accountant-button{
+.accountant-button {
   width: 100px;
   height: 90px;
   margin-left: 30px;
   margin-top: 30px;
   cursor: pointer;
   border-radius: 25px;
+}
+
+#create-button {
+  border-radius: 25px;
+  height: 40px;
+  width: 80px;
+  background-color: black;
+  color: white;
+}
+
+#expires-reset {
+  border-radius: 25px;
+  height: 30px;
+  width: 60px;
+}
+
+.cancel-button {
+  border-radius: 25px;
+  height: 30px;
+  width: 60px;
+  background-color: white;
+}
+
+.save-button {
+  border-radius: 25px;
+  height: 40px;
+  width: 80px;
+  background-color: black;
+  color: white;
 }
