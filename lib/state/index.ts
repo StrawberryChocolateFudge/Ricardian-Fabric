@@ -59,7 +59,7 @@ import { setStateHook } from "./setStateHook";
         balance: 0,
         key: "",
         file: "",
-        arconnect: false,
+        arconnect: true,
         isWalletFile: false,
       },
 
@@ -178,6 +178,9 @@ import { setStateHook } from "./setStateHook";
     },
     [EventType.setSemanticsPageData]: (value: { semanticsData }) => {
       stateContainer.semanticsPage = value.semanticsData;
+    },
+    [EventType.setSignerPageData]: (value: {signerData}) =>{
+      stateContainer.signerPage = value.signerData;
     },
     [EventType.setInstrumentPageData]: (value: {
       instrumentpageData: InstrumentPageData;
