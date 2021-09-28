@@ -27,9 +27,11 @@ export enum RenderType {
   renderInstrumentSettings = "renderInstrumentSettings",
   setInstrument = "setInstrument",
 
+  signerCountries = "signerCountries",
+
   initWalletPage = "initWalletPage",
   initSemanticsPage = "initSemanticsPage",
-
+  initSignerPage = "initSignerPage",
   initAgreementPage = "initAgreementPage",
   initPDFPage = "initPDFPage",
   initSmartContractPage = "initSmartContractPage",
@@ -58,8 +60,11 @@ export type Renderer = {
   [RenderType.renderTerms]: CallableFunction;
   [RenderType.setInstrument]: CallableFunction;
 
+  [RenderType.signerCountries]: CallableFunction;
+
   [RenderType.initWalletPage]: CallableFunction;
   [RenderType.initSemanticsPage]: CallableFunction;
+  [RenderType.initSignerPage]: CallableFunction;
   [RenderType.initAgreementPage]: CallableFunction;
   [RenderType.initPDFPage]: CallableFunction;
   [RenderType.initSmartContractPage]: CallableFunction;
@@ -77,6 +82,7 @@ export enum EventType {
   setBalance = "setBalance",
   setAgreementsPageData = "setAgreementsPageData",
   setSemanticsPageData = "setSemanticsPageData",
+  setSignerPageData = "setSignerPageData",
   setWalletAddress = "setWalletAddress",
   setSelectedDate = "setSelectedDate",
   setPdfPageData = "setPdfPageData",
@@ -92,7 +98,8 @@ export enum EventType {
 export enum StateProperties {
   arweave = "arweave",
   agreementPage = "agreementPage",
-  semanticsPage="semanticsPage",
+  semanticsPage = "semanticsPage",
+  signerPage = "signerPage",
   pdfPage = "pdfPage",
   createPages = "createPages",
   managerPages = "managerPages",
@@ -101,7 +108,6 @@ export enum StateProperties {
   instrumentPageData = "instrumentPageData",
   networkingPage = "networkingPage",
   managementSlider = "managementSlider",
-
 }
 
 export enum ContractTypes {
