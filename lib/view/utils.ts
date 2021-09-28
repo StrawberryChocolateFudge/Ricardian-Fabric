@@ -92,6 +92,19 @@ export function getOnlySigner() {
   }
 }
 
+export function getAvailableCountries() {
+  const availableCountriesEl = getById("countries-list") as HTMLUListElement;
+
+  const children = availableCountriesEl.children;
+  const countries = [];
+  for (let i = 0; i < children.length; i++) {
+    const liEl = children.item(i) as HTMLLIElement;
+    const country = liEl.attributes.getNamedItem("name").nodeValue;
+    countries.push(country);
+  }
+  return countries;
+}
+
 function handleHTTPS(url: string) {
   if (url === "") {
     return url;
@@ -139,7 +152,6 @@ export function getPDF(): FileList {
     return null;
   }
 }
-
 
 export function getWallet(): FileList {
   const wallet = getById("wallet-input") as HTMLInputElement;
