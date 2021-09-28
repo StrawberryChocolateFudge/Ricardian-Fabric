@@ -5,6 +5,7 @@ import {
   addressTemplate,
   balanceTemplate,
 } from "./templates/components/balance";
+import { CountriesList } from "./templates/components/countriesList";
 import { helperTooltips } from "./templates/components/helperTooltips";
 import { loadingIndicator } from "./templates/components/loadingIndicator";
 import { redirectCounter } from "./templates/components/redirectCounter";
@@ -54,6 +55,10 @@ export async function removeLoadingIndicator(from: string) {
 export async function renderTransaction(url: string) {
   render(transactionUrl(url), getById("transaction-display"));
   copyStringToClipboard(url);
+}
+
+export async function renderCountriesList(available: Array<string>){
+  render(CountriesList(available),getById("country-items-added"))
 }
 
 export function renderError(message: string) {
