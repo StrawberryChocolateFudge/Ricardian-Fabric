@@ -8,6 +8,7 @@ import {
   removeLoadingIndicator,
   renderbalance,
   renderCounter,
+  renderCountriesList,
   renderError,
   renderLoadingIndicator,
   renderPage,
@@ -32,11 +33,14 @@ import {
   updatePromptSuccess,
 } from "./render";
 import { renderAcceptButton } from "./render";
-import { dispatch_renderBalance } from "../dispatch/render";
+import {
+  dispatch_renderBalance,
+} from "../dispatch/render";
 import { managerSwitch } from "./actions/pages/managerSwitch";
 import { routeButtonClick } from "./actions/pages/routeButtonClick";
 import { attachTermsButtonListeners } from "./actions/pages/terms/bannerButtonListeners";
 import { onWalletFileSelect } from "./actions/pages/createRoutes/walletPage";
+import { dispatchCountryListRenders } from "./actions/pages/createRoutes/signerPage";
 
 const Render: Renderer = {
   [RenderType.createPage]: (props: State) => {
@@ -100,12 +104,17 @@ const Render: Renderer = {
     // renderCreateButtonClick(props);
   },
 
+  [RenderType.signerCountries]: (props: {
+    availableCountries: Array<string>;
+  }) => {
+    renderCountriesList(props.availableCountries);
+  },
+
   //Initializing the pages with an event
   [RenderType.initAgreementPage]: (props: any) => {
     if (props.agreementPage.selectedDate !== "") {
       setExpiresDateToDOM(props.agreementPage.selectedDate.toString());
       setPriceToDOM(props.agreementPage.price);
-      setOnlySignerToDOM(props.agreementPage.onlySigner);
       props.editor.setContent(props.agreementPage.content, 0);
     }
   },
@@ -137,6 +146,10 @@ const Render: Renderer = {
   }) => {
     editor.setContent(props.semanticsPage.content, 0);
     setSemanticsTitleToDOM(props.semanticsPage.title);
+  },
+  [RenderType.initSignerPage]: (props: State) => {
+    dispatchCountryListRenders(props.signerPage.availableCountries);
+    setOnlySignerToDOM(props.signerPage.onlySigner);
   },
   [RenderType.initSmartContractPage]: (props: State) => {
     // setWillProfitShareToDOM(props.instrumentPageData.willProfitShare);
