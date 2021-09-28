@@ -1,4 +1,7 @@
-import { CreatePages, ManagementSlider, RenderType, State } from "../types";
+import {
+  RenderType,
+  State,
+} from "../types";
 import { dispatch } from "./dispatch";
 import { Events } from "../types";
 
@@ -8,7 +11,6 @@ export function dispatch_createPage(props: State) {
     props,
   });
 }
-
 
 export function dispatch_renderAcceptButton(props: State) {
   dispatch(Events.render, { type: RenderType.acceptButton, props });
@@ -108,6 +110,13 @@ export function dispatch_instrumentsSetRerender(props: State) {
   });
 }
 
+export function dispatch_renderCountries(availableCountries: Array<string>) {
+  dispatch(Events.render, {
+    type: RenderType.signerCountries,
+    props: { availableCountries },
+  });
+}
+
 export function dispatch_initAgreementPage(props: State, editor: any) {
   dispatch(Events.render, {
     type: RenderType.initAgreementPage,
@@ -119,6 +128,13 @@ export function dispatch_initSemanticsPage(props: State, editor: any) {
   dispatch(Events.render, {
     type: RenderType.initSemanticsPage,
     props: { props, editor },
+  });
+}
+
+export function dispatch_initSignerPage(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.initSignerPage,
+    props,
   });
 }
 
