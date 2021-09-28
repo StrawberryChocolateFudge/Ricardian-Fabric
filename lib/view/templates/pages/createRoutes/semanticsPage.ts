@@ -23,7 +23,7 @@ export const SemanticsPage = () => html`
     id="error-display"
   ></div>
   <div class="button-row">
-    <button class="marginRight-20" id="semantics-previous">Cancel</button>
-    <button class="marginLeft-20" id="semantics-save">Save</button>
+    <button class="marginRight-20 cancel-button" id="semantics-previous">Cancel</button>
+    <button class="marginLeft-20 save-button" id="semantics-save">Save</button>
   </div>
 `;

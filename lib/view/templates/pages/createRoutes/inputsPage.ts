@@ -38,7 +38,7 @@ export const InputsPage = () => html`
     id="error-display"
   ></div>
   <div class="button-row">
-    <button class="marginRight-20" id="input-cancel">Cancel</button>
-    <button class="marginLeft-20" id="input-save">Save</button>
+    <button class="marginRight-20 cancel-button" id="input-cancel">Cancel</button>
+    <button class="marginLeft-20 save-button" id="input-save">Save</button>
   </div>
 `;

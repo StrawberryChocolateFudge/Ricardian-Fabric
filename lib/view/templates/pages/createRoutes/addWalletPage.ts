@@ -38,6 +38,6 @@ export const AddWalletPage = () => html` <h2 class="center">Add your wallet</h2>
     id="error-display"
   ></div>
   <div class="button-row">
-    <button class="marginRight-20" id="AddWalletPage-previous">Cancel</button>
-    <button class="marginLeft-20" id="AddWalletPage-next">Save</button>
+    <button class="marginRight-20 cancel-button" id="AddWalletPage-previous">Cancel</button>
+    <button class="marginLeft-20 save-button" id="AddWalletPage-next">Save</button>
   </div>`;

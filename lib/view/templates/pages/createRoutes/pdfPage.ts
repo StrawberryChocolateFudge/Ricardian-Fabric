@@ -18,7 +18,7 @@ export const PDFPage = () => html`
     id="error-display"
   ></div>
   <div class="button-row">
-    <button class="marginRight-20" id="EditPage-previous">Cancel</button>
-    <button class="marginLeft-20" id="EditPage-next">Save</button>
+    <button class="marginRight-20 cancel-button" id="EditPage-previous">Cancel</button>
+    <button class="marginLeft-20 save-button" id="EditPage-next">Save</button>
   </div>
 `;

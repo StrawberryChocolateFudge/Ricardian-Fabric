@@ -55,9 +55,9 @@ export const NetworkingPage = () => html`
     id="error-display"
   ></div>
   <div class="button-row">
-    <button class="marginRight-20" id="NetworkingPage-previous">
+    <button class="marginRight-20 cancel-button" id="NetworkingPage-previous">
       Cancel
     </button>
-    <button class="marginLeft-20" id="NetworkingPage-next">Save</button>
+    <button class="marginLeft-20 save-button" id="NetworkingPage-next">Save</button>
   </div>
 `;

@@ -54,7 +54,7 @@ export const NFTPage = () => html`
     id="error-display"
   ></div>
   <div class="button-row">
-    <button class="marginRight-20" id="nftpage-cancel">Cancel</button>
-    <button class="marginLeft-20" id="nftpage-save">Save</button>
+    <button class="marginRight-20 cancel-button" id="nftpage-cancel">Cancel</button>
+    <button class="marginLeft-20 save-button" id="nftpage-save">Save</button>
   </div>
 `;
