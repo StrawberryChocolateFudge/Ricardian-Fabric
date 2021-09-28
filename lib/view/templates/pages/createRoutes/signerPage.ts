@@ -1,4 +1,5 @@
 import { html } from "lit-html";
+import { CountriesDropdown } from "../../components/countriesDropdown";
 
 export const SignerPage = () =>
   html`
@@ -19,6 +20,17 @@ export const SignerPage = () =>
         </td>
         <td><span id="onlysigner-tooltip"></span></td>
       </tr>
+      <tr>
+        <td>
+          <label aria-labelledby="only signer available input">Available in:</label>
+        </td>
+        <td>
+          ${CountriesDropdown("country-to-add")}
+        </td>
+        </td>
+        <td><button id="add-country-item">Add</button></td>
+      </tr>
+       <tr id="country-items-added"></tr>
     </table>
     <hr />
     <div
@@ -27,7 +39,7 @@ export const SignerPage = () =>
       id="error-display"
     ></div>
     <div class="button-row">
-      <button class="marginRight-20" id="signer-cancel">Cancel</button>
-      <button class="marginLeft-20" id="signer-save">Save</button>
+      <button class="marginRight-20 cancel-button" id="signer-cancel">Cancel</button>
+      <button class="marginLeft-20 save-button" id="signer-save">Save</button>
     </div>
   `;
