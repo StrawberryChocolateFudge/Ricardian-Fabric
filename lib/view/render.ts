@@ -1,5 +1,11 @@
 import { html, render } from "lit-html";
-import { ContractTypes, NetworkingPage, State, WalletPage } from "../types";
+import {
+  ContractTypes,
+  NetworkingPage,
+  PaymentPage,
+  State,
+  WalletPage,
+} from "../types";
 import { acceptButton } from "./templates/acceptable/acceptButton";
 import {
   addressTemplate,
@@ -15,8 +21,10 @@ import { Router } from "./templates/pages/router";
 import {
   copyStringToClipboard,
   getById,
+  getNFTFields,
   getPDFDisplay,
   getPDFInputEl,
+  getPrice,
   getPromptEl,
   getPSTCheckboxEl,
   getPSTContractEl,
@@ -57,8 +65,8 @@ export async function renderTransaction(url: string) {
   copyStringToClipboard(url);
 }
 
-export async function renderCountriesList(available: Array<string>){
-  render(CountriesList(available),getById("country-items-added"))
+export async function renderCountriesList(available: Array<string>) {
+  render(CountriesList(available), getById("country-items-added"));
 }
 
 export function renderError(message: string) {
@@ -290,16 +298,50 @@ export function setPostToDOM(networkingPage: NetworkingPage) {
 
   const redirectEl = getById("redirect-checkbox") as HTMLInputElement;
   const webhookEl = getById("webhook-checkbox") as HTMLInputElement;
-
   redirectEl.checked = networkingPage.redirect;
   webhookEl.checked = networkingPage.webhook;
+
+  const weavemailEl = getById("weavemail-checkbox") as HTMLInputElement;
+  weavemailEl.checked = networkingPage.weavemail;
 }
 
-export function setSemanticsTitleToDOM(title: string){
+export function setSemanticsTitleToDOM(title: string) {
   const titleEl = getById("semanticsTitle") as HTMLInputElement;
   titleEl.value = title;
 }
 
+export function setProfitSharingToDOM(data: PaymentPage) {
+  const isProfitSharingEl = getById("is-profitsharing") as HTMLInputElement;
+  const percentageEl = getById("pst-percentage") as HTMLInputElement;
+  const pscEl = getById("pst-contractid") as HTMLInputElement;
+  const accountantContractEl = getById(
+    "accountant-contractid"
+  ) as HTMLInputElement;
+  const needsKYCEl = getById("needs-kyc") as HTMLInputElement;
+
+  isProfitSharingEl.checked = data.willProfitShare;
+
+  const disabled = !data.willProfitShare;
+
+  percentageEl.value = data.percentage.toString();
+  percentageEl.disabled = disabled;
+  pscEl.value = data.pstContractId;
+  pscEl.disabled = disabled;
+  accountantContractEl.value = data.accountantContractId;
+  accountantContractEl.disabled = disabled;
+  needsKYCEl.checked = data.needsKYC;
+}
+
+export function setNFTPageToDOM(props: State) {
+  const [allowNFTEl, titleEl, nameEl, descriptionEl, tickerEl] = getNFTFields();
+  const page = props.NFTPage;
+
+  allowNFTEl.checked = page.allowNFT;
+  titleEl.value = page.title;
+  nameEl.value = page.name;
+  descriptionEl.value = page.description;
+  tickerEl.value = page.ticker;
+}
 
 export function revertPrompt() {
   const prompt = getPromptEl();
