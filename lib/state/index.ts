@@ -8,10 +8,13 @@ import {
   ManagementSlider,
   ManagerPages,
   NetworkingPage,
+  NFTPage,
+  PaymentPage,
   PDFPage,
   State,
   WalletPage,
 } from "../types";
+import { networkingPage } from "../view/actions/pages/createRoutes/networkingPage";
 import { getCurrentUrl, getPage } from "../view/utils";
 import {
   getBundleSrcUrl,
@@ -80,9 +83,11 @@ import { setStateHook } from "./setStateHook";
       paymentPage: {
         price: "",
         willProfitShare: false,
+        percentage: "0",
         pstContractId: "",
+        accountantContractId: "",
+        needsKYC: false,
       },
-
       inputsPage: {
         requiredInputs: [],
       },
@@ -91,6 +96,7 @@ import { setStateHook } from "./setStateHook";
         name: "",
         description: "",
         ticker: "",
+        allowNFT: false,
       },
 
       instrumentPageData: {
@@ -105,6 +111,7 @@ import { setStateHook } from "./setStateHook";
         postto: "",
         webhook: false,
         redirect: false,
+        weavemail: true,
       },
 
       // Manager pages
@@ -179,7 +186,7 @@ import { setStateHook } from "./setStateHook";
     [EventType.setSemanticsPageData]: (value: { semanticsData }) => {
       stateContainer.semanticsPage = value.semanticsData;
     },
-    [EventType.setSignerPageData]: (value: {signerData}) =>{
+    [EventType.setSignerPageData]: (value: { signerData }) => {
       stateContainer.signerPage = value.signerData;
     },
     [EventType.setInstrumentPageData]: (value: {
@@ -189,6 +196,12 @@ import { setStateHook } from "./setStateHook";
     },
     [EventType.setPdfPageData]: (value: { pdfPageData: PDFPage }) => {
       stateContainer.pdfPage = value.pdfPageData;
+    },
+    [EventType.setPaymentPageData]: (value: { paymentsPage: PaymentPage }) => {
+      stateContainer.paymentPage = value.paymentsPage;
+    },
+    [EventType.setNFTPageData]: (value: { nftPageData: NFTPage }) => {
+      stateContainer.NFTPage = value.nftPageData;
     },
     [EventType.setCreatePages]: (value: { createPage: CreatePages }) => {
       stateContainer.createPages = value.createPage;
@@ -220,6 +233,7 @@ import { setStateHook } from "./setStateHook";
     [EventType.setNetworkingPage]: (value: {
       networkingPage: NetworkingPage;
     }) => {
+      console.log(networkingPage);
       stateContainer.networkingPage = value.networkingPage;
     },
     [EventType.setManagementSwitch]: (value: { to: ManagementSlider }) => {
