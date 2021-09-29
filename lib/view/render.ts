@@ -13,6 +13,7 @@ import {
 } from "./templates/components/balance";
 import { CountriesList } from "./templates/components/countriesList";
 import { helperTooltips } from "./templates/components/helperTooltips";
+import { InputsList } from "./templates/components/inputsList";
 import { loadingIndicator } from "./templates/components/loadingIndicator";
 import { redirectCounter } from "./templates/components/redirectCounter";
 import { termsLayout } from "./templates/components/terms";
@@ -35,11 +36,11 @@ import {
   isInstrumentEl,
 } from "./utils";
 
-export async function renderPage(props: State) {
+export function renderPage(props: State) {
   render(Router(props), getById("page"));
 }
 
-export async function renderbalance(balance: number, address: string) {
+export function renderbalance(balance: number, address: string) {
   const balanceEl = getById("balance");
   const addressEl = getById("address");
   render(balanceTemplate(balance), balanceEl);
@@ -52,21 +53,25 @@ export function renderAcceptButton(props: State) {
   render(acceptButton(props), actionContainer);
 }
 
-export async function renderLoadingIndicator(to: string) {
+export function renderLoadingIndicator(to: string) {
   render(loadingIndicator, getById(to));
 }
 
-export async function removeLoadingIndicator(from: string) {
+export function removeLoadingIndicator(from: string) {
   render(html`<div></div>`, getById(from));
 }
 
-export async function renderTransaction(url: string) {
+export function renderTransaction(url: string) {
   render(transactionUrl(url), getById("transaction-display"));
   copyStringToClipboard(url);
 }
 
-export async function renderCountriesList(available: Array<string>) {
+export function renderCountriesList(available: Array<string>) {
   render(CountriesList(available), getById("country-items-added"));
+}
+
+export function renderInputsList(inputs: Array<string>) {
+  render(InputsList(inputs), getById("inputs-items-added"));
 }
 
 export function renderError(message: string) {
