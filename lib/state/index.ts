@@ -4,6 +4,7 @@ import {
   CreatePages,
   Events,
   EventType,
+  InputsPage,
   InstrumentPageData,
   ManagementSlider,
   ManagerPages,
@@ -202,6 +203,9 @@ import { setStateHook } from "./setStateHook";
     },
     [EventType.setNFTPageData]: (value: { nftPageData: NFTPage }) => {
       stateContainer.NFTPage = value.nftPageData;
+    },
+    [EventType.setInputsPageData]: (value: { inputsPage: InputsPage }) => {
+      stateContainer.inputsPage = value.inputsPage;
     },
     [EventType.setCreatePages]: (value: { createPage: CreatePages }) => {
       stateContainer.createPages = value.createPage;

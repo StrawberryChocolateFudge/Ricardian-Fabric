@@ -4,6 +4,7 @@ import {
   CreatePages,
   Events,
   EventType,
+  InputsPage,
   InstrumentPageData,
   ManagementSlider,
   ManagerPages,
@@ -56,6 +57,13 @@ export function dispatch_setSignerPageData(signerData: SignerPage) {
   dispatch(Events.stateChange, {
     type: EventType.setSignerPageData,
     value: { signerData },
+  });
+}
+
+export function dispatch_setInputsPageData(inputsPage : InputsPage){
+    dispatch(Events.stateChange, {
+    type: EventType.setInputsPageData,
+    value: { inputsPage },
   });
 }
 

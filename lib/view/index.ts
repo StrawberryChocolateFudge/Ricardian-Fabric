@@ -10,6 +10,7 @@ import {
   renderCounter,
   renderCountriesList,
   renderError,
+  renderInputsList,
   renderLoadingIndicator,
   renderPage,
   renderTerms,
@@ -35,14 +36,13 @@ import {
   updatePromptSuccess,
 } from "./render";
 import { renderAcceptButton } from "./render";
-import {
-  dispatch_renderBalance,
-} from "../dispatch/render";
+import { dispatch_renderBalance } from "../dispatch/render";
 import { managerSwitch } from "./actions/pages/managerSwitch";
 import { routeButtonClick } from "./actions/pages/routeButtonClick";
 import { attachTermsButtonListeners } from "./actions/pages/terms/bannerButtonListeners";
 import { onWalletFileSelect } from "./actions/pages/createRoutes/walletPage";
 import { dispatchCountryListRenders } from "./actions/pages/createRoutes/signerPage";
+import { dispatchInputListRenders } from "./actions/pages/createRoutes/inputsPage";
 
 const Render: Renderer = {
   [RenderType.createPage]: (props: State) => {
@@ -112,6 +112,10 @@ const Render: Renderer = {
     renderCountriesList(props.availableCountries);
   },
 
+  [RenderType.savedInputs]: (props: { inputs: Array<string> }) => {
+    renderInputsList(props.inputs);
+  },
+
   //Initializing the pages with an event
   [RenderType.initAgreementPage]: (props: any) => {
     if (props.agreementPage.selectedDate !== "") {
@@ -153,9 +157,9 @@ const Render: Renderer = {
     dispatchCountryListRenders(props.signerPage.availableCountries);
     setOnlySignerToDOM(props.signerPage.onlySigner);
   },
-  [RenderType.initPaymentsPage]: (props: State) =>{
+  [RenderType.initPaymentsPage]: (props: State) => {
     setPriceToDOM(props.paymentPage.price);
-    setProfitSharingToDOM(props.paymentPage)
+    setProfitSharingToDOM(props.paymentPage);
   },
   [RenderType.initSmartContractPage]: (props: State) => {
     // setWillProfitShareToDOM(props.instrumentPageData.willProfitShare);
@@ -173,8 +177,11 @@ const Render: Renderer = {
   [RenderType.initNetworkingPage]: (props: State) => {
     setPostToDOM(props.networkingPage);
   },
-  [RenderType.initNFTPage]: (props: State) =>{
-   setNFTPageToDOM(props);
+  [RenderType.initNFTPage]: (props: State) => {
+    setNFTPageToDOM(props);
+  },
+  [RenderType.initInputsPage]: (props: State) => {
+    dispatchInputListRenders(props.inputsPage.requiredInputs);
   },
   [RenderType.initSummaryPage]: (props: State) => {},
 

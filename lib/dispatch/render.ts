@@ -117,6 +117,14 @@ export function dispatch_renderCountries(availableCountries: Array<string>) {
   });
 }
 
+export function dispatch_renderInputs(inputs: Array<string>) {
+  dispatch(Events.render, {
+    type: RenderType.savedInputs,
+    props: { inputs },
+  });
+}
+
+
 export function dispatch_initAgreementPage(props: State, editor: any) {
   dispatch(Events.render, {
     type: RenderType.initAgreementPage,
@@ -167,6 +175,13 @@ export function dispatch_initNFTPage(props: State){
   });
 }
 
+export function dispatch_initInputsPage(props: State){
+      dispatch(Events.render, {
+    type: RenderType.initInputsPage,
+    props,
+  });
+}
+
 export function dispatch_initSmartContractPage(props: State) {
   dispatch(Events.render, {
     type: RenderType.initSmartContractPage,
@@ -187,6 +202,7 @@ export function dispatch_initSummaryPage(props: State) {
     props,
   });
 }
+
 
 export function dispatch_discardPdf() {
   dispatch(Events.render, {
