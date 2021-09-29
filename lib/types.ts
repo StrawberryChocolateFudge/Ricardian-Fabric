@@ -28,6 +28,7 @@ export enum RenderType {
   setInstrument = "setInstrument",
 
   signerCountries = "signerCountries",
+  savedInputs = "savedInputs",
 
   initWalletPage = "initWalletPage",
   initSemanticsPage = "initSemanticsPage",
@@ -36,6 +37,7 @@ export enum RenderType {
   initAgreementPage = "initAgreementPage",
   initPDFPage = "initPDFPage",
   initNFTPage = "initNFTPage",
+  initInputsPage = "initInputsPage",
   initSmartContractPage = "initSmartContractPage",
   initNetworkingPage = "initNetworkingPage",
   initSummaryPage = "initSummaryPage",
@@ -63,6 +65,7 @@ export type Renderer = {
   [RenderType.setInstrument]: CallableFunction;
 
   [RenderType.signerCountries]: CallableFunction;
+  [RenderType.savedInputs]: CallableFunction;
 
   [RenderType.initWalletPage]: CallableFunction;
   [RenderType.initSemanticsPage]: CallableFunction;
@@ -71,6 +74,7 @@ export type Renderer = {
   [RenderType.initAgreementPage]: CallableFunction;
   [RenderType.initPDFPage]: CallableFunction;
   [RenderType.initNFTPage]: CallableFunction;
+  [RenderType.initInputsPage]: CallableFunction;
   [RenderType.initSmartContractPage]: CallableFunction;
   [RenderType.initNetworkingPage]: CallableFunction;
   [RenderType.initSummaryPage]: CallableFunction;
@@ -92,6 +96,7 @@ export enum EventType {
   setSelectedDate = "setSelectedDate",
   setPdfPageData = "setPdfPageData",
   setNFTPageData = "setNFTPageData",
+  setInputsPageData = "setInputsPageData",
   setCreatePages = "setCreatePages",
   setManagerPages = "setManagerPages",
   setAccountantPages = "setAccountantPages",
@@ -113,6 +118,7 @@ export enum StateProperties {
   accountantPages = "accountantPages",
   paymentPage = "paymentPage",
   walletPage = "walletPage",
+  inputsPage = "inputsPage",
   instrumentPageData = "instrumentPageData",
   networkingPage = "networkingPage",
   managementSlider = "managementSlider",
@@ -178,7 +184,7 @@ export type WalletPage = {
 export type NetworkingPage = {
   postto: string;
   webhook: boolean;
-  redirect: boolean; 
+  redirect: boolean;
   weavemail: boolean;
 };
 
