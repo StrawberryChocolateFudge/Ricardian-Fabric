@@ -5,7 +5,7 @@ export const NetworkingPage = () => html`
   <hr />
   <table aria-label="input field container table" class="center">
     <tr>
-      <th></th>
+      <th>Integrate an external service</th>
       <th></th>
       <th></th>
     </tr>
@@ -28,25 +28,56 @@ export const NetworkingPage = () => html`
         <label aria-labelledby="webhook checkbox label" for="webhook-checkbox"
           >Webhook:</label
         >
-        <input
-          aria-label="webhook-checkbox"
-          id="webhook-checkbox"
-          type="checkbox"
-        />
       </td>
       <td>
-        <label aria-labelledby="redirect-checkbox-label" for="redirect-checkbox"
-          >Redirect:</label
-        >
         <input
-          aria-label="redirect-checkbox"
-          id="redirect-checkbox"
+          aria-label="webhook checkbox"
+          id="webhook-checkbox"
           type="checkbox"
         />
       </td>
       <td>
         <span id="webhook-tooltip"></span>
       </td>
+    </tr>
+    <tr>
+      <td>
+        <label aria-labelledby="redirect-checkbox-label" for="redirect-checkbox"
+          >Redirect:</label
+        >
+      </td>
+      <td>
+        <input
+          aria-label="redirect checkbox"
+          id="redirect-checkbox"
+          type="checkbox"
+        />
+      </td>
+      <td>
+        <span id="redirect-tooltip"></span>
+      </td>
+    </tr>
+    <tr>
+      <th>Get a Notification via Arweave</th>
+      <th></th>
+      <th></th>
+    </tr>
+    <tr>
+      <td>
+        <label
+          aria-labelledby="weavemail-checkbox-label"
+          for="weavemail-checkbox"
+          >Weavemail:</label
+        >
+      </td>
+      <td>
+        <input
+          aria-label="weavemail checkbox"
+          id="weavemail-checkbox"
+          type="checkbox"
+        />
+      </td>
+      <td><span id="weavemail-tooltip"></span></td>
     </tr>
   </table>
   <div
@@ -58,6 +89,8 @@ export const NetworkingPage = () => html`
     <button class="marginRight-20 cancel-button" id="NetworkingPage-previous">
       Cancel
     </button>
-    <button class="marginLeft-20 save-button" id="NetworkingPage-next">Save</button>
+    <button class="marginLeft-20 save-button" id="NetworkingPage-next">
+      Save
+    </button>
   </div>
 `;
