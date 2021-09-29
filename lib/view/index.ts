@@ -23,10 +23,12 @@ import {
   setInstrumentSupplyToDOM,
   setInstrumentTickerToDOM,
   setIsIntrumentToDOM,
+  setNFTPageToDOM,
   setOnlySignerToDOM,
   setPDFtoDOM,
   setPostToDOM,
   setPriceToDOM,
+  setProfitSharingToDOM,
   setSemanticsTitleToDOM,
   setWalletToDom,
   updatePromptError,
@@ -151,6 +153,10 @@ const Render: Renderer = {
     dispatchCountryListRenders(props.signerPage.availableCountries);
     setOnlySignerToDOM(props.signerPage.onlySigner);
   },
+  [RenderType.initPaymentsPage]: (props: State) =>{
+    setPriceToDOM(props.paymentPage.price);
+    setProfitSharingToDOM(props.paymentPage)
+  },
   [RenderType.initSmartContractPage]: (props: State) => {
     // setWillProfitShareToDOM(props.instrumentPageData.willProfitShare);
     // setProfitSharingContractIdToDOM(props.instrumentPageData.pstContractId);
@@ -166,6 +172,9 @@ const Render: Renderer = {
   },
   [RenderType.initNetworkingPage]: (props: State) => {
     setPostToDOM(props.networkingPage);
+  },
+  [RenderType.initNFTPage]: (props: State) =>{
+   setNFTPageToDOM(props);
   },
   [RenderType.initSummaryPage]: (props: State) => {},
 
