@@ -3,7 +3,6 @@ import { html } from "lit-html";
 export const CountriesDropdown = (id: string) => html`
   <select id="${id}" name="country">
     <option value="">Choose...</option>
-    <option value="Everywhere">Everywhere</option>
     <option value="Europe">Europe</option>
     <option value="Afghanistan">Afghanistan</option>
     <option value="Aland Islands">Aland Islands</option>
