@@ -32,8 +32,10 @@ export enum RenderType {
   initWalletPage = "initWalletPage",
   initSemanticsPage = "initSemanticsPage",
   initSignerPage = "initSignerPage",
+  initPaymentsPage = "initPaymentsPage",
   initAgreementPage = "initAgreementPage",
   initPDFPage = "initPDFPage",
+  initNFTPage = "initNFTPage",
   initSmartContractPage = "initSmartContractPage",
   initNetworkingPage = "initNetworkingPage",
   initSummaryPage = "initSummaryPage",
@@ -65,8 +67,10 @@ export type Renderer = {
   [RenderType.initWalletPage]: CallableFunction;
   [RenderType.initSemanticsPage]: CallableFunction;
   [RenderType.initSignerPage]: CallableFunction;
+  [RenderType.initPaymentsPage]: CallableFunction;
   [RenderType.initAgreementPage]: CallableFunction;
   [RenderType.initPDFPage]: CallableFunction;
+  [RenderType.initNFTPage]: CallableFunction;
   [RenderType.initSmartContractPage]: CallableFunction;
   [RenderType.initNetworkingPage]: CallableFunction;
   [RenderType.initSummaryPage]: CallableFunction;
@@ -83,9 +87,11 @@ export enum EventType {
   setAgreementsPageData = "setAgreementsPageData",
   setSemanticsPageData = "setSemanticsPageData",
   setSignerPageData = "setSignerPageData",
+  setPaymentPageData = "setPaymentPageData",
   setWalletAddress = "setWalletAddress",
   setSelectedDate = "setSelectedDate",
   setPdfPageData = "setPdfPageData",
+  setNFTPageData = "setNFTPageData",
   setCreatePages = "setCreatePages",
   setManagerPages = "setManagerPages",
   setAccountantPages = "setAccountantPages",
@@ -101,9 +107,11 @@ export enum StateProperties {
   semanticsPage = "semanticsPage",
   signerPage = "signerPage",
   pdfPage = "pdfPage",
+  NFTPage = "NFTPage",
   createPages = "createPages",
   managerPages = "managerPages",
   accountantPages = "accountantPages",
+  paymentPage = "paymentPage",
   walletPage = "walletPage",
   instrumentPageData = "instrumentPageData",
   networkingPage = "networkingPage",
@@ -170,7 +178,8 @@ export type WalletPage = {
 export type NetworkingPage = {
   postto: string;
   webhook: boolean;
-  redirect: boolean;
+  redirect: boolean; 
+  weavemail: boolean;
 };
 
 export type AgreementPage = {
@@ -193,7 +202,10 @@ export type SignerPage = {
 export type PaymentPage = {
   price: string;
   willProfitShare: boolean;
+  percentage: string;
   pstContractId: string;
+  accountantContractId: string;
+  needsKYC: boolean;
 };
 
 export type InputsPage = {
@@ -205,6 +217,7 @@ export type NFTPage = {
   name: string;
   description: string;
   ticker: string;
+  allowNFT: boolean;
 };
 
 export type InstrumentPageData = {
