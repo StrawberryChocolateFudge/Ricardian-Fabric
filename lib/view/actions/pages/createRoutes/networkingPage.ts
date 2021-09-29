@@ -10,6 +10,7 @@ import {
   getById,
   getPostTo,
   getRedirectCheckbox,
+  getWeavemailCheckbox,
   getWebhookCheckbox,
 } from "../../../utils";
 
@@ -34,8 +35,9 @@ export function networkingPage(props: State) {
         return;
       }
     }
+    const weavemail = getWeavemailCheckbox();
 
-    dispatch_setNetworkingPage({ postto, webhook, redirect });
+    dispatch_setNetworkingPage({ postto, webhook, redirect, weavemail });
     goToCreateRoutes();
   };
 }
@@ -43,8 +45,6 @@ export function networkingPage(props: State) {
 export function postCheckboxSelect() {
   const webhook = getById("webhook-checkbox") as HTMLInputElement;
   const redirect = getById("redirect-checkbox") as HTMLInputElement;
-  webhook.checked = false;
-  redirect.checked = false;
   webhook.onchange = function () {
     if (redirect.checked) {
       redirect.checked = false;
