@@ -152,6 +152,21 @@ export function dispatch_initWalletPage(props: State) {
   });
 }
 
+
+export function dispatch_initPaymentsPage(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.initPaymentsPage,
+    props,
+  });
+}
+
+export function dispatch_initNFTPage(props: State){
+    dispatch(Events.render, {
+    type: RenderType.initNFTPage,
+    props,
+  });
+}
+
 export function dispatch_initSmartContractPage(props: State) {
   dispatch(Events.render, {
     type: RenderType.initSmartContractPage,
