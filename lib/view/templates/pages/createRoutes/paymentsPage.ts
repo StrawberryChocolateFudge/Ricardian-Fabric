@@ -6,7 +6,7 @@ export const PaymentsPage = () =>
     <hr />
     <table aria-label="payments " class="center">
       <tr>
-        <th></th>
+        <th>The cost of the agreement:</th>
         <th></th>
         <th></th>
       </tr>
@@ -20,9 +20,15 @@ export const PaymentsPage = () =>
             name="price"
             id="price-input"
             type="number"
+            placeholder="Ar"
           />
         </td>
         <td><span id="price-tooltip"></span></td>
+      </tr>
+      <tr>
+        <th>Add a new fee</th>
+        <th></th>
+        <th></th>
       </tr>
       <tr>
         <td>
@@ -37,17 +43,36 @@ export const PaymentsPage = () =>
       </tr>
       <tr>
         <td>
-          <label aria-labelledby="profit share label" for="profit-share-input"
-            >PST:</label
+          <label aria-labelledby="perdcentage label" for="pst-percentage"
+            >Percentage:
+          </label>
+        </td>
+        <td>
+          <input
+            aria-label="percentage"
+            name="pstPercentage"
+            id="pst-percentage"
+            type="number"
+            placeholder="%"
+            disabled
+          />
+        </td>
+        <td><span id="PSTPercentage-tooltip"></span></td>
+      </tr>
+      <tr>
+        <td>
+          <label aria-labelledby="profit share label" for="pst-contractid"
+            >PSC:</label
           >
         </td>
         <td>
           <input
             aria-label="Profit sharing contract id"
             name="pstContractId"
-            id="pstContractId"
+            id="pst-contractid"
             type="text"
             placeholder="contract id"
+            disabled
           />
         </td>
         <td><span id="pst-tooltip"></span></td>
@@ -62,14 +87,35 @@ export const PaymentsPage = () =>
         </td>
         <td>
           <input
-            aria-label="accountant address"
-            name="accountantAddress"
-            id="accountantAddress"
+            aria-label="accountant contract id"
+            name="accountant"
+            id="accountant-contractid"
             type="text"
             placeholder="contract id"
+            disabled
           />
         </td>
         <td><span id="accountantAddress-tooltip"></span></td>
+      </tr>
+      <tr>
+        <th>Compliance</th>
+        <th></th>
+        <th></th>
+      </tr>
+      <tr>
+        <td>
+          <label aria-labelledby="accountant address label" for="needs-kyc"
+            >Needs KYC:
+          </label>
+        </td>
+        <td>
+          <input
+            aria-label="needs kyc?"
+            id="needs-kyc"
+            type="checkbox"
+          />
+        </td>
+        <td><span id="kyc-tooltip"></span></td>
       </tr>
     </table>
     <div
@@ -78,7 +124,9 @@ export const PaymentsPage = () =>
       id="error-display"
     ></div>
     <div class="button-row">
-      <button class="marginRight-20 cancel-button" id="payments-cancel">Cancel</button>
+      <button class="marginRight-20 cancel-button" id="payments-cancel">
+        Cancel
+      </button>
       <button class="marginLeft-20 save-button" id="payments-save">Save</button>
     </div>
   `;
