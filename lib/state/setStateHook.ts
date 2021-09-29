@@ -43,6 +43,8 @@ export const setStateHook = {
   },
   [StateProperties.semanticsPage]: (args: SetHookArgs) => {},
   [StateProperties.signerPage]: (args: SetHookArgs) => {},
+  [StateProperties.paymentPage]: (args: SetHookArgs) => {},
+  [StateProperties.NFTPage]: (args: SetHookArgs) => {},
 };
 
 function cloneState(state: State) {
