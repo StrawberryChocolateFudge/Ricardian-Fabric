@@ -136,6 +136,11 @@ export function getRedirectCheckbox(): boolean {
   const redirect = getById("redirect-checkbox") as HTMLInputElement;
   return redirect.checked;
 }
+export function getWeavemailCheckbox(): boolean {
+  const weavemail = getById("weavemail-checkbox") as HTMLInputElement;
+  return weavemail.checked;
+}
+
 export function getExpires(): string {
   const acceptableTill = getById("expires-input") as HTMLInputElement;
   if (acceptableTill.value === "") {
@@ -164,6 +169,22 @@ export function getWallet(): FileList {
   } else {
     return null;
   }
+}
+
+export function getNFTFields(): [
+  HTMLInputElement,
+  HTMLInputElement,
+  HTMLInputElement,
+  HTMLInputElement,
+  HTMLInputElement
+] {
+  const allowNFTEl = getById("allowNFT-checkbox") as HTMLInputElement;
+  const titleEl = getById("nft-title") as HTMLInputElement;
+  const nameEl = getById("nft-name") as HTMLInputElement;
+  const descriptionEl = getById("nft-description") as HTMLInputElement;
+  const tickerEl = getById("nft-ticker") as HTMLInputElement;
+
+  return [allowNFTEl, titleEl, nameEl, descriptionEl, tickerEl];
 }
 
 export function getSecret(): string {
