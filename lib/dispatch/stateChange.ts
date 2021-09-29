@@ -8,6 +8,8 @@ import {
   ManagementSlider,
   ManagerPages,
   NetworkingPage,
+  NFTPage,
+  PaymentPage,
   PDFPage,
   SemanticsPage,
   SignerPage,
@@ -50,8 +52,8 @@ export function dispatch_setSemanticsPageData(semanticsData: SemanticsPage) {
   });
 }
 
-export function dispatch_setSignerPageData(signerData : SignerPage){
-   dispatch(Events.stateChange, {
+export function dispatch_setSignerPageData(signerData: SignerPage) {
+  dispatch(Events.stateChange, {
     type: EventType.setSignerPageData,
     value: { signerData },
   });
@@ -78,12 +80,27 @@ export function dispatch_setManagerPages(managerPage: ManagerPages) {
   });
 }
 
-export function dispatch_setAccountantPages(accountantPage: AccountantPage){
-  dispatch(Events.stateChange,{
+export function dispatch_setAccountantPages(accountantPage: AccountantPage) {
+  dispatch(Events.stateChange, {
     type: EventType.setAccountantPages,
-    value: {accountantPage}
-  })
+    value: { accountantPage },
+  });
 }
+
+export function dispatch_setPaymentsPageData(paymentsPage: PaymentPage) {
+  dispatch(Events.stateChange, {
+    type: EventType.setPaymentPageData,
+    value: { paymentsPage },
+  });
+}
+
+export function dispatch_setNFTPageData(nftPageData: NFTPage) {
+  dispatch(Events.stateChange, {
+    type: EventType.setNFTPageData,
+    value: { nftPageData },
+  });
+}
+
 
 export function dispatch_instrumentPageData(
   instrumentPageData: InstrumentPageData
