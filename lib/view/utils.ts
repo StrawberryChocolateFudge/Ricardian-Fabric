@@ -105,6 +105,19 @@ export function getAvailableCountries() {
   return countries;
 }
 
+export function getRequiredInputs() {
+  const availableInputsEl = getById("inputs-list") as HTMLUListElement;
+  const children = availableInputsEl.children;
+  const inputs = [];
+
+  for (let i = 0; i < children.length; i++) {
+    const liEl = children.item(i) as HTMLLIElement;
+    const input = liEl.attributes.getNamedItem("name").nodeValue;
+    inputs.push(input);
+  }
+  return inputs;
+}
+
 function handleHTTPS(url: string) {
   if (url === "") {
     return url;
