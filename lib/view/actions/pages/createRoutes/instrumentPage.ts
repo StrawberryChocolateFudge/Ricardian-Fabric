@@ -1,6 +1,5 @@
 import {
   dispatch_initInstrumentsPage,
-  dispatch_initSmartContractPage,
   dispatch_removeError,
   dispatch_renderError,
 } from "../../../../dispatch/render";

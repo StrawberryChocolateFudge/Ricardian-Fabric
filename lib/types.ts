@@ -34,7 +34,6 @@ export enum RenderType {
   initSemanticsPage = "initSemanticsPage",
   initSignerPage = "initSignerPage",
   initPaymentsPage = "initPaymentsPage",
-  initAgreementPage = "initAgreementPage",
   initPDFPage = "initPDFPage",
   initNFTPage = "initNFTPage",
   initInputsPage = "initInputsPage",
@@ -72,11 +71,9 @@ export type Renderer = {
   [RenderType.initSemanticsPage]: CallableFunction;
   [RenderType.initSignerPage]: CallableFunction;
   [RenderType.initPaymentsPage]: CallableFunction;
-  [RenderType.initAgreementPage]: CallableFunction;
   [RenderType.initPDFPage]: CallableFunction;
   [RenderType.initNFTPage]: CallableFunction;
   [RenderType.initInputsPage]: CallableFunction;
-  [RenderType.initSmartContractPage]: CallableFunction;
   [RenderType.initNetworkingPage]: CallableFunction;
   [RenderType.initInstrumentsPage]: CallableFunction;
   [RenderType.initSummaryPage]: CallableFunction;

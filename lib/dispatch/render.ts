@@ -121,13 +121,6 @@ export function dispatch_renderInputs(inputs: Array<string>) {
   });
 }
 
-export function dispatch_initAgreementPage(props: State, editor: any) {
-  dispatch(Events.render, {
-    type: RenderType.initAgreementPage,
-    props: { ...props, editor },
-  });
-}
-
 export function dispatch_initSemanticsPage(props: State, editor: any) {
   dispatch(Events.render, {
     type: RenderType.initSemanticsPage,
@@ -173,13 +166,6 @@ export function dispatch_initNFTPage(props: State) {
 export function dispatch_initInputsPage(props: State) {
   dispatch(Events.render, {
     type: RenderType.initInputsPage,
-    props,
-  });
-}
-
-export function dispatch_initSmartContractPage(props: State) {
-  dispatch(Events.render, {
-    type: RenderType.initSmartContractPage,
     props,
   });
 }

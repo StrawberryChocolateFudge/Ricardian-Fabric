@@ -19,11 +19,7 @@ import {
   renderVersion,
   revertPrompt,
   setExpiresDateToDOM,
-  setInstrumentCanDeriveToDOM,
-  setInstrumentNameToDOM,
-  setInstrumentSupplyToDOM,
-  setInstrumentTickerToDOM,
-  setIsIntrumentToDOM,
+  setInstrumentFieldsToDOM,
   setNFTPageToDOM,
   setOnlySignerToDOM,
   setPDFtoDOM,
@@ -31,6 +27,7 @@ import {
   setPriceToDOM,
   setProfitSharingToDOM,
   setSemanticsTitleToDOM,
+  setStockToDOM,
   setWalletToDom,
   updatePromptError,
   updatePromptSuccess,
@@ -115,15 +112,6 @@ const Render: Renderer = {
   [RenderType.savedInputs]: (props: { inputs: Array<string> }) => {
     renderInputsList(props.inputs);
   },
-
-  //Initializing the pages with an event
-  [RenderType.initAgreementPage]: (props: any) => {
-    if (props.agreementPage.selectedDate !== "") {
-      setExpiresDateToDOM(props.agreementPage.selectedDate.toString());
-      setPriceToDOM(props.agreementPage.price);
-      props.editor.setContent(props.agreementPage.content, 0);
-    }
-  },
   [RenderType.initPDFPage]: (props: State) => {
     // Initializing the page if pdf is set in state,
     // that probably means the back button was pushed
@@ -159,20 +147,8 @@ const Render: Renderer = {
   },
   [RenderType.initPaymentsPage]: (props: State) => {
     setPriceToDOM(props.paymentPage.price);
+    setStockToDOM(props.paymentPage.stock);
     setProfitSharingToDOM(props.paymentPage);
-  },
-  [RenderType.initSmartContractPage]: (props: State) => {
-    // setWillProfitShareToDOM(props.instrumentPageData.willProfitShare);
-    // setProfitSharingContractIdToDOM(props.instrumentPageData.pstContractId);
-    setIsIntrumentToDOM(props.instrumentPageData.isInstrument);
-    setInstrumentNameToDOM(props.instrumentPageData.name);
-    setInstrumentTickerToDOM(props.instrumentPageData.ticker);
-    setInstrumentSupplyToDOM(props.instrumentPageData.supply);
-    setInstrumentCanDeriveToDOM(props.instrumentPageData.canDerive);
-    // setSmartContractInputFields(
-    //   props.instrumentPageData.willProfitShare,
-    //   props.instrumentPageData.isInstrument
-    // );
   },
   [RenderType.initNetworkingPage]: (props: State) => {
     setPostToDOM(props.networkingPage);
@@ -182,6 +158,9 @@ const Render: Renderer = {
   },
   [RenderType.initInputsPage]: (props: State) => {
     dispatchInputListRenders(props.inputsPage.requiredInputs);
+  },
+  [RenderType.initInstrumentsPage]: (props: State) => {
+    setInstrumentFieldsToDOM(props.instrumentPageData);
   },
   [RenderType.initSummaryPage]: (props: State) => {},
 
