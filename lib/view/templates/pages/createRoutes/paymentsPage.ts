@@ -25,6 +25,21 @@ export const PaymentsPage = () =>
         </td>
         <td><span id="price-tooltip"></span></td>
       </tr>
+        <tr>
+        <td>
+          <label aria-labelledby="stock label" for="stock-input">Stock:</label>
+        </td>
+        <td>
+          <input
+            aria-label="Input for stock"
+            name="stock"
+            id="stock-input"
+            type="number"
+            placeholder="Available"
+          />
+        </td>
+        <td><span id="stock-tooltip"></span></td>
+      </tr>
       <tr>
         <th>Add a new fee</th>
         <th></th>
@@ -59,7 +74,7 @@ export const PaymentsPage = () =>
         </td>
         <td><span id="PSTPercentage-tooltip"></span></td>
       </tr>
-      <tr>
+      <!-- <tr>
         <td>
           <label aria-labelledby="profit share label" for="pst-contractid"
             >PSC:</label
@@ -76,7 +91,7 @@ export const PaymentsPage = () =>
           />
         </td>
         <td><span id="pst-tooltip"></span></td>
-      </tr>
+      </tr> -->
       <tr>
         <td>
           <label
@@ -91,7 +106,7 @@ export const PaymentsPage = () =>
             name="accountant"
             id="accountant-contractid"
             type="text"
-            placeholder="contract id"
+            placeholder="Arweave address"
             disabled
           />
         </td>
