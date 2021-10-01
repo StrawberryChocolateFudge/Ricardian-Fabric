@@ -26,6 +26,7 @@ import { Derivatives } from "./managerRoutes/derivatives";
 import { Governance } from "./managerRoutes/governance";
 import { AccountantRoutes } from "./accountantRoutes/accountantRoutes";
 import { TemplateResult } from "lit-html";
+import { InstrumentPage } from "./createRoutes/instrumentPage";
 
 export const Router = (props: State) => {
   if (props.managementSlider === ManagementSlider.OFF) {
@@ -49,6 +50,8 @@ export const Router = (props: State) => {
       return NFTPage();
     } else if (props.createPages === CreatePages.Inputs) {
       return InputsPage();
+    } else if (props.createPages === CreatePages.Instrument) {
+      return InstrumentPage();
     } else if (props.createPages === CreatePages.SummaryPage) {
       return SummaryPage();
     }

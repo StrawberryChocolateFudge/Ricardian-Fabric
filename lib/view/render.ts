@@ -1,6 +1,7 @@
 import { html, render } from "lit-html";
 import {
   ContractTypes,
+  InstrumentPageData,
   NetworkingPage,
   PaymentPage,
   State,
@@ -22,6 +23,7 @@ import { Router } from "./templates/pages/router";
 import {
   copyStringToClipboard,
   getById,
+  getInstrumentFields,
   getNFTFields,
   getPDFDisplay,
   getPDFInputEl,
@@ -190,33 +192,28 @@ export function renderInstrumentSettingsTooltips() {
   render(helperTooltips("Amount of PSTs derived per instrument"), derive);
 }
 
-export function setSmartContractInputFields(
-  pstCheckboxState: boolean,
-  instrumentCheckboxState: boolean
+export function setInstrumentFieldsToDOM(
+  instrumentPageData: InstrumentPageData
 ) {
-  const pstContractInput = getPSTContractEl();
-  const nameEl = instrumentNameEl();
-  const tickerEl = instrumentTickerEl();
-  const supplyEl = instrumentSupplyEl();
-  const canDeriveEl = instrumentDeriveEl();
+  const [isInstrumentEl, nameEl, tickerEl, supplyEl, canDeriveEl] =
+    getInstrumentFields();
 
-  if (instrumentCheckboxState) {
+
+  const checked = instrumentPageData.isInstrument;
+
+  isInstrumentEl.checked = checked;
+
+  if (checked) {
     nameEl.disabled = false;
     tickerEl.disabled = false;
     supplyEl.disabled = false;
     canDeriveEl.disabled = false;
-  } else {
-    nameEl.disabled = true;
-    tickerEl.disabled = true;
-    supplyEl.disabled = true;
-    canDeriveEl.disabled = true;
   }
 
-  if (pstCheckboxState) {
-    pstContractInput.disabled = false;
-  } else {
-    pstContractInput.disabled = true;
-  }
+  nameEl.value = instrumentPageData.name;
+  tickerEl.value = instrumentPageData.ticker;
+  supplyEl.value = instrumentPageData.supply.toString();
+  canDeriveEl.value = instrumentPageData.canDerive.toString();
 }
 
 export function setProfitSharingContractIdToDOM(id: string) {
@@ -266,6 +263,13 @@ export function setPriceToDOM(price: string) {
   const priceEl = getById("price-input") as HTMLInputElement;
   if (price !== "NONE") {
     priceEl.value = price;
+  }
+}
+
+export function setStockToDOM(stock: string){
+  const stockEl = getById("stock-input") as HTMLInputElement;
+  if(stock !== "NONE"){
+    stockEl.value = stock;
   }
 }
 

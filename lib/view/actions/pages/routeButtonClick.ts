@@ -17,6 +17,7 @@ import { summaryPage } from "./summaryPage";
 import { onWalletFileDropped, walletPage } from "./createRoutes/walletPage";
 import { managementRouter } from "./managementRouter";
 import { accountantRouter } from "./accountantRoutes/accountantRouter";
+import { instrumentPage } from "./createRoutes/instrumentPage";
 
 export function routeButtonClick(props: State) {
   if (props.managementSlider === ManagementSlider.OFF) {
@@ -42,6 +43,8 @@ export function routeButtonClick(props: State) {
       networkingPage(props);
     } else if (props.createPages === CreatePages.Inputs) {
       inputsPage(props);
+    } else if (props.createPages === CreatePages.Instrument) {
+      instrumentPage(props);
     } else if (props.createPages === CreatePages.SummaryPage) {
       summaryPage(props);
     }
