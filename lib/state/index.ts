@@ -83,6 +83,7 @@ import { setStateHook } from "./setStateHook";
 
       paymentPage: {
         price: "",
+        stock: "",
         willProfitShare: false,
         percentage: "0",
         pstContractId: "",
@@ -99,7 +100,6 @@ import { setStateHook } from "./setStateHook";
         ticker: "",
         allowNFT: false,
       },
-
       instrumentPageData: {
         isInstrument: false,
         name: "",
@@ -112,7 +112,7 @@ import { setStateHook } from "./setStateHook";
         postto: "",
         webhook: false,
         redirect: false,
-        weavemail: true,
+        weavemail: false,
       },
 
       // Manager pages
