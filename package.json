@@ -25,6 +25,7 @@
     "mammoth": "^1.4.18",
     "medium-editor": "^5.23.3",
     "smartweave": "^0.4.41",
-    "testweave-sdk": "^0.2.2"
+    "testweave-sdk": "^0.2.2",
+    "web3": "^1.6.0"
   }
 }
