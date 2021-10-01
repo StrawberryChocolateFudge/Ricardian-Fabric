@@ -1,7 +1,4 @@
-import {
-  RenderType,
-  State,
-} from "../types";
+import { RenderType, State } from "../types";
 import { dispatch } from "./dispatch";
 import { Events } from "../types";
 
@@ -124,7 +121,6 @@ export function dispatch_renderInputs(inputs: Array<string>) {
   });
 }
 
-
 export function dispatch_initAgreementPage(props: State, editor: any) {
   dispatch(Events.render, {
     type: RenderType.initAgreementPage,
@@ -160,7 +156,6 @@ export function dispatch_initWalletPage(props: State) {
   });
 }
 
-
 export function dispatch_initPaymentsPage(props: State) {
   dispatch(Events.render, {
     type: RenderType.initPaymentsPage,
@@ -168,15 +163,15 @@ export function dispatch_initPaymentsPage(props: State) {
   });
 }
 
-export function dispatch_initNFTPage(props: State){
-    dispatch(Events.render, {
+export function dispatch_initNFTPage(props: State) {
+  dispatch(Events.render, {
     type: RenderType.initNFTPage,
     props,
   });
 }
 
-export function dispatch_initInputsPage(props: State){
-      dispatch(Events.render, {
+export function dispatch_initInputsPage(props: State) {
+  dispatch(Events.render, {
     type: RenderType.initInputsPage,
     props,
   });
@@ -196,13 +191,19 @@ export function dispatch_initNetworkingPage(props: State) {
   });
 }
 
+export function dispatch_initInstrumentsPage(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.initInstrumentsPage,
+    props,
+  });
+}
+
 export function dispatch_initSummaryPage(props: State) {
   dispatch(Events.render, {
     type: RenderType.initSummaryPage,
     props,
   });
 }
-
 
 export function dispatch_discardPdf() {
   dispatch(Events.render, {

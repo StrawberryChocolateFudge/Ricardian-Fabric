@@ -40,6 +40,7 @@ export enum RenderType {
   initInputsPage = "initInputsPage",
   initSmartContractPage = "initSmartContractPage",
   initNetworkingPage = "initNetworkingPage",
+  initInstrumentsPage = "initInstrumentsPage",
   initSummaryPage = "initSummaryPage",
 
   discardPdf = "discardPdf",
@@ -77,6 +78,7 @@ export type Renderer = {
   [RenderType.initInputsPage]: CallableFunction;
   [RenderType.initSmartContractPage]: CallableFunction;
   [RenderType.initNetworkingPage]: CallableFunction;
+  [RenderType.initInstrumentsPage]: CallableFunction;
   [RenderType.initSummaryPage]: CallableFunction;
 
   [RenderType.discardPdf]: CallableFunction;
@@ -207,6 +209,7 @@ export type SignerPage = {
 
 export type PaymentPage = {
   price: string;
+  stock: string;
   willProfitShare: boolean;
   percentage: string;
   pstContractId: string;
