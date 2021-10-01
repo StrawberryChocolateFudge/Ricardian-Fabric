@@ -74,6 +74,16 @@ export function getPrice() {
     return price.value;
   }
 }
+export function getStock() {
+  const stock = getById("stock-input") as HTMLInputElement;
+  if (stock.value === "" || stock.value === "0") {
+    return "NONE";
+  } else {
+    return stock.value;
+  }
+}
+
+
 export function getPostTo() {
   const postto = getById("postto-input") as HTMLInputElement;
   if (postto.value === "") {
@@ -198,6 +208,22 @@ export function getNFTFields(): [
   const tickerEl = getById("nft-ticker") as HTMLInputElement;
 
   return [allowNFTEl, titleEl, nameEl, descriptionEl, tickerEl];
+}
+
+export function getInstrumentFields(): [
+  HTMLInputElement,
+  HTMLInputElement,
+  HTMLInputElement,
+  HTMLInputElement,
+  HTMLInputElement
+] {
+  const isInstrumentEl = getById("is-crypto-instrument") as HTMLInputElement;
+  const nameEl = getById("instrument-name-input") as HTMLInputElement;
+  const tickerEl = getById("instrument-ticker-input") as HTMLInputElement;
+  const supplyEl = getById("instrument-supply-input") as HTMLInputElement;
+  const canDeriveEl = getById("instrument-derive-input") as HTMLInputElement;
+
+  return [isInstrumentEl, nameEl, tickerEl, supplyEl, canDeriveEl];
 }
 
 export function getSecret(): string {
