@@ -1,11 +1,14 @@
 # Ricardian-Fabric
 
 A new take on Ricardian Contracts.
-A tool that helps to create payable, handwritten, machine processable financial contracts that live on arweave.
+A tool that helps to create handwritten, machine processable financial contracts that live on arweave.
+ 
 
 This branch (firstImpl) is for Ricardian Fabric Lite, the version without payments and things that require KYC.
-
 https://arweave.net/E3HMS6AIUPLNYc_dSEbR6D78AZq0d_qP13HNo1gjnoU
+
+newer link with a docx dropper:
+https://arweave.net/NZGrFxA24WuxCSFpgJYSIHzI6P4bvhuaqqD8kwH5f6k
 
 The latest version of of the firstImpl branch is deployed to the address above.
 
