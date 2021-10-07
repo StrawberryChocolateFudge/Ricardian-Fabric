@@ -178,6 +178,10 @@ export function getPromptEl(): HTMLElement {
   return getById("drop-prompt");
 }
 
+export function getPromptElDOCX(): HTMLElement {
+  return getById("drop-prompt-docx");
+}
+
 export function getTermsCheckbox(): HTMLInputElement {
   return getById("terms-checkbox") as HTMLInputElement;
 }
