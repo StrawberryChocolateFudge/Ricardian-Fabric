@@ -128,8 +128,6 @@ body {
 }
 
 .drop-zone {
-  margin: 0 auto;
-  max-width: 200px;
   min-width: 200px;
   height: 200px;
   padding: 25px;
