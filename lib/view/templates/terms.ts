@@ -9,7 +9,7 @@ const termsAndConditions = () => html`
   </p>
   <p>You shall not enter any sensitive information.</p>
   <p>
-    By clicking accept, you agree you will not bring suit against the creator of
+    By clicking I agree, you agree you will not bring suit against the creator of
     Ricardian Fabric for any reason.
   </p>
   <p>
