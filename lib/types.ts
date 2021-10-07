@@ -29,6 +29,8 @@ export enum RenderType {
   removeAcceptedButton = "removeAcceptedButton",
   promptSuccess = "promptSuccess",
   promptError = "promptError",
+  promptSuccessDOCX = "promptSuccessDOCX",
+  promptErrorDOCX = "promptErrorDOCX",
   renderAddress = "renderAddress",
   disableCreateInputs = "disableCreateInputs",
   enableCreateInputs = "enableCreateInputs",
@@ -61,6 +63,8 @@ export type Renderer = {
   [RenderType.removeAcceptedButton]: RenderFunction;
   [RenderType.promptSuccess]: RenderFunction;
   [RenderType.promptError]: RenderFunction;
+  [RenderType.promptSuccessDOCX]: RenderFunction;
+  [RenderType.promptErrorDOCX]: RenderFunction;
   [RenderType.renderAddress]: RenderFunction;
   [RenderType.disableCreateInputs]: RenderFunction;
   [RenderType.enableCreateInputs]: RenderFunction;
