@@ -93,7 +93,8 @@ export async function createFulfilledContractTx(
     props.arweave,
     key,
     page,
-    props.version
+    props.version,
+    props.creatorAddress,
   );
   dispatch_removeLoadingIndicator("transaction-display");
   return tx;

@@ -77,7 +77,8 @@ export async function fulfilledTransactionCall(
   arweave: Arweave,
   key: any,
   page: string,
-  version: string
+  version: string,
+  issuer: string
 ): Promise<Transaction> {
   const dataTransaction = await arweave.createTransaction(
     {
@@ -89,6 +90,7 @@ export async function fulfilledTransactionCall(
   dataTransaction.addTag("App-Name", "Ricardian Fabric");
   dataTransaction.addTag("Contract-Type", "Fulfilled");
   dataTransaction.addTag("App-Version", version);
+  dataTransaction.addTag("Issuer",issuer);
   await arweave.transactions.sign(dataTransaction, key);
   return dataTransaction;
 }
