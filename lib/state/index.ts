@@ -1,7 +1,6 @@
 import { Events, EventType, State } from "../types";
 import { getCurrentUrl, getPage } from "../view/utils";
 import {
-  getBundleSrcUrl,
   getCreatedDateFromDataProp,
   getCreatorAddressDataProp,
   getCurrentPageDataProp,

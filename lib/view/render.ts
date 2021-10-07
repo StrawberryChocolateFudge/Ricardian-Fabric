@@ -13,6 +13,7 @@ import {
   copyStringToClipboard,
   getById,
   getPromptEl,
+  getPromptElDOCX,
   setBannerDisplayBlock,
 } from "./utils";
 
@@ -133,6 +134,18 @@ export function updatePromptSuccess(file: File) {
 
 export function updatePromptError(message: string) {
   const prompt = getPromptEl();
+  prompt.textContent = message;
+  prompt.style.color = "red";
+}
+
+export function updatePromptSuccessDOCX(file: File) {
+  const prompt = getPromptElDOCX();
+  prompt.style.color = "black";
+  prompt.textContent = file.name;
+}
+
+export function updatePromptErrorDOCX(message: string) {
+  const prompt = getPromptElDOCX();
   prompt.textContent = message;
   prompt.style.color = "red";
 }

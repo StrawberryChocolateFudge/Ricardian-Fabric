@@ -27,13 +27,16 @@ import {
   renderTransaction,
   renderVersion,
   updatePromptError,
+  updatePromptErrorDOCX,
   updatePromptSuccess,
+  updatePromptSuccessDOCX,
 } from "./render";
 import { renderAcceptTools } from "./render";
 import { attachTermsButtonListeners } from "./actions/bannerButtonListeners";
 import { areYouSureButtons } from "./actions/areYouSureButtons";
 import { onWalletFileDropped } from "./actions/onWalletFileDropped";
 import { createPageAgreeTerms } from "./actions/createPageAgreeTerms";
+import { onDocFileDropped } from "./actions/onDocFileDropped";
 
 const Render: Renderer = {
   [RenderType.successMessage]: (props: State) => {},
@@ -45,6 +48,7 @@ const Render: Renderer = {
     // The order of attaching listeners is important
     postCheckboxSelect();
     onWalletFileDropped(props);
+    onDocFileDropped(props);
     renderCreateButtonClick(props);
     attachExpiryClickAndListener(props);
     renderTooltips();
@@ -133,6 +137,12 @@ const Render: Renderer = {
   },
   [RenderType.promptError]: (props: { message: string }) => {
     updatePromptError(props.message);
+  },
+    [RenderType.promptSuccessDOCX]: (props: { file: File | string }) => {
+    updatePromptSuccessDOCX(props.file as File);
+  },
+  [RenderType.promptErrorDOCX]: (props: { message: string }) => {
+    updatePromptErrorDOCX(props.message);
   },
   [RenderType.disableCreateInputs]: (props: {}) => {
     disableCreateInputs();

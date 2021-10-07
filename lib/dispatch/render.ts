@@ -139,6 +139,20 @@ export function dispatch_promptError(message: string) {
   });
 }
 
+export function dispatch_promptSuccessDOCX(file: File | string) {
+  dispatch(Events.render, {
+    type: RenderType.promptSuccessDOCX,
+    props: { file },
+  });
+}
+
+export function dispatch_promptErrorDOCX(message: string) {
+  dispatch(Events.render, {
+    type: RenderType.promptErrorDOCX,
+    props: { message },
+  });
+}
+
 export function dispatch_renderAddress(props: State) {
   dispatch(Events.render, {
     type: RenderType.renderAddress,
