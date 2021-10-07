@@ -8,11 +8,6 @@
     <title>Ricardian Fabric</title>
   </head>
   <body class="background">
-    <div class="title-row">
-      <h1 class="center fabric-color">Ricardian Fabric</h1>
-      <h3 class="center fabric-color">Lite</h3>
-    </div>
-
     <div
       data-dependency="./main.ts"
       data-logosrc="https://ybiydesxc7lhiuyfju6h2wn7jhxrrct4666e3b6swktqas56fqgq.arweave.net/wFGBklcX1nRTBU08fVm_Se8Yinz3vE2H0rKnAEu-LA0"
@@ -31,6 +26,22 @@
         />
       </div>
       <h5 class="center">Conduct Agreements On Arweave</h5>
+      <hr />
+      <h6 class="center">
+        You can import semantics. If you drop here a .docx file, it will be
+        loaded into the edit field under it.
+      </h6>
+      <div id="docx-dropzone" class="drop-zone">
+        <span id="drop-prompt-docx" class="drop-zone__prompt"
+          >Drop A .docx File Here Or Click To Select It</span
+        >
+        <input
+          type="file"
+          name="docx"
+          id="docx-input"
+          class="drop-zone__input"
+        />
+      </div>
       <hr />
       <div class="editable-container">
         <div id="editor" aria-label="Editor" class="cursor-text editable"></div>
@@ -155,6 +166,10 @@
       <table id="address" class="center"></table>
       <table id="balance" class="center"></table>
       <hr />
+      <h6 class="center">
+        You deploy your agreement protocol on Arweave. Import your wallet using
+        the dropper.
+      </h6>
       <div id="wallet-dropzone" class="drop-zone">
         <span id="drop-prompt" class="drop-zone__prompt"
           >Drop Your Wallet Here Or Click To Select It</span
