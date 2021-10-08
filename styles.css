@@ -157,12 +157,9 @@ body {
 }
 
 #input-table tr {
-  background-color: #f2f2f2;
-}
-
-#input-table tr:hover {
   background-color: white;
 }
+
 
 #input-table th {
   padding-top: 12px;
