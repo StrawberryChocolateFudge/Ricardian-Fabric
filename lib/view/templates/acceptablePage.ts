@@ -3,12 +3,11 @@ import { AcceptablePageProps } from "../../types";
 import {
   createdDateTemplate,
   expiryTemplate,
-  getPriceTemplate,
   issuerTemplate,
+  networkTemplate,
 } from "./components";
 import { mainDep } from "./dependencies";
 import { loadingIndicator } from "./loadingIndicator";
-import { Logo } from "./logo";
 
 export const acceptablePageLayout = (props: AcceptablePageProps) => html`
   <style>
@@ -64,7 +63,7 @@ export const acceptablePageLayout = (props: AcceptablePageProps) => html`
       color: #f2f2f2;
     }
     .imgRow {
-      margin-top:10px;
+      margin-top: 10px;
       display: flex;
       flex-direction: row;
     }
@@ -120,40 +119,31 @@ export const acceptablePageLayout = (props: AcceptablePageProps) => html`
     ${acceptablePage(props)} ${mainDep(props.mainDep.src)}
   </body>
 `;
-
 const acceptablePage = (props: AcceptablePageProps) => html`
   <div
     data-contracttype="acceptable"
     data-version="${props.version}"
     data-created="${props.createdDate}"
-    data-creatorAddress="${props.creatorAddress}"
-    data-price="${props.price}"
     data-expires="${props.expires}"
-    data-postto="${props.post}"
-    data-redirect="${props.redirect}"
-    data-webhook="${props.webhook}"
+    data-redirectto="${props.redirectto}"
     data-maindep="${props.mainDep.src}"
     data-onlysigner="${props.onlySigner}"
+    data-network="${props.network}"
+    data-hash="${props.hash}"
+    data-issuer="${props.issuer}"
+    data-issuerSignature="${props.issuerSignature}"
     id="page"
   >
-    ${Logo(props.logoSrc)}
-    <hr />
-    <h5 aria-label="Carefully read the contract bellow" class="center">
-      Carefully read the contract below.
-    </h5>
     <div class="center" id="contract-display"></div>
     <table id="display-table" class="center">
       <tr>
         <th></th>
         <th></th>
       </tr>
-      ${issuerTemplate(props.creatorAddress)}
       ${createdDateTemplate(props.createdDate)} ${expiryTemplate(props.expires)}
-      ${getPriceTemplate(props.price, props.fee)}
+      ${networkTemplate(props.network)} 
+      ${issuerTemplate(props.issuer)}
     </table>
-    <table id="address" class="center"></table>
-    <table id="balance" class="center"></table>
-
     <div id="action-container" class="center">${loadingIndicator}</div>
   </div>
 `;
