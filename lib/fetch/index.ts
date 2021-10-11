@@ -1,3 +1,5 @@
+import { PinOptions, PinStatus } from "../types";
+
 export async function hitWebhook(url: string, secret: string) {
   // The backend must handle cross origin requests for this to work!
   try {
@@ -20,3 +22,24 @@ export async function hitWebhook(url: string, secret: string) {
   }
 }
 
+export async function permapin(CID: string, url: string): Promise<PinOptions> {
+  try {
+    const response = await fetch(url + CID, {
+      method: "post",
+      mode: "cors",
+      cache: "no-cache",
+    });
+
+    if (response.status === 200) {
+      return { status: PinStatus.Success, error: "", result: response };
+    } else {
+      return {
+        status: PinStatus.Failure,
+        error: "Couldn't permapin the file",
+        result: response,
+      };
+    }
+  } catch (error: any) {
+    return { status: PinStatus.Failure, error, result: undefined };
+  }
+}
