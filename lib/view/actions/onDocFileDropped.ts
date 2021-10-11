@@ -1,7 +1,5 @@
 import {
-  dispatch_promptError,
   dispatch_promptErrorDOCX,
-  dispatch_promptSuccess,
   dispatch_promptSuccessDOCX,
   dispatch_removeError,
 } from "../../dispatch/render";
@@ -10,24 +8,30 @@ import { getById } from "../utils";
 import mammoth from "mammoth";
 export function onDocFileDropped(props: State) {
   const editor = props.editor;
-  const walletInput = getById("docx-input") as HTMLInputElement;
+  const docxInput = getById("docx-input") as HTMLInputElement;
   const dropZone = getById("docx-dropzone");
 
   dropZone.onclick = function () {
-    walletInput.click();
+    if (docxInput.disabled) {
+      return;
+    }
+    docxInput.click();
   };
 
-  walletInput.onchange = function () {
-    const file = walletInput.files[0];
+  docxInput.onchange = function () {
+    if (docxInput.disabled) {
+      return;
+    }
+    const file = docxInput.files[0];
     if (
-      walletInput.files.length === 1 &&
+      docxInput.files.length === 1 &&
       file.type ===
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
     ) {
       // It's valid
-      dispatch_promptSuccessDOCX(walletInput.files[0]);
+      dispatch_promptSuccessDOCX(docxInput.files[0]);
       dispatch_removeError();
-      convertToHTML(walletInput.files[0], editor);
+      convertToHTML(docxInput.files[0], editor);
     } else {
       dispatch_promptErrorDOCX("Invalid wallet,must be a docx file");
     }
@@ -45,6 +49,10 @@ export function onDocFileDropped(props: State) {
   };
 
   dropZone.ondrop = function (e: DragEvent) {
+    if (docxInput.disabled) {
+      return;
+    }
+
     e.preventDefault();
     const file = e.dataTransfer.files[0];
     if (
@@ -52,11 +60,10 @@ export function onDocFileDropped(props: State) {
       file.type ===
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
     ) {
-      walletInput.files = e.dataTransfer.files;
+      docxInput.files = e.dataTransfer.files;
       dispatch_promptSuccessDOCX(e.dataTransfer.files[0]);
       dispatch_removeError();
       convertToHTML(e.dataTransfer.files[0], editor);
-      // checkKeyFile(walletInput.files, props.arweave);
     } else {
       dispatch_promptErrorDOCX("Invalid file, must be a docx file");
     }
