@@ -1,7 +1,6 @@
 import { html, render } from "lit-html";
 import { ContractTypes, State } from "../types";
 import { AcceptButton, acceptTools } from "./templates/acceptTools";
-import { addressTemplate, balanceTemplate } from "./templates/balance";
 import { createButton } from "./templates/createButton";
 import { CreateSummary } from "./templates/createSummary";
 import { helperTooltips } from "./templates/helperTooltips";
@@ -16,15 +15,6 @@ import {
   getPromptElDOCX,
   setBannerDisplayBlock,
 } from "./utils";
-
-export async function renderbalance(balance: number) {
-  const balanceEl = getById("balance");
-  render(balanceTemplate(balance), balanceEl);
-}
-export async function renderAddress(address: string) {
-  const addressEl = getById("address");
-  render(addressTemplate(address), addressEl);
-}
 
 export function renderAcceptTools(props: State) {
   const actionContainer = getById("action-container");
@@ -48,6 +38,10 @@ export async function removeLoadingIndicator(from: string) {
 export async function renderTransaction(url: string) {
   render(transactionUrl(url), getById("transaction-display"));
   copyStringToClipboard(url);
+}
+
+export async function removeTransaction() {
+  getById("transaction-display").innerHTML = "";
 }
 
 export function renderError(message: string) {
@@ -108,8 +102,8 @@ export function renderTerms() {
   render(termsLayout(), layout);
 }
 
-export function renderCreateFee(fee: string) {
-  render(CreateSummary(fee), getById("button-slot"));
+export function renderSummary(props: State) {
+  render(CreateSummary(props), getById("button-slot"));
 }
 
 export function removeButtons() {
@@ -153,30 +147,16 @@ export function updatePromptErrorDOCX(message: string) {
 export function renderTooltips() {
   const onlySigner = getById("onlysigner-tooltip");
   const expires = getById("expires-tooltip");
-  const postto = getById("postto-tooltip");
-  const webhook = getById("webhook-tooltip");
-  const redirect = getById("redirect-tooltip");
+  const redirectto = getById("redirectto-tooltip");
 
   render(
-    helperTooltips("The only arweave address that can sign this contract."),
+    helperTooltips("The only address that can sign this contract."),
     onlySigner
   );
   render(helperTooltips("The contract expires always at midnight"), expires);
   render(
-    helperTooltips(
-      "POST or GET this url with /{transactionid} appended. Choose bellow the preferred method."
-    ),
-    postto
-  );
-  render(
-    helperTooltips(
-      "A POST request with a pre-shared secret users can enter. The body is {secret : string}"
-    ),
-    webhook
-  );
-  render(
-    helperTooltips("GET request. The contract redirects in 5 seconds."),
-    redirect
+    helperTooltips("Redirects here with /{id}. Leave empty if not used"),
+    redirectto
   );
 }
 
@@ -185,12 +165,10 @@ export function disableCreateInputs() {
   const onlySigner = getById("onlysigner-input") as HTMLInputElement;
   const expires = getById("expires-input") as HTMLInputElement;
   const never = getById("expires-reset") as HTMLInputElement;
-  const postto = getById("postto-input") as HTMLInputElement;
-  const webhook = getById("webhook-checkbox") as HTMLInputElement;
-  const redirect = getById("redirect-checkbox") as HTMLInputElement;
-  const walletInput = getById("wallet-input") as HTMLInputElement;
-  const walletDropzone = getById("wallet-dropzone") as HTMLDivElement;
+  const redirectto = getById("redirectto-input") as HTMLInputElement;
   const termsCheckbox = getById("terms-checkbox") as HTMLInputElement;
+  const docxDropper = getById("docx-input") as HTMLInputElement;
+
   editor.contentEditable = "false";
   editor.style.cursor = "not-allowed";
   onlySigner.disabled = true;
@@ -199,29 +177,22 @@ export function disableCreateInputs() {
   expires.style.cursor = "not-allowed";
   never.disabled = true;
   never.style.cursor = "not-allowed";
-  postto.disabled = true;
-  postto.style.cursor = "not-allowed";
-  webhook.disabled = true;
-  webhook.style.cursor = "not-allowed";
-  redirect.disabled = true;
-  redirect.style.cursor = "not-allowed";
-  walletInput.disabled = true;
-  walletInput.style.cursor = "not-allowed";
-  walletDropzone.style.cursor = "not-allowed";
+  redirectto.disabled = true;
+  redirectto.style.cursor = "not-allowed";
   termsCheckbox.disabled = true;
   termsCheckbox.style.cursor = "not-allowed";
+
+  docxDropper.disabled = true;
+  docxDropper.style.cursor = "not-allowed";
 }
 export function enableCreateInputs() {
   const editor = getById("editor") as HTMLInputElement;
   const onlySigner = getById("onlysigner-input") as HTMLInputElement;
   const expires = getById("expires-input") as HTMLInputElement;
   const never = getById("expires-reset") as HTMLInputElement;
-  const postto = getById("postto-input") as HTMLInputElement;
-  const webhook = getById("webhook-checkbox") as HTMLInputElement;
-  const redirect = getById("redirect-checkbox") as HTMLInputElement;
-  const walletInput = getById("wallet-input") as HTMLInputElement;
-  const walletDropzone = getById("wallet-dropzone") as HTMLDivElement;
+  const redirectto = getById("redirectto-input") as HTMLInputElement;
   const termsCheckbox = getById("terms-checkbox") as HTMLInputElement;
+  const docxDropper = getById("docx-input") as HTMLInputElement;
 
   editor.contentEditable = "true";
   editor.style.cursor = "text";
@@ -231,17 +202,13 @@ export function enableCreateInputs() {
   expires.style.cursor = "pointer";
   never.disabled = false;
   never.style.cursor = "pointer";
-  postto.disabled = false;
-  postto.style.cursor = "text";
-  webhook.disabled = false;
-  webhook.style.cursor = "pointer";
-  redirect.disabled = false;
-  redirect.style.cursor = "pointer";
-  walletInput.disabled = false;
-  walletInput.style.cursor = "pointer";
-  walletDropzone.style.cursor = "pointer";
+  redirectto.disabled = false;
+  redirectto.style.cursor = "pointer";
   termsCheckbox.disabled = false;
   termsCheckbox.style.cursor = "pointer";
+
+  docxDropper.disabled = false;
+  docxDropper.style.cursor = "pointer";
 }
 
 export function disableAcceptableInputs() {
