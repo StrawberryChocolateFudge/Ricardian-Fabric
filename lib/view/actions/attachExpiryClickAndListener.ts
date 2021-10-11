@@ -6,13 +6,16 @@ import {
 } from "../../dispatch/render";
 import { dispatch_setSelectedDate } from "../../dispatch/stateChange";
 import { State } from "../../types";
-import { didExpire, getById, getExpires } from "../utils";
+import { didExpire, getById, getExpires, getTermsCheckbox } from "../utils";
 
 export const attachExpiryClickAndListener = (props: State) => {
   const reset = getById("expires-reset");
   const date = getById("expires-input") as HTMLInputElement;
   if (props.selectedDate === "") {
-    date.valueAsDate = new Date();
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    date.valueAsDate = tomorrow;
   } else {
     handleExpiry();
   }
@@ -29,12 +32,13 @@ export const attachExpiryClickAndListener = (props: State) => {
   function handleExpiry() {
     const expires = getExpires();
     const expired = didExpire(expires);
+    const termsCheckbox = getTermsCheckbox();
     if (expired) {
       dispatch_renderError("Date expired!");
       dispatch_disableButton(props);
     } else {
       dispatch_removeError();
-      if (props.address !== "") {
+      if (termsCheckbox.checked) {
         dispatch_enableButton(props);
       }
     }
