@@ -1,7 +1,6 @@
 import { RenderType, State } from "../types";
 import { dispatch } from "./dispatch";
 import { Events } from "../types";
-import Transaction from "arweave/node/lib/transaction";
 
 export function dispatch_renderCreateButton(props: State) {
   dispatch(Events.render, {
@@ -94,15 +93,10 @@ export function dispatch_renderTerms() {
   });
 }
 
-export function dispatch_renderFee(
-  fee: string,
-  props: State,
-  tx: Transaction,
-  key: any
-) {
+export function dispatch_renderAreYouSure(props: State) {
   dispatch(Events.render, {
-    type: RenderType.feeSummary,
-    props: { ...props, fee, tx, key },
+    type: RenderType.areYouSure,
+    props,
   });
 }
 
@@ -182,6 +176,13 @@ export function dispatch_disableAcceptableInputs() {
 export function dispatch_enableAcceptableInputs() {
   dispatch(Events.render, {
     type: RenderType.enableAcceptableInputs,
+    props: {},
+  });
+}
+
+export function dispatch_deployAgain() {
+  dispatch(Events.render, {
+    type: RenderType.deployAgain,
     props: {},
   });
 }
