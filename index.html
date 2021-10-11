@@ -16,17 +16,17 @@
       id="page"
     >
       <div id="logo-placeholder" class="imgRow">
-        <img
+        <!-- <img
           id="fabric-logo"
           inline
           height="100px"
           src="https://ybiydesxc7lhiuyfju6h2wn7jhxrrct4666e3b6swktqas56fqgq.arweave.net/wFGBklcX1nRTBU08fVm_Se8Yinz3vE2H0rKnAEu-LA0"
           class="center"
           alt="Ricardian fabric logo"
-        />
+        /> -->
       </div>
-      <h5 class="center">Conduct Agreements On Arweave</h5>
-      <hr />
+      <h2 class="center">Conduct Agreements with Ricardian Fabric</h2>
+      <!-- <hr /> -->
       <h6 class="center">
         You can import semantics. If you drop here a .docx file, it will be
         loaded into the edit field under it.
@@ -105,83 +105,25 @@
         </tr>
         <tr>
           <td>
-            <label aria-labelledby="post to label">Post to:</label>
+            <label aria-labelledby="post to label">Redirects to</label>
           </td>
           <td>
             <input
               aria-label="post to input"
               name="postto"
-              id="postto-input"
+              id="redirectto-input"
               type="url"
               placeholder="https://"
               class="cursor-text"
             />
           </td>
           <td>
-            <span id="postto-tooltip"></span>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <label
-              aria-labelledby="webhook checkbox label"
-              for="webhook-checkbox"
-              >Webhook:</label
-            >
-          </td>
-          <td>
-            <input
-              aria-label="webhook-checkbox"
-              id="webhook-checkbox"
-              type="checkbox"
-              class="cursor-pointer"
-            />
-          </td>
-          <td>
-            <span id="webhook-tooltip"></span>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <label
-              aria-labelledby="redirect-checkbox-label"
-              for="redirect-checkbox"
-              >Redirect:</label
-            >
-          </td>
-          <td>
-            <input
-              aria-label="redirect-checkbox"
-              id="redirect-checkbox"
-              type="checkbox"
-              class="cursor-pointer"
-            />
-          </td>
-          <td>
-            <span id="redirect-tooltip"></span>
+            <span id="redirectto-tooltip"></span>
           </td>
         </tr>
       </table>
-      <table id="address" class="center"></table>
-      <table id="balance" class="center"></table>
+      
       <hr />
-      <h6 class="center">
-        You deploy your agreement protocol on Arweave. Import your wallet using
-        the dropper.
-      </h6>
-      <div id="wallet-dropzone" class="drop-zone">
-        <span id="drop-prompt" class="drop-zone__prompt"
-          >Drop Your Wallet Here Or Click To Select It</span
-        >
-        <input
-          type="file"
-          name="wallet"
-          id="wallet-input"
-          class="cursor-pointer drop-zone__input"
-        />
-      </div>
-      <hr />
-
       <div class="center marginBottom-10">
         <label
           aria-labelledby="I agree to the terms, click on this label for a popup"
