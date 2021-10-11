@@ -1,67 +1,55 @@
-import { calculateFeeInWinston } from "../../arweave/arweave";
-import {
-  createAcceptablePageContractTX,
-  DECOMISSIONDATE,
-  getCreatorWallet,
-} from "../../business/bloc";
+import Web3 from "web3";
+import { getAcceptablePage } from "../../business/bloc";
+import { getHash } from "../../crypto";
 import {
   dispatch_disableButton,
   dispatch_removeError,
-  dispatch_renderFee,
   dispatch_renderError,
   dispatch_disableCreateInputs,
+  dispatch_enableButton,
+  dispatch_enableCreateInputs,
 } from "../../dispatch/render";
-import { FileType, State } from "../../types";
+import {
+  dispatch_stashAcceptablePage,
+  dispatch_stashDetails,
+} from "../../dispatch/stateChange";
+import { State } from "../../types";
+import { getIssuer, getNetwork, signHash, web3Injected } from "../../wallet";
 import {
   getById,
   getExpires,
-  getPostTo,
-  readFile,
-  getWebhookCheckbox,
-  getRedirectCheckbox,
   didExpire,
   getOnlySigner,
   getTermsCheckbox,
+  getRedirectTo,
 } from "../utils";
 export function renderCreateButtonClick(props: State) {
-  getById("save-contract").onclick = function () {
+  const termsCheckbox = getTermsCheckbox();
+
+  termsCheckbox.onclick = function () {
+    if (termsCheckbox.checked) {
+      const expires = getExpires();
+
+      if (!didExpire(expires)) {
+        dispatch_enableButton(props);
+      }
+    } else {
+      dispatch_disableButton(props);
+    }
+  };
+
+  getById("save-contract").onclick = async function () {
     dispatch_removeError();
     const expires = getExpires();
     const expired = didExpire(expires);
 
     if (expired) {
       dispatch_renderError("Date expired!");
-      dispatch_disableButton(props);
       return;
     }
 
     const onlySigner = getOnlySigner();
-    if (onlySigner !== "NONE" && onlySigner.length !== 43) {
-      // the lengths of the address must be 43
-      dispatch_renderError("Only signer address is invalid");
-      return;
-    }
-    const price = "NONE";
-
-    const webhook = getWebhookCheckbox();
-    const redirect = getRedirectCheckbox();
-    const post = getPostTo();
-
-    if (webhook || redirect) {
-      if (post === "NONE") {
-        dispatch_renderError("Post to, where?");
-        return;
-      }
-    }
-
-    //DECOMISSIONING!
-    const isDecomissioned = new Date() > new Date(DECOMISSIONDATE);
-    if (isDecomissioned) {
-      dispatch_renderError(
-        "This app has been decomissioned. Check ricardianfabric.com for newer versions!"
-      );
-      return;
-    }
+    const redirectto = getRedirectTo();
 
     //Terms and agreements need to be accepted again with a checkbox
     const termsCheckbox = getTermsCheckbox();
@@ -73,40 +61,68 @@ export function renderCreateButtonClick(props: State) {
       return;
     }
 
-    const wallet_file = getById("wallet-input") as HTMLInputElement;
-
-    if (wallet_file.files !== null) {
-      const getKey = async (key: any) => {
-        const feeInWinston = calculateFeeInWinston(props.arweave, price);
-        const fee = props.arweave.ar.winstonToAr(feeInWinston.toString());
-        //Here I call the business logic to do stuff with the key and the other values
-        const tx = await createAcceptablePageContractTX({
-          props,
-          key,
-          data: {
-            legalContract: props.editor.getContent(),
-            createdDate: new Date().toISOString(),
-            price,
-            post,
-            webhook,
-            redirect,
-            expires,
-            version: props.version,
-            domParser: props.domParser,
-            creatorAddress: await getCreatorWallet(props.arweave, key),
-            fee,
-            onlySigner,
-            logoSrc: props.logoSrc,
-          },
-        });
-
-        const txfee = props.arweave.ar.winstonToAr(tx.reward);
-        dispatch_disableCreateInputs();
-
-        //Show popup
-        dispatch_renderFee(txfee, props, tx, key);
-      };
-      readFile(wallet_file.files, getKey, FileType.key);
+    if (!web3Injected()) {
+      dispatch_renderError("Found no injected web3, install metamask");
+      return;
     }
+    await window.ethereum.send("eth_requestAccounts");
+    const web3 = new Web3(window.ethereum);
+
+    //I would need to show a loading indicator and a button to cancel while I request signatures
+
+    const legalContract = props.editor.getContent();
+    const createdDate = new Date().toISOString();
+    const version = props.version;
+    const network = `${await getNetwork(web3)}`;
+    const issuer = await getIssuer(web3);
+    //I need to create the hash from legalContract,createdDate,expires,redirectto,version,issuer,onlysigner,network
+    const hash = await getHash({
+      legalContract,
+      createdDate,
+      expires,
+      redirectto,
+      version,
+      issuer,
+      onlySigner,
+      network,
+    });
+
+    const signingSuccess = async (issuerSignature: string) => {
+      const page = await getAcceptablePage({
+        props,
+        data: {
+          domParser: props.domParser,
+          legalContract,
+          createdDate,
+          redirectto,
+          expires,
+          version,
+          issuer,
+          onlySigner,
+          network,
+          hash,
+          issuerSignature,
+        },
+      });
+
+      dispatch_stashDetails({
+        hash,
+        signerAddress: issuer,
+        signature: issuerSignature,
+        network,
+      });
+
+      dispatch_stashAcceptablePage(page);
+    };
+
+    const onSigningFailure = async (msg: string) => {
+      dispatch_enableButton(props);
+      dispatch_enableCreateInputs();
+    };
+
+    //The issuer needs to sign the hash
+    await signHash(hash, web3, issuer, signingSuccess, onSigningFailure);
+    dispatch_disableButton(props);
+    dispatch_disableCreateInputs();
   };
 }
