@@ -1,40 +1,16 @@
-# Ricardian-Fabric
+# Ricardian-Fabric IPFS-Web3 version
 
-A new take on Ricardian Contracts.
-A tool that helps to create handwritten, machine processable financial contracts that live on arweave.
+The IPFS version of Ricardian fabric.
  
 
-This branch (firstImpl) is for Ricardian Fabric Lite, the version without payments and things that require KYC.
-https://arweave.net/E3HMS6AIUPLNYc_dSEbR6D78AZq0d_qP13HNo1gjnoU
-
-newer link with a docx dropper:
-https://arweave.net/NZGrFxA24WuxCSFpgJYSIHzI6P4bvhuaqqD8kwH5f6k
-
-The latest version of of the firstImpl branch is deployed to the address above.
-
+This branch (withIPFS) is for Ricardian Fabric, this version uses IPFS and web3 and an ipfs-arweave bridge on the server side
+Now with with a docx dropper!
 ## Use
 
 Run the front end
 
 `yarn run dev`
 
-You need testweave-docker
-`docker-compose up`
-
-## post to
-
-This field will describe the endpoint you want to hit.  
-The https will be appended if it's missing.  
-The post will only happen if either webhook or redirect is selected.
-
-The id of the transaction will be appended like /{transactionid}
-Webhooks have an optional secret parameter which is a preshared secret that will be posted in the request body :
-`{ secret: string }`
-
-You can use this to collect any details you like.  It will be not saved anywhere.
-The participant will be able to fill it out on the acceptable contract page.
-
-For redirection, there is no secret but you may give a cookie on your website to identify the users who get redirected there. It's up to you!
 
 ## Deployment
 
