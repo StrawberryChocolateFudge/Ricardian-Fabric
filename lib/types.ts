@@ -1,4 +1,4 @@
-import Arweave from "arweave";
+import { IPFSHTTPClient } from "ipfs-http-client";
 
 export enum Events {
   render = "render",
@@ -23,7 +23,7 @@ export enum RenderType {
   redirectCounter = "redirectCounter",
   dateClickListener = "dateClickListener",
   renderTerms = "renderTerms",
-  feeSummary = "feeSummary",
+  areYouSure = "areYouSure",
   noButtonPressed = "noButtonPressed",
   yesButtonPressed = "yesButtonPressed",
   removeAcceptedButton = "removeAcceptedButton",
@@ -36,6 +36,7 @@ export enum RenderType {
   enableCreateInputs = "enableCreateInputs",
   disableAcceptableInputs = "disableAcceptableInputs",
   enableAcceptableInputs = "enableAcceptableInputs",
+  deployAgain = "deployAgain",
 }
 type RenderFunction = (props: any) => void;
 
@@ -45,7 +46,6 @@ export type Renderer = {
   [RenderType.createPage]: RenderFunction;
   [RenderType.createButton]: RenderFunction;
   [RenderType.acceptButton]: RenderFunction;
-  [RenderType.balance]: RenderFunction;
   [RenderType.addLoadingIndicator]: RenderFunction;
   [RenderType.removeLoadingIndicator]: RenderFunction;
   [RenderType.transaction]: RenderFunction;
@@ -57,7 +57,7 @@ export type Renderer = {
   [RenderType.redirectCounter]: RenderFunction;
   [RenderType.dateClickListener]: RenderFunction;
   [RenderType.renderTerms]: RenderFunction;
-  [RenderType.feeSummary]: RenderFunction;
+  [RenderType.areYouSure]: RenderFunction;
   [RenderType.noButtonPressed]: RenderFunction;
   [RenderType.yesButtonPressed]: RenderFunction;
   [RenderType.removeAcceptedButton]: RenderFunction;
@@ -65,27 +65,33 @@ export type Renderer = {
   [RenderType.promptError]: RenderFunction;
   [RenderType.promptSuccessDOCX]: RenderFunction;
   [RenderType.promptErrorDOCX]: RenderFunction;
-  [RenderType.renderAddress]: RenderFunction;
   [RenderType.disableCreateInputs]: RenderFunction;
   [RenderType.enableCreateInputs]: RenderFunction;
   [RenderType.disableAcceptableInputs]: RenderFunction;
   [RenderType.enableAcceptableInputs]: RenderFunction;
+  [RenderType.deployAgain]: RenderFunction;
 };
 
 export enum EventType {
-  setArweave = "setArweave",
+  init = "init",
+  setIPFS = "setIPFS",
   setEditor = "setEditor",
   setBalance = "setBalance",
   setWalletAddress = "setWalletAddress",
   setSelectedDate = "setSelectedDate",
+  stashAcceptablePage = "stashAcceptablePage",
+  stashDetails = "stashDetails",
 }
 
 export enum StateProperties {
-  arweave = "arweave",
+  init = "init",
+  ipfs = "ipfs",
   editor = "editor",
   balance = "balance",
   address = "address",
   selectedDate = "selectedDate",
+  stashedPage = "stashedPage",
+  stashedDetails = "stashedDetails",
 }
 
 export enum ContractTypes {
@@ -94,26 +100,42 @@ export enum ContractTypes {
   fulfilled = "fulfilled",
 }
 
+export type StashedDetails = {
+  hash: string;
+  signerAddress: string;
+  signature: string;
+  network: string;
+};
+
+export type IPFSParams = {
+  host: "ipfs.infura.io";
+  port: 5001;
+  protocol: "https";
+};
+
 export type State = {
-  arweave: Arweave;
+  init: boolean;
+  ipfs: IPFSParams;
+  ipfsArweaveBridge: string;
   editor: any;
   domParser: DOMParser;
-  balance: number;
-  address: string;
   selectedDate: Date | string;
+  stashedPage: string;
+  stashedDetails: StashedDetails;
   contracttype: ContractTypes;
-  postto: string;
-  webhook: boolean;
-  redirect: boolean;
-  creatorAddress: string;
-  price: string;
+  redirectto: string;
   bundleSrcUrl: string;
   createdDate: string;
   expires: string;
   currentUrl: string;
   version: string;
   onlySigner: string;
-  logoSrc: string;
+  network: string;
+  hash: string;
+  issuer: string;
+  issuerSignature: string;
+  participant: string;
+  participantSignature: string;
 };
 
 export type SetHookArgs = {
@@ -124,54 +146,66 @@ export type SetHookArgs = {
 
 type Dependency = {
   src: string;
-  code: string;
 };
 
 export type AcceptablePageProps = {
   version: string;
   createdDate: string;
-  creatorAddress: string;
-  price: string;
+  issuer: string;
   expires: string;
-  post: string;
-  webhook: boolean;
-  redirect: boolean;
+  redirectto: string;
   mainDep?: Dependency;
   domParser: DOMParser;
-  fee: string;
   legalContract: string;
   onlySigner: string;
-  logoSrc: string;
+  network: string;
+  hash: string;
+  issuerSignature: string;
 };
 
 export type FulfilledPageProps = {
   version: string;
-  creatorAddress: string;
+  issuer: string;
   createdDate: string;
-  price: string;
   expires: string;
-  post: string;
-  webhook: boolean;
-  redirect: boolean;
+
+  redirectto: string;
+
   domParser: DOMParser;
-  fee: string;
   legalContract: string;
-  paidFrom: string;
+  participant: string;
   parentUrl: string;
-  logoSrc: string;
+  network: string;
+  hash: string;
+  issuerSignature: string;
+  participantSignature: string;
 };
 
-export type CreateTransactionResult = {
-  id: string;
-  statusCode: number;
-  path: string;
+export enum PinStatus {
+  Success,
+  Failure,
+}
+export type PinOptions = {
+  status: PinStatus;
+  error: any;
+  result: Response;
 };
-export enum FileType {
-  key = "key",
-  pdf = "pdf",
+
+export type IssuerHashedData = {
+  legalContract: string;
+  createdDate: string;
+  expires: string;
+  redirectto: string;
+  version: string;
+  issuer: string;
+  onlySigner: string;
+  network: string;
+};
+
+declare global {
+  interface Window {
+    ethereum: any;
+  }
 }
 
-export enum FeeType {
-  createPage,
-  acceptPage,
-}
+window.ethereum = window.ethereum || {};
