@@ -1,8 +1,9 @@
 import "./lib/state";
 import "./lib/view";
-import { getArweave, showBanner } from "./lib/business/bloc";
+import { showBanner } from "./lib/business/bloc";
 import "./lib/view/templates/acceptablePage";
+import { dispatch_setInit, dispatch_setIPFS } from "./lib/dispatch/stateChange";
 (async function init() {
   showBanner();
-  await getArweave();
+  dispatch_setInit();
 })();
