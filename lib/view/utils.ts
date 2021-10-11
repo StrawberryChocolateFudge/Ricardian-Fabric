@@ -1,5 +1,3 @@
-import { FileType } from "../types";
-
 const storageKEY = "RicardianFabric";
 
 export function getById(id: string): HTMLElement {
@@ -29,42 +27,6 @@ export function getFromUrl() {
   return window.location.pathname;
 }
 
-export function readFile(
-  files: FileList,
-  getContent: CallableFunction,
-  fileType: FileType
-) {
-  const reader = new FileReader();
-
-  if (fileType === FileType.key) {
-    reader.onload = function (e: ProgressEvent) {
-      const data = getKeyFromFile(e);
-      getContent(data);
-    };
-
-    reader.onerror = function (e) {
-      console.log(e);
-    };
-
-    reader.readAsText(files[0], "UFT-8");
-  } else if (fileType === FileType.pdf) {
-    reader.readAsDataURL(files[0]);
-
-    reader.onloadend = function (event) {
-      getContent(event.target.result);
-    };
-  }
-}
-
-export function getKeyFromFile(fileEvent: ProgressEvent) {
-  try {
-    const fileReader: FileReader = fileEvent.target as FileReader;
-    return JSON.parse(fileReader.result as string);
-  } catch (e) {
-    console.log(e);
-  }
-}
-
 export function getPrice() {
   const price = getById("price-input") as HTMLInputElement;
   if (price.value === "" || price.value === "0") {
@@ -73,12 +35,12 @@ export function getPrice() {
     return price.value;
   }
 }
-export function getPostTo() {
-  const postto = getById("postto-input") as HTMLInputElement;
-  if (postto.value === "") {
+export function getRedirectTo() {
+  const redirectto = getById("redirectto-input") as HTMLInputElement;
+  if (redirectto.value === "") {
     return "NONE";
   } else {
-    return handleHTTPS(postto.value);
+    return handleHTTPS(redirectto.value);
   }
 }
 
