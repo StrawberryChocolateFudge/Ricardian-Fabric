@@ -1,12 +1,11 @@
 import { ContractTypes } from "../types";
-import { getById } from "../view/utils";
 
-export function getPostToDataProp(page: HTMLElement): string {
-  return page.dataset.postto;
+export function getRedirectToDataProp(page: HTMLElement): string {
+  return page.dataset.redirectto;
 }
 
-export function getCreatorAddressDataProp(page: HTMLElement): string {
-  return page.dataset.creatoraddress;
+export function getIssuerDataProp(page: HTMLElement): string {
+  return page.dataset.issuer;
 }
 
 export function getCurrentPageDataProp(page: HTMLElement) {
@@ -27,26 +26,8 @@ export function getExpiresFromDataProp(page: HTMLElement): string {
   return page.dataset.expires;
 }
 
-export function getWebhookFromDataProp(page: HTMLElement): boolean {
-  return page.dataset.webhook === "true";
-}
-
-export function getRedirectFromDataProp(page: HTMLElement): boolean {
-  return page.dataset.redirect === "true";
-}
-
 export function getVersionFromDataProp(page: HTMLElement): string {
   return page.dataset.version;
-}
-
-export function getBundleSrcUrl(): string {
-  const mainScript = getById("main-script") as HTMLScriptElement;
-  return mainScript.src;
-}
-
-export function getImgSrcUrl(): string {
-  const img = getById("fabric-logo") as HTMLScriptElement;
-  return img.src;
 }
 
 export function getOnlySignerFromDataProp(page: HTMLElement): string {
@@ -57,6 +38,15 @@ export function getSourceFromDataProp(page: HTMLElement): string {
   return page.dataset.dependency;
 }
 
-export function getLogoSrcFromDataProp(page: HTMLElement): string {
-  return page.dataset.logosrc;
+export function getNetworkFromDataProp(page: HTMLElement): string {
+  return page.dataset.network;
 }
+
+export function getHashFromDataProp(page: HTMLElement): string{
+  return page.dataset.hash;
+}
+
+export function getIssuerSignatureFromDataProp(page: HTMLElement): string{
+  return page.dataset.issuersignature;
+}
+
