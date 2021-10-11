@@ -1,6 +1,10 @@
 import { html } from "lit-html";
+import { ContractTypes, State } from "../../types";
 
-export const CreateSummary = (fee: string) => {
+export const CreateSummary = (props: State) => {
+  const signer =
+    props.contracttype === ContractTypes.create ? "Issuer" : "Participant";
+
   return html`
     <style>
       .button-row {
@@ -22,10 +26,37 @@ export const CreateSummary = (fee: string) => {
         background: black;
         color: white;
       }
+
+      .details-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      #signature {
+        max-width: 600px;
+        overflow: scroll;
+      }
+
+      .centerText {
+        text-align: center;
+      }
     </style>
-    <div class="center">
-      <p class="center">Are you sure?</p>
-      <p>Transaction Fee: <span>${fee}</span> Ar</p>
+    <h3 class="centerText">Are you sure?</h3>
+    <hr />
+    <div class="details-container centerText">
+      <label for="networkid"><strong>Network Id:</strong></label>
+      <p id="networkid">${props.stashedDetails.network}</p>
+
+      <label for="hash"><strong>Document Hash:</strong></label>
+      <p id="hash">${props.stashedDetails.hash}</p>
+
+      <label for="signer"><strong>${signer}:</strong></label>
+      <p id="signer">${props.stashedDetails.signerAddress}</p>
+
+      <label for="signature"><strong>${signer} Signature:</strong></label>
+      <p id="signature">${props.stashedDetails.signature}</p>
+
       <div class="button-row">
         <button id="no-button">No</button> <button id="yes-button">Yes</button>
       </div>
