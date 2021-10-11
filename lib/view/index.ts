@@ -1,7 +1,6 @@
 import { ContractTypes, Events, Renderer, RenderType, State } from "../types";
 import { renderCreateButtonClick } from "./actions/createButtonClick";
 import { attachExpiryClickAndListener } from "./actions/attachExpiryClickAndListener";
-import { postCheckboxSelect } from "./actions/postCheckboxSelect";
 import { renderAcceptOnCLick } from "./actions/renderAcceptButton";
 import {
   disableAcceptableInputs,
@@ -14,14 +13,13 @@ import {
   removeButtons,
   removeError,
   removeLoadingIndicator,
+  removeTransaction,
   renderAcceptButton,
-  renderAddress,
-  renderbalance,
   renderCounter,
   renderCreateButton,
-  renderCreateFee,
   renderError,
   renderLoadingIndicator,
+  renderSummary,
   renderTerms,
   renderTooltips,
   renderTransaction,
@@ -32,11 +30,13 @@ import {
   updatePromptSuccessDOCX,
 } from "./render";
 import { renderAcceptTools } from "./render";
-import { attachTermsButtonListeners } from "./actions/bannerButtonListeners";
 import { areYouSureButtons } from "./actions/areYouSureButtons";
-import { onWalletFileDropped } from "./actions/onWalletFileDropped";
-import { createPageAgreeTerms } from "./actions/createPageAgreeTerms";
 import { onDocFileDropped } from "./actions/onDocFileDropped";
+import {
+  attachTermsButtonListeners,
+  createPageAgreeTerms,
+} from "./actions/terms";
+import { deployAgainButtonActions } from "./actions/deployAgainButton";
 
 const Render: Renderer = {
   [RenderType.successMessage]: (props: State) => {},
@@ -46,8 +46,6 @@ const Render: Renderer = {
     createPageAgreeTerms();
     renderCreateButton(true);
     // The order of attaching listeners is important
-    postCheckboxSelect();
-    onWalletFileDropped(props);
     onDocFileDropped(props);
     renderCreateButtonClick(props);
     attachExpiryClickAndListener(props);
@@ -56,25 +54,7 @@ const Render: Renderer = {
   [RenderType.acceptButton]: (props: State) => {
     renderAcceptTools(props);
     renderAcceptButton(props);
-    onWalletFileDropped(props);
     renderAcceptOnCLick(props);
-  },
-  [RenderType.balance]: (props: State) => {
-    renderbalance(props.balance);
-    if (props.contracttype === ContractTypes.create) {
-      renderCreateButtonClick(props);
-    } else if (props.contracttype === ContractTypes.acceptable) {
-      renderAcceptOnCLick(props);
-    }
-  },
-  [RenderType.renderAddress]: (props: State) => {
-    renderAddress(props.address);
-    //TODO: THE ADDRESS NEEDS TO BE RERENDERED AFTER PAYMENT TOO!!
-    if (props.contracttype === ContractTypes.create) {
-      renderCreateButtonClick(props);
-    } else if (props.contracttype === ContractTypes.acceptable) {
-      renderAcceptOnCLick(props);
-    }
   },
   [RenderType.addLoadingIndicator]: (props: { to: string }) => {
     renderLoadingIndicator(props.to);
@@ -84,6 +64,7 @@ const Render: Renderer = {
   },
   [RenderType.transaction]: (props: { url: string }) => {
     renderTransaction(props.url);
+    deployAgainButtonActions();
   },
   [RenderType.renderError]: (props: { message: string }) => {
     renderError(props.message);
@@ -110,8 +91,8 @@ const Render: Renderer = {
     renderTerms();
     attachTermsButtonListeners();
   },
-  [RenderType.feeSummary]: (props: any) => {
-    renderCreateFee(props.fee);
+  [RenderType.areYouSure]: (props: any) => {
+    renderSummary(props);
     areYouSureButtons(props);
   },
 
@@ -138,7 +119,7 @@ const Render: Renderer = {
   [RenderType.promptError]: (props: { message: string }) => {
     updatePromptError(props.message);
   },
-    [RenderType.promptSuccessDOCX]: (props: { file: File | string }) => {
+  [RenderType.promptSuccessDOCX]: (props: { file: File | string }) => {
     updatePromptSuccessDOCX(props.file as File);
   },
   [RenderType.promptErrorDOCX]: (props: { message: string }) => {
@@ -155,6 +136,10 @@ const Render: Renderer = {
   },
   [RenderType.enableAcceptableInputs]: (props: {}) => {
     enableAcceptableInputs();
+  },
+  [RenderType.deployAgain]: (props: {}) => {
+    removeTransaction();
+    renderCreateButton(true);
   },
 };
 
