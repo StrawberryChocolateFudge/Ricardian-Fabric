@@ -47,6 +47,30 @@ export const issuerTemplate = (address: string) => {
   `;
 };
 
+export const networkTemplate = (network: string) => {
+  return html`<tr>
+    <td aria-labelledby="Network Id label">Network Id:</td>
+    <td aria-label="network id">${network}</td>
+    <td></td>
+  </tr>`;
+};
+
+export const hashTemplate = (hash: string) => {
+  return html`<tr>
+    <td aria-labelledby="Hash label">Hash</td>
+    <td aria-label="Hash">${hash}</td>
+    <td></td>
+  </tr>`;
+};
+
+export const issuerSignatureTemplate = (signature: string) => {
+  return html`<tr>
+    <td aria-labelledby="issuer signature label">Issuer signature</td>
+    <td aria-label="issuer Signature ">${signature}</td>
+    <td></td>
+  </tr>`;
+};
+
 export const expiryTemplate = (date: string) => html` <tr>
   <td aria-labelledby="expires label">Expires:</td>
   <td aria-label="date">${date}</td>
