@@ -1,52 +1,58 @@
-import { Events, EventType, State } from "../types";
+import { Events, EventType, StashedDetails, State } from "../types";
 import { getCurrentUrl, getPage } from "../view/utils";
 import {
   getCreatedDateFromDataProp,
-  getCreatorAddressDataProp,
   getCurrentPageDataProp,
   getExpiresFromDataProp,
-  getImgSrcUrl,
+  getHashFromDataProp,
+  getIssuerDataProp,
+  getIssuerSignatureFromDataProp,
+  getNetworkFromDataProp,
   getOnlySignerFromDataProp,
-  getPostToDataProp,
-  getPriceFromDataProp,
-  getRedirectFromDataProp,
+  getRedirectToDataProp,
   getSourceFromDataProp,
   getVersionFromDataProp,
-  getWebhookFromDataProp,
 } from "./dataPropGetters";
 import createNewEditor from "./editor";
 import { setStateHook } from "./setStateHook";
-
+import { create } from "ipfs-http-client";
 (function InitState() {
   function createState() {
     const pageEl = getPage();
-
     const state: State = {
-      arweave: undefined,
+      init: false,
+      ipfs: {
+        host: "ipfs.infura.io",
+        port: 5001,
+        protocol: "https",
+      },
+      ipfsArweaveBridge: "",
       editor: createNewEditor(),
       domParser: new DOMParser(),
-      balance: 0,
-      address: "",
       selectedDate: "",
+      stashedPage: "",
+      stashedDetails: undefined,
       contracttype: getCurrentPageDataProp(pageEl),
-      postto: getPostToDataProp(pageEl),
-      webhook: getWebhookFromDataProp(pageEl),
-      redirect: getRedirectFromDataProp(pageEl),
-      creatorAddress: getCreatorAddressDataProp(pageEl),
-      price: getPriceFromDataProp(pageEl),
+      redirectto: getRedirectToDataProp(pageEl),
       expires: getExpiresFromDataProp(pageEl),
       createdDate: getCreatedDateFromDataProp(pageEl),
       version: getVersionFromDataProp(pageEl),
       bundleSrcUrl: getSourceFromDataProp(pageEl),
       currentUrl: getCurrentUrl(),
       onlySigner: getOnlySignerFromDataProp(pageEl),
-      logoSrc: getImgSrcUrl(),
+      network: getNetworkFromDataProp(pageEl),
+      hash: getHashFromDataProp(pageEl),
+      issuer: getIssuerDataProp(pageEl),
+      issuerSignature: getIssuerSignatureFromDataProp(pageEl),
+      participant: "",
+      participantSignature: "",
     };
 
     const stateHandler = {
       set: function (obj: State, prop: string, value: any) {
         obj[prop] = value;
         setStateHook[prop]({ obj, prop, value });
+        console.log(obj);
         return true;
       },
     };
@@ -56,18 +62,27 @@ import { setStateHook } from "./setStateHook";
   const stateContainer = createState();
 
   const stateSetter = {
-    [EventType.setArweave]: (value: any) => {
-      stateContainer.arweave = value;
+    [EventType.init]: (value: {}) => {
+      stateContainer.init = true;
+    },
+    [EventType.setIPFS]: (value: {}) => {
+      stateContainer.ipfs = {
+        host: "ipfs.infura.io",
+        port: 5001,
+        protocol: "https",
+      };
     },
     [EventType.setEditor]: (value: any) => {
       stateContainer.editor = value;
     },
-    [EventType.setBalance]: (value: any) => {
-      stateContainer.balance = value.balance;
-      stateContainer.address = value.address;
-    },
     [EventType.setSelectedDate]: (value: { date: Date | string }) => {
       stateContainer.selectedDate = value.date;
+    },
+    [EventType.stashAcceptablePage]: (value: { page: string }) => {
+      stateContainer.stashedPage = value.page;
+    },
+    [EventType.stashDetails]: (value: StashedDetails) => {
+      stateContainer.stashedDetails = value;
     },
   };
 
