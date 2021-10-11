@@ -92,34 +92,28 @@ export const fulfilledPageLayout = (props: FulfilledPageProps) => html`
     ${fulfilledPage(props)}
   </body>
 `;
-
+//TODO: ADD NETWORK!!
 export const fulfilledPage = (props: FulfilledPageProps) => html`
   <div
     data-contracttype="fulfilled"
     data-version="${props.version}"
     data-created="${props.createdDate}"
-    data-creatorAddress="${props.creatorAddress}"
-    data-price="${props.price}"
+    data-issuer="${props.issuer}"
     data-expires="${props.expires}"
-    data-postto="${props.post}"
-    data-redirect="${props.redirect}"
-    data-webhook="${props.webhook}"
-    data-paidfrom="${props.paidFrom}"
+    data-redirectto="${props.redirectto}"
+    data-participant="${props.participant}"
     data-parentUrl="${props.parentUrl}"
-    data-fee="${props.fee}"
+    data-network="${props.network}"
     id="page"
   >
-    ${Logo(props.logoSrc)}
-    <hr />
-    <h5 aria-label="Signed Contract" class="center">Signed Contract</h5>
     <div class="center" id="contract-display"></div>
     <table id="display-table" class="center">
       <tr>
         <th></th>
         <th></th>
         <th></th>
-        ${issuerTemplate(props.creatorAddress)}
-        ${getParticipantFromTemplate(props.paidFrom)}
+        ${issuerTemplate(props.issuer)}
+        ${getParticipantFromTemplate(props.participant)}
         ${signedDateTemplate(props.createdDate)} ${parentUrl(props.parentUrl)}
       </tr>
     </table>
