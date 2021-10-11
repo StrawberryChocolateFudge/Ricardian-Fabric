@@ -2,6 +2,7 @@ import {
   dispatch_attachDateClickListener,
   dispatch_renderAcceptButton,
   dispatch_renderAddress,
+  dispatch_renderAreYouSure,
   dispatch_renderBalance,
   dispatch_renderCreateButton,
   dispatch_renderVersion,
@@ -9,7 +10,7 @@ import {
 import { ContractTypes, SetHookArgs, State, StateProperties } from "../types";
 
 export const setStateHook = {
-  [StateProperties.arweave]: (args: SetHookArgs) => {
+  [StateProperties.init]: (args: SetHookArgs) => {
     const currentPage = args.obj.contracttype;
     if (currentPage === ContractTypes.create) {
       const clone = cloneState(args.obj);
@@ -19,6 +20,7 @@ export const setStateHook = {
       dispatch_renderAcceptButton(cloneState(args.obj));
     }
   },
+  [StateProperties.ipfs]: (args: SetHookArgs) => {},
   [StateProperties.editor]: (args: SetHookArgs) => {},
   [StateProperties.balance]: (args: SetHookArgs) => {
     dispatch_renderBalance(cloneState(args.obj));
@@ -28,6 +30,13 @@ export const setStateHook = {
   },
   [StateProperties.selectedDate]: (args: SetHookArgs) => {
     dispatch_attachDateClickListener(cloneState(args.obj));
+  },
+  [StateProperties.stashedPage]: (args: SetHookArgs) => {
+    //Show popup
+    dispatch_renderAreYouSure(cloneState(args.obj));
+  },
+  [StateProperties.stashedDetails]: (args: SetHookArgs) => {
+    // I'm dispatching stashDetails before stashedPage so the details are passed in the above .stashedPage hook.
   },
 };
 
