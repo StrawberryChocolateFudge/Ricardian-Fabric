@@ -10,11 +10,17 @@ import {
   dispatch_enableCreateInputs,
 } from "../../dispatch/render";
 import {
-  dispatch_stashAcceptablePage,
+  dispatch_stashPage,
   dispatch_stashDetails,
 } from "../../dispatch/stateChange";
 import { State } from "../../types";
-import { getIssuer, getNetwork, signHash, web3Injected } from "../../wallet";
+import {
+  getAddress,
+  getNetwork,
+  requestAccounts,
+  signHash,
+  web3Injected,
+} from "../../wallet";
 import {
   getById,
   getExpires,
@@ -22,7 +28,9 @@ import {
   getOnlySigner,
   getTermsCheckbox,
   getRedirectTo,
+  getSmartContract,
 } from "../utils";
+
 export function renderCreateButtonClick(props: State) {
   const termsCheckbox = getTermsCheckbox();
 
@@ -65,7 +73,9 @@ export function renderCreateButtonClick(props: State) {
       dispatch_renderError("Found no injected web3, install metamask");
       return;
     }
-    await window.ethereum.send("eth_requestAccounts");
+
+    await requestAccounts();
+
     const web3 = new Web3(window.ethereum);
 
     //I would need to show a loading indicator and a button to cancel while I request signatures
@@ -74,7 +84,8 @@ export function renderCreateButtonClick(props: State) {
     const createdDate = new Date().toISOString();
     const version = props.version;
     const network = `${await getNetwork(web3)}`;
-    const issuer = await getIssuer(web3);
+    const issuer = await getAddress(web3);
+    const smartcontract = getSmartContract();
     //I need to create the hash from legalContract,createdDate,expires,redirectto,version,issuer,onlysigner,network
     const hash = await getHash({
       legalContract,
@@ -85,6 +96,7 @@ export function renderCreateButtonClick(props: State) {
       issuer,
       onlySigner,
       network,
+      smartcontract,
     });
 
     const signingSuccess = async (issuerSignature: string) => {
@@ -102,6 +114,7 @@ export function renderCreateButtonClick(props: State) {
           network,
           hash,
           issuerSignature,
+          smartcontract,
         },
       });
 
@@ -112,12 +125,13 @@ export function renderCreateButtonClick(props: State) {
         network,
       });
 
-      dispatch_stashAcceptablePage(page);
+      dispatch_stashPage(page);
     };
 
     const onSigningFailure = async (msg: string) => {
       dispatch_enableButton(props);
       dispatch_enableCreateInputs();
+      dispatch_renderError(msg);
     };
 
     //The issuer needs to sign the hash
