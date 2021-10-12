@@ -33,32 +33,36 @@ export const CreateSummary = (props: State) => {
         justify-content: center;
       }
 
-      #signature {
-        max-width: 600px;
-        overflow: scroll;
+      .auto-overflow {
+        overflow: auto;
       }
 
       .centerText {
         text-align: center;
       }
+      .width-100 {
+        width: 100px;
+      }
     </style>
     <h3 class="centerText">Are you sure?</h3>
-    <hr />
-    <div class="details-container centerText">
+    <div class="details-container">
       <label for="networkid"><strong>Network Id:</strong></label>
-      <p id="networkid">${props.stashedDetails.network}</p>
+      <pre id="networkid">${props.stashedDetails.network}</pre>
 
       <label for="hash"><strong>Document Hash:</strong></label>
-      <p id="hash">${props.stashedDetails.hash}</p>
+      <pre id="hash" class="auto-overflow">${props.stashedDetails.hash}</pre>
 
       <label for="signer"><strong>${signer}:</strong></label>
-      <p id="signer">${props.stashedDetails.signerAddress}</p>
-
+      <pre id="signer" class="auto-overflow">
+${props.stashedDetails.signerAddress}</pre
+      >
       <label for="signature"><strong>${signer} Signature:</strong></label>
-      <p id="signature">${props.stashedDetails.signature}</p>
-
+      <pre id="signature" class="auto-overflow">
+${props.stashedDetails.signature}</pre
+      >
       <div class="button-row">
-        <button id="no-button">No</button> <button id="yes-button">Yes</button>
+        <button id="no-button" class="width-100">No</button>
+        <button class="width-100" id="yes-button">Yes</button>
       </div>
     </div>
   `;
