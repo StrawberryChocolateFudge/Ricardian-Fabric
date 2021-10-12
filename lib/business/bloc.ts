@@ -28,20 +28,21 @@ export async function getAcceptablePage(args: {
   const page = await getAcceptablePageFromVDOM({
     ...args.data,
     mainDep: {
-      src
+      src,
     },
   });
   dispatch_removeLoadingIndicator("transaction-display");
   return page;
 }
 
-export async function isOnlySigner(props: State): Promise<boolean> {
+export async function isOnlySigner(
+  props: State,
+  address: string
+): Promise<boolean> {
   const onlySigner = props.onlySigner;
   if (onlySigner === "NONE") {
     return true;
   }
-  //TODO:!!!
-  const address = ""; //await getAddressCall(props.arweave, key);
   return onlySigner === address;
 }
 
@@ -71,22 +72,11 @@ export async function handlePost(props: State, id: string) {
   }, REDIRECT_TIMEOUT);
 }
 
-async function getFulfilledPage(props: FulfilledPageProps) {
-  return await getFulfilledPagefromVDOM({
-    version: props.version,
-    createdDate: new Date().toISOString(),
-    issuer: props.issuer,
-    legalContract: getAcceptableContract(),
-    parentUrl: getFromUrl(),
-    domParser: props.domParser,
-    expires: props.expires,
-    redirectto: props.redirectto,
-    network: props.network,
-    hash: props.hash,
-    issuerSignature: props.issuerSignature,
-    participant: "",
-    participantSignature: "",
-  });
+export async function getFulfilledPage(props: FulfilledPageProps) {
+  dispatch_renderLoadingIndicator("transaction-display");
+  const page = await getFulfilledPagefromVDOM(props);
+  dispatch_removeLoadingIndicator("transaction-display");
+  return page;
 }
 
 export function showBanner() {
