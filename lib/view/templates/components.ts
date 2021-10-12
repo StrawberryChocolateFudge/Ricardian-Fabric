@@ -49,10 +49,20 @@ export const issuerTemplate = (address: string) => {
 
 export const networkTemplate = (network: string) => {
   return html`<tr>
-    <td aria-labelledby="Network Id label">Network Id:</td>
+    <td aria-labelledby="Network Id label">Network:</td>
     <td aria-label="network id">${network}</td>
     <td></td>
   </tr>`;
+};
+
+export const onlySignerTemplate = (onlySigner: string) => {
+  if (onlySigner !== "NONE") {
+    return html`<tr>
+      <td aria-labelledby="only signer label">Only Signer:</td>
+      <td aria-label="only signer address">${onlySigner}</td>
+      <td></td>
+    </tr>`;
+  }
 };
 
 export const hashTemplate = (hash: string) => {
