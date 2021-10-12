@@ -44,6 +44,15 @@ export function getRedirectTo() {
   }
 }
 
+export function getSmartContract() {
+  const smartContract = getById("smartcontract-input") as HTMLInputElement;
+  if (smartContract.value === "") {
+    return "NONE";
+  } else {
+    return smartContract.value;
+  }
+}
+
 export function getOnlySigner() {
   const onlySigner = getById("onlysigner-input") as HTMLInputElement;
   if (onlySigner.value === "") {
@@ -146,4 +155,14 @@ export function getPromptElDOCX(): HTMLElement {
 
 export function getTermsCheckbox(): HTMLInputElement {
   return getById("terms-checkbox") as HTMLInputElement;
+}
+
+export function changeContainerSlotStyle(to: boolean) {
+  const container = getById("action-container");
+
+  if (to) {
+    container.classList.remove("center");
+  } else {
+    container.classList.add("center");
+  }
 }
