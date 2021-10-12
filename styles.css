@@ -62,6 +62,10 @@ body {
   width: 100px;
 }
 
+.width-200 {
+  width: 200px;
+}
+
 .red {
   color: red;
 }
@@ -159,7 +163,6 @@ body {
 #input-table tr {
   background-color: white;
 }
-
 
 #input-table th {
   padding-top: 12px;
