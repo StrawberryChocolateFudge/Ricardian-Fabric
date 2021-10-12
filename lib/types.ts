@@ -79,7 +79,7 @@ export enum EventType {
   setBalance = "setBalance",
   setWalletAddress = "setWalletAddress",
   setSelectedDate = "setSelectedDate",
-  stashAcceptablePage = "stashAcceptablePage",
+  stashPage = "stashPage",
   stashDetails = "stashDetails",
 }
 
@@ -108,9 +108,9 @@ export type StashedDetails = {
 };
 
 export type IPFSParams = {
-  host: "ipfs.infura.io";
-  port: 5001;
-  protocol: "https";
+  host: string;
+  port: number;
+  protocol: string;
 };
 
 export type State = {
@@ -136,6 +136,7 @@ export type State = {
   issuerSignature: string;
   participant: string;
   participantSignature: string;
+  smartcontract: string;
 };
 
 export type SetHookArgs = {
@@ -161,6 +162,7 @@ export type AcceptablePageProps = {
   network: string;
   hash: string;
   issuerSignature: string;
+  smartcontract: string;
 };
 
 export type FulfilledPageProps = {
@@ -179,6 +181,7 @@ export type FulfilledPageProps = {
   hash: string;
   issuerSignature: string;
   participantSignature: string;
+  smartcontract: string;
 };
 
 export enum PinStatus {
@@ -200,6 +203,7 @@ export type IssuerHashedData = {
   issuer: string;
   onlySigner: string;
   network: string;
+  smartcontract: string;
 };
 
 declare global {
