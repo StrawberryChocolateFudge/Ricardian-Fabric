@@ -9,22 +9,12 @@
   </head>
   <body class="background">
     <div
-      data-dependency="./main.ts"
+      data-dependency="http://localhost:1234/main.c39d6dcf.js"
       data-logosrc="https://ybiydesxc7lhiuyfju6h2wn7jhxrrct4666e3b6swktqas56fqgq.arweave.net/wFGBklcX1nRTBU08fVm_Se8Yinz3vE2H0rKnAEu-LA0"
       data-version="0.0.2"
       data-contracttype="create"
       id="page"
     >
-      <div id="logo-placeholder" class="imgRow">
-        <!-- <img
-          id="fabric-logo"
-          inline
-          height="100px"
-          src="https://ybiydesxc7lhiuyfju6h2wn7jhxrrct4666e3b6swktqas56fqgq.arweave.net/wFGBklcX1nRTBU08fVm_Se8Yinz3vE2H0rKnAEu-LA0"
-          class="center"
-          alt="Ricardian fabric logo"
-        /> -->
-      </div>
       <h2 class="center">Conduct Agreements with Ricardian Fabric</h2>
       <!-- <hr /> -->
       <h6 class="center">
@@ -47,10 +37,7 @@
         <div id="editor" aria-label="Editor" class="cursor-text editable"></div>
         <div id="editor-control"></div>
       </div>
-      <table
-        id="input-table"
-        aria-label="input field container table"
-      >
+      <table id="input-table" aria-label="input field container table">
         <tr>
           <th></th>
           <th></th>
@@ -69,7 +56,7 @@
               id="onlysigner-input"
               type="text"
               class="cursor-text"
-              placeholder="address"
+              placeholder="0x..."
             />
           </td>
           <td>
@@ -105,7 +92,7 @@
         </tr>
         <tr>
           <td>
-            <label aria-labelledby="post to label">Redirects to</label>
+            <label aria-labelledby="post to label">Redirects to:</label>
           </td>
           <td>
             <input
@@ -121,8 +108,27 @@
             <span id="redirectto-tooltip"></span>
           </td>
         </tr>
+        <tr>
+          <td>
+            <label aria-labelledby="Compatible  smart contract label"
+              >SmartContract:</label
+            >
+          </td>
+          <td>
+            <input
+              aria-label="smartcontract to call"
+              name="smartcontract"
+              id="smartcontract-input"
+              type="text"
+              placeholder="0x..."
+              class="cursor-text"
+            />
+          </td>
+          <td>
+            <span id="smartcontract-tooltip"></span>
+          </td>
+        </tr>
       </table>
-      
       <hr />
       <div class="center marginBottom-10">
         <label
@@ -147,7 +153,7 @@
         id="transaction-display"
       ></div>
 
-      <div class="center" id="button-slot"></div>
+      <div id="button-slot"></div>
     </div>
     <div id="overlay">
       <div id="overlay-layout"></div>
