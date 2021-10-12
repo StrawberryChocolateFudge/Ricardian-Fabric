@@ -35,13 +35,13 @@ export async function removeLoadingIndicator(from: string) {
   render(html`<div></div>`, getById(from));
 }
 
-export async function renderTransaction(url: string) {
-  render(transactionUrl(url), getById("transaction-display"));
+export async function renderTransaction(props: State,url: string) {
+  render(transactionUrl(props,url), getById("transaction-display"));
   copyStringToClipboard(url);
 }
 
 export async function removeTransaction() {
-  getById("transaction-display").innerHTML = "";
+  render("", getById("transaction-display"));
 }
 
 export function renderError(message: string) {
@@ -148,7 +148,8 @@ export function renderTooltips() {
   const onlySigner = getById("onlysigner-tooltip");
   const expires = getById("expires-tooltip");
   const redirectto = getById("redirectto-tooltip");
-
+  const Scontract = getById("smartcontract-tooltip");
+  const customNetwork = getById("customnetwork-tooltip");
   render(
     helperTooltips("The only address that can sign this contract."),
     onlySigner
@@ -157,6 +158,19 @@ export function renderTooltips() {
   render(
     helperTooltips("Redirects here with /{id}. Leave empty if not used"),
     redirectto
+  );
+
+  render(
+    helperTooltips(
+      "The address of a Compatible Smart Contract that Ricardian Fabric will call."
+    ),
+    Scontract
+  );
+  render(
+    helperTooltips(
+      "Check this to use your own custom network in metamask. Default is Harmony."
+    ),
+    customNetwork
   );
 }
 
@@ -203,7 +217,7 @@ export function enableCreateInputs() {
   never.disabled = false;
   never.style.cursor = "pointer";
   redirectto.disabled = false;
-  redirectto.style.cursor = "pointer";
+  redirectto.style.cursor = "auto";
   termsCheckbox.disabled = false;
   termsCheckbox.style.cursor = "pointer";
 
@@ -231,4 +245,14 @@ export function enableAcceptableInputs() {
   walletDropzone.style.cursor = "pointer";
   secret.disabled = false;
   secret.style.cursor = "text";
+}
+
+export function renderButtonSlotAlignment(center: boolean) {
+  const buttonSlot = getById("button-slot");
+
+  if (center) {
+    buttonSlot.style.margin = "0 auto";
+  } else {
+    buttonSlot.style.margin = null;
+  }
 }
