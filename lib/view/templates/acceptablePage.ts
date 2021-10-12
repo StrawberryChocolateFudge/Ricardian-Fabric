@@ -5,6 +5,7 @@ import {
   expiryTemplate,
   issuerTemplate,
   networkTemplate,
+  onlySignerTemplate,
 } from "./components";
 import { mainDep } from "./dependencies";
 import { loadingIndicator } from "./loadingIndicator";
@@ -111,9 +112,6 @@ export const acceptablePageLayout = (props: AcceptablePageProps) => html`
       background-color: white;
       color: white;
     }
-    #secret-input {
-      cursor: text;
-    }
   </style>
   <body>
     ${acceptablePage(props)} ${mainDep(props.mainDep.src)}
@@ -131,7 +129,8 @@ const acceptablePage = (props: AcceptablePageProps) => html`
     data-network="${props.network}"
     data-hash="${props.hash}"
     data-issuer="${props.issuer}"
-    data-issuerSignature="${props.issuerSignature}"
+    data-issuersignature="${props.issuerSignature}"
+    data-smartcontract="${props.smartcontract}"
     id="page"
   >
     <div class="center" id="contract-display"></div>
@@ -140,10 +139,15 @@ const acceptablePage = (props: AcceptablePageProps) => html`
         <th></th>
         <th></th>
       </tr>
-      ${createdDateTemplate(props.createdDate)} ${expiryTemplate(props.expires)}
+      ${createdDateTemplate(props.createdDate)}
+       ${expiryTemplate(props.expires)}
       ${networkTemplate(props.network)} 
+      ${onlySignerTemplate(props.onlySigner)}
       ${issuerTemplate(props.issuer)}
     </table>
+    <div class="center red" id="error-display"></div>
+    <div class="center" id="redirect-display"></div>
+    <div class="center" id="transaction-display"></div>
     <div id="action-container" class="center">${loadingIndicator}</div>
   </div>
 `;
