@@ -31,10 +31,10 @@ export function dispatch_removeLoadingIndicator(from: string) {
   });
 }
 
-export function dispatch_renderTransaction(url: string) {
+export function dispatch_renderTransaction(props: State,url: string) {
   dispatch(Events.render, {
     type: RenderType.transaction,
-    props: { url },
+    props: { ...props,url },
   });
 }
 
@@ -180,9 +180,9 @@ export function dispatch_enableAcceptableInputs() {
   });
 }
 
-export function dispatch_deployAgain() {
+export function dispatch_deployAgain(props: State) {
   dispatch(Events.render, {
     type: RenderType.deployAgain,
-    props: {},
+    props,
   });
 }
