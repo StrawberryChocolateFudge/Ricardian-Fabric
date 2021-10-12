@@ -22,9 +22,9 @@ export function dispatch_setSelectedDate(date: Date | string) {
   });
 }
 
-export function dispatch_stashAcceptablePage(page: string) {
+export function dispatch_stashPage(page: string) {
   dispatch(Events.stateChange, {
-    type: EventType.stashAcceptablePage,
+    type: EventType.stashPage,
     value: { page },
   });
 }
