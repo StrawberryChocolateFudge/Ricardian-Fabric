@@ -1,12 +1,22 @@
-import { dispatch_deployAgain, dispatch_enableCreateInputs, dispatch_renderCreateButton } from "../../dispatch/render";
-import { removeTransaction } from "../render";
+import {
+  dispatch_enableAcceptableInputs,
+  dispatch_enableCreateInputs,
+  dispatch_noButtonPressed,
+} from "../../dispatch/render";
+import { ContractTypes, State } from "../../types";
 import { getById } from "../utils";
 
-export function deployAgainButtonActions() {
+export function deployAgainButtonActions(props: State) {
   const buttonEl = getById("deploy-again-button");
+
+  if (props.contracttype === ContractTypes.acceptable) {
+    buttonEl.remove();
+  }
 
   buttonEl.onclick = function () {
     dispatch_enableCreateInputs();
-    dispatch_deployAgain();
+    dispatch_noButtonPressed(props);
+    dispatch_enableCreateInputs();
+    dispatch_enableAcceptableInputs();
   };
 }
