@@ -50,3 +50,6 @@ export function getIssuerSignatureFromDataProp(page: HTMLElement): string{
   return page.dataset.issuersignature;
 }
 
+export function getSmartContractFromDataProp(page: HTMLElement): string{
+  return page.dataset.smartcontract;
+}
