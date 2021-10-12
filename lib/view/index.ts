@@ -15,6 +15,7 @@ import {
   removeLoadingIndicator,
   removeTransaction,
   renderAcceptButton,
+  renderButtonSlotAlignment,
   renderCounter,
   renderCreateButton,
   renderError,
@@ -37,12 +38,14 @@ import {
   createPageAgreeTerms,
 } from "./actions/terms";
 import { deployAgainButtonActions } from "./actions/deployAgainButton";
+import { changeContainerSlotStyle } from "./utils";
 
 const Render: Renderer = {
   [RenderType.successMessage]: (props: State) => {},
   [RenderType.errorMessage]: (props: State) => {},
   [RenderType.createPage]: (props: State) => {},
   [RenderType.createButton]: (props: State) => {
+    renderButtonSlotAlignment(true);
     createPageAgreeTerms();
     renderCreateButton(true);
     // The order of attaching listeners is important
@@ -55,6 +58,7 @@ const Render: Renderer = {
     renderAcceptTools(props);
     renderAcceptButton(props);
     renderAcceptOnCLick(props);
+    enableButton(props);
   },
   [RenderType.addLoadingIndicator]: (props: { to: string }) => {
     renderLoadingIndicator(props.to);
@@ -62,9 +66,8 @@ const Render: Renderer = {
   [RenderType.removeLoadingIndicator]: (props: { from: string }) => {
     removeLoadingIndicator(props.from);
   },
-  [RenderType.transaction]: (props: { url: string }) => {
-    renderTransaction(props.url);
-    deployAgainButtonActions();
+  [RenderType.transaction]: (props: any) => {
+    renderTransaction(props,props.url);
   },
   [RenderType.renderError]: (props: { message: string }) => {
     renderError(props.message);
@@ -91,9 +94,14 @@ const Render: Renderer = {
     renderTerms();
     attachTermsButtonListeners();
   },
-  [RenderType.areYouSure]: (props: any) => {
+  [RenderType.areYouSure]: (props: State) => {
+    if (props.contracttype === ContractTypes.acceptable) {
+      changeContainerSlotStyle(true);
+    }
+
     renderSummary(props);
     areYouSureButtons(props);
+    renderButtonSlotAlignment(false);
   },
 
   [RenderType.noButtonPressed]: (props: State) => {
@@ -101,14 +109,17 @@ const Render: Renderer = {
       renderCreateButton(true);
       renderCreateButtonClick(props);
     } else if (props.contracttype === ContractTypes.acceptable) {
+      changeContainerSlotStyle(false);
       renderAcceptButton(props);
       renderAcceptOnCLick(props);
+      enableButton(props);
     }
 
     enableButton(props);
   },
   [RenderType.yesButtonPressed]: (props: State) => {
     removeButtons();
+    renderButtonSlotAlignment(true);
   },
   [RenderType.removeAcceptedButton]: (props: State) => {
     removeAcceptedButton();
@@ -130,6 +141,8 @@ const Render: Renderer = {
   },
   [RenderType.enableCreateInputs]: (props: {}) => {
     enableCreateInputs();
+    //If we deployed, this will remove the transaction when we want to deploy again
+    removeTransaction();
   },
   [RenderType.disableAcceptableInputs]: (props: {}) => {
     disableAcceptableInputs();
@@ -137,9 +150,8 @@ const Render: Renderer = {
   [RenderType.enableAcceptableInputs]: (props: {}) => {
     enableAcceptableInputs();
   },
-  [RenderType.deployAgain]: (props: {}) => {
-    removeTransaction();
-    renderCreateButton(true);
+  [RenderType.deployAgain]: (props: State) => {
+    deployAgainButtonActions(props);
   },
 };
 
