@@ -10,6 +10,7 @@ import {
   getNetworkFromDataProp,
   getOnlySignerFromDataProp,
   getRedirectToDataProp,
+  getSmartContractFromDataProp,
   getSourceFromDataProp,
   getVersionFromDataProp,
 } from "./dataPropGetters";
@@ -22,9 +23,9 @@ import { create } from "ipfs-http-client";
     const state: State = {
       init: false,
       ipfs: {
-        host: "ipfs.infura.io",
+        host: "127.0.0.1",
         port: 5001,
-        protocol: "https",
+        protocol: "http",
       },
       ipfsArweaveBridge: "",
       editor: createNewEditor(),
@@ -46,6 +47,7 @@ import { create } from "ipfs-http-client";
       issuerSignature: getIssuerSignatureFromDataProp(pageEl),
       participant: "",
       participantSignature: "",
+      smartcontract: getSmartContractFromDataProp(pageEl)
     };
 
     const stateHandler = {
@@ -78,7 +80,7 @@ import { create } from "ipfs-http-client";
     [EventType.setSelectedDate]: (value: { date: Date | string }) => {
       stateContainer.selectedDate = value.date;
     },
-    [EventType.stashAcceptablePage]: (value: { page: string }) => {
+    [EventType.stashPage]: (value: { page: string }) => {
       stateContainer.stashedPage = value.page;
     },
     [EventType.stashDetails]: (value: StashedDetails) => {
