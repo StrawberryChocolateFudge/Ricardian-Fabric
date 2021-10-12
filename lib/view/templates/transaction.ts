@@ -1,7 +1,10 @@
 import { html } from "lit-html";
+import { ContractTypes, State } from "../../types";
 
-export const transactionUrl = (url: string) =>
-  html`
+export const transactionUrl = (props: State, url: string) => {
+  console.log(props.contracttype)
+  
+  return html`
     <style>
       .transaction-layout {
         display: flex;
@@ -23,7 +26,12 @@ export const transactionUrl = (url: string) =>
       <a class="center" aria-label="Link copied to clipboard" href="${url}"
         >Link copied to clipboard</a
       >
-      <hr/>
-      <button id="deploy-again-button">Again</button>
+      ${props.contracttype === ContractTypes.create
+        ? html`
+            <hr />
+            <button id="deploy-again-button">Again</button>
+          `
+        : null}
     </div>
   `;
+};
