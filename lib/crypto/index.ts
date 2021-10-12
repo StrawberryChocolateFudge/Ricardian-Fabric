@@ -35,6 +35,7 @@ function orderStringsForHashing(data: IssuerHashedData) {
     data.issuer,
     data.onlySigner,
     data.network,
+    data.smartcontract,
   ]);
 }
 
