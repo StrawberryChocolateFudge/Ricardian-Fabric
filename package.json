@@ -19,6 +19,8 @@
   "dependencies": {
     "@metamask/eth-sig-util": "^4.0.0",
     "arweave": "1.10.0",
+    "eth-sig-util": "^3.0.1",
+    "ethereumjs-util": "^7.1.2",
     "ipfs-http-client": "53.0.1",
     "lit-html": "^1.4.1",
     "mammoth": "^1.4.18",
