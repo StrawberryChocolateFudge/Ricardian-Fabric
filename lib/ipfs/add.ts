@@ -1,4 +1,4 @@
-import { CID, create, IPFSHTTPClient } from "ipfs-http-client";
+import { CID, create } from "ipfs-http-client";
 import { IPFSParams } from "../types";
 
 export async function IPFS_Add(
