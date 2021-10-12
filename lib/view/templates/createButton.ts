@@ -4,7 +4,7 @@ export const createButton = (disabled: boolean) => {
   if (disabled) {
     return html`
       <button
-        class="center width-100"
+        class="center width-200"
         id="save-contract"
         role="button"
         aria-label="Create"
@@ -15,7 +15,7 @@ export const createButton = (disabled: boolean) => {
     `;
   } else {
     return html`<button
-      class="center width-100"
+      class="center width-200"
       id="save-contract"
       role="button"
       aria-label="Create"
