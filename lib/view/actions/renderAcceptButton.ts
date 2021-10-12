@@ -1,27 +1,93 @@
-import { isOnlySigner } from "../../business/bloc";
+import Web3 from "web3";
+import { getFulfilledPage, isOnlySigner } from "../../business/bloc";
 import {
+  dispatch_disableButton,
+  dispatch_enableButton,
   dispatch_removeError,
+  dispatch_renderError,
 } from "../../dispatch/render";
+import {
+  dispatch_stashDetails,
+  dispatch_stashPage,
+} from "../../dispatch/stateChange";
 import { State } from "../../types";
-import { getById } from "../utils";
+import {
+  getAddress,
+  getNetwork,
+  requestAccounts,
+  signHash,
+  web3Injected,
+} from "../../wallet";
+import { getAcceptableContract, getById, getFromUrl } from "../utils";
 
 export function renderAcceptOnCLick(props: State) {
   const acceptButton = getById("accept-button") as HTMLInputElement;
 
   acceptButton.onclick = async function () {
-    // const wallet_file = getById("wallet-input") as HTMLInputElement;
-    // const getKey = async (key: any) => {
-      dispatch_removeError();
-      // const validSigner = await isOnlySigner(props, key);
-      // if (validSigner) {
-      //   // const tx = await createFulfilledContractTx(props, key);
-      //   // const txfee = props.arweave.ar.winstonToAr(tx.reward);
-      //   dispatch_disableAcceptableInputs();
-      //   // dispatch_renderFee(txfee, props, tx, key);
-      // } else {
-      //   dispatch_renderError("You are not allowed to sign this contract");
-      // }
+    dispatch_removeError();
+    if (!web3Injected()) {
+      dispatch_renderError("Found no injected web3, install metamask");
+      return;
+    }
+
+    await requestAccounts();
+
+    const web3 = new Web3(window.ethereum);
+    // I need to get the address of the signer
+    // make sure its the same network
+    const network = `${await getNetwork(web3)}`;
+
+    if (network !== props.network) {
+      dispatch_renderError("You must switch to another network!");
+      return;
+    }
+
+    const participant = await getAddress(web3);
+
+    const validSigner = await isOnlySigner(props, participant);
+    if (!validSigner) {
+      dispatch_renderError("You are not allowed to sign this contract");
+    }
+
+    const signingSuccess = async (participantSignature: string) => {
+      const page = await getFulfilledPage({
+        version: props.version,
+        createdDate: new Date().toISOString(),
+        issuer: props.issuer,
+        legalContract: getAcceptableContract(),
+        parentUrl: getFromUrl(),
+        domParser: props.domParser,
+        expires: props.expires,
+        redirectto: props.redirectto,
+        network: props.network,
+        hash: props.hash,
+        issuerSignature: props.issuerSignature,
+        participant: props.participant,
+        participantSignature: props.participantSignature,
+        smartcontract: props.smartcontract,
+      });
+
+      dispatch_stashDetails({
+        hash: props.hash,
+        signerAddress: participant,
+        signature: participantSignature,
+        network: props.network,
+      });
+
+      dispatch_stashPage(page);
     };
-    // readFile(wallet_file.files, getKey, FileType.key);
+    const signingFailure = async (msg: string) => {
+      dispatch_enableButton(props);
+      dispatch_renderError(msg);
+    };
+
+    await signHash(
+      props.hash,
+      web3,
+      participant,
+      signingSuccess,
+      signingFailure
+    );
+    dispatch_disableButton(props);
   };
 }
