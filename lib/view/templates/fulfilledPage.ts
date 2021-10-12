@@ -92,18 +92,21 @@ export const fulfilledPageLayout = (props: FulfilledPageProps) => html`
     ${fulfilledPage(props)}
   </body>
 `;
-//TODO: ADD NETWORK!!
 export const fulfilledPage = (props: FulfilledPageProps) => html`
   <div
     data-contracttype="fulfilled"
     data-version="${props.version}"
     data-created="${props.createdDate}"
-    data-issuer="${props.issuer}"
     data-expires="${props.expires}"
     data-redirectto="${props.redirectto}"
-    data-participant="${props.participant}"
     data-parentUrl="${props.parentUrl}"
     data-network="${props.network}"
+    data-hash="${props.hash}"
+    data-issuer="${props.issuer}"
+    data-issuersignature="${props.issuerSignature}"
+    data-participant="${props.participant}"
+    data-participantsignature="${props.participantSignature}"
+    data-smartcontract="${props.smartcontract}"
     id="page"
   >
     <div class="center" id="contract-display"></div>
@@ -114,7 +117,8 @@ export const fulfilledPage = (props: FulfilledPageProps) => html`
         <th></th>
         ${issuerTemplate(props.issuer)}
         ${getParticipantFromTemplate(props.participant)}
-        ${signedDateTemplate(props.createdDate)} ${parentUrl(props.parentUrl)}
+        ${signedDateTemplate(props.createdDate)} 
+        ${parentUrl(props.parentUrl)}
       </tr>
     </table>
     <hr />
