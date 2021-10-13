@@ -30,6 +30,7 @@ import {
   getRedirectTo,
   getSmartContract,
 } from "../utils";
+import MetaMaskOnboarding from '@metamask/onboarding';
 
 export function renderCreateButtonClick(props: State) {
   const termsCheckbox = getTermsCheckbox();
@@ -71,6 +72,8 @@ export function renderCreateButtonClick(props: State) {
 
     if (!web3Injected()) {
       dispatch_renderError("Found no injected web3, install metamask");
+      const onboarding = new MetaMaskOnboarding();
+      onboarding.startOnboarding();
       return;
     }
 
