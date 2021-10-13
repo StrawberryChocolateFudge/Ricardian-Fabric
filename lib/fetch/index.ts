@@ -35,7 +35,7 @@ export async function permapin(CID: string, url: string): Promise<PinOptions> {
     } else {
       return {
         status: PinStatus.Failure,
-        error: "Couldn't permapin the file",
+        error: "Couldn't permapin the link, visit the bridge to pin it manually.",
         result: response,
       };
     }
