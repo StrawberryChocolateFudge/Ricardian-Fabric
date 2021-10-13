@@ -30,6 +30,12 @@ export const transactionUrl = (props: State, url: string) => {
             <button id="deploy-again-button">Again</button>
           `
         : null}
+      <p>
+        <small
+          >Please visit bridge.ricardianfabric.com to donate so we can
+          offer a free permapin service. Thank you!</small
+        >
+      </p>
     </div>
   `;
 };
