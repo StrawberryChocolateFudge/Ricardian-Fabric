@@ -85,7 +85,7 @@ export function compareAddresses(signer: any, recovered: any): boolean {
 }
 
 export function web3Injected(): boolean {
-  if (window.ethereum) {
+  if (window.ethereum.send) {
     return true;
   } else {
     return false;
