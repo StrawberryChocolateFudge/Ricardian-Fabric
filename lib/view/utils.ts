@@ -24,7 +24,7 @@ export function getAcceptableContract() {
 }
 
 export function getFromUrl() {
-  return window.location.pathname;
+  return window.location.href;
 }
 
 export function getPrice() {
