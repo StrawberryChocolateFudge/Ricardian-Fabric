@@ -3,10 +3,8 @@ import { renderCreateButtonClick } from "./actions/createButtonClick";
 import { attachExpiryClickAndListener } from "./actions/attachExpiryClickAndListener";
 import { renderAcceptOnCLick } from "./actions/renderAcceptButton";
 import {
-  disableAcceptableInputs,
   disableButton,
   disableCreateInputs,
-  enableAcceptableInputs,
   enableButton,
   enableCreateInputs,
   removeAcceptedButton,
@@ -98,7 +96,6 @@ const Render: Renderer = {
     if (props.contracttype === ContractTypes.acceptable) {
       changeContainerSlotStyle(true);
     }
-
     renderSummary(props);
     areYouSureButtons(props);
     renderButtonSlotAlignment(false);
@@ -112,10 +109,9 @@ const Render: Renderer = {
       changeContainerSlotStyle(false);
       renderAcceptButton(props);
       renderAcceptOnCLick(props);
-      enableButton(props);
     }
-
     enableButton(props);
+    renderButtonSlotAlignment(true)
   },
   [RenderType.yesButtonPressed]: (props: State) => {
     removeButtons();
@@ -145,10 +141,8 @@ const Render: Renderer = {
     removeTransaction();
   },
   [RenderType.disableAcceptableInputs]: (props: {}) => {
-    disableAcceptableInputs();
   },
   [RenderType.enableAcceptableInputs]: (props: {}) => {
-    enableAcceptableInputs();
   },
   [RenderType.deployAgain]: (props: State) => {
     deployAgainButtonActions(props);
