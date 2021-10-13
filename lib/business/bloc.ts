@@ -6,12 +6,7 @@ import {
 } from "../dispatch/render";
 import { AcceptablePageProps, FulfilledPageProps, State } from "../types";
 
-import {
-  getAcceptableContract,
-  getFromUrl,
-  getTermsAccepted,
-  redirect,
-} from "../view/utils";
+import { getTermsAccepted, redirect } from "../view/utils";
 import {
   getAcceptablePageFromVDOM,
   getFulfilledPagefromVDOM,
