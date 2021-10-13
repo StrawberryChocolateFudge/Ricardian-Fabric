@@ -225,27 +225,6 @@ export function enableCreateInputs() {
   docxDropper.style.cursor = "pointer";
 }
 
-export function disableAcceptableInputs() {
-  const walletInput = getById("wallet-input") as HTMLInputElement;
-  const walletDropzone = getById("wallet-dropzone") as HTMLDivElement;
-  const secret = getById("secret-input") as HTMLInputElement;
-  walletInput.disabled = true;
-  walletInput.style.cursor = "not-allowed";
-  walletDropzone.style.cursor = "not-allowed";
-  secret.disabled = true;
-  secret.style.cursor = "not-allowed";
-}
-
-export function enableAcceptableInputs() {
-  const walletInput = getById("wallet-input") as HTMLInputElement;
-  const walletDropzone = getById("wallet-dropzone") as HTMLDivElement;
-  const secret = getById("secret-input") as HTMLInputElement;
-  walletInput.disabled = false;
-  walletInput.style.cursor = "pointer";
-  walletDropzone.style.cursor = "pointer";
-  secret.disabled = false;
-  secret.style.cursor = "text";
-}
 
 export function renderButtonSlotAlignment(center: boolean) {
   const buttonSlot = getById("button-slot");
