@@ -1,3 +1,4 @@
+import { handlePost } from "../../business/bloc";
 import {
   dispatch_deployAgain,
   dispatch_enableAcceptableInputs,
@@ -30,9 +31,14 @@ export function areYouSureButtons(props: State) {
       `http://localhost:8080/ipfs/${CID.toString()}`
     );
 
+    //TODO: Permapin!
+
     if (props.contracttype === ContractTypes.create) {
       dispatch_deployAgain(props);
     } else {
+      
+      handlePost(props, `${CID.toString()}`);
+      
     }
   };
 }
