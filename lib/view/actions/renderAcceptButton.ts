@@ -19,6 +19,7 @@ import {
   web3Injected,
 } from "../../wallet";
 import { getAcceptableContract, getById, getFromUrl } from "../utils";
+import MetaMaskOnboarding from "@metamask/onboarding";
 
 export function renderAcceptOnCLick(props: State) {
   const acceptButton = getById("accept-button") as HTMLInputElement;
@@ -27,6 +28,8 @@ export function renderAcceptOnCLick(props: State) {
     dispatch_removeError();
     if (!web3Injected()) {
       dispatch_renderError("Found no injected web3, install metamask");
+      const onboarding = new MetaMaskOnboarding();
+      onboarding.startOnboarding();
       return;
     }
 
@@ -43,7 +46,6 @@ export function renderAcceptOnCLick(props: State) {
     }
 
     const participant = await getAddress(web3);
-
     const validSigner = await isOnlySigner(props, participant);
     if (!validSigner) {
       dispatch_renderError("You are not allowed to sign this contract");
@@ -62,8 +64,8 @@ export function renderAcceptOnCLick(props: State) {
         network: props.network,
         hash: props.hash,
         issuerSignature: props.issuerSignature,
-        participant: props.participant,
-        participantSignature: props.participantSignature,
+        participant: participant,
+        participantSignature: participantSignature,
         smartcontract: props.smartcontract,
       });
 
