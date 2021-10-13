@@ -87,9 +87,9 @@ export const expiryTemplate = (date: string) => html` <tr>
   <td></td>
 </tr>`;
 
-export const getParticipantFromTemplate = (paidFrom: string) => html`<tr>
+export const getParticipantFromTemplate = (participant: string) => html`<tr>
   <td aria-labelledby="participant label">Participant:</td>
-  <td aria-label="participant">${paidFrom}</td>
+  <td aria-label="participant">${participant}</td>
   <td></td>
 </tr>`;
 
