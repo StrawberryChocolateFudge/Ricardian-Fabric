@@ -105,6 +105,7 @@ export type StashedDetails = {
   signerAddress: string;
   signature: string;
   network: string;
+  smartContract: string;
 };
 
 export type IPFSParams = {
@@ -162,7 +163,7 @@ export type AcceptablePageProps = {
   network: string;
   hash: string;
   issuerSignature: string;
-  smartcontract: string;
+  smartContract: string;
 };
 
 export type FulfilledPageProps = {
@@ -181,15 +182,15 @@ export type FulfilledPageProps = {
   hash: string;
   issuerSignature: string;
   participantSignature: string;
-  smartcontract: string;
+  smartContract: string;
 };
 
-export enum PinStatus {
+export enum Status {
   Success,
   Failure,
 }
 export type PinOptions = {
-  status: PinStatus;
+  status: Status;
   error: any;
   result: Response;
 };
@@ -203,8 +204,15 @@ export type IssuerHashedData = {
   issuer: string;
   onlySigner: string;
   network: string;
-  smartcontract: string;
+  smartContract: string;
 };
+
+export type Options = {
+  status:Status;
+  error: any;
+  data: any
+}
+
 
 declare global {
   interface Window {
