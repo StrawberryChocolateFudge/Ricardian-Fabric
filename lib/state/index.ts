@@ -27,7 +27,7 @@ import { create } from "ipfs-http-client";
         port: 5001,
         protocol: "http",
       },
-      ipfsArweaveBridge: "",
+      ipfsArweaveBridge: "https://bridge.ricardianfabric.com",
       editor: createNewEditor(),
       domParser: new DOMParser(),
       selectedDate: "",
