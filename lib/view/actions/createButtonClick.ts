@@ -1,4 +1,3 @@
-import Web3 from "web3";
 import { getAcceptablePage } from "../../business/bloc";
 import { getHash } from "../../crypto";
 import {
@@ -15,6 +14,7 @@ import {
 } from "../../dispatch/stateChange";
 import { State } from "../../types";
 import {
+  canUseContract,
   getAddress,
   getNetwork,
   requestAccounts,
@@ -30,7 +30,7 @@ import {
   getRedirectTo,
   getSmartContract,
 } from "../utils";
-import MetaMaskOnboarding from '@metamask/onboarding';
+import MetaMaskOnboarding from "@metamask/onboarding";
 
 export function renderCreateButtonClick(props: State) {
   const termsCheckbox = getTermsCheckbox();
@@ -79,16 +79,23 @@ export function renderCreateButtonClick(props: State) {
 
     await requestAccounts();
 
-    const web3 = new Web3(window.ethereum);
 
-    //I would need to show a loading indicator and a button to cancel while I request signatures
-
+    
     const legalContract = props.editor.getContent();
     const createdDate = new Date().toISOString();
     const version = props.version;
-    const network = `${await getNetwork(web3)}`;
-    const issuer = await getAddress(web3);
-    const smartcontract = getSmartContract();
+    const network = `${await getNetwork()}`;
+    const issuer = await getAddress();
+    const smartContract = getSmartContract();
+
+    if (smartContract !== "NONE") {
+      const canUse = await canUseContract(smartContract, issuer);
+      if (!canUse) {
+        dispatch_renderError("Invalid smart contract");
+        return;
+      }
+    }
+
     //I need to create the hash from legalContract,createdDate,expires,redirectto,version,issuer,onlysigner,network
     const hash = await getHash({
       legalContract,
@@ -99,7 +106,7 @@ export function renderCreateButtonClick(props: State) {
       issuer,
       onlySigner,
       network,
-      smartcontract,
+      smartContract,
     });
 
     const signingSuccess = async (issuerSignature: string) => {
@@ -117,7 +124,7 @@ export function renderCreateButtonClick(props: State) {
           network,
           hash,
           issuerSignature,
-          smartcontract,
+          smartContract,
         },
       });
 
@@ -126,6 +133,7 @@ export function renderCreateButtonClick(props: State) {
         signerAddress: issuer,
         signature: issuerSignature,
         network,
+        smartContract
       });
 
       dispatch_stashPage(page);
@@ -138,7 +146,7 @@ export function renderCreateButtonClick(props: State) {
     };
 
     //The issuer needs to sign the hash
-    await signHash(hash, web3, issuer, signingSuccess, onSigningFailure);
+    await signHash(hash, issuer,network,smartContract, signingSuccess, onSigningFailure);
     dispatch_disableButton(props);
     dispatch_disableCreateInputs();
   };
