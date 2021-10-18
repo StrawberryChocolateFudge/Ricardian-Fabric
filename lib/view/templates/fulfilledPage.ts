@@ -3,10 +3,10 @@ import { FulfilledPageProps } from "../../types";
 import {
   getParticipantFromTemplate,
   issuerTemplate,
+  networkTemplate,
   parentUrl,
   signedDateTemplate,
 } from "./components";
-import { Logo } from "./logo";
 
 export const fulfilledPageLayout = (props: FulfilledPageProps) => html`
   <style>
@@ -117,6 +117,7 @@ export const fulfilledPage = (props: FulfilledPageProps) => html`
         <th></th>
         ${issuerTemplate(props.issuer)}
         ${getParticipantFromTemplate(props.participant)}
+        ${networkTemplate(props.network)}
         ${signedDateTemplate(props.createdDate)} 
         ${parentUrl(props.parentUrl)}
       </tr>
