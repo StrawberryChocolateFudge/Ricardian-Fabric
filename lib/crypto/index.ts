@@ -1,20 +1,11 @@
+import Web3 from "web3";
 import { IssuerHashedData } from "../types";
 
 export async function sha256(message) {
-  // encode as UTF-8
-  const msgBuffer = new TextEncoder().encode(message);
-
-  // hash the message
-  const hashBuffer = await window.crypto.subtle.digest("SHA-256", msgBuffer);
-
-  // convert ArrayBuffer to Array
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-
-  // convert bytes to hex string
-  const hashHex = hashArray
-    .map((b) => ("00" + b.toString(16)).slice(-2))
-    .join("");
-  return hashHex;
+  const web3 = new Web3(window.ethereum);
+  const encoded = web3.eth.abi.encodeParameters(["string"], [message]);
+  const hash = web3.utils.sha3(encoded);
+  return hash;
 }
 
 function concatStrings(data: Array<String>) {
@@ -35,7 +26,7 @@ function orderStringsForHashing(data: IssuerHashedData) {
     data.issuer,
     data.onlySigner,
     data.network,
-    data.smartcontract,
+    data.smartContract,
   ]);
 }
 
