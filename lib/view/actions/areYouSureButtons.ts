@@ -1,3 +1,4 @@
+import { CID } from "ipfs-http-client";
 import { handlePost } from "../../business/bloc";
 import {
   dispatch_deployAgain,
@@ -11,7 +12,8 @@ import {
 } from "../../dispatch/render";
 import { permapin } from "../../fetch";
 import { IPFS_Add } from "../../ipfs/add";
-import { ContractTypes, PinOptions, PinStatus, State } from "../../types";
+import { ContractTypes, Status, State, PinOptions } from "../../types";
+import { acceptAgreement, setTerms } from "../../wallet";
 import { getById } from "../utils";
 
 export function areYouSureButtons(props: State) {
@@ -29,22 +31,62 @@ export function areYouSureButtons(props: State) {
 
     const CID = await IPFS_Add(props.stashedPage, props.ipfs);
     const id = `${CID.toString()}`;
-    dispatch_renderTransaction(props, `http://localhost:8080/ipfs/${id}`);
+    const url = getUrl(CID);
+    dispatch_renderTransaction(props, url);
+    // await permapinDispatch(id, props);
 
+    const smartContract = props.stashedDetails.smartContract;
 
-    await permapin(id, props.ipfsArweaveBridge).then(async (res : PinOptions) => {
-
-      if(res.status === PinStatus.Failure){
-        dispatch_renderError(res.error);
-      } else {
-        
-      }
-
-      if (props.contracttype === ContractTypes.create) {
-        dispatch_deployAgain(props);
-      } else {
-        await handlePost(props, `${CID.toString()}`);
-      }
-    });
+    if (smartContract !== "NONE") {
+      await smartContractActions(props, url, smartContract);
+    }
   };
+}
+
+async function smartContractActions(
+  props: State,
+  url: string,
+  smartContract: string
+) {
+  if (props.contracttype === ContractTypes.create) {
+    const options = await setTerms({
+      url,
+      hash: props.stashedDetails.hash,
+      contractAddress: smartContract,
+      signerAddress: props.stashedDetails.signerAddress,
+    });
+    if (options.status == Status.Failure) {
+      dispatch_renderError(options.error);
+    }
+  } else if (props.contracttype === ContractTypes.acceptable) {
+    const options = await acceptAgreement({
+      url,
+      hash: props.hash,
+      contractAddress: props.smartcontract,
+      signature: props.stashedDetails.signature,
+      signerAddress: props.stashedDetails.signerAddress,
+    });
+
+    if (options.status == Status.Failure) {
+      dispatch_renderError(options.error);
+    }
+  }
+}
+
+function getUrl(cid: CID) {
+  return `http://localhost:8080/ipfs/${cid.toString()}`;
+}
+
+async function permapinDispatch(id: string, props: State) {
+  await permapin(id, props.ipfsArweaveBridge).then(async (res: PinOptions) => {
+    if (res.status === Status.Failure) {
+      dispatch_renderError(res.error);
+    }
+
+    if (props.contracttype === ContractTypes.create) {
+      dispatch_deployAgain(props);
+    } else {
+      await handlePost(props, id);
+    }
+  });
 }
