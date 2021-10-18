@@ -65,7 +65,7 @@ const Render: Renderer = {
     removeLoadingIndicator(props.from);
   },
   [RenderType.transaction]: (props: any) => {
-    renderTransaction(props,props.url);
+    renderTransaction(props, props.url);
   },
   [RenderType.renderError]: (props: { message: string }) => {
     renderError(props.message);
@@ -111,7 +111,7 @@ const Render: Renderer = {
       renderAcceptOnCLick(props);
     }
     enableButton(props);
-    renderButtonSlotAlignment(true)
+    renderButtonSlotAlignment(true);
   },
   [RenderType.yesButtonPressed]: (props: State) => {
     removeButtons();
@@ -140,12 +140,11 @@ const Render: Renderer = {
     //If we deployed, this will remove the transaction when we want to deploy again
     removeTransaction();
   },
-  [RenderType.disableAcceptableInputs]: (props: {}) => {
-  },
-  [RenderType.enableAcceptableInputs]: (props: {}) => {
-  },
+  [RenderType.disableAcceptableInputs]: (props: {}) => {},
+  [RenderType.enableAcceptableInputs]: (props: {}) => {},
   [RenderType.deployAgain]: (props: State) => {
     deployAgainButtonActions(props);
+    
   },
 };
 
