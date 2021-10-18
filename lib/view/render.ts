@@ -35,8 +35,8 @@ export async function removeLoadingIndicator(from: string) {
   render(html`<div></div>`, getById(from));
 }
 
-export async function renderTransaction(props: State,url: string) {
-  render(transactionUrl(props,url), getById("transaction-display"));
+export async function renderTransaction(props: State, url: string) {
+  render(transactionUrl(props, url), getById("transaction-display"));
   copyStringToClipboard(url);
 }
 
@@ -45,11 +45,16 @@ export async function removeTransaction() {
 }
 
 export function renderError(message: string) {
-  getById("error-display").textContent = message;
+  const errorDisplay = getById("error-display");
+  // Add the "show" class to DIV
+  errorDisplay.className = "show";
+  errorDisplay.textContent = message;
 }
 
 export function removeError() {
-  getById("error-display").innerHTML = "";
+  const errorDisplay = getById("error-display");
+  errorDisplay.className = errorDisplay.className.replace("show", "hide");
+  errorDisplay.innerHTML = "";
 }
 
 export function renderVersion(version: string) {
@@ -182,6 +187,7 @@ export function disableCreateInputs() {
   const redirectto = getById("redirectto-input") as HTMLInputElement;
   const termsCheckbox = getById("terms-checkbox") as HTMLInputElement;
   const docxDropper = getById("docx-input") as HTMLInputElement;
+  const smartContract = getById("smartcontract-input") as HTMLInputElement;
 
   editor.contentEditable = "false";
   editor.style.cursor = "not-allowed";
@@ -198,6 +204,9 @@ export function disableCreateInputs() {
 
   docxDropper.disabled = true;
   docxDropper.style.cursor = "not-allowed";
+
+  smartContract.disabled = true;
+  smartContract.style.cursor = "not-allowed";
 }
 export function enableCreateInputs() {
   const editor = getById("editor") as HTMLInputElement;
@@ -207,6 +216,7 @@ export function enableCreateInputs() {
   const redirectto = getById("redirectto-input") as HTMLInputElement;
   const termsCheckbox = getById("terms-checkbox") as HTMLInputElement;
   const docxDropper = getById("docx-input") as HTMLInputElement;
+  const smartContract = getById("smartcontract-input") as HTMLInputElement;
 
   editor.contentEditable = "true";
   editor.style.cursor = "text";
@@ -223,8 +233,10 @@ export function enableCreateInputs() {
 
   docxDropper.disabled = false;
   docxDropper.style.cursor = "pointer";
-}
 
+  smartContract.disabled = false;
+  smartContract.style.cursor = "auto";
+}
 
 export function renderButtonSlotAlignment(center: boolean) {
   const buttonSlot = getById("button-slot");
