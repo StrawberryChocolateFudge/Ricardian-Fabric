@@ -32,8 +32,9 @@ export const transactionUrl = (props: State, url: string) => {
         : null}
       <p>
         <small
-          >Please visit bridge.ricardianfabric.com to donate so we can
-          offer a free permapin service. Thank you!</small
+          >Please visit
+          <a href="https://bridge.ricardianfabric.com">bridge.ricardianfabric.com</a> to
+          donate so we can offer a free permapin service. Thank you!</small
         >
       </p>
     </div>
