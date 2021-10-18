@@ -1,4 +1,4 @@
-import { PinOptions, PinStatus } from "../types";
+import { PinOptions, Status } from "../types";
 
 export async function hitWebhook(url: string, secret: string) {
   // The backend must handle cross origin requests for this to work!
@@ -24,22 +24,27 @@ export async function hitWebhook(url: string, secret: string) {
 
 export async function permapin(CID: string, url: string): Promise<PinOptions> {
   try {
-    const response = await fetch(url + CID, {
+    const response = await fetch(url + "/" + CID, {
       method: "post",
       mode: "cors",
       cache: "no-cache",
     });
 
     if (response.status === 200) {
-      return { status: PinStatus.Success, error: "", result: response };
+      return { status: Status.Success, error: "", result: response };
     } else {
       return {
-        status: PinStatus.Failure,
-        error: "Couldn't permapin the link, visit the bridge to pin it manually.",
+        status: Status.Failure,
+        error:
+          "Couldn't permapin the link, visit the bridge to pin it manually.",
         result: response,
       };
     }
   } catch (error: any) {
-    return { status: PinStatus.Failure, error, result: undefined };
+    return {
+      status: Status.Failure,
+      error: `Couldn't permapin the link, visit the bridge to pin it manually.`,
+      result: undefined,
+    };
   }
 }
