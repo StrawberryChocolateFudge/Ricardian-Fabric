@@ -130,7 +130,7 @@ const acceptablePage = (props: AcceptablePageProps) => html`
     data-hash="${props.hash}"
     data-issuer="${props.issuer}"
     data-issuersignature="${props.issuerSignature}"
-    data-smartcontract="${props.smartcontract}"
+    data-smartcontract="${props.smartContract}"
     id="page"
   >
     <div class="center" id="contract-display"></div>
