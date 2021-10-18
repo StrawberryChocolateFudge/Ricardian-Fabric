@@ -12,6 +12,7 @@ import {
 } from "../../dispatch/stateChange";
 import { State } from "../../types";
 import {
+  canAgree,
   getAddress,
   getNetwork,
   requestAccounts,
@@ -35,20 +36,24 @@ export function renderAcceptOnCLick(props: State) {
 
     await requestAccounts();
 
-    const web3 = new Web3(window.ethereum);
     // I need to get the address of the signer
     // make sure its the same network
-    const network = `${await getNetwork(web3)}`;
+    const network = `${await getNetwork()}`;
 
     if (network !== props.network) {
       dispatch_renderError("You must switch to another network!");
       return;
     }
 
-    const participant = await getAddress(web3);
+    const participant = await getAddress();
     const validSigner = await isOnlySigner(props, participant);
     if (!validSigner) {
       dispatch_renderError("You are not allowed to sign this contract");
+    }
+    const canAccept = await canAgree(props.smartcontract, participant);
+    if (!canAccept) {
+      dispatch_renderError("Already accepted this contract");
+      return;
     }
 
     const signingSuccess = async (participantSignature: string) => {
@@ -66,7 +71,7 @@ export function renderAcceptOnCLick(props: State) {
         issuerSignature: props.issuerSignature,
         participant: participant,
         participantSignature: participantSignature,
-        smartcontract: props.smartcontract,
+        smartContract: props.smartcontract,
       });
 
       dispatch_stashDetails({
@@ -74,6 +79,7 @@ export function renderAcceptOnCLick(props: State) {
         signerAddress: participant,
         signature: participantSignature,
         network: props.network,
+        smartContract: props.smartcontract,
       });
 
       dispatch_stashPage(page);
@@ -85,8 +91,9 @@ export function renderAcceptOnCLick(props: State) {
 
     await signHash(
       props.hash,
-      web3,
       participant,
+      network,
+      props.smartcontract,
       signingSuccess,
       signingFailure
     );
