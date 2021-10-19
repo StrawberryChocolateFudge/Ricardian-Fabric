@@ -3,7 +3,7 @@ import Web3 from "web3";
 import { recoverTypedSignature } from "eth-sig-util";
 import { ECDSASignature, fromRpcSig, toChecksumAddress } from "ethereumjs-util";
 import { getAgreementAbi } from "./abi/Agreement";
-import { Options, Status } from "../types";
+import { ContractTypes, Options, Status } from "../types";
 export async function requestAccounts() {
   //TODO: refactor to request
   await window.ethereum.send("eth_requestAccounts");
@@ -46,41 +46,26 @@ export async function signHash(
   networkId: string,
   smartContract: string,
   onSuccess: CallableFunction,
-  onError: CallableFunction
+  onError: CallableFunction,
+  contractType: ContractTypes,
+  url: string | undefined
 ) {
-  // const msgParams = [{ type: "string", name: "Document Hash", value: hash }];
-  const msgParams = {
-    domain: {
-      chainId: networkId,
-      name: "Ricardian Fabric",
-      verifyingContract: "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC",
-      version: "1",
-    },
-    types: {
-      EIP712Domain: [
-        { name: "name", type: "string" },
-        { name: "version", type: "string" },
-        { name: "chainId", type: "uint256" },
-        { name: "verifyingContract", type: "address" },
-      ],
-      doc: [{ name: "value", type: "string" }],
-    },
-    primaryType: "doc",
-    message: {
-      value: hash,
-    },
-  };
+
+  const msgParams = getmsgParams(networkId,"0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC",hash,url,contractType);
   console.log(msgParams);
   await window.ethereum.sendAsync(
     {
       method: "eth_signTypedData_v3",
-      params: [from, JSON.stringify(msgParams)]
+      params: [from, JSON.stringify(msgParams)],
     },
     async function (err, result) {
       if (result.error) {
         onError(result.error.message);
       } else {
-        const recovered = await recoverTypedSignatures(msgParams, result.result);
+        const recovered = await recoverTypedSignatures(
+          msgParams,
+          result.result
+        );
         console.log(recovered + "       recovered");
         if (compareAddresses(from, recovered)) {
           console.log(getSigParams(result.result));
@@ -92,6 +77,48 @@ export async function signHash(
       }
     }
   );
+}
+
+function getmsgParams(
+  networkId: string,
+  smartContract: string,
+  hash: string,
+  url: string | undefined,
+  contractType: ContractTypes
+) {
+  const valueOnlyDOC = [{ name: "value", type: "string" }];
+  const withUrlDOC = [
+    { name: "value", type: "string" },
+    { name: "url", type: "string" },
+  ];
+
+  const doc = contractType === ContractTypes.create ? valueOnlyDOC : withUrlDOC;
+
+  const valueOnlyMSG = { value: hash };
+  const withUrlMSG = { value: hash, url: url };
+
+  const message =
+    contractType === ContractTypes.create ? valueOnlyMSG : withUrlMSG;
+
+  return {
+    domain: {
+      chainId: networkId,
+      name: "Ricardian Fabric",
+      verifyingContract: smartContract,
+      version: "1",
+    },
+    types: {
+      EIP712Domain: [
+        { name: "name", type: "string" },
+        { name: "version", type: "string" },
+        { name: "chainId", type: "uint256" },
+        { name: "verifyingContract", type: "address" },
+      ],
+      doc,
+    },
+    primaryType: "doc",
+    message,
+  };
 }
 
 export async function recoverTypedSignatures(msgParams, signature) {
@@ -228,12 +255,11 @@ export async function acceptAgreement(arg: {
     const result = await contract.methods
       .recoverSignature(arg.hash, sigParams.v, sigParams.r, sigParams.s)
       .call();
-  
+
     const sifg = await recoverTypedSignatures(arg.hash, arg.signature);
     const resp = await contract.methods
       .accept(arg.url, arg.hash, sigParams.v, sigParams.r, sigParams.s)
       .send({ from: arg.signerAddress });
-
   } catch (err) {
     options.status = Status.Failure;
     options.error = err.message;
