@@ -106,7 +106,7 @@ export const fulfilledPage = (props: FulfilledPageProps) => html`
     data-issuersignature="${props.issuerSignature}"
     data-participant="${props.participant}"
     data-participantsignature="${props.participantSignature}"
-    data-smartcontract="${props.smartcontract}"
+    data-smartcontract="${props.smartContract}"
     id="page"
   >
     <div class="center" id="contract-display"></div>
