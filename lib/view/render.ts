@@ -6,6 +6,7 @@ import { CreateSummary } from "./templates/createSummary";
 import { helperTooltips } from "./templates/helperTooltips";
 import { loadingIndicator } from "./templates/loadingIndicator";
 import { redirectCounter } from "./templates/redirectCounter";
+import { SanctionsDropdown } from "./templates/sanctionsDropdown";
 import { termsLayout } from "./templates/terms";
 import { transactionUrl } from "./templates/transaction";
 import {
@@ -53,7 +54,7 @@ export function renderError(message: string) {
 
 export function removeError() {
   const errorDisplay = getById("error-display");
-  errorDisplay.className = errorDisplay.className.replace("show", "hide");
+  errorDisplay.className = errorDisplay.className.replace("show", "");
   errorDisplay.innerHTML = "";
 }
 
@@ -150,14 +151,16 @@ export function updatePromptErrorDOCX(message: string) {
 }
 
 export function renderTooltips() {
-  const onlySigner = getById("onlysigner-tooltip");
+  const sanctions = getById("sanctions-tooltip");
   const expires = getById("expires-tooltip");
   const redirectto = getById("redirectto-tooltip");
   const Scontract = getById("smartcontract-tooltip");
   const customNetwork = getById("customnetwork-tooltip");
   render(
-    helperTooltips("The only address that can sign this contract."),
-    onlySigner
+    helperTooltips(
+      "Ricardian Fabric uses Geolocation to block access from sanctioned countries."
+    ),
+    sanctions
   );
   render(helperTooltips("The contract expires always at midnight"), expires);
   render(
@@ -246,4 +249,27 @@ export function renderButtonSlotAlignment(center: boolean) {
   } else {
     buttonSlot.style.margin = null;
   }
+}
+
+export function renderSanctionsDropdown() {
+  const dropdown = getById("dropdown");
+  render(SanctionsDropdown(true), dropdown);
+  const toggle = getById("sanctions_checkbox_toggle") as HTMLInputElement;
+  toggle.onchange = function () {
+    if (toggle.checked) {
+      render(SanctionsDropdown(false), dropdown);
+    } else {
+      render(SanctionsDropdown(true), dropdown);
+    }
+  };
+
+  const page = getById("page");
+  page.onclick = function (ev: Event) {
+    // Handling click away by checking where the click bubbles from
+    if (!ev.composedPath().includes(dropdown)) {
+      //If the click event didn't bubble from the dropdown
+      toggle.checked = false;
+      render(SanctionsDropdown(true), dropdown);
+    }
+  };
 }
