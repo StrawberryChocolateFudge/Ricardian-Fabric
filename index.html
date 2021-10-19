@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link inline rel="stylesheet" href="./styles.css" />
+    <head> </head>
     <title>Ricardian Fabric</title>
   </head>
   <body class="background">
@@ -15,15 +16,10 @@
       data-contracttype="create"
       id="page"
     >
-      <h2 class="center">Conduct Agreements with Ricardian Fabric</h2>
-      <!-- <hr /> -->
-      <h6 class="center">
-        You can import semantics. If you drop here a .docx file, it will be
-        loaded into the edit field under it.
-      </h6>
+    <hr/>
       <div id="docx-dropzone" class="drop-zone">
         <span id="drop-prompt-docx" class="drop-zone__prompt"
-          >Drop A .docx File Here Or Click To Select It</span
+          >To load template, drop a .docx file here or click to select it</span
         >
         <input
           type="file"
@@ -46,21 +42,18 @@
 
         <tr>
           <td>
-            <label aria-labelledby="only signer field input"
-              >Only signer:</label
+            <label aria-labelledby="Block countries selected"
+              >Block countries:</label
             >
           </td>
           <td>
-            <input
-              aria-label="only signer "
-              id="onlysigner-input"
-              type="text"
-              class="cursor-text"
-              placeholder="0x..."
-            />
+            <div id="dropdown">
+           
+            </div>
+
           </td>
           <td>
-            <span id="onlysigner-tooltip"></span>
+            <span id="sanctions-tooltip"></span>
           </td>
         </tr>
         <tr>
@@ -142,6 +135,7 @@
           type="checkbox"
         />
       </div>
+      <hr />
       <div
         aria-label="error-display-slot"
         class="center red"
