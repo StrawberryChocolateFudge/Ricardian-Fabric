@@ -13,7 +13,7 @@ import {
 import { permapin } from "../../fetch";
 import { IPFS_Add } from "../../ipfs/add";
 import { ContractTypes, Status, State, PinOptions } from "../../types";
-import { acceptAgreement, setTerms } from "../../wallet";
+import { acceptAgreement, setTerms, signHash } from "../../wallet";
 import { getById } from "../utils";
 
 export function areYouSureButtons(props: State) {
@@ -40,6 +40,12 @@ export function areYouSureButtons(props: State) {
     if (smartContract !== "NONE") {
       await smartContractActions(props, url, smartContract);
     }
+
+    if (props.contracttype === ContractTypes.create) {
+      dispatch_deployAgain(props);
+    } else {
+      await handlePost(props, id);
+    }
   };
 }
 
@@ -48,28 +54,52 @@ async function smartContractActions(
   url: string,
   smartContract: string
 ) {
+  const hash = props.stashedDetails.hash;
+  const signerAddress = props.stashedDetails.signerAddress;
   if (props.contracttype === ContractTypes.create) {
     const options = await setTerms({
       url,
-      hash: props.stashedDetails.hash,
+      hash,
       contractAddress: smartContract,
-      signerAddress: props.stashedDetails.signerAddress,
+      signerAddress,
     });
     if (options.status == Status.Failure) {
       dispatch_renderError(options.error);
     }
   } else if (props.contracttype === ContractTypes.acceptable) {
-    const options = await acceptAgreement({
-      url,
-      hash: props.hash,
-      contractAddress: props.smartcontract,
-      signature: props.stashedDetails.signature,
-      signerAddress: props.stashedDetails.signerAddress,
-    });
+    //I need to sign both the url and the hash
 
-    if (options.status == Status.Failure) {
-      dispatch_renderError(options.error);
-    }
+    const onSuccess = async (signature: string) => {
+      console.log(signature);
+
+      //I NEED TO CALL THE ACCEPT AGREEMENT FROM HERE!
+      const options = await acceptAgreement({
+        url,
+        hash: props.hash,
+        contractAddress: props.smartcontract,
+        signature: props.stashedDetails.signature,
+        signerAddress: props.stashedDetails.signerAddress,
+      });
+
+      if (options.status == Status.Failure) {
+        dispatch_renderError(options.error);
+      }
+    };
+
+    const onError = (msg: string) => {
+      dispatch_renderError(msg);
+    };
+
+    await signHash(
+      hash,
+      signerAddress,
+      props.network,
+      props.smartcontract,
+      onSuccess,
+      onError,
+      props.contracttype,
+      url
+    );
   }
 }
 
@@ -81,12 +111,6 @@ async function permapinDispatch(id: string, props: State) {
   await permapin(id, props.ipfsArweaveBridge).then(async (res: PinOptions) => {
     if (res.status === Status.Failure) {
       dispatch_renderError(res.error);
-    }
-
-    if (props.contracttype === ContractTypes.create) {
-      dispatch_deployAgain(props);
-    } else {
-      await handlePost(props, id);
     }
   });
 }
