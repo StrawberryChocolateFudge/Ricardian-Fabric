@@ -10,6 +10,8 @@ export function getById(id: string): HTMLElement {
   }
 }
 
+
+
 export function getPage(): HTMLElement {
   return getById("page");
 }
@@ -129,6 +131,10 @@ export function copyStringToClipboard(str: string) {
 
 export function setBannerDisplayBlock() {
   getById("overlay").style.display = "block";
+}
+
+export function setBannerDisplayNone(){
+    getById("overlay").style.display = "none";
 }
 
 export function setTermsAccepted(termsAccepted: boolean) {
