@@ -29,6 +29,130 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+input[type="text"],
+input[type="url"],
+input[type="date"] {
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid grey;
+  border-radius: 0;
+  outline: none;
+  height: 3rem;
+  width: 100%;
+  font-size: 16px;
+  margin: 0 0 8px 0;
+  padding: 0;
+  box-shadow: none;
+  box-sizing: content-box;
+  transition: box-shadow 0.3s, border 0.3s;
+}
+
+input[type="text"]:disabled,
+input[type="url"]:disabled,
+input[type="date"]:disabled {
+  color: rgba(0, 0, 0, 0.42);
+  border-bottom: 1px dotted #f2f2f2;
+}
+
+input[type="text"]:focus,
+input[type="url"]:focus,
+input[type="date"]:focus {
+  border-bottom: 1px solid darkgrey;
+  box-shadow: 0 1px 0 0 darkgrey;
+}
+
+input[type="checkbox"] {
+  cursor: pointer;
+}
+
+#sanctions_checkbox_toggle {
+  display: none;
+  cursor: pointer;
+}
+
+.sanctions_checkbox-label {
+  cursor: pointer;
+  background-color: #f2f2f2;
+  border-radius: 20px;
+  padding: 5px;
+  color: black !important;
+}
+
+#sanctions_checkbox_toggle:checked ~ ul {
+  display: block;
+  list-style-type: none;
+  list-style: none;
+  list-style-position: inside;
+  padding: 8px;
+  border-radius: 1px;
+  position: absolute;
+  background-color: white;
+  box-shadow: 1px 1px 1px 1px darkgrey;
+}
+
+#sanctions_checkbox_toggle ~ ul {
+  display: none;
+}
+
+#sanctions_checkbox_label {
+  cursor: pointer;
+}
+
+.sanctions-span {
+  margin-left: 5px;
+  margin-top: 5px;
+  font-size: 0.8rem;
+}
+
+label {
+  font-size: 0.8rem;
+  color: grey;
+}
+
+hr {
+  visibility: hidden;
+}
+
+select {
+  background-color: rgba(255, 255, 255, 0.9);
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #f2f2f2;
+  border-radius: 2px;
+  height: 3rem;
+}
+
+select:focus {
+  background-color: rgba(255, 255, 255, 0.9);
+  width: 100%;
+  padding: 5px;
+  border: 1px solid darkgrey;
+  border-radius: 2px;
+  height: 3rem;
+  box-shadow: 0 1px 0 0 darkgrey;
+}
+
+.select-checkbox option::before {
+  content: "\2610";
+  width: 1.3em;
+  text-align: center;
+  display: inline-block;
+}
+.select-checkbox option:checked::before {
+  content: "\2611";
+}
+
+.select-checkbox-fa option::before {
+  font-family: FontAwesome;
+  content: "\f096";
+  width: 1.3em;
+  display: inline-block;
+  margin-left: 2px;
+}
+.select-checkbox-fa option:checked::before {
+  content: "\f046";
+}
+
 .title-row {
   margin: 0 auto;
   display: flex;
@@ -87,6 +211,11 @@ body {
   border-radius: 20px;
   border: none;
   cursor: pointer;
+  max-width: 200px;
+  margin: 0 auto;
+  padding: 5px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 #overlay {
@@ -176,8 +305,9 @@ body {
   border-radius: 20px;
   border: none;
   cursor: pointer;
-  background-color: white;
+  background-color: f2f2f2;
   color: black;
+  padding: 5px;
 }
 
 .cursor-text {
@@ -192,6 +322,8 @@ body {
   cursor: pointer;
   background-color: #f2f2f2;
   border-radius: 20px;
+  padding: 5px;
+  color: black;
 }
 
 #terms-checkbox {
@@ -210,7 +342,7 @@ body {
   text-align: center; /* Centered text */
   border-radius: 2px; /* Rounded borders */
   padding-top: 16px;
-  padding-bottom:16px; 
+  padding-bottom: 16px;
   position: fixed; /* Sit on top of the screen */
   z-index: 1; /* Add a z-index if needed */
   left: 0; /*Center the snackbar */
@@ -222,14 +354,8 @@ body {
   visibility: visible; /* Show the snackbar */
   /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
   However, delay the fade out process for 2.5 seconds */
-  -webkit-animation: fadein 0.5s fadeout 0.5s 2.5s;
-  animation: fadein 0.5s fadeout 0.5s 2.5s;;
-}
-
-#error-displayhide {
-  visibility: hidden;
-  -webkit-animation: fadeout 0.5s 2.5s;
-  animation: fadeout 0.5s 2.5s;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
 }
 
 /* Animations to fade the snackbar in and out */
