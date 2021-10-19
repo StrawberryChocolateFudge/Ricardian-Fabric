@@ -79,8 +79,6 @@ export function renderCreateButtonClick(props: State) {
 
     await requestAccounts();
 
-
-    
     const legalContract = props.editor.getContent();
     const createdDate = new Date().toISOString();
     const version = props.version;
@@ -133,7 +131,7 @@ export function renderCreateButtonClick(props: State) {
         signerAddress: issuer,
         signature: issuerSignature,
         network,
-        smartContract
+        smartContract,
       });
 
       dispatch_stashPage(page);
@@ -146,7 +144,16 @@ export function renderCreateButtonClick(props: State) {
     };
 
     //The issuer needs to sign the hash
-    await signHash(hash, issuer,network,smartContract, signingSuccess, onSigningFailure);
+    await signHash(
+      hash,
+      issuer,
+      network,
+      smartContract,
+      signingSuccess,
+      onSigningFailure,
+      props.contracttype,
+      undefined
+    );
     dispatch_disableButton(props);
     dispatch_disableCreateInputs();
   };
