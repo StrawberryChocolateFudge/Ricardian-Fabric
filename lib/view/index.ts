@@ -18,6 +18,7 @@ import {
   renderCreateButton,
   renderError,
   renderLoadingIndicator,
+  renderSanctionsDropdown,
   renderSummary,
   renderTerms,
   renderTooltips,
@@ -51,6 +52,9 @@ const Render: Renderer = {
     renderCreateButtonClick(props);
     attachExpiryClickAndListener(props);
     renderTooltips();
+
+    renderSanctionsDropdown();
+    
   },
   [RenderType.acceptButton]: (props: State) => {
     renderAcceptTools(props);
@@ -144,7 +148,6 @@ const Render: Renderer = {
   [RenderType.enableAcceptableInputs]: (props: {}) => {},
   [RenderType.deployAgain]: (props: State) => {
     deployAgainButtonActions(props);
-    
   },
 };
 
