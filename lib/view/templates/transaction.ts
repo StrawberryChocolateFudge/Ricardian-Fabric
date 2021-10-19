@@ -17,6 +17,11 @@ export const transactionUrl = (props: State, url: string) => {
         cursor: pointer;
         background: black;
         color: white;
+        max-width: 200px;
+        margin: 0 auto;
+        padding: 5px;
+        padding-left:20px;
+        padding-right: 20px;
       }
     </style>
 
@@ -33,8 +38,10 @@ export const transactionUrl = (props: State, url: string) => {
       <p>
         <small
           >Please visit
-          <a href="https://bridge.ricardianfabric.com">bridge.ricardianfabric.com</a> to
-          donate so we can offer a free permapin service. Thank you!</small
+          <a href="https://bridge.ricardianfabric.com"
+            >bridge.ricardianfabric.com</a
+          >
+          to donate so we can offer a free permapin service. Thank you!</small
         >
       </p>
     </div>
