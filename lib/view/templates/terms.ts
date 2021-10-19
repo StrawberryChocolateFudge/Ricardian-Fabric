@@ -41,6 +41,8 @@ export const termsLayout = () => html` <style>
       border-radius: 8px;
       border: none;
       cursor: pointer;
+      padding: 5px;
+      margin-bottom: 20px;
     }
   </style>
   <h2>Terms and conditions</h2>
@@ -52,4 +54,5 @@ export const termsLayout = () => html` <style>
     >
       I agree to the terms and conditions!
     </button>
+    
   </div>`;
