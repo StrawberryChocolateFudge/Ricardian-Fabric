@@ -4,6 +4,10 @@ import { ContractTypes, State } from "../../types";
 export const CreateSummary = (props: State) => {
   const signer =
     props.contracttype === ContractTypes.create ? "Issuer" : "Participant";
+  const centerText =
+    props.contracttype === ContractTypes.create
+      ? "Are you sure you want to deploy this agreement?"
+      : "Are you sure you want to deploy the proof of signing?";
 
   return html`
     <style>
@@ -44,22 +48,9 @@ export const CreateSummary = (props: State) => {
         width: 100px;
       }
     </style>
-    <h3 class="centerText">Are you sure?</h3>
+    <h3 class="centerText">${centerText}</h3>
     <div class="details-container">
-      <label for="networkid"><strong>Network Id:</strong></label>
-      <pre id="networkid">${props.stashedDetails.network}</pre>
 
-      <label for="hash"><strong>Document Hash:</strong></label>
-      <pre id="hash" class="auto-overflow">${props.stashedDetails.hash}</pre>
-
-      <label for="signer"><strong>${signer}:</strong></label>
-      <pre id="signer" class="auto-overflow">
-${props.stashedDetails.signerAddress}</pre
-      >
-      <label for="signature"><strong>${signer} Signature:</strong></label>
-      <pre id="signature" class="auto-overflow">
-${props.stashedDetails.signature}</pre
-      >
       <div class="button-row">
         <button id="no-button" class="width-100">No</button>
         <button class="width-100" id="yes-button">Yes</button>
