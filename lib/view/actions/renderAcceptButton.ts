@@ -50,10 +50,13 @@ export function renderAcceptOnCLick(props: State) {
     if (!validSigner) {
       dispatch_renderError("You are not allowed to sign this contract");
     }
-    const canAccept = await canAgree(props.smartcontract, participant);
-    if (!canAccept) {
-      dispatch_renderError("Already accepted this contract");
-      return;
+
+    if (props.smartcontract !== "NONE") {
+      const canAccept = await canAgree(props.smartcontract, participant);
+      if (!canAccept) {
+        dispatch_renderError("Already accepted this contract");
+        return;
+      }
     }
 
     const signingSuccess = async (participantSignature: string) => {
@@ -95,7 +98,9 @@ export function renderAcceptOnCLick(props: State) {
       network,
       props.smartcontract,
       signingSuccess,
-      signingFailure
+      signingFailure,
+      props.contracttype,
+      undefined
     );
     dispatch_disableButton(props);
   };
