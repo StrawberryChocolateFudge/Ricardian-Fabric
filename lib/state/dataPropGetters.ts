@@ -1,4 +1,4 @@
-import { ContractTypes } from "../types";
+import { BlockCountry, ContractTypes } from "../types";
 
 export function getRedirectToDataProp(page: HTMLElement): string {
   return page.dataset.redirectto;
@@ -42,14 +42,24 @@ export function getNetworkFromDataProp(page: HTMLElement): string {
   return page.dataset.network;
 }
 
-export function getHashFromDataProp(page: HTMLElement): string{
+export function getHashFromDataProp(page: HTMLElement): string {
   return page.dataset.hash;
 }
 
-export function getIssuerSignatureFromDataProp(page: HTMLElement): string{
+export function getIssuerSignatureFromDataProp(page: HTMLElement): string {
   return page.dataset.issuersignature;
 }
 
-export function getSmartContractFromDataProp(page: HTMLElement): string{
+export function getSmartContractFromDataProp(page: HTMLElement): string {
   return page.dataset.smartcontract;
+}
+
+export function getBlockCountriesFromDataProp(
+  page: HTMLElement
+): BlockCountry[] {
+  const array = page.dataset.blockedcountries;
+  if (array === undefined) {
+    return [] as BlockCountry[];
+  }
+  return JSON.parse(array) as BlockCountry[];
 }
