@@ -29,6 +29,7 @@ import {
   getTermsCheckbox,
   getRedirectTo,
   getSmartContract,
+  getBlockedCountries,
 } from "../utils";
 import MetaMaskOnboarding from "@metamask/onboarding";
 
@@ -57,9 +58,8 @@ export function renderCreateButtonClick(props: State) {
       return;
     }
 
-    const onlySigner = getOnlySigner();
+    const blockedCountries = getBlockedCountries();
     const redirectto = getRedirectTo();
-
     //Terms and agreements need to be accepted again with a checkbox
     const termsCheckbox = getTermsCheckbox();
 
@@ -102,7 +102,7 @@ export function renderCreateButtonClick(props: State) {
       redirectto,
       version,
       issuer,
-      onlySigner,
+      blockedCountries,
       network,
       smartContract,
     });
@@ -118,7 +118,7 @@ export function renderCreateButtonClick(props: State) {
           expires,
           version,
           issuer,
-          onlySigner,
+          blockedCountries,
           network,
           hash,
           issuerSignature,
