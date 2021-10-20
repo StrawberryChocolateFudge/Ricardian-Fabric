@@ -184,26 +184,36 @@ export function renderTooltips() {
 
 export function disableCreateInputs() {
   const editor = getById("editor") as HTMLInputElement;
-  const onlySigner = getById("onlysigner-input") as HTMLInputElement;
   const expires = getById("expires-input") as HTMLInputElement;
   const never = getById("expires-reset") as HTMLInputElement;
   const redirectto = getById("redirectto-input") as HTMLInputElement;
   const termsCheckbox = getById("terms-checkbox") as HTMLInputElement;
+  const termsCheckboxLabel = getById("terms-checkbox-label");
+
   const docxDropper = getById("docx-input") as HTMLInputElement;
   const smartContract = getById("smartcontract-input") as HTMLInputElement;
+  const sanctions = getById("sanctions_checkbox_toggle") as HTMLInputElement;
+  const sanctionsLabel = getById("sanctions_checkbox_label");
 
   editor.contentEditable = "false";
   editor.style.cursor = "not-allowed";
-  onlySigner.disabled = true;
-  onlySigner.style.cursor = "not-allowed";
+
+  sanctions.disabled = true;
+
+  sanctions.style.cursor = "not-allowed";
+  sanctionsLabel.style.cursor = "not-allowed";
+  sanctionsLabel.style.backgroundColor = "white";
+
   expires.disabled = true;
   expires.style.cursor = "not-allowed";
   never.disabled = true;
   never.style.cursor = "not-allowed";
   redirectto.disabled = true;
   redirectto.style.cursor = "not-allowed";
+
   termsCheckbox.disabled = true;
   termsCheckbox.style.cursor = "not-allowed";
+  termsCheckboxLabel.style.backgroundColor = "white";
 
   docxDropper.disabled = true;
   docxDropper.style.cursor = "not-allowed";
@@ -213,26 +223,34 @@ export function disableCreateInputs() {
 }
 export function enableCreateInputs() {
   const editor = getById("editor") as HTMLInputElement;
-  const onlySigner = getById("onlysigner-input") as HTMLInputElement;
   const expires = getById("expires-input") as HTMLInputElement;
   const never = getById("expires-reset") as HTMLInputElement;
   const redirectto = getById("redirectto-input") as HTMLInputElement;
   const termsCheckbox = getById("terms-checkbox") as HTMLInputElement;
+  const termsCheckboxLabel = getById("terms-checkbox-label");
+
   const docxDropper = getById("docx-input") as HTMLInputElement;
   const smartContract = getById("smartcontract-input") as HTMLInputElement;
+  const sanctions = getById("sanctions_checkbox_toggle") as HTMLInputElement;
+  const sanctionsLabel = getById("sanctions_checkbox_label");
+
+  sanctions.disabled = false;
+  sanctions.style.cursor = "pointer";
+  sanctionsLabel.style.cursor = "pointer";
+  sanctionsLabel.style.backgroundColor = "#f2f2f2";
 
   editor.contentEditable = "true";
   editor.style.cursor = "text";
-  onlySigner.disabled = false;
-  onlySigner.style.cursor = "text";
   expires.disabled = false;
   expires.style.cursor = "pointer";
   never.disabled = false;
   never.style.cursor = "pointer";
   redirectto.disabled = false;
   redirectto.style.cursor = "auto";
+
   termsCheckbox.disabled = false;
   termsCheckbox.style.cursor = "pointer";
+  termsCheckboxLabel.style.backgroundColor = "#f2f2f2";
 
   docxDropper.disabled = false;
   docxDropper.style.cursor = "pointer";
