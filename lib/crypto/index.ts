@@ -1,5 +1,5 @@
 import Web3 from "web3";
-import { IssuerHashedData } from "../types";
+import { BlockCountry, IssuerHashedData } from "../types";
 
 export async function sha256(message) {
   const web3 = new Web3(window.ethereum);
@@ -16,7 +16,14 @@ function concatStrings(data: Array<String>) {
   return res;
 }
 
+function getBlockCountryArrayStrings(block: BlockCountry[]): string {
+  let res = "";
+  block.forEach((b) => (res += b.toString()));
+  return res;
+}
+
 function orderStringsForHashing(data: IssuerHashedData) {
+  const blockedCountries = getBlockCountryArrayStrings(data.blockedCountries);
   return concatStrings([
     data.legalContract,
     data.createdDate,
@@ -24,7 +31,7 @@ function orderStringsForHashing(data: IssuerHashedData) {
     data.redirectto,
     data.version,
     data.issuer,
-    data.onlySigner,
+    blockedCountries,
     data.network,
     data.smartContract,
   ]);
