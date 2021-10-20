@@ -1,3 +1,5 @@
+import { BlockCountry } from "../types";
+
 const storageKEY = "RicardianFabric";
 
 export function getById(id: string): HTMLElement {
@@ -9,8 +11,6 @@ export function getById(id: string): HTMLElement {
     return el;
   }
 }
-
-
 
 export function getPage(): HTMLElement {
   return getById("page");
@@ -62,6 +62,34 @@ export function getOnlySigner() {
   } else {
     return onlySigner.value;
   }
+}
+
+export function getBlockedCountries() {
+  const blockedCountries = [];
+
+  const ofec = getById("ofec_checkbox") as HTMLInputElement;
+  const eu = getById("eu-checkbox") as HTMLInputElement;
+  const un = getById("un-checkbox") as HTMLInputElement;
+  const usa = getById("usa-checkbox") as HTMLInputElement;
+  const ny = getById("newyork-checkbox") as HTMLInputElement;
+
+  if (ofec.checked) {
+    blockedCountries.push(BlockCountry.OFEC);
+  }
+  if (eu.checked) {
+    blockedCountries.push(BlockCountry.EU);
+  }
+  if (un.checked) {
+    blockedCountries.push(BlockCountry.UN);
+  }
+  if (usa.checked) {
+    blockedCountries.push(BlockCountry.BLOCKUSA);
+  }
+  if (ny.checked) {
+    blockedCountries.push(BlockCountry.BLOCKNY);
+  }
+
+  return blockedCountries;
 }
 
 function handleHTTPS(url: string) {
@@ -133,8 +161,8 @@ export function setBannerDisplayBlock() {
   getById("overlay").style.display = "block";
 }
 
-export function setBannerDisplayNone(){
-    getById("overlay").style.display = "none";
+export function setBannerDisplayNone() {
+  getById("overlay").style.display = "none";
 }
 
 export function setTermsAccepted(termsAccepted: boolean) {
