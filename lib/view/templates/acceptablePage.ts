@@ -125,7 +125,7 @@ const acceptablePage = (props: AcceptablePageProps) => html`
     data-expires="${props.expires}"
     data-redirectto="${props.redirectto}"
     data-maindep="${props.mainDep.src}"
-    data-onlysigner="${props.onlySigner}"
+    data-blockedcountries="${JSON.stringify(props.blockedCountries)}"
     data-network="${props.network}"
     data-hash="${props.hash}"
     data-issuer="${props.issuer}"
@@ -139,11 +139,8 @@ const acceptablePage = (props: AcceptablePageProps) => html`
         <th></th>
         <th></th>
       </tr>
-      ${createdDateTemplate(props.createdDate)}
-       ${expiryTemplate(props.expires)}
-      ${networkTemplate(props.network)} 
-      ${onlySignerTemplate(props.onlySigner)}
-      ${issuerTemplate(props.issuer)}
+      ${createdDateTemplate(props.createdDate)} ${expiryTemplate(props.expires)}
+      ${networkTemplate(props.network)} ${issuerTemplate(props.issuer)}
     </table>
     <div class="center red" id="error-display"></div>
     <div class="center" id="redirect-display"></div>
