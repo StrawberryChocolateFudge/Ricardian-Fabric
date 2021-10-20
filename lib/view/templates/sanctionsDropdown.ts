@@ -10,30 +10,39 @@ export const SanctionsDropdown = (expand: boolean) => html`
   >
   <ul>
     <li>
-      <input id="ofec_checkbox" type="checkbox" /><span class="sanctions-span"
-        >OFEC sanctioned countries</span
-      >
+      <input
+        aria-label="ofec checkbox"
+        id="ofec_checkbox"
+        type="checkbox"
+      /><span class="sanctions-span">OFEC sanctioned countries</span>
     </li>
     <li>
-      <input id="eu-checkbox" type="checkbox" /><span class="sanctions-span"
-        >EU sanctioned countries</span
-      >
+      <input
+        aria-label="eu sanctions checkbox"
+        id="eu-checkbox"
+        type="checkbox"
+      /><span class="sanctions-span">EU sanctioned countries</span>
     </li>
     <li>
-      <input id="un-checkbox" type="checkbox" /><span class="sanctions-span"
-        >UN sanctioned countries</span
-      >
+      <input
+        aria-label="UN sanctions checkbox"
+        id="un-checkbox"
+        type="checkbox"
+      /><span class="sanctions-span">UN sanctioned countries</span>
     </li>
     <li>
-      <input id="usa-checkbox" type="checkbox" /><span class="sanctions-span"
-        >Block USA</span
-      >
+      <input
+        aria-label="Block USA checkbox"
+        id="usa-checkbox"
+        type="checkbox"
+      /><span class="sanctions-span">Block USA</span>
     </li>
     <li>
-      <input id="newyork-checkbox" type="checkbox" /><span
-        class="sanctions-span"
-        >Block New York</span
-      >
+      <input
+        aria-label="block new york checkbox"
+        id="newyork-checkbox"
+        type="checkbox"
+      /><span class="sanctions-span">Block New York</span>
     </li>
   </ul>
 `;
