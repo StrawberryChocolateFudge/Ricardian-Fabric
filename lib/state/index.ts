@@ -1,6 +1,7 @@
 import { Events, EventType, StashedDetails, State } from "../types";
 import { getCurrentUrl, getPage } from "../view/utils";
 import {
+  getBlockCountriesFromDataProp,
   getCreatedDateFromDataProp,
   getCurrentPageDataProp,
   getExpiresFromDataProp,
@@ -8,7 +9,6 @@ import {
   getIssuerDataProp,
   getIssuerSignatureFromDataProp,
   getNetworkFromDataProp,
-  getOnlySignerFromDataProp,
   getRedirectToDataProp,
   getSmartContractFromDataProp,
   getSourceFromDataProp,
@@ -16,7 +16,7 @@ import {
 } from "./dataPropGetters";
 import createNewEditor from "./editor";
 import { setStateHook } from "./setStateHook";
-import { create } from "ipfs-http-client";
+
 (function InitState() {
   function createState() {
     const pageEl = getPage();
@@ -40,14 +40,14 @@ import { create } from "ipfs-http-client";
       version: getVersionFromDataProp(pageEl),
       bundleSrcUrl: getSourceFromDataProp(pageEl),
       currentUrl: getCurrentUrl(),
-      onlySigner: getOnlySignerFromDataProp(pageEl),
+      blockedCountries: getBlockCountriesFromDataProp(pageEl),
       network: getNetworkFromDataProp(pageEl),
       hash: getHashFromDataProp(pageEl),
       issuer: getIssuerDataProp(pageEl),
       issuerSignature: getIssuerSignatureFromDataProp(pageEl),
       participant: "",
       participantSignature: "",
-      smartcontract: getSmartContractFromDataProp(pageEl)
+      smartcontract: getSmartContractFromDataProp(pageEl),
     };
 
     const stateHandler = {
