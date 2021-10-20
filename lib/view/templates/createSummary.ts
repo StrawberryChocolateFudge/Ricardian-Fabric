@@ -2,8 +2,6 @@ import { html } from "lit-html";
 import { ContractTypes, State } from "../../types";
 
 export const CreateSummary = (props: State) => {
-  const signer =
-    props.contracttype === ContractTypes.create ? "Issuer" : "Participant";
   const centerText =
     props.contracttype === ContractTypes.create
       ? "Are you sure you want to deploy this agreement?"
