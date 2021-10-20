@@ -1,5 +1,4 @@
-import Web3 from "web3";
-import { getFulfilledPage, isOnlySigner } from "../../business/bloc";
+import { getFulfilledPage, isBlocked } from "../../business/bloc";
 import {
   dispatch_disableButton,
   dispatch_enableButton,
@@ -46,10 +45,14 @@ export function renderAcceptOnCLick(props: State) {
     }
 
     const participant = await getAddress();
-    const validSigner = await isOnlySigner(props, participant);
-    if (!validSigner) {
-      dispatch_renderError("You are not allowed to sign this contract");
+
+    const blocked = await isBlocked(props, participant);
+    if (blocked) {
+      dispatch_renderError("You are not allowed to sign this contract.");
+      dispatch_disableButton(props);
+      return;
     }
+
 
     if (props.smartcontract !== "NONE") {
       const canAccept = await canAgree(props.smartcontract, participant);
