@@ -100,6 +100,14 @@ export enum ContractTypes {
   fulfilled = "fulfilled",
 }
 
+export enum BlockCountry {
+  OFEC = "OFEC",
+  EU = "EU",
+  UN = "UN",
+  BLOCKUSA = "BLOCKUSA",
+  BLOCKNY = "BLOCKNY",
+}
+
 export type StashedDetails = {
   hash: string;
   signerAddress: string;
@@ -130,7 +138,7 @@ export type State = {
   expires: string;
   currentUrl: string;
   version: string;
-  onlySigner: string;
+  blockedCountries: BlockCountry[];
   network: string;
   hash: string;
   issuer: string;
@@ -159,7 +167,7 @@ export type AcceptablePageProps = {
   mainDep?: Dependency;
   domParser: DOMParser;
   legalContract: string;
-  onlySigner: string;
+  blockedCountries: BlockCountry[];
   network: string;
   hash: string;
   issuerSignature: string;
@@ -171,9 +179,7 @@ export type FulfilledPageProps = {
   issuer: string;
   createdDate: string;
   expires: string;
-
   redirectto: string;
-
   domParser: DOMParser;
   legalContract: string;
   participant: string;
@@ -202,17 +208,16 @@ export type IssuerHashedData = {
   redirectto: string;
   version: string;
   issuer: string;
-  onlySigner: string;
+  blockedCountries: BlockCountry[];
   network: string;
   smartContract: string;
 };
 
 export type Options = {
-  status:Status;
+  status: Status;
   error: any;
-  data: any
-}
-
+  data: any;
+};
 
 declare global {
   interface Window {
