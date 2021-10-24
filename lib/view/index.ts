@@ -18,6 +18,7 @@ import {
   renderCreateButton,
   renderError,
   renderLoadingIndicator,
+  renderNetworkDropdown,
   renderSanctionsDropdown,
   renderSummary,
   renderTerms,
@@ -38,6 +39,10 @@ import {
 } from "./actions/terms";
 import { deployAgainButtonActions } from "./actions/deployAgainButton";
 import { changeContainerSlotStyle } from "./utils";
+import {
+  addChainButtonListener,
+  networkSelectActions,
+} from "./actions/networkSelectActions";
 
 const Render: Renderer = {
   [RenderType.successMessage]: (props: State) => {},
@@ -54,13 +59,16 @@ const Render: Renderer = {
     renderTooltips();
 
     renderSanctionsDropdown();
-    
+    renderNetworkDropdown();
+    networkSelectActions();
   },
   [RenderType.acceptButton]: (props: State) => {
     renderAcceptTools(props);
     renderAcceptButton(props);
     renderAcceptOnCLick(props);
     enableButton(props);
+
+    addChainButtonListener(props);
   },
   [RenderType.addLoadingIndicator]: (props: { to: string }) => {
     renderLoadingIndicator(props.to);
