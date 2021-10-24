@@ -1,7 +1,11 @@
 import { createRevGeocoder } from "../geocoding/index";
 import {
+  dispatch_disableButton,
+  dispatch_enableButton,
   dispatch_redirectCounter,
+  dispatch_removeError,
   dispatch_removeLoadingIndicator,
+  dispatch_renderError,
   dispatch_renderLoadingIndicator,
   dispatch_renderTerms,
 } from "../dispatch/render";
@@ -21,6 +25,7 @@ import {
   getFulfilledPagefromVDOM,
 } from "../view/vDom";
 import { GeoRecord } from "../geocoding/types";
+import { dispatch_setPosition } from "../dispatch/stateChange";
 
 const REDIRECT_TIMEOUT = 1000;
 
@@ -40,21 +45,21 @@ export async function getAcceptablePage(args: {
   return page;
 }
 
-export async function isBlocked(props: State, address: string) {
-  const locationOptions = getLocation();
-  if (locationOptions.status === Status.Failure) {
-    return true;
-  }
+// Returns true if blocked
+export async function isBlocked(props: State) {
+  dispatch_renderLoadingIndicator("transaction-display");
+  dispatch_disableButton(props);
   const geoCodingOptions = await fetchGeoCodingCSV();
+  const record = await getCountryCode(props.position, geoCodingOptions.data);
+
   if (geoCodingOptions.status === Status.Failure) {
     return true;
   }
-  const record = await getCountryCode(
-    locationOptions.data,
-    geoCodingOptions.data
-  );
 
-  return isCountryBlocked(record, props.blockedCountries).data;
+  if (record) {
+    dispatch_removeLoadingIndicator("transaction-display");
+    return isCountryBlocked(record, props.blockedCountries).data;
+  }
 }
 
 function isCountryBlocked(
@@ -152,7 +157,7 @@ function isCountryBlocked(
       "TN",
       "UA",
       "VE",
-      "ZW",
+      "ZW"
     ],
     [BlockCountry.BLOCKUSA]: ["US"],
     //TODO: GET THE LIST OF NEW YORK STATE CITIES, JUST LIKE CRIMERA
@@ -173,25 +178,36 @@ export async function getCountryCode(
   geoCodingData: string
 ): Promise<GeoRecord> {
   const revGeocoder = await createRevGeocoder({ dataset: geoCodingData });
-  const result = revGeocoder.lookup({
-    latitude: locationData.coords.latitude,
-    longitude: locationData.coords.longitude,
+  const result = await revGeocoder.lookup({
+    latitude: locationData?.coords.latitude,
+    longitude: locationData?.coords.longitude,
   });
 
   return result.record;
 }
 
-export function getLocation(): Options {
-  // Ask for permission to access the Geolocation API. If not given, blocked will return true
-  const result: Options = { status: Status.Success, error: "", data: {} };
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function (position) {
-      result.data = position;
-    });
+export function getLocation(props: State) {
+  dispatch_disableButton(props);
+  dispatch_renderLoadingIndicator("transaction-display");
+
+  // Ask for permission and access the Geolocation API.
+  if ("geolocation" in navigator) {
+    navigator.geolocation.getCurrentPosition(
+      async function (position) {
+        dispatch_removeLoadingIndicator("transaction-display");
+        dispatch_setPosition(position);
+      },
+      function (err) {
+        dispatch_enableButton(props);
+        dispatch_renderError(err.message);
+        dispatch_removeLoadingIndicator("transaction-display");
+      }
+    );
   } else {
-    result.status = Status.Success;
+    dispatch_renderError("Can't get geolocation.");
+    dispatch_enableButton(props);
+    dispatch_removeLoadingIndicator("transaction-display");
   }
-  return result;
 }
 
 export async function handlePost(props: State, id: string) {
