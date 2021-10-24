@@ -113,45 +113,51 @@ hr {
   visibility: hidden;
 }
 
-select {
-  background-color: rgba(255, 255, 255, 0.9);
-  width: 100%;
+#network_checkbox_toggle {
+  display: none;
+  cursor: pointer;
+}
+
+#network_checkbox_label {
+  cursor: pointer;
+  background-color: #f2f2f2;
+  border-radius: 20px;
   padding: 5px;
-  border: 1px solid #f2f2f2;
-  border-radius: 2px;
-  height: 3rem;
+  color: black !important;
+}
+#network_checkbox_toggle:checked ~ ul  {
+  display: block;
+  list-style-type: none;
+  list-style: none;
+  list-style-position: inside;
+  padding: 8px;
+  border-radius: 1px;
+  position: absolute;
+  background-color: white;
+  box-shadow: 1px 1px 1px 1px darkgrey;
+  z-index: 1;
 }
 
-select:focus {
-  background-color: rgba(255, 255, 255, 0.9);
-  width: 100%;
-  padding: 5px;
-  border: 1px solid darkgrey;
-  border-radius: 2px;
-  height: 3rem;
-  box-shadow: 0 1px 0 0 darkgrey;
+#network_checkbox_toggle ~ ul {
+  display: none;
+}
+#network_checkbox_label {
+  cursor: pointer;
 }
 
-.select-checkbox option::before {
-  content: "\2610";
-  width: 1.3em;
-  text-align: center;
-  display: inline-block;
-}
-.select-checkbox option:checked::before {
-  content: "\2611";
+.network-button{
+  background-color: white;
+  border: none;
+  font-size: 16px;
+  padding: 10px;
+  cursor: pointer;
 }
 
-.select-checkbox-fa option::before {
-  font-family: FontAwesome;
-  content: "\f096";
-  width: 1.3em;
-  display: inline-block;
-  margin-left: 2px;
+.network-button:hover{
+  background-color: lightgray;
 }
-.select-checkbox-fa option:checked::before {
-  content: "\f046";
-}
+
+
 
 .title-row {
   margin: 0 auto;
@@ -332,6 +338,10 @@ select:focus {
 
 .marginBottom-10 {
   margin-bottom: 10px;
+}
+
+#network-select {
+  max-width: 200px;
 }
 
 #error-display {
