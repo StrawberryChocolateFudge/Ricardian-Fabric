@@ -6,7 +6,7 @@ export const SanctionsDropdown = (expand: boolean) => html`
     id="sanctions_checkbox_label"
     class="sanctions_checkbox-label"
     for="sanctions_checkbox_toggle"
-    >${expand ? "Click to Expand" : "Click to Collapse"}</label
+    >Select Sanctions</label
   >
   <ul>
     <li>
@@ -37,12 +37,12 @@ export const SanctionsDropdown = (expand: boolean) => html`
         type="checkbox"
       /><span class="sanctions-span">Block USA</span>
     </li>
-    <li>
+    <!-- <li>
       <input
         aria-label="block new york checkbox"
         id="newyork-checkbox"
         type="checkbox"
       /><span class="sanctions-span">Block New York</span>
-    </li>
+    </li> -->
   </ul>
 `;
