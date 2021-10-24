@@ -1,4 +1,13 @@
-import { IPFSHTTPClient } from "ipfs-http-client";
+export enum Chains {
+  HmnyMainnetShard0 = "1666600000",
+  HmnyMainnetShard1 = "1666600001",
+  HmnyMainnetShard2 = "1666600002",
+  HmnyMainnetShard3 = "1666600003",
+  HmnyTestnetShard0 = "1666700000",
+  HmnyTestnetShard1 = "1666700001",
+  HmnyTestnetShard2 = "1666700002",
+  HmnyTestnetShard3 = "1666700003",
+}
 
 export enum Events {
   render = "render",
@@ -81,6 +90,7 @@ export enum EventType {
   setSelectedDate = "setSelectedDate",
   stashPage = "stashPage",
   stashDetails = "stashDetails",
+  setPosition = "setPosition",
 }
 
 export enum StateProperties {
@@ -92,6 +102,7 @@ export enum StateProperties {
   selectedDate = "selectedDate",
   stashedPage = "stashedPage",
   stashedDetails = "stashedDetails",
+  position = "position",
 }
 
 export enum ContractTypes {
@@ -146,6 +157,7 @@ export type State = {
   participant: string;
   participantSignature: string;
   smartcontract: string;
+  position: GeolocationPosition;
 };
 
 export type SetHookArgs = {
