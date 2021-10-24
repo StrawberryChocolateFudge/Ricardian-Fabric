@@ -48,6 +48,7 @@ import { setStateHook } from "./setStateHook";
       participant: "",
       participantSignature: "",
       smartcontract: getSmartContractFromDataProp(pageEl),
+      position: undefined,
     };
 
     const stateHandler = {
@@ -86,6 +87,9 @@ import { setStateHook } from "./setStateHook";
     [EventType.stashDetails]: (value: StashedDetails) => {
       stateContainer.stashedDetails = value;
     },
+    [EventType.setPosition]: (value: {position: GeolocationPosition}) =>{ 
+      stateContainer.position = value.position;
+    }
   };
 
   document.body.addEventListener(Events.stateChange, function (event: any) {

@@ -35,3 +35,10 @@ export function dispatch_stashDetails(value: StashedDetails) {
     value,
   });
 }
+
+export function dispatch_setPosition(position: GeolocationPosition) {
+  dispatch(Events.stateChange, {
+    type: EventType.setPosition,
+    value: { position },
+  });
+}

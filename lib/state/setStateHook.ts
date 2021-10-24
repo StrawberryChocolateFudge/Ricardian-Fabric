@@ -38,6 +38,10 @@ export const setStateHook = {
   [StateProperties.stashedDetails]: (args: SetHookArgs) => {
     // I'm dispatching stashDetails before stashedPage so the details are passed in the above .stashedPage hook.
   },
+  [StateProperties.position]: (args: SetHookArgs) => {
+    // This happens only on acceptable pages
+    dispatch_renderAcceptButton(cloneState(args.obj));
+  },
 };
 
 function cloneState(state: State) {
