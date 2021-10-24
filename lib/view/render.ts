@@ -5,6 +5,7 @@ import { createButton } from "./templates/createButton";
 import { CreateSummary } from "./templates/createSummary";
 import { helperTooltips } from "./templates/helperTooltips";
 import { loadingIndicator } from "./templates/loadingIndicator";
+import { NetworkDropdown } from "./templates/networkdropdown";
 import { redirectCounter } from "./templates/redirectCounter";
 import { SanctionsDropdown } from "./templates/sanctionsDropdown";
 import { termsLayout } from "./templates/terms";
@@ -19,13 +20,14 @@ import {
 
 export function renderAcceptTools(props: State) {
   const actionContainer = getById("action-container");
-  actionContainer.innerHTML = "";
   render(acceptTools(props), actionContainer);
 }
 
 export function renderAcceptButton(props: State) {
   const buttonSlot = getById("button-slot");
-  render(AcceptButton(), buttonSlot);
+  const positionNeeded =
+    props.blockedCountries.length > 0 && props.position === undefined;
+  render(AcceptButton(positionNeeded), buttonSlot);
 }
 
 export async function renderLoadingIndicator(to: string) {
@@ -50,6 +52,10 @@ export function renderError(message: string) {
   // Add the "show" class to DIV
   errorDisplay.className = "show";
   errorDisplay.textContent = message;
+
+  setTimeout(function () {
+    errorDisplay.className = errorDisplay.className.replace("show", "");
+  }, 3000);
 }
 
 export function removeError() {
@@ -195,6 +201,16 @@ export function disableCreateInputs() {
   const sanctions = getById("sanctions_checkbox_toggle") as HTMLInputElement;
   const sanctionsLabel = getById("sanctions_checkbox_label");
 
+  const switchNetwork = getById("network_checkbox_toggle") as HTMLInputElement;
+  const switchNetworkLabel = getById(
+    "network_checkbox_label"
+  ) as HTMLInputElement;
+
+  switchNetwork.disabled = true;
+  switchNetwork.style.cursor = "not-allowed";
+  switchNetworkLabel.style.cursor = "not-allowed";
+  switchNetworkLabel.style.backgroundColor = "white";
+
   editor.contentEditable = "false";
   editor.style.cursor = "not-allowed";
 
@@ -234,6 +250,17 @@ export function enableCreateInputs() {
   const sanctions = getById("sanctions_checkbox_toggle") as HTMLInputElement;
   const sanctionsLabel = getById("sanctions_checkbox_label");
 
+  const switchNetwork = getById("network_checkbox_toggle") as HTMLInputElement;
+  const switchNetworkLabel = getById(
+    "network_checkbox_label"
+  ) as HTMLInputElement;
+
+  switchNetwork.disabled = false;
+  switchNetwork.style.cursor = "pointer";
+
+  switchNetworkLabel.style.cursor = "pointer";
+  switchNetworkLabel.style.backgroundColor = "#f2f2f2";
+
   sanctions.disabled = false;
   sanctions.style.cursor = "pointer";
   sanctionsLabel.style.cursor = "pointer";
@@ -269,17 +296,25 @@ export function renderButtonSlotAlignment(center: boolean) {
   }
 }
 
-export function renderSanctionsDropdown() {
-  const dropdown = getById("dropdown");
-  render(SanctionsDropdown(true), dropdown);
-  const toggle = getById("sanctions_checkbox_toggle") as HTMLInputElement;
-  toggle.onchange = function () {
-    if (toggle.checked) {
-      render(SanctionsDropdown(false), dropdown);
-    } else {
-      render(SanctionsDropdown(true), dropdown);
+
+
+export function renderNetworkDropdown() {
+  const dropdown = getById("network-dropdown");
+  render(NetworkDropdown(), dropdown);
+  const toggle = getById("network_checkbox_toggle") as HTMLInputElement;
+
+  const page = getById("page");
+  page.onclick = function (ev: Event) {
+    if (!ev.composedPath().includes(dropdown)) {
+      toggle.checked = false;
     }
   };
+}
+
+export function renderSanctionsDropdown() {
+  const dropdown = getById("sanctions-dropdown");
+  render(SanctionsDropdown(true), dropdown);
+  const toggle = getById("sanctions_checkbox_toggle") as HTMLInputElement;
 
   const page = getById("page");
   page.onclick = function (ev: Event) {
@@ -287,7 +322,6 @@ export function renderSanctionsDropdown() {
     if (!ev.composedPath().includes(dropdown)) {
       //If the click event didn't bubble from the dropdown
       toggle.checked = false;
-      render(SanctionsDropdown(true), dropdown);
     }
   };
 }
