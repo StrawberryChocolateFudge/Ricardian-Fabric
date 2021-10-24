@@ -1,4 +1,6 @@
 import { html } from "lit-html";
+import { Chains } from "../../types";
+import { HarmonyLogo } from "./networkdropdown";
 
 export const getPriceTemplate = (
   price: string | number,
@@ -48,12 +50,33 @@ export const issuerTemplate = (address: string) => {
 };
 
 export const networkTemplate = (network: string) => {
+  const chains = {
+    [Chains.HmnyMainnetShard0]: getChainButton("Harmony", "Mainnet", "Shard 0"),
+    [Chains.HmnyMainnetShard1]: getChainButton("Harmony", "Mainnet", "Shard 1"),
+    [Chains.HmnyMainnetShard2]: getChainButton("Harmony", "Mainnet", "Shard 2"),
+    [Chains.HmnyMainnetShard3]: getChainButton("Harmony", "Mainnet", "Shard 3"),
+    [Chains.HmnyTestnetShard0]: getChainButton("Harmony", "Testnet", "Shard 0"),
+    [Chains.HmnyTestnetShard1]: getChainButton("Harmony", "Testnet", "Shard 1"),
+    [Chains.HmnyTestnetShard2]: getChainButton("Harmony", "Testnet", "Shard 2"),
+    [Chains.HmnyTestnetShard3]: getChainButton("Harmony", "Testnet", "Shard 3"),
+  };
+
+  const networkEl = chains[network];
+
   return html`<tr>
     <td aria-labelledby="Network Id label">Network:</td>
-    <td aria-label="network id">${network}</td>
+    <td aria-label="network id">
+      ${networkEl === undefined ? network : networkEl}
+    </td>
     <td></td>
   </tr>`;
 };
+
+export function getChainButton(chain: string, net: string, shard: string) {
+  return html`<button class="network-button" id="addChainButton">
+    ${HarmonyLogo()} ${chain} ${net} ${shard}
+  </button>`;
+}
 
 export const onlySignerTemplate = (onlySigner: string) => {
   if (onlySigner !== "NONE") {
