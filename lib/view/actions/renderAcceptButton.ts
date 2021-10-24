@@ -1,4 +1,4 @@
-import { getFulfilledPage, isBlocked } from "../../business/bloc";
+import { getFulfilledPage, getLocation, isBlocked } from "../../business/bloc";
 import {
   dispatch_disableButton,
   dispatch_enableButton,
@@ -26,6 +26,21 @@ export function renderAcceptOnCLick(props: State) {
 
   acceptButton.onclick = async function () {
     dispatch_removeError();
+
+    if (props.blockedCountries.length > 0 && props.position === undefined) {
+      getLocation(props);
+      return;
+    }
+
+    if (props.blockedCountries.length > 0) {
+      const blocked = await isBlocked(props);
+      if (blocked) {
+        dispatch_renderError("You are not allowed to sign this contract.");
+        dispatch_disableButton(props);
+        return;
+      }
+    }
+
     if (!web3Injected()) {
       dispatch_renderError("Found no injected web3, install metamask");
       const onboarding = new MetaMaskOnboarding();
@@ -45,14 +60,6 @@ export function renderAcceptOnCLick(props: State) {
     }
 
     const participant = await getAddress();
-
-    const blocked = await isBlocked(props, participant);
-    if (blocked) {
-      dispatch_renderError("You are not allowed to sign this contract.");
-      dispatch_disableButton(props);
-      return;
-    }
-
 
     if (props.smartcontract !== "NONE") {
       const canAccept = await canAgree(props.smartcontract, participant);
