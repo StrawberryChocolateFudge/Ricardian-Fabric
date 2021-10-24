@@ -112,6 +112,95 @@ export const acceptablePageLayout = (props: AcceptablePageProps) => html`
       background-color: white;
       color: white;
     }
+
+    .ac-locaton {
+      color: red;
+      display: flex;
+      flex-direction: column;
+    }
+    .accept-button-label {
+      font-size: 0.8rem;
+      color: grey;
+    }
+    #error-display {
+      visibility: hidden; /* Hidden by default. Visible on click */
+      min-width: 250px; /* Set a default minimum width */
+      background-color: #333; /* Black background color */
+      color: #fff; /* White text color */
+      text-align: center; /* Centered text */
+      border-radius: 2px; /* Rounded borders */
+      padding-top: 16px;
+      padding-bottom: 16px;
+      position: fixed; /* Sit on top of the screen */
+      z-index: 1; /* Add a z-index if needed */
+      left: 0; /*Center the snackbar */
+      bottom: 30px; /*30px from the bottom */
+    }
+
+    /* Show the snackbar when clicking on a button (class added with JavaScript) */
+    #error-display.show {
+      visibility: visible; /* Show the snackbar */
+      /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+  However, delay the fade out process for 2.5 seconds */
+      -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+      animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    }
+    .network-button {
+      background-color: #f2f2f2;
+      border: none;
+      font-size: 16px;
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .network-button:hover {
+      background-color: white;
+    }
+
+    /* Animations to fade the snackbar in and out */
+    @-webkit-keyframes fadein {
+      from {
+        bottom: 0;
+        opacity: 0;
+      }
+      to {
+        bottom: 30px;
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadein {
+      from {
+        bottom: 0;
+        opacity: 0;
+      }
+      to {
+        bottom: 30px;
+        opacity: 1;
+      }
+    }
+
+    @-webkit-keyframes fadeout {
+      from {
+        bottom: 30px;
+        opacity: 1;
+      }
+      to {
+        bottom: 0;
+        opacity: 0;
+      }
+    }
+
+    @keyframes fadeout {
+      from {
+        bottom: 30px;
+        opacity: 1;
+      }
+      to {
+        bottom: 0;
+        opacity: 0;
+      }
+    }
   </style>
   <body>
     ${acceptablePage(props)} ${mainDep(props.mainDep.src)}
