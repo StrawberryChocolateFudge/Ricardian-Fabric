@@ -8,25 +8,6 @@ export async function requestAccounts() {
   //TODO: refactor to request
   await window.ethereum.send("eth_requestAccounts");
 }
-//TODO: wallet_switchEthereumChain
-export async function switchToHarmony() {
-  await window.ethereum.request({
-    method: "wallet_addEthereumChain",
-    params: [
-      {
-        chainId: "0x6357D2E0",
-        chainName: "Harmony Testnet",
-        nativeCurrency: {
-          name: "ONE",
-          symbol: "ONE",
-          decimals: 18,
-        },
-        rpcUrls: ["https://api.s0.b.hmny.io"],
-        blockExplorerUrls: ["https://explorer.pops.one/#/"],
-      },
-    ],
-  });
-}
 
 export async function getAddress(): Promise<string> {
   const web3 = new Web3(window.ethereum);
@@ -50,8 +31,13 @@ export async function signHash(
   contractType: ContractTypes,
   url: string | undefined
 ) {
-
-  const msgParams = getmsgParams(networkId,"0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC",hash,url,contractType);
+  const msgParams = getmsgParams(
+    networkId,
+    "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC",
+    hash,
+    url,
+    contractType
+  );
   console.log(msgParams);
   await window.ethereum.sendAsync(
     {
@@ -267,3 +253,98 @@ export async function acceptAgreement(arg: {
 
   return options;
 }
+
+export async function switchNetwork(
+  network: "Harmony",
+  shard: number,
+  type: "Mainnet" | "Testnet"
+) {
+  if (network === "Harmony") {
+    await switchToHarmony(shard, type);
+  }
+}
+
+export async function switchToHarmony(
+  shard: number,
+  type: "Mainnet" | "Testnet"
+) {
+  const chainName =
+    type === "Mainnet"
+      ? "Harmony Mainnet Shard " + shard
+      : "Harmony Testnet Shard " + shard;
+  let chainId = type === "Mainnet" ? 1666600000 : 1666700000;
+
+  // Calculate the shard
+  chainId += shard;
+  const hexchainId = "0x" + Number(chainId).toString(16);
+  const blockExplorerUrls =
+    type === "Mainnet"
+      ? ["https://explorer.harmony.one/#/"]
+      : ["https://explorer.pops.one/#/"];
+
+  const rpcUrls = getHarmonyRPCURLS(shard, type);
+
+  const switched = await switch_to_Chain(hexchainId);
+  console.log(switched);
+  if (!switched) {
+    await window.ethereum.request({
+      method: "wallet_addEthereumChain",
+      params: [
+        {
+          chainId: "0x" + Number(chainId).toString(16),
+          chainName,
+          nativeCurrency: {
+            name: "ONE",
+            symbol: "ONE",
+            decimals: 18,
+          },
+          rpcUrls,
+          blockExplorerUrls,
+        },
+      ],
+    });
+  }
+}
+
+async function switch_to_Chain(chainId: string) {
+  try {
+    await window.ethereum.request({
+      method: "wallet_switchEthereumChain",
+      params: [{ chainId }],
+    });
+    return true;
+  } catch (err) {
+    return false;
+  }
+}
+
+function getHarmonyRPCURLS(shard: number, type: "Mainnet" | "Testnet") {
+  if (type === "Mainnet") {
+    switch (shard) {
+      case 0:
+        return ["https://api.harmony.one"];
+      case 1:
+        return ["https://s1.api.harmony.one"];
+      case 2:
+        return ["https://s2.api.harmony.one"];
+      case 3:
+        return ["https://s3.api.harmony.one"];
+      default:
+        break;
+    }
+  } else if (type === "Testnet") {
+    switch (shard) {
+      case 0:
+        return ["https://api.s0.b.hmny.io"];
+      case 1:
+        return ["https://api.s1.b.hmny.io"];
+      case 2:
+        return ["https://api.s2.b.hmny.io"];
+      case 3:
+        return ["https://api.s3.b.hmny.io"];
+      default:
+        break;
+    }
+  }
+}
+
