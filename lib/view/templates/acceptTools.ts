@@ -43,18 +43,39 @@ export const acceptTools = (props: State) => {
   `;
 };
 
-export const AcceptButton = () => html`
-  <style>
-    .width-200 {
-      width: 200px;
-    }
-  </style>
-  <button
-    aria-label="Accept and Sign"
-    name="sign"
-    id="accept-button"
-    class="center width-200"
-  >
-    Accept
-  </button>
-`;
+export const AcceptButton = (positionNeeded: boolean) => {
+  const labelEl = positionNeeded
+    ? html`<div class="accept-button-label">
+        This contract is not available in all countries.
+      </div>`
+    : "";
+  const buttonText = positionNeeded ? "Add location" : "Accept";
+  console.log(buttonText);
+  return html`
+    <style>
+      .width-200 {
+        width: 200px;
+      }
+      .ac-location {
+        display: flex;
+        flex-direction: column;
+      }
+      .accept-button-label {
+        font-size: 0.8rem;
+        color: grey;
+        margin-bottom: 5px;
+      }
+    </style>
+    <div class="ac-location">
+      ${labelEl}
+      <button
+        aria-label="Accept and Sign"
+        name="sign"
+        id="accept-button"
+        class="center width-200"
+      >
+        ${buttonText}
+      </button>
+    </div>
+  `;
+};
