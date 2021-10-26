@@ -17,7 +17,10 @@
       id="page"
     >
       <hr />
-      <div id="network-dropdown"></div>
+      <div style="display: flex; flex-direction: row">
+        <div id="network-dropdown"></div>
+        <img src="./metamask-logo.png" width="20px" />
+      </div>
       <hr />
       <div id="docx-dropzone" class="drop-zone">
         <span id="drop-prompt-docx" class="drop-zone__prompt"
@@ -115,6 +118,13 @@
               placeholder="0x..."
               class="cursor-text"
             />
+            <button
+              aria-label="Deploy contract"
+              name="deploy"
+              id="deploy-sc-button"
+            >
+              Deploy
+            </button>
           </td>
           <td>
             <span id="smartcontract-tooltip"></span>
