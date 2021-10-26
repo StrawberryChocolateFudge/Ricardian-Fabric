@@ -85,6 +85,7 @@ export function renderAcceptOnCLick(props: State) {
         participant: participant,
         participantSignature: participantSignature,
         smartContract: props.smartcontract,
+        ERC20: JSON.stringify(props.isERC20),
       });
 
       dispatch_stashDetails({
