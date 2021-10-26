@@ -125,7 +125,7 @@ hr {
   padding: 5px;
   color: black !important;
 }
-#network_checkbox_toggle:checked ~ ul  {
+#network_checkbox_toggle:checked ~ ul {
   display: block;
   list-style-type: none;
   list-style: none;
@@ -145,7 +145,7 @@ hr {
   cursor: pointer;
 }
 
-.network-button{
+.network-button {
   background-color: white;
   border: none;
   font-size: 16px;
@@ -153,11 +153,9 @@ hr {
   cursor: pointer;
 }
 
-.network-button:hover{
+.network-button:hover {
   background-color: lightgray;
 }
-
-
 
 .title-row {
   margin: 0 auto;
@@ -315,7 +313,53 @@ hr {
   color: black;
   padding: 5px;
 }
-
+#deploy-sc-button {
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  background-color: f2f2f2;
+  color: black;
+  padding: 5px;
+}
+.deploySCList {
+  list-style-type: none;
+  list-style: none;
+  list-style-position: inside;
+  padding: 8px;
+  border-radius: 1px;
+  background-color: white;
+  box-shadow: 1px 1px 1px 1px darkgrey;
+}
+.SCBackButton {
+  cursor: pointer;
+  background-color: #f2f2f2;
+  border-radius: 20px;
+  padding: 5px;
+  color: black !important;
+  border: none;
+}
+.SCNextButton {
+  cursor: pointer;
+  background-color: black;
+  border-radius: 20px;
+  padding: 5px;
+  color: white !important;
+  border: none;
+}
+.SCNextButton :disabled {
+  cursor: pointer;
+  background-color: grey;
+  border-radius: 20px;
+  padding: 5px;
+  color: white !important;
+  border: none;
+}
+.SCIntent-button-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
 .cursor-text {
   cursor: text;
 }
