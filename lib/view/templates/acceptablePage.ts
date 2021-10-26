@@ -86,6 +86,18 @@ export const acceptablePageLayout = (props: AcceptablePageProps) => html`
       border: 4px dashed #cccccc;
       border-radius: 10px;
     }
+    label {
+      font-size: 0.8rem;
+      color: grey;
+    }
+
+    hr {
+      visibility: hidden;
+    }
+
+    tr {
+      padding: 10px;
+    }
     .drop-zone--over {
       border-style: solid;
     }
@@ -98,7 +110,7 @@ export const acceptablePageLayout = (props: AcceptablePageProps) => html`
     }
 
     #display-table tr {
-      background-color: #f2f2f2;
+      background-color: white;
     }
 
     #display-table tr:hover {
@@ -151,6 +163,7 @@ export const acceptablePageLayout = (props: AcceptablePageProps) => html`
       font-size: 16px;
       padding: 10px;
       cursor: pointer;
+      border-radius: 20px;
     }
 
     .network-button:hover {
@@ -220,6 +233,7 @@ const acceptablePage = (props: AcceptablePageProps) => html`
     data-issuer="${props.issuer}"
     data-issuersignature="${props.issuerSignature}"
     data-smartcontract="${props.smartContract}"
+    data-erc20="${props.ERC20}"
     id="page"
   >
     <div class="center" id="contract-display"></div>
@@ -229,8 +243,9 @@ const acceptablePage = (props: AcceptablePageProps) => html`
         <th></th>
       </tr>
       ${createdDateTemplate(props.createdDate)} ${expiryTemplate(props.expires)}
-      ${networkTemplate(props.network)} ${issuerTemplate(props.issuer)}
+      ${networkTemplate(props.network, false)} ${issuerTemplate(props.issuer)}
     </table>
+    <hr />
     <div class="center red" id="error-display"></div>
     <div class="center" id="redirect-display"></div>
     <div class="center" id="transaction-display"></div>
