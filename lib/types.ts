@@ -46,6 +46,12 @@ export enum RenderType {
   disableAcceptableInputs = "disableAcceptableInputs",
   enableAcceptableInputs = "enableAcceptableInputs",
   deployAgain = "deployAgain",
+  deploySCIntent = "deploySCIntent",
+  deploySCIntentBack = "deploySCIntentBack",
+  SCDeploySelected = "SCDeploySelected",
+  DisableSCInputs = "DisableSCInputs",
+  EnableSCInputs = "EnableSCInputs",
+  SetDeployedSCAddress = "SetDeployedSCAddress",
 }
 type RenderFunction = (props: any) => void;
 
@@ -79,6 +85,12 @@ export type Renderer = {
   [RenderType.disableAcceptableInputs]: RenderFunction;
   [RenderType.enableAcceptableInputs]: RenderFunction;
   [RenderType.deployAgain]: RenderFunction;
+  [RenderType.deploySCIntent]: RenderFunction;
+  [RenderType.deploySCIntentBack]: RenderFunction;
+  [RenderType.SCDeploySelected]: RenderFunction;
+  [RenderType.DisableSCInputs]: RenderFunction;
+  [RenderType.EnableSCInputs]: RenderFunction;
+  [RenderType.SetDeployedSCAddress]: RenderFunction;
 };
 
 export enum EventType {
@@ -91,6 +103,7 @@ export enum EventType {
   stashPage = "stashPage",
   stashDetails = "stashDetails",
   setPosition = "setPosition",
+  setERC20 = "setERC20",
 }
 
 export enum StateProperties {
@@ -103,6 +116,7 @@ export enum StateProperties {
   stashedPage = "stashedPage",
   stashedDetails = "stashedDetails",
   position = "position",
+  isERC20 = "isERC20",
 }
 
 export enum ContractTypes {
@@ -119,6 +133,10 @@ export enum BlockCountry {
   BLOCKNY = "BLOCKNY",
 }
 
+export enum DeploySC {
+  HRC20 = "HRC20",
+}
+
 export type StashedDetails = {
   hash: string;
   signerAddress: string;
@@ -131,6 +149,14 @@ export type IPFSParams = {
   host: string;
   port: number;
   protocol: string;
+};
+
+export type ERC20Params = {
+  name: string;
+  symbol: string;
+  address: string;
+  decimals: number;
+  image: string;
 };
 
 export type State = {
@@ -158,6 +184,7 @@ export type State = {
   participantSignature: string;
   smartcontract: string;
   position: GeolocationPosition;
+  isERC20: ERC20Params;
 };
 
 export type SetHookArgs = {
@@ -184,6 +211,7 @@ export type AcceptablePageProps = {
   hash: string;
   issuerSignature: string;
   smartContract: string;
+  ERC20: string;
 };
 
 export type FulfilledPageProps = {
@@ -201,6 +229,7 @@ export type FulfilledPageProps = {
   issuerSignature: string;
   participantSignature: string;
   smartContract: string;
+  ERC20: string;
 };
 
 export enum Status {
