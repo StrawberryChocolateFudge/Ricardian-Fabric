@@ -38,6 +38,18 @@ export const fulfilledPageLayout = (props: FulfilledPageProps) => html`
       background-position: 54px 55px, 0px 0px, 0px 0px, 0px 0px, 0px 0px;
       font-family: Arial, Helvetica, sans-serif;
     }
+    label {
+      font-size: 0.8rem;
+      color: grey;
+    }
+
+    hr {
+      visibility: hidden;
+    }
+
+    tr {
+      padding: 10px;
+    }
     .center {
       margin: 0 auto;
     }
@@ -72,10 +84,6 @@ export const fulfilledPageLayout = (props: FulfilledPageProps) => html`
     }
 
     #display-table tr {
-      background-color: #f2f2f2;
-    }
-
-    #display-table tr:hover {
       background-color: white;
     }
 
@@ -85,6 +93,15 @@ export const fulfilledPageLayout = (props: FulfilledPageProps) => html`
       text-align: left;
       background-color: white;
       color: white;
+    }
+
+    .network-button {
+      background-color: white;
+      border: none;
+      font-size: 16px;
+      padding: 10px;
+      border-radius: 20px;
+      color: black;
     }
   </style>
 
@@ -107,6 +124,7 @@ export const fulfilledPage = (props: FulfilledPageProps) => html`
     data-participant="${props.participant}"
     data-participantsignature="${props.participantSignature}"
     data-smartcontract="${props.smartContract}"
+    data-erc20="${props.ERC20}"
     id="page"
   >
     <div class="center" id="contract-display"></div>
@@ -115,12 +133,11 @@ export const fulfilledPage = (props: FulfilledPageProps) => html`
         <th></th>
         <th></th>
         <th></th>
-        ${issuerTemplate(props.issuer)}
-        ${getParticipantFromTemplate(props.participant)}
-        ${networkTemplate(props.network)}
-        ${signedDateTemplate(props.createdDate)} 
-        ${parentUrl(props.parentUrl)}
       </tr>
+      ${signedDateTemplate(props.createdDate)}
+      ${networkTemplate(props.network, true)} ${issuerTemplate(props.issuer)}
+      ${getParticipantFromTemplate(props.participant)}
+      ${parentUrl(props.parentUrl)}
     </table>
     <hr />
   </div>
