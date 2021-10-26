@@ -29,7 +29,6 @@ import {
   renderCounter,
   renderCreateButton,
   renderError,
-  renderHarmonyLogo,
   renderLoadingIndicator,
   renderNetworkDropdown,
   renderSanctionsDropdown,
@@ -66,7 +65,6 @@ const Render: Renderer = {
   [RenderType.errorMessage]: (props: State) => {},
   [RenderType.createPage]: (props: State) => {},
   [RenderType.createButton]: (props: State) => {
-    renderHarmonyLogo();
     renderButtonSlotAlignment(true);
     createPageAgreeTerms();
     renderCreateButton(true);
