@@ -42,6 +42,12 @@ export const setStateHook = {
     // This happens only on acceptable pages
     dispatch_renderAcceptButton(cloneState(args.obj));
   },
+  [StateProperties.isERC20]: (args: SetHookArgs) => {
+    if (args.obj.contracttype === ContractTypes.create) {
+      const clone = cloneState(args.obj);
+      dispatch_renderCreateButton(clone);
+    }
+  },
 };
 
 function cloneState(state: State) {
