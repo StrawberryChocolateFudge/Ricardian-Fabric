@@ -1,13 +1,15 @@
 import { html, render } from "lit-html";
-import { ContractTypes, State } from "../types";
+import { ContractTypes, DeploySC, State } from "../types";
 import { AcceptButton, acceptTools } from "./templates/acceptTools";
 import { createButton } from "./templates/createButton";
 import { CreateSummary } from "./templates/createSummary";
+import { deploySCIntentPopup } from "./templates/deployScIntentPopup";
 import { helperTooltips } from "./templates/helperTooltips";
 import { loadingIndicator } from "./templates/loadingIndicator";
-import { NetworkDropdown } from "./templates/networkdropdown";
+import { HarmonyLogo, NetworkDropdown } from "./templates/networkdropdown";
 import { redirectCounter } from "./templates/redirectCounter";
 import { SanctionsDropdown } from "./templates/sanctionsDropdown";
+import { SCConstructorPopup } from "./templates/SCContructorPopup";
 import { termsLayout } from "./templates/terms";
 import { transactionUrl } from "./templates/transaction";
 import {
@@ -16,6 +18,7 @@ import {
   getPromptEl,
   getPromptElDOCX,
   setBannerDisplayBlock,
+  setBannerDisplayNone,
 } from "./utils";
 
 export function renderAcceptTools(props: State) {
@@ -296,17 +299,26 @@ export function renderButtonSlotAlignment(center: boolean) {
   }
 }
 
-
-
 export function renderNetworkDropdown() {
   const dropdown = getById("network-dropdown");
   render(NetworkDropdown(), dropdown);
-  const toggle = getById("network_checkbox_toggle") as HTMLInputElement;
+}
+
+export function handleDropdownClosing() {
+  const networkDropdown = getById("network-dropdown");
+  const networktoggle = getById("network_checkbox_toggle") as HTMLInputElement;
+  const sanctionsDropdown = getById("sanctions-dropdown");
+  const sanctionsToggle = getById(
+    "sanctions_checkbox_toggle"
+  ) as HTMLInputElement;
 
   const page = getById("page");
   page.onclick = function (ev: Event) {
-    if (!ev.composedPath().includes(dropdown)) {
-      toggle.checked = false;
+    if (!ev.composedPath().includes(networkDropdown)) {
+      networktoggle.checked = false;
+    }
+    if (!ev.composedPath().includes(sanctionsDropdown)) {
+      sanctionsToggle.checked = false;
     }
   };
 }
@@ -314,14 +326,50 @@ export function renderNetworkDropdown() {
 export function renderSanctionsDropdown() {
   const dropdown = getById("sanctions-dropdown");
   render(SanctionsDropdown(true), dropdown);
-  const toggle = getById("sanctions_checkbox_toggle") as HTMLInputElement;
-
-  const page = getById("page");
-  page.onclick = function (ev: Event) {
-    // Handling click away by checking where the click bubbles from
-    if (!ev.composedPath().includes(dropdown)) {
-      //If the click event didn't bubble from the dropdown
-      toggle.checked = false;
-    }
-  };
 }
+
+export function renderSCIntentPopup() {
+  setBannerDisplayBlock();
+  const layout = getById("overlay-layout");
+  layout.style.height = "40%";
+  render(deploySCIntentPopup(), layout);
+}
+
+export function removeSCIntentPopup() {
+  setBannerDisplayNone();
+}
+
+export function renderContructorInputs(selected: DeploySC) {
+  const layout = getById("overlay-layout");
+  layout.style.height = "40%";
+  render(SCConstructorPopup(selected), layout);
+}
+
+export function disableSCInputs(params: any) {
+  const nextButton = getById("SCConstructCreateButton") as HTMLButtonElement;
+  nextButton.disabled = true;
+  nextButton.style.cursor = "not-allowed";
+  nextButton.style.backgroundColor = "white";
+
+  params.forEach((param) => {
+    const el = getById(`${param.name}-input`) as HTMLInputElement;
+    el.disabled = true;
+  });
+}
+
+export function enableSCInputs(params: any) {
+  const nextButton = getById("SCConstructCreateButton") as HTMLButtonElement;
+  nextButton.disabled = false;
+  nextButton.style.cursor = "pointer";
+  nextButton.style.backgroundColor = "black";
+  params.forEach((param) => {
+    const el = getById(`${param.name}-input`) as HTMLInputElement;
+    el.disabled = false;
+  });
+}
+
+export function setDeployedSCAddressToDOM(address: string) {
+  const smartContract = getById("smartcontract-input") as HTMLInputElement;
+  smartContract.value = address;
+}
+
