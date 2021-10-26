@@ -1,4 +1,4 @@
-import { BlockCountry, ContractTypes } from "../types";
+import { BlockCountry, ContractTypes, ERC20Params } from "../types";
 
 export function getRedirectToDataProp(page: HTMLElement): string {
   return page.dataset.redirectto;
@@ -52,6 +52,14 @@ export function getIssuerSignatureFromDataProp(page: HTMLElement): string {
 
 export function getSmartContractFromDataProp(page: HTMLElement): string {
   return page.dataset.smartcontract;
+}
+
+export function getIsERC20FromDataProp(page: HTMLElement): ERC20Params {
+  const erc20 = page.dataset.erc20;
+  if (erc20 === undefined) {
+    return {} as ERC20Params;
+  }
+  return JSON.parse(page.dataset.erc20) as ERC20Params;
 }
 
 export function getBlockCountriesFromDataProp(
