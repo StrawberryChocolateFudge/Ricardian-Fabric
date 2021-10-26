@@ -1,4 +1,4 @@
-import { Events, EventType, StashedDetails } from "../types";
+import { ERC20Params, Events, EventType, StashedDetails } from "../types";
 import { dispatch } from "./dispatch";
 
 export function dispatch_setInit() {
@@ -40,5 +40,12 @@ export function dispatch_setPosition(position: GeolocationPosition) {
   dispatch(Events.stateChange, {
     type: EventType.setPosition,
     value: { position },
+  });
+}
+
+export function dispatch_setERC20(to: ERC20Params) {
+  dispatch(Events.stateChange, {
+    type: EventType.setERC20,
+    value:  to ,
   });
 }
