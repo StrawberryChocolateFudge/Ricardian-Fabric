@@ -1,4 +1,4 @@
-import { RenderType, State } from "../types";
+import { DeploySC, RenderType, State } from "../types";
 import { dispatch } from "./dispatch";
 import { Events } from "../types";
 
@@ -31,10 +31,10 @@ export function dispatch_removeLoadingIndicator(from: string) {
   });
 }
 
-export function dispatch_renderTransaction(props: State,url: string) {
+export function dispatch_renderTransaction(props: State, url: string) {
   dispatch(Events.render, {
     type: RenderType.transaction,
-    props: { ...props,url },
+    props: { ...props, url },
   });
 }
 
@@ -184,5 +184,46 @@ export function dispatch_deployAgain(props: State) {
   dispatch(Events.render, {
     type: RenderType.deployAgain,
     props,
+  });
+}
+
+export function dispatch_deploySCIntent(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.deploySCIntent,
+    props,
+  });
+}
+
+export function dispatch_back_SCIntent() {
+  dispatch(Events.render, {
+    type: RenderType.deploySCIntentBack,
+    props: {},
+  });
+}
+
+export function dispatch_SCDeploySelected(deploy: DeploySC) {
+  dispatch(Events.render, {
+    type: RenderType.SCDeploySelected,
+    props: { deploy },
+  });
+}
+
+export function dispatch_DisableSCInputs(params: any) {
+  dispatch(Events.render, {
+    type: RenderType.DisableSCInputs,
+    props: { params },
+  });
+}
+export function dispatch_EnableSCInputs(params: any) {
+  dispatch(Events.render, {
+    type: RenderType.EnableSCInputs,
+    props: { params },
+  });
+}
+
+export function dispatch_setDeployedSCAddress(address: string) {
+  dispatch(Events.render, {
+    type: RenderType.SetDeployedSCAddress,
+    props: { address },
   });
 }
