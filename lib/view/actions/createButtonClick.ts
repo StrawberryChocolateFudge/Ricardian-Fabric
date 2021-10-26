@@ -25,7 +25,6 @@ import {
   getById,
   getExpires,
   didExpire,
-  getOnlySigner,
   getTermsCheckbox,
   getRedirectTo,
   getSmartContract,
@@ -123,6 +122,7 @@ export function renderCreateButtonClick(props: State) {
           hash,
           issuerSignature,
           smartContract,
+          ERC20: JSON.stringify(props.isERC20)
         },
       });
 
