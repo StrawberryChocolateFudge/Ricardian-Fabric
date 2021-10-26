@@ -1,30 +1,45 @@
-import { ContractTypes, Events, Renderer, RenderType, State } from "../types";
+import {
+  ContractTypes,
+  DeploySC,
+  Events,
+  Renderer,
+  RenderType,
+  State,
+} from "../types";
 import { renderCreateButtonClick } from "./actions/createButtonClick";
 import { attachExpiryClickAndListener } from "./actions/attachExpiryClickAndListener";
 import { renderAcceptOnCLick } from "./actions/renderAcceptButton";
 import {
   disableButton,
   disableCreateInputs,
+  disableSCInputs,
   enableButton,
   enableCreateInputs,
+  enableSCInputs,
+  handleDropdownClosing,
   removeAcceptedButton,
   removeButtons,
   removeError,
   removeLoadingIndicator,
+  removeSCIntentPopup,
   removeTransaction,
   renderAcceptButton,
   renderButtonSlotAlignment,
+  renderContructorInputs,
   renderCounter,
   renderCreateButton,
   renderError,
+  renderHarmonyLogo,
   renderLoadingIndicator,
   renderNetworkDropdown,
   renderSanctionsDropdown,
+  renderSCIntentPopup,
   renderSummary,
   renderTerms,
   renderTooltips,
   renderTransaction,
   renderVersion,
+  setDeployedSCAddressToDOM,
   updatePromptError,
   updatePromptErrorDOCX,
   updatePromptSuccess,
@@ -41,14 +56,17 @@ import { deployAgainButtonActions } from "./actions/deployAgainButton";
 import { changeContainerSlotStyle } from "./utils";
 import {
   addChainButtonListener,
+  addDeployButtonListener,
   networkSelectActions,
 } from "./actions/networkSelectActions";
+import { constructSCActions, deploySCActions } from "./actions/deploySCActions";
 
 const Render: Renderer = {
   [RenderType.successMessage]: (props: State) => {},
   [RenderType.errorMessage]: (props: State) => {},
   [RenderType.createPage]: (props: State) => {},
   [RenderType.createButton]: (props: State) => {
+    renderHarmonyLogo();
     renderButtonSlotAlignment(true);
     createPageAgreeTerms();
     renderCreateButton(true);
@@ -57,10 +75,11 @@ const Render: Renderer = {
     renderCreateButtonClick(props);
     attachExpiryClickAndListener(props);
     renderTooltips();
-
     renderSanctionsDropdown();
     renderNetworkDropdown();
     networkSelectActions();
+    handleDropdownClosing();
+    addDeployButtonListener(props);
   },
   [RenderType.acceptButton]: (props: State) => {
     renderAcceptTools(props);
@@ -156,6 +175,27 @@ const Render: Renderer = {
   [RenderType.enableAcceptableInputs]: (props: {}) => {},
   [RenderType.deployAgain]: (props: State) => {
     deployAgainButtonActions(props);
+  },
+  [RenderType.deploySCIntent]: (props: State) => {
+    renderSCIntentPopup();
+    deploySCActions();
+  },
+  [RenderType.deploySCIntentBack]: () => {
+    removeSCIntentPopup();
+  },
+  [RenderType.SCDeploySelected]: (props: { deploy: DeploySC }) => {
+    renderContructorInputs(props.deploy);
+    constructSCActions(props.deploy);
+  },
+  [RenderType.DisableSCInputs]: (props: { params: any }) => {
+    console.log("running disabling");
+    disableSCInputs(props.params);
+  },
+  [RenderType.EnableSCInputs]: (props: { params: any }) => {
+    enableSCInputs(props.params);
+  },
+  [RenderType.SetDeployedSCAddress]: (props: { address }) => {
+    setDeployedSCAddressToDOM(props.address);
   },
 };
 
