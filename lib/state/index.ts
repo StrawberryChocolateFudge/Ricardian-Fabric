@@ -1,4 +1,4 @@
-import { Events, EventType, StashedDetails, State } from "../types";
+import { ERC20Params, Events, EventType, StashedDetails, State } from "../types";
 import { getCurrentUrl, getPage } from "../view/utils";
 import {
   getBlockCountriesFromDataProp,
@@ -6,6 +6,7 @@ import {
   getCurrentPageDataProp,
   getExpiresFromDataProp,
   getHashFromDataProp,
+  getIsERC20FromDataProp,
   getIssuerDataProp,
   getIssuerSignatureFromDataProp,
   getNetworkFromDataProp,
@@ -49,6 +50,7 @@ import { setStateHook } from "./setStateHook";
       participantSignature: "",
       smartcontract: getSmartContractFromDataProp(pageEl),
       position: undefined,
+      isERC20: getIsERC20FromDataProp(pageEl),
     };
 
     const stateHandler = {
@@ -87,9 +89,12 @@ import { setStateHook } from "./setStateHook";
     [EventType.stashDetails]: (value: StashedDetails) => {
       stateContainer.stashedDetails = value;
     },
-    [EventType.setPosition]: (value: {position: GeolocationPosition}) =>{ 
+    [EventType.setPosition]: (value: { position: GeolocationPosition }) => {
       stateContainer.position = value.position;
-    }
+    },
+    [EventType.setERC20]: (value: ERC20Params) => {
+      stateContainer.isERC20 = value;
+    },
   };
 
   document.body.addEventListener(Events.stateChange, function (event: any) {
