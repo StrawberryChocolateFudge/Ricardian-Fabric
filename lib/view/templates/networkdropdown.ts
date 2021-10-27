@@ -27,7 +27,7 @@ export const NetworkDropdown = () => html`
       </button>
     </li>
     <li><hr /></li>
-    <li>
+    <!-- <li>
       <button id="network-hmny-mainnet-shard0" class="network-button">
         ${HarmonyLogo()} Harmony Mainnet Shard 0
       </button>
@@ -46,7 +46,7 @@ export const NetworkDropdown = () => html`
       <button id="network-hmny-mainnet-shard3" class="network-button">
         ${HarmonyLogo()} Harmony Mainnet Shard 3
       </button>
-    </li>
+    </li> -->
   </ul>
 `;
 
