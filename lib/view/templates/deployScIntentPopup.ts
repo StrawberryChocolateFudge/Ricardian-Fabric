@@ -1,4 +1,5 @@
 import { html } from "lit-html";
+import { helperTooltips } from "./helperTooltips";
 
 export function deploySCIntentPopup() {
   return html` <style></style>
@@ -7,8 +8,11 @@ export function deploySCIntentPopup() {
       You can deploy a contract, compatible with Ricardian Fabric.
     </small>
     <div class="deploySCIntentContainer">
-      <ul class="deploySCList">
-        <li><input id="HRC20-checkbox" type="checkbox" checked /> HRC20</li>
+      <ul class="deploySCUL">
+        <li id="HRC20-li" class="deploySCLI">
+          <input id="HRC20-checkbox" type="checkbox" checked />ERC20
+          ${helperTooltips("Tokens deployed are compatible with the standard.")}
+        </li>
       </ul>
       <div class="SCIntent-button-row">
         <button class="SCBackButton" id="SCIntentBackButton">Back</button>
