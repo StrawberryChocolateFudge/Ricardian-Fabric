@@ -7,7 +7,7 @@ import { deploySCIntentPopup } from "./templates/deployScIntentPopup";
 import { helperTooltips } from "./templates/helperTooltips";
 import { loadingIndicator } from "./templates/loadingIndicator";
 import { HarmonyLogo, NetworkDropdown } from "./templates/networkdropdown";
-import { redirectCounter } from "./templates/redirectCounter";
+import { redirectButton, redirectCounter } from "./templates/redirectCounter";
 import { SanctionsDropdown } from "./templates/sanctionsDropdown";
 import { SCConstructorPopup } from "./templates/SCContructorPopup";
 import { termsLayout } from "./templates/terms";
@@ -71,9 +71,9 @@ export function renderVersion(version: string) {
   getById("version").textContent = version;
 }
 
-export function renderCounter(count: number) {
+export function renderredirect() {
   const counterEl = getById("redirect-display");
-  render(redirectCounter(count), counterEl);
+  render(redirectButton, counterEl);
 }
 
 export function enableButton(props: State) {
@@ -113,7 +113,7 @@ export function renderCreateButton(disabled: boolean) {
 export function renderTerms() {
   setBannerDisplayBlock();
   const layout = getById("overlay-layout");
-  layout.style.height = "80%";
+  layout.style.maxHeight = "100%";
   render(termsLayout(), layout);
 }
 
@@ -331,7 +331,7 @@ export function renderSanctionsDropdown() {
 export function renderSCIntentPopup() {
   setBannerDisplayBlock();
   const layout = getById("overlay-layout");
-  layout.style.height = "40%";
+  layout.style.maxHeight = "100%";
   render(deploySCIntentPopup(), layout);
 }
 
@@ -341,7 +341,6 @@ export function removeSCIntentPopup() {
 
 export function renderContructorInputs(selected: DeploySC) {
   const layout = getById("overlay-layout");
-  layout.style.height = "40%";
   render(SCConstructorPopup(selected), layout);
 }
 
@@ -372,4 +371,3 @@ export function setDeployedSCAddressToDOM(address: string) {
   const smartContract = getById("smartcontract-input") as HTMLInputElement;
   smartContract.value = address;
 }
-
