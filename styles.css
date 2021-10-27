@@ -31,7 +31,8 @@ body {
 
 input[type="text"],
 input[type="url"],
-input[type="date"] {
+input[type="date"],
+input[type="number"] {
   background-color: transparent;
   border: none;
   border-bottom: 1px solid grey;
@@ -56,7 +57,8 @@ input[type="date"]:disabled {
 
 input[type="text"]:focus,
 input[type="url"]:focus,
-input[type="date"]:focus {
+input[type="date"]:focus,
+input[type="number"]:focus {
   border-bottom: 1px solid darkgrey;
   box-shadow: 0 1px 0 0 darkgrey;
 }
@@ -206,8 +208,10 @@ hr {
   color: darkgrey;
 }
 
-.button-row {
+.row {
   display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 }
 
 #save-contract {
@@ -263,8 +267,22 @@ hr {
 .fabric-color {
   color: #a4a4a4;
 }
+#docx-dropzone {
+  display: none;
+}
+#drop-zone-accordion {
+  cursor: pointer;
+  background-color: #f2f2f2;
+  padding: 5px;
+  color: black !important;
+  border: none;
+  border-radius: 10px;
+  width: 100px;
+  right: 0;
+}
 
 .drop-zone {
+  margin-top: 20px;
   min-width: 200px;
   height: 200px;
   padding: 25px;
@@ -322,15 +340,21 @@ hr {
   color: black;
   padding: 5px;
 }
-.deploySCList {
+.deploySCUL {
   list-style-type: none;
   list-style: none;
-  list-style-position: inside;
+  list-style-position: initial;
+  padding: 0;
+}
+
+.deploySCLI {
   padding: 8px;
   border-radius: 1px;
   background-color: white;
   box-shadow: 1px 1px 1px 1px darkgrey;
+  cursor: pointer;
 }
+
 .SCBackButton {
   cursor: pointer;
   background-color: #f2f2f2;
