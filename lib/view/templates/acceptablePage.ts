@@ -170,6 +170,15 @@ export const acceptablePageLayout = (props: AcceptablePageProps) => html`
       background-color: white;
     }
 
+    .NextButton {
+      cursor: pointer;
+      background-color: black;
+      border-radius: 20px;
+      padding: 5px;
+      color: white !important;
+      border: none;
+    }
+
     /* Animations to fade the snackbar in and out */
     @-webkit-keyframes fadein {
       from {
@@ -236,8 +245,8 @@ const acceptablePage = (props: AcceptablePageProps) => html`
     data-erc20="${props.ERC20}"
     id="page"
   >
-    <div class="center" id="contract-display"></div>
-    <table id="display-table" class="center">
+    <div id="contract-display"></div>
+    <table id="display-table">
       <tr>
         <th></th>
         <th></th>
