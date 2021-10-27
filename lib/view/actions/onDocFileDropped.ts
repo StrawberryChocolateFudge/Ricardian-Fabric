@@ -33,7 +33,7 @@ export function onDocFileDropped(props: State) {
       dispatch_removeError();
       convertToHTML(docxInput.files[0], editor);
     } else {
-      dispatch_promptErrorDOCX("Invalid wallet,must be a docx file");
+      dispatch_promptErrorDOCX("Invalid file,must be a docx file");
     }
   };
 
@@ -91,4 +91,18 @@ function readFileInputEventAsArrayBuffer(file, callback) {
   };
 
   reader.readAsArrayBuffer(file);
+}
+
+export function templateAccordionActions() {
+  const button = getById("drop-zone-accordion");
+  const dropzone = getById("docx-dropzone");
+
+  button.onclick = function () {
+    const display = dropzone.style.display;
+    if (display === "" || display === "none") {
+      dropzone.style.display = "block";
+    } else if (display === "block") {
+      dropzone.style.display = "none";
+    }
+  };
 }
