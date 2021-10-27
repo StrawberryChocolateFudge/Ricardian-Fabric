@@ -12,6 +12,8 @@ import {
   findConstructorParameters,
   getAddress,
   prepareType,
+  requestAccounts,
+  watchAsset,
   web3Injected,
 } from "../../wallet";
 import { getHRC20Abi, getHRC20Bytecode } from "../../wallet/abi/HRC20";
@@ -21,6 +23,7 @@ import { dispatch_setERC20 } from "../../dispatch/stateChange";
 
 export function deploySCActions() {
   const hrc20 = getById("HRC20-checkbox") as HTMLInputElement;
+  const hrc20Li = getById("HRC20-li");
   const backbutton = getById("SCIntentBackButton") as HTMLButtonElement;
   const nextButton = getById("SCIntentNextButton") as HTMLButtonElement;
 
@@ -30,6 +33,10 @@ export function deploySCActions() {
     } else {
       nextButton.disabled = false;
     }
+  };
+
+  hrc20Li.onclick = function () {
+    hrc20.checked = !hrc20.checked;
   };
 
   backbutton.onclick = function () {
@@ -65,7 +72,8 @@ export function constructSCActions(selected: DeploySC) {
 
   const backbutton = getById("SCConstructBackButton");
   const nextButton = getById("SCConstructCreateButton");
-
+  const logoUrl = getById("logo-url-input") as HTMLInputElement;
+  const acceptTerms = getById("agree-to-deploy-sc") as HTMLInputElement;
   backbutton.onclick = function () {
     dispatch_back_SCIntent();
   };
@@ -78,10 +86,16 @@ export function constructSCActions(selected: DeploySC) {
       onboarding.startOnboarding();
       return;
     }
+    await requestAccounts();
 
     const empty = inputsEmpty(constructorElements, constructorParams);
     if (empty) {
       dispatch_renderError("You must fill out the empty fields");
+      return;
+    }
+
+    if (acceptTerms.checked === false) {
+      dispatch_renderError("You must accept the terms");
       return;
     }
 
@@ -99,13 +113,21 @@ export function constructSCActions(selected: DeploySC) {
       dispatch_EnableSCInputs(constructorParams);
     };
 
-    const onReceipt = (receipt) => {
-      console.log(receipt.contractAddress);
-      dispatch_setDeployedSCAddress(receipt.contractAddress);
-      dispatch_setERC20(
-        getERC20Params(constructorElements, receipt.contractAddress)
+    const onReceipt = async (receipt) => {
+      const erc20Params = getERC20Params(
+        constructorElements,
+        receipt.contractAddress,
+        logoUrl.value
       );
+      dispatch_setDeployedSCAddress(receipt.contractAddress);
+      dispatch_setERC20(erc20Params);
       dispatch_back_SCIntent();
+
+      await watchAsset(erc20Params, () => {
+        dispatch_renderError(
+          "Failed to add " + erc20Params.name + " token to wallet."
+        );
+      });
     };
 
     await deployContract(
@@ -143,13 +165,13 @@ export function prepareArguments(constructorElements, params) {
   return preparedArgs;
 }
 
-function getERC20Params(constructorElements, contractAddress) {
+function getERC20Params(constructorElements, contractAddress, imageUrl) {
   const erc20: ERC20Params = {
     name: constructorElements["tokenName"].el.value,
     symbol: constructorElements["tokenSymbol"].el.value,
     address: contractAddress,
     decimals: constructorElements["_decimals"].el.value,
-    image: "", //TODO:
+    image: imageUrl,
   };
   return erc20;
 }
