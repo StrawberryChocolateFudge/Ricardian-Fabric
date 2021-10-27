@@ -2,8 +2,7 @@ import { createRevGeocoder } from "../geocoding/index";
 import {
   dispatch_disableButton,
   dispatch_enableButton,
-  dispatch_redirectCounter,
-  dispatch_removeError,
+  dispatch_redirect,
   dispatch_removeLoadingIndicator,
   dispatch_renderError,
   dispatch_renderLoadingIndicator,
@@ -223,17 +222,9 @@ export async function handlePost(props: State, id: string) {
       return url + "/" + id;
     }
   };
-  // I show a countback and redirect
-  let counter = 1;
-  dispatch_redirectCounter(counter);
-  const interval = setInterval(function () {
-    counter++;
-    dispatch_redirectCounter(counter);
-    if (counter === 5) {
-      clearInterval(interval);
-      redirect(getURLWithId(url, id));
-    }
-  }, REDIRECT_TIMEOUT);
+
+  dispatch_redirect(getURLWithId(url,id));
+
 }
 
 export async function getFulfilledPage(props: FulfilledPageProps) {
