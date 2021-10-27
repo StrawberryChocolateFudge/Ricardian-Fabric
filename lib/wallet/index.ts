@@ -1,12 +1,36 @@
 import Web3 from "web3";
-
 import { recoverTypedSignature } from "eth-sig-util";
 import { ECDSASignature, fromRpcSig, toChecksumAddress } from "ethereumjs-util";
-import { getAgreementAbi } from "./abi/Agreement";
-import { ContractTypes, Options, Status } from "../types";
+import { ContractTypes, ERC20Params, Options, Status } from "../types";
+import { getSimpleTermsAbi } from "./abi/SimpleTerms";
+
+//TODO: Calculate the gas for all the transactions
+
 export async function requestAccounts() {
-  //TODO: refactor to request
-  await window.ethereum.send("eth_requestAccounts");
+  await window.ethereum.request({ method: "eth_requestAccounts" });
+}
+
+export async function watchAsset(erc20Params: ERC20Params, onError: any) {
+  await window.ethereum
+    .request({
+      method: "wallet_watchAsset",
+      params: {
+        type: "ERC20",
+        options: {
+          address: erc20Params.address,
+          symbol: erc20Params.symbol,
+          decimals: erc20Params.decimals,
+          image: erc20Params.image,
+        },
+      },
+    })
+    .then((success) => {
+      if (success) {
+      } else {
+        onError();
+      }
+    })
+    .catch(console.error);
 }
 
 export async function getAddress(): Promise<string> {
@@ -33,12 +57,14 @@ export async function signHash(
 ) {
   const msgParams = getmsgParams(
     networkId,
-    "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC",
+    smartContract,
     hash,
     url,
     contractType
   );
-  console.log(msgParams);
+
+  console.log(JSON.stringify(msgParams));
+
   await window.ethereum.sendAsync(
     {
       method: "eth_signTypedData_v3",
@@ -48,14 +74,12 @@ export async function signHash(
       if (result.error) {
         onError(result.error.message);
       } else {
+        console.log(result.result);
         const recovered = await recoverTypedSignatures(
           msgParams,
           result.result
         );
-        console.log(recovered + "       recovered");
         if (compareAddresses(from, recovered)) {
-          console.log(getSigParams(result.result));
-
           await onSuccess(result.result);
         } else {
           await onError("Signature verification failed.");
@@ -72,7 +96,11 @@ function getmsgParams(
   url: string | undefined,
   contractType: ContractTypes
 ) {
+  console.log(smartContract);
+  console.log(Web3.utils.isAddress(smartContract));
+
   const valueOnlyDOC = [{ name: "value", type: "string" }];
+
   const withUrlDOC = [
     { name: "value", type: "string" },
     { name: "url", type: "string" },
@@ -86,7 +114,7 @@ function getmsgParams(
   const message =
     contractType === ContractTypes.create ? valueOnlyMSG : withUrlMSG;
 
-  return {
+  const msgParams = {
     domain: {
       chainId: networkId,
       name: "Ricardian Fabric",
@@ -105,6 +133,8 @@ function getmsgParams(
     primaryType: "doc",
     message,
   };
+  console.log(msgParams);
+  return msgParams;
 }
 
 export async function recoverTypedSignatures(msgParams, signature) {
@@ -145,7 +175,7 @@ export async function canUseContract(
   const web3 = new Web3(window.ethereum);
   try {
     const agreementContract = await new web3.eth.Contract(
-      getAgreementAbi(),
+      getSimpleTermsAbi(),
       address
     );
 
@@ -166,7 +196,10 @@ export async function canAgree(
   try {
     const web3 = new Web3(window.ethereum);
 
-    const contract = new web3.eth.Contract(getAgreementAbi(), contractAddress);
+    const contract = new web3.eth.Contract(
+      getSimpleTermsAbi(),
+      contractAddress
+    );
 
     const alreadyAccepted = await contract.methods
       .acceptedTerms(signerAddress)
@@ -197,7 +230,7 @@ export async function setTerms(arg: {
     const web3 = new Web3(window.ethereum);
 
     const contract = new web3.eth.Contract(
-      getAgreementAbi(),
+      getSimpleTermsAbi(),
       arg.contractAddress
     );
 
@@ -232,25 +265,20 @@ export async function acceptAgreement(arg: {
     const web3 = new Web3(window.ethereum);
 
     const contract = new web3.eth.Contract(
-      getAgreementAbi(),
+      getSimpleTermsAbi(),
       arg.contractAddress
     );
 
     const sigParams = getSigParams(arg.signature);
 
-    const result = await contract.methods
-      .recoverSignature(arg.hash, sigParams.v, sigParams.r, sigParams.s)
-      .call();
-
-    const sifg = await recoverTypedSignatures(arg.hash, arg.signature);
+    //TODO: handle onError, onReceipt
     const resp = await contract.methods
-      .accept(arg.url, arg.hash, sigParams.v, sigParams.r, sigParams.s)
+      .Accept(sigParams.v, sigParams.r, sigParams.s, arg.hash, arg.url)
       .send({ from: arg.signerAddress });
   } catch (err) {
     options.status = Status.Failure;
     options.error = err.message;
   }
-
   return options;
 }
 
@@ -285,7 +313,6 @@ export async function switchToHarmony(
   const rpcUrls = getHarmonyRPCURLS(shard, type);
 
   const switched = await switch_to_Chain(hexchainId);
-  console.log(switched);
   if (!switched) {
     await window.ethereum.request({
       method: "wallet_addEthereumChain",
@@ -348,3 +375,50 @@ function getHarmonyRPCURLS(shard: number, type: "Mainnet" | "Testnet") {
   }
 }
 
+export function findConstructorParameters(abi: Array<any>) {
+  let constructorParams;
+  for (let i = 0; i < abi.length; i++) {
+    if (abi[i].type === "constructor") {
+      constructorParams = abi[i].inputs;
+    }
+  }
+  return constructorParams;
+}
+
+export async function deployContract(
+  abi: any,
+  bytecode: any,
+  address: string,
+  args: Array<any>,
+  onError: any,
+  onReceipt: any
+) {
+  const web3 = new Web3(window.ethereum);
+
+  await new web3.eth.Contract(abi)
+    .deploy({
+      data: bytecode,
+      arguments: args,
+    })
+    .send({ from: address })
+    .on("error", onError)
+    .on("receipt", onReceipt);
+}
+
+export function prepareType(type: string, value: string) {
+  // This function only considers the HRC20 contract for now!
+  switch (type) {
+    case "string":
+      return value;
+      break;
+    case "uint8":
+      return Web3.utils.toNumber(value);
+      break;
+    case "uint256":
+      return Web3.utils.toBN(value);
+      break;
+    default:
+      return value;
+      break;
+  }
+}
