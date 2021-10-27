@@ -5,7 +5,7 @@ import {
   dispatch_removeError,
 } from "../../dispatch/render";
 import { ContractTypes, State } from "../../types";
-import { getById } from "../utils";
+import { getById, redirect } from "../utils";
 
 export function deployAgainButtonActions(props: State) {
   const buttonEl = getById("deploy-again-button");
@@ -20,5 +20,13 @@ export function deployAgainButtonActions(props: State) {
     dispatch_enableCreateInputs();
     dispatch_enableAcceptableInputs();
     dispatch_removeError();
+  };
+}
+
+export function redirectAction(url) {
+  const button = getById("redirect-button");
+
+  button.onclick = function () {
+    redirect(url);
   };
 }
