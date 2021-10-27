@@ -26,7 +26,7 @@ import {
   renderAcceptButton,
   renderButtonSlotAlignment,
   renderContructorInputs,
-  renderCounter,
+  renderredirect,
   renderCreateButton,
   renderError,
   renderLoadingIndicator,
@@ -46,12 +46,18 @@ import {
 } from "./render";
 import { renderAcceptTools } from "./render";
 import { areYouSureButtons } from "./actions/areYouSureButtons";
-import { onDocFileDropped } from "./actions/onDocFileDropped";
+import {
+  onDocFileDropped,
+  templateAccordionActions,
+} from "./actions/onDocFileDropped";
 import {
   attachTermsButtonListeners,
   createPageAgreeTerms,
 } from "./actions/terms";
-import { deployAgainButtonActions } from "./actions/deployAgainButton";
+import {
+  deployAgainButtonActions,
+  redirectAction,
+} from "./actions/deployAgainButton";
 import { changeContainerSlotStyle } from "./utils";
 import {
   addChainButtonListener,
@@ -70,6 +76,7 @@ const Render: Renderer = {
     renderCreateButton(true);
     // The order of attaching listeners is important
     onDocFileDropped(props);
+    templateAccordionActions();
     renderCreateButtonClick(props);
     attachExpiryClickAndListener(props);
     renderTooltips();
@@ -111,8 +118,9 @@ const Render: Renderer = {
   [RenderType.version]: (props: { version: string }) => {
     renderVersion(props.version);
   },
-  [RenderType.redirectCounter]: (props: { count: number }) => {
-    renderCounter(props.count);
+  [RenderType.redirect]: (props: { url: string }) => {
+    renderredirect();
+    redirectAction(props.url);
   },
   [RenderType.dateClickListener]: (props: State) => {
     attachExpiryClickAndListener(props);
