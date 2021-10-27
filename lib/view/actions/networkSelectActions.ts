@@ -26,10 +26,10 @@ export function networkSelectActions() {
   const testnetShard2 = getById("network-hmny-testnet-shard2");
   const testnetShard3 = getById("network-hmny-testnet-shard3");
 
-  const mainnetShard0 = getById("network-hmny-mainnet-shard0");
-  const mainnetShard1 = getById("network-hmny-mainnet-shard1");
-  const mainnetShard2 = getById("network-hmny-mainnet-shard2");
-  const mainnetShard3 = getById("network-hmny-mainnet-shard3");
+  // const mainnetShard0 = getById("network-hmny-mainnet-shard0");
+  // const mainnetShard1 = getById("network-hmny-mainnet-shard1");
+  // const mainnetShard2 = getById("network-hmny-mainnet-shard2");
+  // const mainnetShard3 = getById("network-hmny-mainnet-shard3");
 
   testnetShard0.onclick = async function () {
     await switchNetwork("Harmony", 0, "Testnet");
@@ -43,32 +43,32 @@ export function networkSelectActions() {
   testnetShard3.onclick = async function () {
     await switchNetwork("Harmony", 3, "Testnet");
   };
-  mainnetShard0.onclick = async function () {
-    await switchNetwork("Harmony", 0, "Mainnet");
-  };
-  mainnetShard1.onclick = async function () {
-    await switchNetwork("Harmony", 1, "Mainnet");
-  };
-  mainnetShard2.onclick = async function () {
-    await switchNetwork("Harmony", 2, "Mainnet");
-  };
-  mainnetShard3.onclick = async function () {
-    await switchNetwork("Harmony", 3, "Mainnet");
-  };
+  // mainnetShard0.onclick = async function () {
+  //   await switchNetwork("Harmony", 0, "Mainnet");
+  // };
+  // mainnetShard1.onclick = async function () {
+  //   await switchNetwork("Harmony", 1, "Mainnet");
+  // };
+  // mainnetShard2.onclick = async function () {
+  //   await switchNetwork("Harmony", 2, "Mainnet");
+  // };
+  // mainnetShard3.onclick = async function () {
+  //   await switchNetwork("Harmony", 3, "Mainnet");
+  // };
 }
 
 export function addChainButtonListener(props: State) {
   const addChainButton = getById("addChainButton");
   addChainButton.onclick = async function () {
     const chains = {
-      [Chains.HmnyMainnetShard0]: async () =>
-        await switchNetwork("Harmony", 0, "Mainnet"),
-      [Chains.HmnyMainnetShard1]: async () =>
-        await switchNetwork("Harmony", 1, "Mainnet"),
-      [Chains.HmnyMainnetShard2]: async () =>
-        await switchNetwork("Harmony", 2, "Mainnet"),
-      [Chains.HmnyMainnetShard3]: async () =>
-        await switchNetwork("Harmony", 3, "Mainnet"),
+      // [Chains.HmnyMainnetShard0]: async () =>
+      //   await switchNetwork("Harmony", 0, "Mainnet"),
+      // [Chains.HmnyMainnetShard1]: async () =>
+      //   await switchNetwork("Harmony", 1, "Mainnet"),
+      // [Chains.HmnyMainnetShard2]: async () =>
+      //   await switchNetwork("Harmony", 2, "Mainnet"),
+      // [Chains.HmnyMainnetShard3]: async () =>
+      //   await switchNetwork("Harmony", 3, "Mainnet"),
       [Chains.HmnyTestnetShard0]: async () =>
         await switchNetwork("Harmony", 0, "Testnet"),
       [Chains.HmnyTestnetShard1]: async () =>
