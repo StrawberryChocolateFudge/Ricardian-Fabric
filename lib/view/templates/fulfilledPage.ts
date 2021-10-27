@@ -128,7 +128,7 @@ export const fulfilledPage = (props: FulfilledPageProps) => html`
     id="page"
   >
     <div class="center" id="contract-display"></div>
-    <table id="display-table" class="center">
+    <table id="display-table">
       <tr>
         <th></th>
         <th></th>
