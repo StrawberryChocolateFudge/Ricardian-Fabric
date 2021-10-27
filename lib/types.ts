@@ -29,7 +29,7 @@ export enum RenderType {
   enableButton = "enableButton",
   disableButton = "disableButton",
   version = "version",
-  redirectCounter = "redirectCounter",
+  redirect = "redirect",
   dateClickListener = "dateClickListener",
   renderTerms = "renderTerms",
   areYouSure = "areYouSure",
@@ -69,7 +69,7 @@ export type Renderer = {
   [RenderType.enableButton]: RenderFunction;
   [RenderType.disableButton]: RenderFunction;
   [RenderType.version]: RenderFunction;
-  [RenderType.redirectCounter]: RenderFunction;
+  [RenderType.redirect]: RenderFunction;
   [RenderType.dateClickListener]: RenderFunction;
   [RenderType.renderTerms]: RenderFunction;
   [RenderType.areYouSure]: RenderFunction;
