@@ -13,7 +13,7 @@ import {
 import { permapin } from "../../fetch";
 import { IPFS_Add } from "../../ipfs/add";
 import { ContractTypes, Status, State, PinOptions } from "../../types";
-import { acceptAgreement, setTerms, signHash } from "../../wallet";
+import { acceptAgreement, setTerms, signHash, watchAsset } from "../../wallet";
 import { getById } from "../utils";
 
 export function areYouSureButtons(props: State) {
@@ -70,19 +70,27 @@ async function smartContractActions(
     //I need to sign both the url and the hash
 
     const onSuccess = async (signature: string) => {
-      console.log(signature);
-
       //I NEED TO CALL THE ACCEPT AGREEMENT FROM HERE!
+
+
       const options = await acceptAgreement({
         url,
         hash: props.hash,
         contractAddress: props.smartcontract,
-        signature: props.stashedDetails.signature,
+        signature: signature,
         signerAddress: props.stashedDetails.signerAddress,
       });
 
       if (options.status == Status.Failure) {
         dispatch_renderError(options.error);
+      }
+
+      if (props.isERC20.name !== undefined) {
+        await watchAsset(props.isERC20, () => {
+          dispatch_renderError(
+            "Failed to add " + props.isERC20.name + " token to wallet."
+          );
+        });
       }
     };
 
