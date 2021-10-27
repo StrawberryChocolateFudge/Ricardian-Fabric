@@ -72,10 +72,10 @@ export function dispatch_renderVersion(version: string) {
   });
 }
 
-export function dispatch_redirectCounter(count: number) {
+export function dispatch_redirect(url: string) {
   dispatch(Events.render, {
-    type: RenderType.redirectCounter,
-    props: { count },
+    type: RenderType.redirect,
+    props: { url },
   });
 }
 
