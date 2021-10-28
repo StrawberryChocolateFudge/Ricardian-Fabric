@@ -4,7 +4,7 @@ export const SanctionsDropdown = (expand: boolean) => html`
   <input type="checkbox" id="sanctions_checkbox_toggle" />
   <label
     id="sanctions_checkbox_label"
-    class="sanctions_checkbox-label"
+    class="labelButton sanctions_checkbox-label"
     for="sanctions_checkbox_toggle"
     >Select Sanctions</label
   >
