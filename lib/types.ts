@@ -1,19 +1,15 @@
 export enum Chains {
-  HmnyMainnetShard0 = "1666600000",
-  HmnyMainnetShard1 = "1666600001",
-  HmnyMainnetShard2 = "1666600002",
-  HmnyMainnetShard3 = "1666600003",
-  HmnyTestnetShard0 = "1666700000",
-  HmnyTestnetShard1 = "1666700001",
-  HmnyTestnetShard2 = "1666700002",
-  HmnyTestnetShard3 = "1666700003",
+  Ropsten = "3",
+  bscTestnet = "97",
+  polygonTestnet = "80001",
+  harmonyTestnetShard0 = "1666700000",
 }
 
 export enum Events {
   render = "render",
   stateChange = "stateChange",
 }
-
+//TODO: start using the success message too!!
 export enum RenderType {
   successMessage = "successMessage",
   errorMessage = "errorMessage",
@@ -47,11 +43,12 @@ export enum RenderType {
   enableAcceptableInputs = "enableAcceptableInputs",
   deployAgain = "deployAgain",
   deploySCIntent = "deploySCIntent",
-  deploySCIntentBack = "deploySCIntentBack",
   SCDeploySelected = "SCDeploySelected",
   DisableSCInputs = "DisableSCInputs",
   EnableSCInputs = "EnableSCInputs",
   SetDeployedSCAddress = "SetDeployedSCAddress",
+  DocxDropper = "DocxDropper",
+  hidePopup = "hidePopup",
 }
 type RenderFunction = (props: any) => void;
 
@@ -86,11 +83,12 @@ export type Renderer = {
   [RenderType.enableAcceptableInputs]: RenderFunction;
   [RenderType.deployAgain]: RenderFunction;
   [RenderType.deploySCIntent]: RenderFunction;
-  [RenderType.deploySCIntentBack]: RenderFunction;
   [RenderType.SCDeploySelected]: RenderFunction;
   [RenderType.DisableSCInputs]: RenderFunction;
   [RenderType.EnableSCInputs]: RenderFunction;
   [RenderType.SetDeployedSCAddress]: RenderFunction;
+  [RenderType.DocxDropper]: RenderFunction;
+  [RenderType.hidePopup]: RenderFunction;
 };
 
 export enum EventType {
@@ -104,6 +102,7 @@ export enum EventType {
   stashDetails = "stashDetails",
   setPosition = "setPosition",
   setERC20 = "setERC20",
+  setSelectedWallet = "setSelectedWallet",
 }
 
 export enum StateProperties {
@@ -117,6 +116,7 @@ export enum StateProperties {
   stashedDetails = "stashedDetails",
   position = "position",
   isERC20 = "isERC20",
+  selectedWallet = "selectedWallet",
 }
 
 export enum ContractTypes {
@@ -135,6 +135,11 @@ export enum BlockCountry {
 
 export enum DeploySC {
   HRC20 = "HRC20",
+}
+
+export enum SelectedWallet {
+  metamask = "metamask",
+  arconnect = "arconnect",
 }
 
 export type StashedDetails = {
@@ -159,6 +164,8 @@ export type ERC20Params = {
   image: string;
 };
 
+export type NetworkType = "Mainnet" | "Testnet";
+
 export type State = {
   init: boolean;
   ipfs: IPFSParams;
@@ -168,6 +175,7 @@ export type State = {
   selectedDate: Date | string;
   stashedPage: string;
   stashedDetails: StashedDetails;
+  selectedWallet: SelectedWallet;
   contracttype: ContractTypes;
   redirectto: string;
   bundleSrcUrl: string;
