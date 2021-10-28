@@ -1,7 +1,13 @@
 import Web3 from "web3";
 import { recoverTypedSignature } from "eth-sig-util";
 import { ECDSASignature, fromRpcSig, toChecksumAddress } from "ethereumjs-util";
-import { ContractTypes, ERC20Params, Options, Status } from "../types";
+import {
+  ContractTypes,
+  ERC20Params,
+  NetworkType,
+  Options,
+  Status,
+} from "../types";
 import { getSimpleTermsAbi } from "./abi/SimpleTerms";
 
 //TODO: Calculate the gas for all the transactions
@@ -96,9 +102,6 @@ function getmsgParams(
   url: string | undefined,
   contractType: ContractTypes
 ) {
-  console.log(smartContract);
-  console.log(Web3.utils.isAddress(smartContract));
-
   const valueOnlyDOC = [{ name: "value", type: "string" }];
 
   const withUrlDOC = [
@@ -113,7 +116,6 @@ function getmsgParams(
 
   const message =
     contractType === ContractTypes.create ? valueOnlyMSG : withUrlMSG;
-
   const msgParams = {
     domain: {
       chainId: networkId,
@@ -283,19 +285,79 @@ export async function acceptAgreement(arg: {
 }
 
 export async function switchNetwork(
-  network: "Harmony",
+  network: "Harmony" | "Ropsten" | "BSC" | "Polygon",
   shard: number,
-  type: "Mainnet" | "Testnet"
+  type: NetworkType
 ) {
   if (network === "Harmony") {
     await switchToHarmony(shard, type);
   }
+  if (network === "Ropsten") {
+    await switch_to_Chain("0x3");
+    // Ropsten is in metamask by default so adding it is redundant
+  }
+
+  if (network === "BSC") {
+    await switchToBSC(type);
+  }
+
+  if (network === "Polygon") {
+    await switchToPolygon(type);
+  }
 }
 
-export async function switchToHarmony(
-  shard: number,
-  type: "Mainnet" | "Testnet"
-) {
+export async function switchToBSC(type: NetworkType) {
+  const hexchainId = "0x" + Number(97).toString(16);
+  const switched = await switch_to_Chain(hexchainId);
+  const chainName = type === "Mainnet" ? "BSC" : "BSC testnet";
+  const rpcUrls = ["https://data-seed-prebsc-1-s1.binance.org:8545"];
+  const blockExplorerUrls = ["https://explorer.binance.org/smart-testnet"];
+  if (!switched) {
+    await window.ethereum.request({
+      method: "wallet_addEthereumChain",
+      params: [
+        {
+          chainId: hexchainId,
+          chainName,
+          nativeCurrency: {
+            name: "BNB",
+            symbol: "BNB",
+            decimals: 18,
+          },
+          rpcUrls,
+          blockExplorerUrls,
+        },
+      ],
+    });
+  }
+}
+export async function switchToPolygon(type: NetworkType) {
+  const hexchainId = "0x" + Number(80001).toString(16);
+  const switched = await switch_to_Chain(hexchainId);
+  const chainName = type === "Mainnet" ? "Polygon" : "Polygon testnet";
+  const rpcUrls = ["https://rpc-mumbai.maticvigil.com/"];
+  const blockExplorerUrls = ["https://mumbai.polygonscan.com/"];
+  if (!switched) {
+    await window.ethereum.request({
+      method: "wallet_addEthereumChain",
+      params: [
+        {
+          chainId: hexchainId,
+          chainName,
+          nativeCurrency: {
+            name: "MATIC",
+            symbol: "MATIC",
+            decimals: 18,
+          },
+          rpcUrls,
+          blockExplorerUrls,
+        },
+      ],
+    });
+  }
+}
+
+export async function switchToHarmony(shard: number, type: NetworkType) {
   const chainName =
     type === "Mainnet"
       ? "Harmony Mainnet Shard " + shard
