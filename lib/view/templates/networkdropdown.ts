@@ -1,52 +1,34 @@
 import { html } from "lit-html";
 
 export const NetworkDropdown = () => html`
-  <input type="checkbox" id="network_checkbox_toggle" />
-  <label id="network_checkbox_label" for="network_checkbox_toggle">
-    Switch Network
+  <input type="checkbox" id="network_checkbox_toggle" class="dropdown_checkbox_toggle"  />
+  <label
+    class="labelButton dropdown_checkbox_label lightBlue-shadow"
+    id="network_checkbox_label"
+    for="network_checkbox_toggle"
+  >
+    Select network
   </label>
   <ul>
     <li>
-      <button id="network-hmny-testnet-shard0" class="network-button">
-        ${HarmonyLogo()} Harmony Testnet Shard 0
+      <button id="ropsten-testnet" class="dropdown-button">
+        Ropsten Testnet
       </button>
     </li>
     <li>
-      <button id="network-hmny-testnet-shard1" class="network-button">
-        ${HarmonyLogo()} Harmony Testnet Shard 1
+      <button id="bsc-testnet" class="dropdown-button">BSC Testnet</button>
+    </li>
+    <li>
+      <button id="polygon-testnet" class="dropdown-button">
+        Polygon Testnet
       </button>
     </li>
     <li>
-      <button id="network-hmny-testnet-shard2" class="network-button">
-        ${HarmonyLogo()} Harmony Testnet Shard 2
-      </button>
-    </li>
-    <li>
-      <button id="network-hmny-testnet-shard3" class="network-button">
-        ${HarmonyLogo()} Harmony Testnet Shard 3
+      <button id="network-hmny-testnet-shard0" class="dropdown-button">
+        Harmony Testnet Shard 0
       </button>
     </li>
     <li><hr /></li>
-    <!-- <li>
-      <button id="network-hmny-mainnet-shard0" class="network-button">
-        ${HarmonyLogo()} Harmony Mainnet Shard 0
-      </button>
-    </li>
-    <li>
-      <button id="network-hmny-mainnet-shard1" class="network-button">
-        ${HarmonyLogo()} Harmony Mainnet Shard 1
-      </button>
-    </li>
-    <li>
-      <button id="network-hmny-mainnet-shard2" class="network-button">
-        ${HarmonyLogo()} Harmony Mainnet Shard 2
-      </button>
-    </li>
-    <li>
-      <button id="network-hmny-mainnet-shard3" class="network-button">
-        ${HarmonyLogo()} Harmony Mainnet Shard 3
-      </button>
-    </li> -->
   </ul>
 `;
 
