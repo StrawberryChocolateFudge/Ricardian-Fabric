@@ -1,4 +1,11 @@
-import { ERC20Params, Events, EventType, StashedDetails, State } from "../types";
+import {
+  ERC20Params,
+  Events,
+  EventType,
+  SelectedWallet,
+  StashedDetails,
+  State,
+} from "../types";
 import { getCurrentUrl, getPage } from "../view/utils";
 import {
   getBlockCountriesFromDataProp,
@@ -34,6 +41,7 @@ import { setStateHook } from "./setStateHook";
       selectedDate: "",
       stashedPage: "",
       stashedDetails: undefined,
+      selectedWallet: SelectedWallet.metamask,
       contracttype: getCurrentPageDataProp(pageEl),
       redirectto: getRedirectToDataProp(pageEl),
       expires: getExpiresFromDataProp(pageEl),
@@ -94,6 +102,9 @@ import { setStateHook } from "./setStateHook";
     },
     [EventType.setERC20]: (value: ERC20Params) => {
       stateContainer.isERC20 = value;
+    },
+    [EventType.setSelectedWallet]: (value: SelectedWallet) => {
+      stateContainer.selectedWallet = value;
     },
   };
 
