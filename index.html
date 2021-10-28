@@ -12,27 +12,39 @@
     <div
       data-dependency="http://localhost:1234/main.c39d6dcf.js"
       data-logosrc="https://ybiydesxc7lhiuyfju6h2wn7jhxrrct4666e3b6swktqas56fqgq.arweave.net/wFGBklcX1nRTBU08fVm_Se8Yinz3vE2H0rKnAEu-LA0"
-      data-version="0.0.2"
+      data-version="0.0.3"
       data-contracttype="create"
       id="page"
     >
       <hr />
-      <div style="display: flex; flex-direction: row">
-        <div id="network-dropdown"></div>
-        <img src="./metamask-logo.png" width="20px" height="20px" />
-        <hr />
-        <button id="drop-zone-accordion">Import Template</button>
-      </div>
-      <div id="docx-dropzone" class="drop-zone">
-        <span id="drop-prompt-docx" class="drop-zone__prompt"
-          >To load template, drop a .docx file here or click to select it</span
+      <div class="row">
+        <div
+          id="metamask-logo-container"
+          data-disabled="false"
+          class="wallet-logo-container"
         >
-        <input
-          type="file"
-          name="docx"
-          id="docx-input"
-          class="drop-zone__input"
-        />
+          <img src="./metamask-logo.png" width="20px" height="20px" />
+        </div>
+        <div
+          id="arconnect-logo-container"
+          data-disabled="false"
+          class="wallet-logo-container"
+        >
+          <img
+            src="https://arconnect.io/_next/static/images/logo-893917071649f242fe057c92ccdd396a.png"
+            width="20px"
+            height="20px"
+          />
+        </div>
+      </div>
+      <hr />
+      <div class="row">
+        <div id="network-dropdown"></div>
+        <div id="permaweb-dropdown"></div>
+        <!-- <hr /> -->
+        <!-- <button id="permaweb-button">Verify a contract</button> -->
+        <hr />
+        <div id="template-dropdown"></div>
       </div>
       <hr />
       <div class="editable-container">
@@ -76,7 +88,7 @@
             <button
               aria-label="never expires button"
               name="never"
-              class="cursor-pointer"
+              class="cursor-pointer labelButton"
               id="expires-reset"
             >
               Never
@@ -123,6 +135,7 @@
               aria-label="Deploy contract"
               name="deploy"
               id="deploy-sc-button"
+              class="labelButton"
             >
               Deploy
             </button>
@@ -137,6 +150,7 @@
         <label
           aria-labelledby="I agree to the terms, click on this label for a popup"
           id="terms-checkbox-label"
+          class="labelButton"
           >I agree to the terms</label
         >
         <input
