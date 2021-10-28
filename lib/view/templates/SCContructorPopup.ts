@@ -133,7 +133,7 @@ export function SCConstructorPopup(selected: DeploySC) {
     </div>
     <hr />
     <div>
-      <button id="SCConstructBackButton" class="SCBackButton">Cancel</button>
+      <button id="SCConstructBackButton" class="backButton">Cancel</button>
       <button id="SCConstructCreateButton" class="SCNextButton">
         Create contract!
       </button>
