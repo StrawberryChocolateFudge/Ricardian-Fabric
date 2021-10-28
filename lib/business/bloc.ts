@@ -18,15 +18,13 @@ import {
   Status,
 } from "../types";
 
-import { getTermsAccepted, redirect } from "../view/utils";
+import { getTermsAccepted } from "../view/utils";
 import {
   getAcceptablePageFromVDOM,
   getFulfilledPagefromVDOM,
 } from "../view/vDom";
 import { GeoRecord } from "../geocoding/types";
 import { dispatch_setPosition } from "../dispatch/stateChange";
-
-const REDIRECT_TIMEOUT = 1000;
 
 export async function getAcceptablePage(args: {
   props: State;
@@ -156,7 +154,7 @@ function isCountryBlocked(
       "TN",
       "UA",
       "VE",
-      "ZW"
+      "ZW",
     ],
     [BlockCountry.BLOCKUSA]: ["US"],
     //TODO: GET THE LIST OF NEW YORK STATE CITIES, JUST LIKE CRIMERA
@@ -223,8 +221,7 @@ export async function handlePost(props: State, id: string) {
     }
   };
 
-  dispatch_redirect(getURLWithId(url,id));
-
+  dispatch_redirect(getURLWithId(url, id));
 }
 
 export async function getFulfilledPage(props: FulfilledPageProps) {
