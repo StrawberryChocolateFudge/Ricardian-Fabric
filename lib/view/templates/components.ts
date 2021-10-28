@@ -59,52 +59,18 @@ export const issuerTemplate = (address: string) => {
 
 export const networkTemplate = (network: string, isFulfilled: boolean) => {
   const chains = {
-    [Chains.HmnyMainnetShard0]: getChainButton(
-      "Harmony",
-      "Mainnet",
-      "Shard 0",
+    [Chains.Ropsten]: getChainButton("Ropsten", "Testnet", "", isFulfilled),
+    [Chains.bscTestnet]: getChainButton("BSC", "Testnet", "", isFulfilled),
+    [Chains.polygonTestnet]: getChainButton(
+      "Polygon",
+      "Testnet",
+      "",
       isFulfilled
     ),
-    [Chains.HmnyMainnetShard1]: getChainButton(
-      "Harmony",
-      "Mainnet",
-      "Shard 1",
-      isFulfilled
-    ),
-    [Chains.HmnyMainnetShard2]: getChainButton(
-      "Harmony",
-      "Mainnet",
-      "Shard 2",
-      isFulfilled
-    ),
-    [Chains.HmnyMainnetShard3]: getChainButton(
-      "Harmony",
-      "Mainnet",
-      "Shard 3",
-      isFulfilled
-    ),
-    [Chains.HmnyTestnetShard0]: getChainButton(
+    [Chains.harmonyTestnetShard0]: getChainButton(
       "Harmony",
       "Testnet",
       "Shard 0",
-      isFulfilled
-    ),
-    [Chains.HmnyTestnetShard1]: getChainButton(
-      "Harmony",
-      "Testnet",
-      "Shard 1",
-      isFulfilled
-    ),
-    [Chains.HmnyTestnetShard2]: getChainButton(
-      "Harmony",
-      "Testnet",
-      "Shard 2",
-      isFulfilled
-    ),
-    [Chains.HmnyTestnetShard3]: getChainButton(
-      "Harmony",
-      "Testnet",
-      "Shard 3",
       isFulfilled
     ),
   };
@@ -129,10 +95,10 @@ export function getChainButton(
   disabled: boolean
 ) {
   if (disabled) {
-    return html`${HarmonyLogo()} ${chain} ${net} ${shard}`;
+    return html`${chain} ${net} ${shard}`;
   } else {
     return html`<button class="network-button" id="addChainButton">
-      ${HarmonyLogo()} ${chain} ${net} ${shard}
+      ${chain} ${net} ${shard}
     </button>`;
   }
 }
