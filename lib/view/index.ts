@@ -21,7 +21,6 @@ import {
   removeButtons,
   removeError,
   removeLoadingIndicator,
-  removeSCIntentPopup,
   removeTransaction,
   renderAcceptButton,
   renderButtonSlotAlignment,
@@ -43,12 +42,17 @@ import {
   updatePromptErrorDOCX,
   updatePromptSuccess,
   updatePromptSuccessDOCX,
+  renderSelectedWallet,
+  renderPermawebDropdown,
+  renderTemplatesDropdown,
+  removePopup,
+  renderDocXDropper,
 } from "./render";
 import { renderAcceptTools } from "./render";
 import { areYouSureButtons } from "./actions/areYouSureButtons";
 import {
+  docxImportBackButton,
   onDocFileDropped,
-  templateAccordionActions,
 } from "./actions/onDocFileDropped";
 import {
   attachTermsButtonListeners,
@@ -63,8 +67,10 @@ import {
   addChainButtonListener,
   addDeployButtonListener,
   networkSelectActions,
+  walletSelectListener,
 } from "./actions/networkSelectActions";
 import { constructSCActions, deploySCActions } from "./actions/deploySCActions";
+import { templateSelectActions } from "./actions/templateSelectActions";
 
 const Render: Renderer = {
   [RenderType.successMessage]: (props: State) => {},
@@ -73,16 +79,18 @@ const Render: Renderer = {
   [RenderType.createButton]: (props: State) => {
     renderButtonSlotAlignment(true);
     createPageAgreeTerms();
+    renderSelectedWallet(props.selectedWallet);
+    walletSelectListener();
     renderCreateButton(true);
-    // The order of attaching listeners is important
-    onDocFileDropped(props);
-    templateAccordionActions();
     renderCreateButtonClick(props);
     attachExpiryClickAndListener(props);
     renderTooltips();
     renderSanctionsDropdown();
     renderNetworkDropdown();
     networkSelectActions();
+    renderPermawebDropdown();
+    renderTemplatesDropdown();
+    templateSelectActions(props);
     handleDropdownClosing();
     addDeployButtonListener(props);
   },
@@ -186,15 +194,11 @@ const Render: Renderer = {
     renderSCIntentPopup();
     deploySCActions();
   },
-  [RenderType.deploySCIntentBack]: () => {
-    removeSCIntentPopup();
-  },
   [RenderType.SCDeploySelected]: (props: { deploy: DeploySC }) => {
     renderContructorInputs(props.deploy);
     constructSCActions(props.deploy);
   },
   [RenderType.DisableSCInputs]: (props: { params: any }) => {
-    console.log("running disabling");
     disableSCInputs(props.params);
   },
   [RenderType.EnableSCInputs]: (props: { params: any }) => {
@@ -202,6 +206,14 @@ const Render: Renderer = {
   },
   [RenderType.SetDeployedSCAddress]: (props: { address }) => {
     setDeployedSCAddressToDOM(props.address);
+  },
+  [RenderType.DocxDropper]: (props: State) => {
+    renderDocXDropper();
+    onDocFileDropped(props);
+    docxImportBackButton();
+  },
+  [RenderType.hidePopup]: ({}) => {
+    removePopup();
   },
 };
 
