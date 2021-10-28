@@ -1,4 +1,5 @@
 import {
+  dispatch_hidePopup,
   dispatch_promptErrorDOCX,
   dispatch_promptSuccessDOCX,
   dispatch_removeError,
@@ -93,16 +94,9 @@ function readFileInputEventAsArrayBuffer(file, callback) {
   reader.readAsArrayBuffer(file);
 }
 
-export function templateAccordionActions() {
-  const button = getById("drop-zone-accordion");
-  const dropzone = getById("docx-dropzone");
-
-  button.onclick = function () {
-    const display = dropzone.style.display;
-    if (display === "" || display === "none") {
-      dropzone.style.display = "block";
-    } else if (display === "block") {
-      dropzone.style.display = "none";
-    }
+export function docxImportBackButton() {
+  const back = getById("dropper-back-button");
+  back.onclick = function () {
+    dispatch_hidePopup();
   };
 }
