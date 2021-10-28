@@ -5,7 +5,8 @@ import {
 import { switchNetwork, web3Injected } from "../../wallet";
 import { getById } from "../utils";
 import MetaMaskOnboarding from "@metamask/onboarding";
-import { Chains, State } from "../../types";
+import { Chains, SelectedWallet, State } from "../../types";
+import { dispatch_setSelectedWallet } from "../../dispatch/stateChange";
 
 export function networkSelectActions() {
   const switchnetworkToggle = getById(
@@ -21,62 +22,36 @@ export function networkSelectActions() {
     }
   };
 
-  const testnetShard0 = getById("network-hmny-testnet-shard0");
-  const testnetShard1 = getById("network-hmny-testnet-shard1");
-  const testnetShard2 = getById("network-hmny-testnet-shard2");
-  const testnetShard3 = getById("network-hmny-testnet-shard3");
+  const ropsten = getById("ropsten-testnet");
+  const bscTestnet = getById("bsc-testnet");
+  const polygonTestnet = getById("polygon-testnet");
+  const hmnyTestnetShard0 = getById("network-hmny-testnet-shard0");
 
-  // const mainnetShard0 = getById("network-hmny-mainnet-shard0");
-  // const mainnetShard1 = getById("network-hmny-mainnet-shard1");
-  // const mainnetShard2 = getById("network-hmny-mainnet-shard2");
-  // const mainnetShard3 = getById("network-hmny-mainnet-shard3");
-
-  testnetShard0.onclick = async function () {
+  ropsten.onclick = async function () {
+    await switchNetwork("Ropsten", 0, "Testnet");
+  };
+  bscTestnet.onclick = async function () {
+    await switchNetwork("BSC", 0, "Testnet");
+  };
+  polygonTestnet.onclick = async function () {
+    await switchNetwork("Polygon", 0, "Testnet");
+  };
+  hmnyTestnetShard0.onclick = async function () {
     await switchNetwork("Harmony", 0, "Testnet");
   };
-  testnetShard1.onclick = async function () {
-    await switchNetwork("Harmony", 1, "Testnet");
-  };
-  testnetShard2.onclick = async function () {
-    await switchNetwork("Harmony", 2, "Testnet");
-  };
-  testnetShard3.onclick = async function () {
-    await switchNetwork("Harmony", 3, "Testnet");
-  };
-  // mainnetShard0.onclick = async function () {
-  //   await switchNetwork("Harmony", 0, "Mainnet");
-  // };
-  // mainnetShard1.onclick = async function () {
-  //   await switchNetwork("Harmony", 1, "Mainnet");
-  // };
-  // mainnetShard2.onclick = async function () {
-  //   await switchNetwork("Harmony", 2, "Mainnet");
-  // };
-  // mainnetShard3.onclick = async function () {
-  //   await switchNetwork("Harmony", 3, "Mainnet");
-  // };
 }
 
 export function addChainButtonListener(props: State) {
   const addChainButton = getById("addChainButton");
   addChainButton.onclick = async function () {
     const chains = {
-      // [Chains.HmnyMainnetShard0]: async () =>
-      //   await switchNetwork("Harmony", 0, "Mainnet"),
-      // [Chains.HmnyMainnetShard1]: async () =>
-      //   await switchNetwork("Harmony", 1, "Mainnet"),
-      // [Chains.HmnyMainnetShard2]: async () =>
-      //   await switchNetwork("Harmony", 2, "Mainnet"),
-      // [Chains.HmnyMainnetShard3]: async () =>
-      //   await switchNetwork("Harmony", 3, "Mainnet"),
-      [Chains.HmnyTestnetShard0]: async () =>
+      [Chains.Ropsten]: async () =>
+        await switchNetwork("Ropsten", 0, "Testnet"),
+      [Chains.bscTestnet]: async () => await switchNetwork("BSC", 0, "Testnet"),
+      [Chains.polygonTestnet]: async () =>
+        await switchNetwork("Polygon", 0, "Testnet"),
+      [Chains.harmonyTestnetShard0]: async () =>
         await switchNetwork("Harmony", 0, "Testnet"),
-      [Chains.HmnyTestnetShard1]: async () =>
-        await switchNetwork("Harmony", 1, "Testnet"),
-      [Chains.HmnyTestnetShard2]: async () =>
-        await switchNetwork("Harmony", 2, "Testnet"),
-      [Chains.HmnyTestnetShard3]: async () =>
-        await switchNetwork("Harmony", 3, "Testnet"),
     };
     await chains[props.network]();
   };
@@ -87,5 +62,21 @@ export function addDeployButtonListener(props: State) {
 
   deployButton.onclick = function () {
     dispatch_deploySCIntent(props);
+  };
+}
+
+export function walletSelectListener() {
+  const metamask = getById("metamask-logo-container");
+  const arconnect = getById("arconnect-logo-container");
+  metamask.onclick = function () {
+    if (metamask.dataset.disabled === "false") {
+      dispatch_setSelectedWallet(SelectedWallet.metamask);
+    }
+  };
+
+  arconnect.onclick = function () {
+    if (arconnect.dataset.disabled === "false") {
+      dispatch_setSelectedWallet(SelectedWallet.arconnect);
+    }
   };
 }
