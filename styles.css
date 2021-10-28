@@ -115,19 +115,20 @@ hr {
   visibility: hidden;
 }
 
-#network_checkbox_toggle {
+.dropdown_checkbox_toggle {
   display: none;
   cursor: pointer;
 }
 
-#network_checkbox_label {
+.dropdown_checkbox_label {
   cursor: pointer;
   background-color: #f2f2f2;
   border-radius: 20px;
   padding: 5px;
   color: black !important;
 }
-#network_checkbox_toggle:checked ~ ul {
+
+.dropdown_checkbox_toggle:checked ~ ul {
   display: block;
   list-style-type: none;
   list-style: none;
@@ -140,22 +141,25 @@ hr {
   z-index: 1;
 }
 
-#network_checkbox_toggle ~ ul {
+.dropdown_checkbox_toggle ~ ul {
   display: none;
 }
-#network_checkbox_label {
+
+.dropdown_checkbox_label {
   cursor: pointer;
 }
 
-.network-button {
+.dropdown-button {
   background-color: white;
   border: none;
   font-size: 16px;
   padding: 10px;
   cursor: pointer;
+  width: 100%;
+  text-align: left;
 }
 
-.network-button:hover {
+.dropdown-button:hover {
   background-color: lightgray;
 }
 
@@ -211,7 +215,7 @@ hr {
 .row {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: left;
 }
 
 #save-contract {
@@ -267,19 +271,51 @@ hr {
 .fabric-color {
   color: #a4a4a4;
 }
-#docx-dropzone {
-  display: none;
+
+.wallet-logo-container {
+  border-radius: 25px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  cursor: pointer;
+  padding: 10px;
+  margin: 5px;
 }
-#drop-zone-accordion {
+
+.lightBlue-shadow {
+  box-shadow: rgb(191, 233, 248) 0px 5px 15px !important;
+}
+.lightCoral-shadow {
+  box-shadow: rgb(252, 199, 199) 0px 5px 15px !important;
+}
+
+.light-shadow {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.labelButton {
+  border-radius: 25px;
+  cursor: pointer;
+  padding: 10px;
+  margin: 5px;
+}
+
+#network-dropdown {
+  align-self: center;
+}
+#permaweb-dropdown {
+  align-self: center;
+}
+
+/* #drop-zone-accordion {
   cursor: pointer;
   background-color: #f2f2f2;
   padding: 5px;
   color: black !important;
   border: none;
-  border-radius: 10px;
+  border-radius: 25px;
   width: 100px;
   right: 0;
-}
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+} */
 
 .drop-zone {
   margin-top: 20px;
@@ -323,22 +359,20 @@ hr {
   color: white;
 }
 #expires-reset {
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
   border-radius: 20px;
   border: none;
   cursor: pointer;
-  background-color: f2f2f2;
+  background-color: #f2f2f2;
   color: black;
-  padding: 5px;
 }
+
 #deploy-sc-button {
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
   border-radius: 20px;
   border: none;
   cursor: pointer;
-  background-color: f2f2f2;
+  background-color: #f2f2f2;
   color: black;
-  padding: 5px;
+
 }
 .deploySCUL {
   list-style-type: none;
@@ -355,7 +389,7 @@ hr {
   cursor: pointer;
 }
 
-.SCBackButton {
+.backButton {
   cursor: pointer;
   background-color: #f2f2f2;
   border-radius: 20px;
