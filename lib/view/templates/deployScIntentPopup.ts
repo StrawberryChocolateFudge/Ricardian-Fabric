@@ -15,7 +15,7 @@ export function deploySCIntentPopup() {
         </li>
       </ul>
       <div class="SCIntent-button-row">
-        <button class="SCBackButton" id="SCIntentBackButton">Back</button>
+        <button class="backButton" id="SCIntentBackButton">Back</button>
         <hr />
         <button class="SCNextButton" id="SCIntentNextButton">Next</button>
       </div>
