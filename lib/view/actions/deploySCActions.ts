@@ -1,7 +1,7 @@
 import {
-  dispatch_back_SCIntent,
   dispatch_DisableSCInputs,
   dispatch_EnableSCInputs,
+  dispatch_hidePopup,
   dispatch_renderError,
   dispatch_SCDeploySelected,
   dispatch_setDeployedSCAddress,
@@ -40,7 +40,7 @@ export function deploySCActions() {
   };
 
   backbutton.onclick = function () {
-    dispatch_back_SCIntent();
+    dispatch_hidePopup();
   };
 
   nextButton.onclick = function () {
@@ -75,7 +75,7 @@ export function constructSCActions(selected: DeploySC) {
   const logoUrl = getById("logo-url-input") as HTMLInputElement;
   const acceptTerms = getById("agree-to-deploy-sc") as HTMLInputElement;
   backbutton.onclick = function () {
-    dispatch_back_SCIntent();
+    dispatch_hidePopup();
   };
 
   nextButton.onclick = async function () {
@@ -121,7 +121,7 @@ export function constructSCActions(selected: DeploySC) {
       );
       dispatch_setDeployedSCAddress(receipt.contractAddress);
       dispatch_setERC20(erc20Params);
-      dispatch_back_SCIntent();
+      dispatch_hidePopup();
 
       await watchAsset(erc20Params, () => {
         dispatch_renderError(
