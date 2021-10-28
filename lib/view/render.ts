@@ -1,15 +1,18 @@
 import { html, render } from "lit-html";
-import { ContractTypes, DeploySC, State } from "../types";
+import { ContractTypes, DeploySC, SelectedWallet, State } from "../types";
 import { AcceptButton, acceptTools } from "./templates/acceptTools";
 import { createButton } from "./templates/createButton";
 import { CreateSummary } from "./templates/createSummary";
 import { deploySCIntentPopup } from "./templates/deployScIntentPopup";
+import { DocXDropper } from "./templates/docxDropper";
 import { helperTooltips } from "./templates/helperTooltips";
 import { loadingIndicator } from "./templates/loadingIndicator";
-import { HarmonyLogo, NetworkDropdown } from "./templates/networkdropdown";
-import { redirectButton, redirectCounter } from "./templates/redirectCounter";
+import { NetworkDropdown } from "./templates/networkdropdown";
+import { PermawebDropdown } from "./templates/permawebDropdown";
+import { redirectButton } from "./templates/redirectCounter";
 import { SanctionsDropdown } from "./templates/sanctionsDropdown";
 import { SCConstructorPopup } from "./templates/SCContructorPopup";
+import { TemplateDropdown } from "./templates/templatedropdown";
 import { termsLayout } from "./templates/terms";
 import { transactionUrl } from "./templates/transaction";
 import {
@@ -209,6 +212,14 @@ export function disableCreateInputs() {
     "network_checkbox_label"
   ) as HTMLInputElement;
 
+  const metamask = getById("metamask-logo-container");
+  const arconnect = getById("arconnect-logo-container");
+
+  metamask.dataset.disabled = "true";
+  metamask.style.cursor = "not-allowed";
+  arconnect.dataset.disabled = "true";
+  arconnect.style.cursor = "not-allowed";
+
   switchNetwork.disabled = true;
   switchNetwork.style.cursor = "not-allowed";
   switchNetworkLabel.style.cursor = "not-allowed";
@@ -258,6 +269,14 @@ export function enableCreateInputs() {
     "network_checkbox_label"
   ) as HTMLInputElement;
 
+  const metamask = getById("metamask-logo-container");
+  const arconnect = getById("arconnect-logo-container");
+
+  metamask.dataset.disabled = "false";
+  metamask.style.cursor = "pointer";
+  arconnect.dataset.disabled = "false";
+  arconnect.style.cursor = "pointer";
+
   switchNetwork.disabled = false;
   switchNetwork.style.cursor = "pointer";
 
@@ -304,12 +323,30 @@ export function renderNetworkDropdown() {
   render(NetworkDropdown(), dropdown);
 }
 
+export function renderPermawebDropdown() {
+  const dropdown = getById("permaweb-dropdown");
+  render(PermawebDropdown(), dropdown);
+}
+
+export function renderTemplatesDropdown() {
+  const dropdown = getById("template-dropdown");
+  render(TemplateDropdown(), dropdown);
+}
+
 export function handleDropdownClosing() {
+  const permawebDropdown = getById("permaweb-dropdown");
+  const permawebToggle = getById(
+    "permaweb_checkbox_toggle"
+  ) as HTMLInputElement;
   const networkDropdown = getById("network-dropdown");
   const networktoggle = getById("network_checkbox_toggle") as HTMLInputElement;
   const sanctionsDropdown = getById("sanctions-dropdown");
   const sanctionsToggle = getById(
     "sanctions_checkbox_toggle"
+  ) as HTMLInputElement;
+  const templateDropdown = getById("template-dropdown");
+  const templateToggle = getById(
+    "template_checkbox_toggle"
   ) as HTMLInputElement;
 
   const page = getById("page");
@@ -319,6 +356,12 @@ export function handleDropdownClosing() {
     }
     if (!ev.composedPath().includes(sanctionsDropdown)) {
       sanctionsToggle.checked = false;
+    }
+    if (!ev.composedPath().includes(permawebDropdown)) {
+      permawebToggle.checked = false;
+    }
+    if (!ev.composedPath().includes(templateDropdown)) {
+      templateToggle.checked = false;
     }
   };
 }
@@ -335,7 +378,7 @@ export function renderSCIntentPopup() {
   render(deploySCIntentPopup(), layout);
 }
 
-export function removeSCIntentPopup() {
+export function removePopup() {
   setBannerDisplayNone();
 }
 
@@ -370,4 +413,48 @@ export function enableSCInputs(params: any) {
 export function setDeployedSCAddressToDOM(address: string) {
   const smartContract = getById("smartcontract-input") as HTMLInputElement;
   smartContract.value = address;
+}
+
+export function renderSelectedWallet(selectedWallet: SelectedWallet) {
+  const metamask = getById("metamask-logo-container");
+  const arconnect = getById("arconnect-logo-container");
+  const selectNetwork = getById("network_checkbox_label");
+  const permaweb = getById("permaweb_checkbox_label");
+  const deployButton = getById("deploy-sc-button");
+  const createButton = getById("save-contract");
+
+
+
+  if (selectedWallet === SelectedWallet.metamask) {
+    metamask.classList.add("lightBlue-shadow");
+    selectNetwork.classList.add("lightBlue-shadow");
+    arconnect.classList.remove("lightCoral-shadow");
+    arconnect.classList.add("light-shadow");
+    permaweb.classList.remove("lightCoral-shadow");
+    permaweb.classList.add("light-shadow");
+    deployButton.classList.remove("lightCoral-shadow");
+    deployButton.classList.add("lightBlue-shadow");
+    createButton.classList.remove("lightCoral-shadow");
+    createButton.classList.add("lightBlue-shadow");
+
+  } else if (selectedWallet === SelectedWallet.arconnect) {
+    metamask.classList.remove("lightBlue-shadow");
+    metamask.classList.add("light-shadow");
+    selectNetwork.classList.remove("lightBlue-shadow");
+    selectNetwork.classList.add("light-shadow");
+    arconnect.classList.add("lightCoral-shadow");
+    permaweb.classList.add("lightCoral-shadow");
+    deployButton.classList.add("lightCoral-shadow");
+    deployButton.classList.remove("lightBlue-shadow");
+    createButton.classList.add("lightCoral-shadow");
+    createButton.classList.remove("lightBlue-shadow");
+
+  }
+}
+
+export function renderDocXDropper() {
+  setBannerDisplayBlock();
+  const layout = getById("overlay-layout");
+  layout.style.maxHeight = "100%";
+  render(DocXDropper(), layout);
 }
