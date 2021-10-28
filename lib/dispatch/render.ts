@@ -194,13 +194,6 @@ export function dispatch_deploySCIntent(props: State) {
   });
 }
 
-export function dispatch_back_SCIntent() {
-  dispatch(Events.render, {
-    type: RenderType.deploySCIntentBack,
-    props: {},
-  });
-}
-
 export function dispatch_SCDeploySelected(deploy: DeploySC) {
   dispatch(Events.render, {
     type: RenderType.SCDeploySelected,
@@ -225,5 +218,19 @@ export function dispatch_setDeployedSCAddress(address: string) {
   dispatch(Events.render, {
     type: RenderType.SetDeployedSCAddress,
     props: { address },
+  });
+}
+
+export function dispatch_renderDocXDropper(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.DocxDropper,
+    props,
+  });
+}
+
+export function dispatch_hidePopup() {
+  dispatch(Events.render, {
+    type: RenderType.hidePopup,
+    props: {},
   });
 }
