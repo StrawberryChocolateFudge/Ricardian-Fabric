@@ -48,6 +48,12 @@ export const setStateHook = {
       dispatch_renderCreateButton(clone);
     }
   },
+  [StateProperties.selectedWallet]: (args: SetHookArgs) => {
+    if (args.obj.contracttype === ContractTypes.create) {
+      const clone = cloneState(args.obj);
+      dispatch_renderCreateButton(clone);
+    }
+  },
 };
 
 function cloneState(state: State) {
