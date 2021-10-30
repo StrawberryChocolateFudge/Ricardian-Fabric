@@ -47,6 +47,9 @@ import {
   renderTemplatesDropdown,
   removePopup,
   renderDocXDropper,
+  renderUploadFile,
+  renderUploadSummary,
+  hideElement,
 } from "./render";
 import { renderAcceptTools } from "./render";
 import { areYouSureButtons } from "./actions/areYouSureButtons";
@@ -71,6 +74,11 @@ import {
 } from "./actions/networkSelectActions";
 import { constructSCActions, deploySCActions } from "./actions/deploySCActions";
 import { templateSelectActions } from "./actions/templateSelectActions";
+import {
+  permawebSelectActions,
+  uploadFileListener,
+  uploadSummaryActions,
+} from "./actions/permawebSelectActions";
 
 const Render: Renderer = {
   [RenderType.successMessage]: (props: State) => {},
@@ -89,6 +97,7 @@ const Render: Renderer = {
     renderNetworkDropdown();
     networkSelectActions();
     renderPermawebDropdown();
+    permawebSelectActions(props);
     renderTemplatesDropdown();
     templateSelectActions(props);
     handleDropdownClosing();
@@ -212,8 +221,24 @@ const Render: Renderer = {
     onDocFileDropped(props);
     docxImportBackButton();
   },
+  [RenderType.uploadFile]: () => {
+    renderUploadFile();
+    uploadFileListener();
+  },
+  [RenderType.uploadSummary]: (props: {
+    file: File;
+    transaction: any;
+    fee: any;
+    data: any;
+  }) => {
+    renderUploadSummary(props.file, props.fee, props.transaction.id);
+    uploadSummaryActions(props.transaction, props.data);
+  },
   [RenderType.hidePopup]: ({}) => {
     removePopup();
+  },
+  [RenderType.hideElement]: (props: { el: HTMLElement; hide: boolean }) => {
+    hideElement(props.el, props.hide);
   },
 };
 
