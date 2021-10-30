@@ -1,6 +1,6 @@
 import { html } from "lit-html";
 import { DeploySC } from "../../types";
-import { findConstructorParameters } from "../../wallet";
+import { findConstructorParameters } from "../../wallet/web3";
 import { getHRC20Abi } from "../../wallet/abi/HRC20";
 import { helperTooltips } from "./helperTooltips";
 
