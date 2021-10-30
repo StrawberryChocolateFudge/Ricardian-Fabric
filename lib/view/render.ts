@@ -1,3 +1,5 @@
+import Arweave from "arweave";
+import { extractPublicKey } from "eth-sig-util";
 import { html, render } from "lit-html";
 import { ContractTypes, DeploySC, SelectedWallet, State } from "../types";
 import { AcceptButton, acceptTools } from "./templates/acceptTools";
@@ -15,6 +17,10 @@ import { SCConstructorPopup } from "./templates/SCContructorPopup";
 import { TemplateDropdown } from "./templates/templatedropdown";
 import { termsLayout } from "./templates/terms";
 import { transactionUrl } from "./templates/transaction";
+import {
+  uploadFilePopup,
+  uploadFileSummary,
+} from "./templates/uploadFilePopup";
 import {
   copyStringToClipboard,
   getById,
@@ -382,6 +388,17 @@ export function removePopup() {
   setBannerDisplayNone();
 }
 
+export function removeElement(el: HTMLElement) {
+  el.style.display = "none";
+}
+export function hideElement(el: HTMLElement, hide: boolean) {
+  if (hide) {
+    el.style.display = "none";
+  } else {
+    el.style.display = "initial";
+  }
+}
+
 export function renderContructorInputs(selected: DeploySC) {
   const layout = getById("overlay-layout");
   render(SCConstructorPopup(selected), layout);
@@ -420,35 +437,24 @@ export function renderSelectedWallet(selectedWallet: SelectedWallet) {
   const arconnect = getById("arconnect-logo-container");
   const selectNetwork = getById("network_checkbox_label");
   const permaweb = getById("permaweb_checkbox_label");
-  const deployButton = getById("deploy-sc-button");
   const createButton = getById("save-contract");
 
-
+  selectNetwork.classList.add("lightBlue-shadow");
+  permaweb.classList.add("lightCoral-shadow");
 
   if (selectedWallet === SelectedWallet.metamask) {
     metamask.classList.add("lightBlue-shadow");
-    selectNetwork.classList.add("lightBlue-shadow");
     arconnect.classList.remove("lightCoral-shadow");
     arconnect.classList.add("light-shadow");
-    permaweb.classList.remove("lightCoral-shadow");
-    permaweb.classList.add("light-shadow");
-    deployButton.classList.remove("lightCoral-shadow");
-    deployButton.classList.add("lightBlue-shadow");
+
     createButton.classList.remove("lightCoral-shadow");
     createButton.classList.add("lightBlue-shadow");
-
   } else if (selectedWallet === SelectedWallet.arconnect) {
     metamask.classList.remove("lightBlue-shadow");
     metamask.classList.add("light-shadow");
-    selectNetwork.classList.remove("lightBlue-shadow");
-    selectNetwork.classList.add("light-shadow");
     arconnect.classList.add("lightCoral-shadow");
-    permaweb.classList.add("lightCoral-shadow");
-    deployButton.classList.add("lightCoral-shadow");
-    deployButton.classList.remove("lightBlue-shadow");
     createButton.classList.add("lightCoral-shadow");
     createButton.classList.remove("lightBlue-shadow");
-
   }
 }
 
@@ -457,4 +463,16 @@ export function renderDocXDropper() {
   const layout = getById("overlay-layout");
   layout.style.maxHeight = "100%";
   render(DocXDropper(), layout);
+}
+
+export function renderUploadFile() {
+  setBannerDisplayBlock();
+  const layout = getById("overlay-layout");
+  layout.style.maxHeight = "100%";
+  render(uploadFilePopup(), layout);
+}
+
+export function renderUploadSummary(file: File, fee: any,id: string) {
+  const layout = getById("overlay-layout");
+  render(uploadFileSummary(file.name, file.type, fee,id), layout);
 }
