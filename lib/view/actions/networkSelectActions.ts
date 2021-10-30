@@ -2,11 +2,12 @@ import {
   dispatch_deploySCIntent,
   dispatch_renderError,
 } from "../../dispatch/render";
-import { switchNetwork, web3Injected } from "../../wallet";
+import { switchNetwork, web3Injected } from "../../wallet/web3";
 import { getById } from "../utils";
 import MetaMaskOnboarding from "@metamask/onboarding";
 import { Chains, SelectedWallet, State } from "../../types";
 import { dispatch_setSelectedWallet } from "../../dispatch/stateChange";
+import { arConnect } from "../../wallet/arweave";
 
 export function networkSelectActions() {
   const switchnetworkToggle = getById(
@@ -74,9 +75,12 @@ export function walletSelectListener() {
     }
   };
 
-  arconnect.onclick = function () {
+  arconnect.onclick = async function () {
     if (arconnect.dataset.disabled === "false") {
       dispatch_setSelectedWallet(SelectedWallet.arconnect);
     }
+
+    //I can check if arconnect is installed if not then prompt to install it.
+    await arConnect();
   };
 }
