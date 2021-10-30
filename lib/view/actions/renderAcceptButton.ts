@@ -17,7 +17,7 @@ import {
   requestAccounts,
   signHash,
   web3Injected,
-} from "../../wallet";
+} from "../../wallet/web3";
 import { getAcceptableContract, getById, getFromUrl } from "../utils";
 import MetaMaskOnboarding from "@metamask/onboarding";
 
@@ -86,6 +86,7 @@ export function renderAcceptOnCLick(props: State) {
         participantSignature: participantSignature,
         smartContract: props.smartcontract,
         ERC20: JSON.stringify(props.isERC20),
+        selectedWallet: props.selectedWallet,
       });
 
       dispatch_stashDetails({

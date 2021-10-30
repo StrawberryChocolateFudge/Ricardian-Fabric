@@ -125,6 +125,7 @@ export const fulfilledPage = (props: FulfilledPageProps) => html`
     data-participantsignature="${props.participantSignature}"
     data-smartcontract="${props.smartContract}"
     data-erc20="${props.ERC20}"
+    data-selectedwallet="${props.selectedWallet}"
     id="page"
   >
     <div class="center" id="contract-display"></div>
