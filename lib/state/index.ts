@@ -18,6 +18,7 @@ import {
   getIssuerSignatureFromDataProp,
   getNetworkFromDataProp,
   getRedirectToDataProp,
+  getSelectedWalletFromDataProp,
   getSmartContractFromDataProp,
   getSourceFromDataProp,
   getVersionFromDataProp,
@@ -41,7 +42,7 @@ import { setStateHook } from "./setStateHook";
       selectedDate: "",
       stashedPage: "",
       stashedDetails: undefined,
-      selectedWallet: SelectedWallet.metamask,
+      selectedWallet: getSelectedWalletFromDataProp(pageEl),
       contracttype: getCurrentPageDataProp(pageEl),
       redirectto: getRedirectToDataProp(pageEl),
       expires: getExpiresFromDataProp(pageEl),
@@ -58,7 +59,7 @@ import { setStateHook } from "./setStateHook";
       participantSignature: "",
       smartcontract: getSmartContractFromDataProp(pageEl),
       position: undefined,
-      isERC20: getIsERC20FromDataProp(pageEl),
+      isERC20: getIsERC20FromDataProp(pageEl), //TODO: CHANGE THIS
     };
 
     const stateHandler = {
