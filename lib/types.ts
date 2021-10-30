@@ -48,7 +48,10 @@ export enum RenderType {
   EnableSCInputs = "EnableSCInputs",
   SetDeployedSCAddress = "SetDeployedSCAddress",
   DocxDropper = "DocxDropper",
+  uploadFile = "uploadFile",
+  uploadSummary = "uploadSummary",
   hidePopup = "hidePopup",
+  hideElement = "hideElement",
 }
 type RenderFunction = (props: any) => void;
 
@@ -88,7 +91,10 @@ export type Renderer = {
   [RenderType.EnableSCInputs]: RenderFunction;
   [RenderType.SetDeployedSCAddress]: RenderFunction;
   [RenderType.DocxDropper]: RenderFunction;
+  [RenderType.uploadFile]: RenderFunction;
+  [RenderType.uploadSummary]: RenderFunction;
   [RenderType.hidePopup]: RenderFunction;
+  [RenderType.hideElement]: RenderFunction;
 };
 
 export enum EventType {
@@ -135,6 +141,7 @@ export enum BlockCountry {
 
 export enum DeploySC {
   HRC20 = "HRC20",
+  PST = "PST",
 }
 
 export enum SelectedWallet {
@@ -220,6 +227,7 @@ export type AcceptablePageProps = {
   issuerSignature: string;
   smartContract: string;
   ERC20: string;
+  selectedWallet: SelectedWallet;
 };
 
 export type FulfilledPageProps = {
@@ -238,6 +246,7 @@ export type FulfilledPageProps = {
   participantSignature: string;
   smartContract: string;
   ERC20: string;
+  selectedWallet: SelectedWallet;
 };
 
 export enum Status {
@@ -271,6 +280,7 @@ export type Options = {
 declare global {
   interface Window {
     ethereum: any;
+    arweaveWallet: any;
   }
 }
 
