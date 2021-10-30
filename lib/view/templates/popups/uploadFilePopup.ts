@@ -54,14 +54,14 @@ export const uploadFileSummary = (
     </tbody>
   </table>
   <label for="uploadSummary-tx">Url after upload:</label>
-  <small id="uploadSummary-tx">http://arweave.net/${id}</small>
+  <small id="uploadSummary-tx">https://arweave.net/${id}</small>
   <hr />
   <div class="button-row">
     <button class="marginRight-20 backButton" id="uploadSummary-cancel">
       Cancel
     </button>
     <button class="marginLeft-20 SCNextButton" id="uploadSummary-proceed">
-      Upload
+      Post
     </button>
   </div>
   <hr />

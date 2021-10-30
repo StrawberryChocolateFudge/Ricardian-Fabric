@@ -6,7 +6,7 @@ import {
   networkTemplate,
   parentUrl,
   signedDateTemplate,
-} from "./components";
+} from "./components/components";
 
 export const fulfilledPageLayout = (props: FulfilledPageProps) => html`
   <style>

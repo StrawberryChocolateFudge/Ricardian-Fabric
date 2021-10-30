@@ -5,10 +5,9 @@ import {
   expiryTemplate,
   issuerTemplate,
   networkTemplate,
-  onlySignerTemplate,
-} from "./components";
-import { mainDep } from "./dependencies";
-import { loadingIndicator } from "./loadingIndicator";
+} from "./components/components";
+import { mainDep } from "./components/dependencies";
+import { loadingIndicator } from "./components/loadingIndicator";
 
 export const acceptablePageLayout = (props: AcceptablePageProps) => html`
   <style>

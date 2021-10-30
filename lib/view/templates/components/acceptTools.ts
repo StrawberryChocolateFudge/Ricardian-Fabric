@@ -1,6 +1,6 @@
 import { html } from "lit-html";
-import { State } from "../../types";
-import { didExpire } from "../utils";
+import { State } from "../../../types";
+import { didExpire } from "../../utils";
 
 export const acceptTools = (props: State) => {
   //Determine if expires is in the past or never

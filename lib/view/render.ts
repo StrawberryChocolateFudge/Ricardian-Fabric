@@ -1,26 +1,24 @@
-import Arweave from "arweave";
-import { extractPublicKey } from "eth-sig-util";
 import { html, render } from "lit-html";
 import { ContractTypes, DeploySC, SelectedWallet, State } from "../types";
-import { AcceptButton, acceptTools } from "./templates/acceptTools";
-import { createButton } from "./templates/createButton";
+import { AcceptButton, acceptTools } from "./templates/components/acceptTools";
+import { createButton } from "./templates/components/createButton";
 import { CreateSummary } from "./templates/createSummary";
-import { deploySCIntentPopup } from "./templates/deployScIntentPopup";
-import { DocXDropper } from "./templates/docxDropper";
-import { helperTooltips } from "./templates/helperTooltips";
-import { loadingIndicator } from "./templates/loadingIndicator";
-import { NetworkDropdown } from "./templates/networkdropdown";
-import { PermawebDropdown } from "./templates/permawebDropdown";
-import { redirectButton } from "./templates/redirectCounter";
-import { SanctionsDropdown } from "./templates/sanctionsDropdown";
-import { SCConstructorPopup } from "./templates/SCContructorPopup";
-import { TemplateDropdown } from "./templates/templatedropdown";
+import { deploySCIntentPopup } from "./templates/popups/deployScIntentPopup";
+import { DocXDropper } from "./templates/components/docxDropper";
+import { helperTooltips } from "./templates/components/helperTooltips";
+import { loadingIndicator } from "./templates/components/loadingIndicator";
+import { NetworkDropdown } from "./templates/dropdowns/networkdropdown";
+import { PermawebDropdown } from "./templates/dropdowns/permawebDropdown";
+import { redirectButton } from "./templates/components/redirectCounter";
+import { SanctionsDropdown } from "./templates/dropdowns/sanctionsDropdown";
+import { SCConstructorPopup } from "./templates/popups/SCContructorPopup";
+import { TemplateDropdown } from "./templates/dropdowns/templatedropdown";
 import { termsLayout } from "./templates/terms";
-import { transactionUrl } from "./templates/transaction";
+import { transactionUrl } from "./templates/components/transaction";
 import {
   uploadFilePopup,
   uploadFileSummary,
-} from "./templates/uploadFilePopup";
+} from "./templates/popups/uploadFilePopup";
 import {
   copyStringToClipboard,
   getById,
@@ -472,7 +470,7 @@ export function renderUploadFile() {
   render(uploadFilePopup(), layout);
 }
 
-export function renderUploadSummary(file: File, fee: any,id: string) {
+export function renderUploadSummary(file: File, fee: any, id: string) {
   const layout = getById("overlay-layout");
-  render(uploadFileSummary(file.name, file.type, fee,id), layout);
+  render(uploadFileSummary(file.name, file.type, fee, id), layout);
 }

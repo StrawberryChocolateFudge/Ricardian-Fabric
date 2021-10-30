@@ -1,5 +1,5 @@
 import { html } from "lit-html";
-import { helperTooltips } from "./helperTooltips";
+import { helperTooltips } from "../components/helperTooltips";
 
 export function deploySCIntentPopup() {
   return html` <style></style>

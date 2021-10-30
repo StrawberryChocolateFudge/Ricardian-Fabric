@@ -1,6 +1,5 @@
 import { html } from "lit-html";
-import { Chains } from "../../types";
-import { HarmonyLogo } from "./networkdropdown";
+import { Chains } from "../../../types";
 
 export const getPriceTemplate = (
   price: string | number,

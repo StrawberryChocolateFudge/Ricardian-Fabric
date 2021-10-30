@@ -1,5 +1,5 @@
 import { html } from "lit-html";
-import { ContractTypes, State } from "../../types";
+import { ContractTypes, State } from "../../../types";
 
 export const transactionUrl = (props: State, url: string) => {
   return html`
