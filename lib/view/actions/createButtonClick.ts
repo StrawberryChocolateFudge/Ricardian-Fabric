@@ -20,7 +20,7 @@ import {
   requestAccounts,
   signHash,
   web3Injected,
-} from "../../wallet";
+} from "../../wallet/web3";
 import {
   getById,
   getExpires,
@@ -122,7 +122,8 @@ export function renderCreateButtonClick(props: State) {
           hash,
           issuerSignature,
           smartContract,
-          ERC20: JSON.stringify(props.isERC20)
+          ERC20: JSON.stringify(props.isERC20),
+          selectedWallet: props.selectedWallet,
         },
       });
 
