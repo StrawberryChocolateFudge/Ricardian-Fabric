@@ -1347,13 +1347,6 @@
   resolved "https://registry.yarnpkg.com/@weavery/clarity/-/clarity-0.1.5.tgz#f06bbb0dac7c63c6e2ccd76cda3e8b32b57f82c2"
   integrity sha512-0ms2/sBx+uyW3EmXte5otIzNVAXpfJ3lBl6FS8JuLdWmPU6SxiAoGTMUT0N0SL3Ogiz2PZt6NV+mfApbSvYBaQ==
 
-"@webkitty/geo-rev@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@webkitty/geo-rev/-/geo-rev-1.1.1.tgz#6cfd06ec899afd64defd05cbd5a87f262897ce4c"
-  integrity sha512-OSSdYpCfg1OdpR+BVyeSN7zrQu7HrehCMWr0zb97s/VJo4TP5U2HRi/9bIDS1DXBtApzljmxz8v1Z6gcNS3Unw==
-  dependencies:
-    static-kdtree "^1.0.2"
-
 abab@^2.0.0:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/abab/-/abab-2.0.5.tgz#c0b678fb32d60fc1219c784d6a826fe385aeb79a"
@@ -1488,7 +1481,7 @@ anymatch@^2.0.0:
   dependencies:
     sylvester ">= 0.0.8"
 
-arconnect@^0.2.8:
+arconnect@^0.2.8, arconnect@^0.2.9:
   version "0.2.9"
   resolved "https://registry.yarnpkg.com/arconnect/-/arconnect-0.2.9.tgz#be07d2281f20d864a91cdcb44e3eed7fccb97f12"
   integrity sha512-Us49eN/+8l6BrkAPdXnJVPwWlxxUPR7QaBjA0j3OBAcioIFRpwTdoPN9FxtwDGN91lgM6ebOudTXJToRiNizoA==
