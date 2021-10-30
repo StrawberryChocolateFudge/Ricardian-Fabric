@@ -13,7 +13,7 @@ import {
 import { permapin } from "../../fetch";
 import { IPFS_Add } from "../../ipfs/add";
 import { ContractTypes, Status, State, PinOptions } from "../../types";
-import { acceptAgreement, setTerms, signHash, watchAsset } from "../../wallet";
+import { acceptAgreement, setTerms, signHash, watchAsset } from "../../wallet/web3";
 import { getById } from "../utils";
 
 export function areYouSureButtons(props: State) {
