@@ -253,6 +253,7 @@ hr {
   background: white;
   max-width: 500px;
   margin: 0 auto;
+  margin-top: 30px;
   box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
   border-radius: 10px;
   overflow: auto;
@@ -372,7 +373,6 @@ hr {
   cursor: pointer;
   background-color: #f2f2f2;
   color: black;
-
 }
 .deploySCUL {
   list-style-type: none;
@@ -446,6 +446,7 @@ hr {
   max-width: 200px;
 }
 
+
 #error-display {
   visibility: hidden; /* Hidden by default. Visible on click */
   min-width: 250px; /* Set a default minimum width */
@@ -456,7 +457,7 @@ hr {
   padding-top: 16px;
   padding-bottom: 16px;
   position: fixed; /* Sit on top of the screen */
-  z-index: 1; /* Add a z-index if needed */
+  z-index: 5; /* Add a z-index if needed */
   left: 0; /*Center the snackbar */
   bottom: 30px; /*30px from the bottom */
 }
