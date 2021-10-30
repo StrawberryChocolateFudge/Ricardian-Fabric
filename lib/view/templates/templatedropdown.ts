@@ -16,9 +16,7 @@ export const TemplateDropdown = () => html`
   >
   <ul>
     <li>
-      <button id="import-docx-trigger" class="dropdown-button">
-        Import from file
-      </button>
+      <button id="import-docx-trigger" class="dropdown-button">Import</button>
     </li>
   </ul>
 `;
