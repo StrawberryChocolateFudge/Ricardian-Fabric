@@ -228,9 +228,35 @@ export function dispatch_renderDocXDropper(props: State) {
   });
 }
 
+export function dispatch_renderUploadFilePopup() {
+  dispatch(Events.render, {
+    type: RenderType.uploadFile,
+    props: {},
+  });
+}
+
 export function dispatch_hidePopup() {
   dispatch(Events.render, {
     type: RenderType.hidePopup,
     props: {},
+  });
+}
+
+export function dispatch_renderUploadSummary(
+  file: File,
+  transaction: any,
+  fee: any,
+  data: any
+) {
+  dispatch(Events.render, {
+    type: RenderType.uploadSummary,
+    props: { transaction, file, fee,data },
+  });
+}
+
+export function dispatch_hideElement(el: HTMLElement, hide: boolean) {
+  dispatch(Events.render, {
+    type: RenderType.hideElement,
+    props: { el, hide },
   });
 }
