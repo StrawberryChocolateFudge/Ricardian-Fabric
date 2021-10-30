@@ -15,7 +15,7 @@ import {
   requestAccounts,
   watchAsset,
   web3Injected,
-} from "../../wallet";
+} from "../../wallet/web3";
 import { getHRC20Abi, getHRC20Bytecode } from "../../wallet/abi/HRC20";
 import { getById } from "../utils";
 import MetaMaskOnboarding from "@metamask/onboarding";
@@ -122,12 +122,6 @@ export function constructSCActions(selected: DeploySC) {
       dispatch_setDeployedSCAddress(receipt.contractAddress);
       dispatch_setERC20(erc20Params);
       dispatch_hidePopup();
-
-      await watchAsset(erc20Params, () => {
-        dispatch_renderError(
-          "Failed to add " + erc20Params.name + " token to wallet."
-        );
-      });
     };
 
     await deployContract(
