@@ -1,4 +1,9 @@
-import { BlockCountry, ContractTypes, ERC20Params } from "../types";
+import {
+  BlockCountry,
+  ContractTypes,
+  ERC20Params,
+  SelectedWallet,
+} from "../types";
 
 export function getRedirectToDataProp(page: HTMLElement): string {
   return page.dataset.redirectto;
@@ -70,4 +75,10 @@ export function getBlockCountriesFromDataProp(
     return [] as BlockCountry[];
   }
   return JSON.parse(array) as BlockCountry[];
+}
+
+export function getSelectedWalletFromDataProp(
+  page: HTMLElement
+): SelectedWallet {
+  return page.dataset.selectedwallet as SelectedWallet;
 }
