@@ -1,13 +1,17 @@
 import { html } from "lit-html";
 
 export const NetworkDropdown = () => html`
-  <input type="checkbox" id="network_checkbox_toggle" class="dropdown_checkbox_toggle"  />
+  <input
+    type="checkbox"
+    id="network_checkbox_toggle"
+    class="dropdown_checkbox_toggle"
+  />
   <label
     class="labelButton dropdown_checkbox_label lightBlue-shadow"
     id="network_checkbox_label"
     for="network_checkbox_toggle"
   >
-    Select network
+    Eth network
   </label>
   <ul>
     <li>
