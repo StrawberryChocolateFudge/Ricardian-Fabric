@@ -14,6 +14,9 @@ export const PermawebDropdown = () => html`
   >
   <ul>
     <li>
+      <button id="Wallet" class="dropdown-button">Wallet</button>
+    </li>
+    <li>
       <button id="upload-popup-button" class="dropdown-button">
         Upload File
       </button>
