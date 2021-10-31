@@ -10,10 +10,14 @@ import {
   dispatch_renderTransaction,
   dispatch_yesButtonPressed,
 } from "../../dispatch/render";
-import { permapin } from "../../fetch";
 import { IPFS_Add } from "../../ipfs/add";
-import { ContractTypes, Status, State, PinOptions } from "../../types";
-import { acceptAgreement, setTerms, signHash, watchAsset } from "../../wallet/web3";
+import { ContractTypes, Status, State } from "../../types";
+import {
+  acceptAgreement,
+  setTerms,
+  signHash,
+  watchAsset,
+} from "../../wallet/web3";
 import { getById } from "../utils";
 
 export function areYouSureButtons(props: State) {
@@ -32,8 +36,7 @@ export function areYouSureButtons(props: State) {
     const CID = await IPFS_Add(props.stashedPage, props.ipfs);
     const id = `${CID.toString()}`;
     const url = getUrl(CID);
-    dispatch_renderTransaction(props, url);
-    // await permapinDispatch(id, props);
+    dispatch_renderTransaction(props, url, id);
 
     const smartContract = props.stashedDetails.smartContract;
 
@@ -71,7 +74,6 @@ async function smartContractActions(
 
     const onSuccess = async (signature: string) => {
       //I NEED TO CALL THE ACCEPT AGREEMENT FROM HERE!
-
 
       const options = await acceptAgreement({
         url,
@@ -113,12 +115,4 @@ async function smartContractActions(
 
 function getUrl(cid: CID) {
   return `http://localhost:8080/ipfs/${cid.toString()}`;
-}
-
-async function permapinDispatch(id: string, props: State) {
-  await permapin(id, props.ipfsArweaveBridge).then(async (res: PinOptions) => {
-    if (res.status === Status.Failure) {
-      dispatch_renderError(res.error);
-    }
-  });
 }
