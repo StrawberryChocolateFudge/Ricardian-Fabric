@@ -37,7 +37,40 @@ export const acceptablePageLayout = (props: AcceptablePageProps) => html`
       background-size: 109px 109px, 109px 109px, 100% 6px, 109px 109px,
         109px 109px;
       background-position: 54px 55px, 0px 0px, 0px 0px, 0px 0px, 0px 0px;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: Sans-Serif;
+    }
+    input[type="text"],
+    input[type="url"],
+    input[type="date"],
+    input[type="number"] {
+      background-color: transparent;
+      border: none;
+      border-bottom: 1px solid grey;
+      border-radius: 0;
+      outline: none;
+      height: 3rem;
+      width: 100%;
+      font-size: 16px;
+      margin: 0 0 8px 0;
+      padding: 0;
+      box-shadow: none;
+      box-sizing: content-box;
+      transition: box-shadow 0.3s, border 0.3s;
+    }
+
+    input[type="text"]:disabled,
+    input[type="url"]:disabled,
+    input[type="date"]:disabled {
+      color: rgba(0, 0, 0, 0.42);
+      border-bottom: 1px dotted #f2f2f2;
+    }
+
+    input[type="text"]:focus,
+    input[type="url"]:focus,
+    input[type="date"]:focus,
+    input[type="number"]:focus {
+      border-bottom: 1px solid darkgrey;
+      box-shadow: 0 1px 0 0 darkgrey;
     }
     .center {
       margin: 0 auto;
@@ -62,10 +95,18 @@ export const acceptablePageLayout = (props: AcceptablePageProps) => html`
     .title {
       color: #f2f2f2;
     }
-    .imgRow {
+    .wide-row {
       margin-top: 10px;
       display: flex;
       flex-direction: row;
+      width: 100%;
+      justify-content: space-around;
+    }
+    .labelButton {
+      border-radius: 25px;
+      cursor: pointer;
+      padding: 10px;
+      margin: 5px;
     }
     .drop-zone {
       margin: 0 auto;
@@ -143,8 +184,8 @@ export const acceptablePageLayout = (props: AcceptablePageProps) => html`
       padding-top: 16px;
       padding-bottom: 16px;
       position: fixed; /* Sit on top of the screen */
-      z-index: 1; /* Add a z-index if needed */
-      left: 0; /*Center the snackbar */
+      z-index: 5; /* Add a z-index if needed */
+      left: 0;
       bottom: 30px; /*30px from the bottom */
     }
 
@@ -177,7 +218,50 @@ export const acceptablePageLayout = (props: AcceptablePageProps) => html`
       color: white !important;
       border: none;
     }
+    .backButton {
+      cursor: pointer;
+      background-color: #f2f2f2;
+      border-radius: 20px;
+      padding: 5px;
+      color: black !important;
+      border: none;
+    }
 
+    #overlay {
+      position: fixed;
+      display: none;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 2;
+    }
+
+    #overlay-layout {
+      padding-left: 10px;
+      padding-right: 10px;
+      /* height: 80%; */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: white;
+      max-width: 500px;
+      margin: 0 auto;
+      margin-top: 30px;
+      box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+      border-radius: 10px;
+      overflow: auto;
+    }
+    .terms-button-label {
+      cursor: pointer;
+      background-color: #f2f2f2;
+      border-radius: 20px;
+      padding: 5px;
+      color: black;
+    }
     /* Animations to fade the snackbar in and out */
     @-webkit-keyframes fadein {
       from {
@@ -258,6 +342,9 @@ const acceptablePage = (props: AcceptablePageProps) => html`
     <div class="center red" id="error-display"></div>
     <div class="center" id="redirect-display"></div>
     <div class="center" id="transaction-display"></div>
+    <div id="overlay">
+      <div id="overlay-layout"></div>
+    </div>
     <div id="action-container" class="center">${loadingIndicator}</div>
   </div>
 `;
