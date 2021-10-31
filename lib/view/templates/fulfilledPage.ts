@@ -73,7 +73,7 @@ export const fulfilledPageLayout = (props: FulfilledPageProps) => html`
     .title {
       color: #f2f2f2;
     }
-    .imgRow {
+    .row {
       margin-top: 10px;
       display: flex;
       flex-direction: row;
