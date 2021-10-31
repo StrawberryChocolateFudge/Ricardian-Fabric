@@ -1,167 +1,113 @@
-import { ApiConfig } from "arweave/web/lib/api";
-import { Status, verifyAndGetTags } from "./verification";
-var tou8 = require("buffer-to-uint8array");
-
-const IpfsHttpClientLite = require("ipfs-http-client-lite");
-const isIPFS = require("is-ipfs");
-let Arweave: any;
-function isNodejs() {
-  return (
-    typeof process === "object" &&
-    typeof process.versions === "object" &&
-    typeof process.versions.node !== "undefined"
-  );
-}
-if (isNodejs()) {
-  Arweave = require("arweave/node");
-} else {
-  Arweave = require("arweave/web").default;
-}
+import { HashWithIds, IPFSParams, Status } from "../../types";
+import tou8 from "buffer-to-uint8array";
+import { verifyAndGetTags } from "./verification";
+import isIPFS from "is-ipfs";
+import IpfsHttpClientLite from "ipfs-http-client-lite";
+import { CID } from "multiformats";
+import Arweave from "arweave";
 const IPFS_KEY = "IPFS-Add";
 
 //temporary so it doesnt conflict with different data structure
 const IPFS_CONSTRAINT_KEY = "standard";
 const IPFS_CONSTRAINT = "v0.1";
 
-type HashWithIds = { [key: string]: string };
-
-export default class ArweaveIpfs {
-  arweave: any;
-  ipfs: any;
-  constructor(
-    ipfs_opts: any = { host: "ipfs.infura.io", port: 5001, protocol: "https" },
-    arweave_opts: ApiConfig = {
-      host: "arweave.net",
-      port: 443,
-      protocol: "https",
-    }
-  ) {
-    this.arweave = Arweave.init(arweave_opts);
-    this.ipfs = IpfsHttpClientLite(
-      `${ipfs_opts.protocol}://${ipfs_opts.host}:${ipfs_opts.port}`
-    );
+export async function addHash(
+  hash: string,
+  ipfsParams: IPFSParams
+): Promise<HashWithIds> {
+  let h = hash;
+  if (!isIPFS.multihash(h) && !isIPFS.base32cid(h)) {
+    return makeHashWithIds(h, "Invalid IPFS hash", Status.Failure);
   }
-  add = async (
-    hashes: Array<string> | string | Array<object>,
-    skipArFetch = false
-  ): Promise<HashWithIds> => {
-    if (!Array.isArray(hashes)) {
-      hashes = [hashes];
-    }
-    let refinedHashes: Array<string>;
-    if (typeof hashes[0] != "string") {
-      //@ts-ignore
-      refinedHashes = hashes.map((o) => o.hash);
-    } else {
-      //@ts-ignore
-      refinedHashes = hashes;
-    }
-    let arIds: Array<string> = Array(hashes.length).fill(null);
-    if (!skipArFetch) {
-      arIds = await this.getArIdFromHashes(refinedHashes);
-    }
-    let x = await Promise.all(
-      refinedHashes.map(async (o, i) => {
-        if (arIds[i] == null) {
-          return await this.addHash(o);
-        } else {
-          return makeHashWithIds(o, arIds[i]);
-        }
-      })
-    );
-    return Object.assign({}, ...x);
-  };
-  get = async (hashes: Array<string> | string): Promise<any> => {
-    if (typeof hashes == "string") {
-      hashes = [hashes];
-    }
-    let ids = await this.getArIdFromHashes(hashes);
-    let hashToPushToAr: Array<String> = [];
-    let x = await Promise.all(
-      ids.map(async (o, i) => {
-        let h = hashes[i];
-        if (o != null) {
-          try {
-            let tx = await this.arweave.transactions.get(o);
-            return { [h]: Array.from(tx.get("data", { decode: true })) };
-          } catch (e) {
-            return { [h]: [] };
-            //do nothing returns undefined
-          }
-        } else {
-          hashToPushToAr.push(h);
-          const data: Buffer = await this.ipfs.cat(h);
-          return { [h]: Array.from(tou8(data)) };
-        }
-      })
-    );
-    if (hashToPushToAr.length > 0) {
-      this.add(hashToPushToAr, true);
-    }
-    return Object.assign({}, ...x);
-  };
-  getArIdFromHashes = async (hashes: Array<string>): Promise<Array<string>> => {
-    return Promise.all(
-      hashes.map(async (o) => {
-        if (isIPFS.multihash(o)) {
-          let x = await this.arweave.arql({
-            op: "and",
-            expr1: {
-              op: "equals",
-              expr1: IPFS_KEY,
-              expr2: o,
-            },
-            expr2: {
-              op: "equals",
-              expr1: IPFS_CONSTRAINT_KEY,
-              expr2: IPFS_CONSTRAINT,
-            },
-          });
-          if (x.length > 0) {
-            return x[0];
-          } else {
-            return null;
-          }
-        } else {
-          return o;
-        }
-      })
-    );
-  };
-  addHash = async (h: string): Promise<HashWithIds> => {
-    if (!isIPFS.multihash(h)) {
-      return makeHashWithIds(h, "Invalid IPFS hash");
-    }
-    const data: Buffer = await this.ipfs.cat(h);
-    const options = verifyAndGetTags(data);
+  // if the cid is V0, I convert it to V1
+  if (isIPFS.multihash(h)) {
+    const v0 = CID.parse(h);
+    h = v0.toV1().toString();
+  }
+  const config = await window.arweaveWallet.getArweaveConfig();
+  const arweave = Arweave.init(config);
+  console.log(arweave);
+  console.log(config);
+  console.log(isIPFS.multihash(h));
 
-    if (options.status === Status.Failure) {
-      return makeHashWithIds(h, "Not Ricardian Fabric Contract");
-    }
+  const arid = await getArIdFromHash(h, arweave);
+  console.log(arid);
 
-    const tags = options.tags;
+  if (arid === "M") {
+    // means method not allowed was returned
+    return makeHashWithIds(h, "Error: Method not allowed", Status.Failure);
+  }
 
-    let transaction = await this.arweave.createTransaction({
-      data: tou8(data),
-    });
-    transaction.addTag(IPFS_KEY, h);
-    transaction.addTag(IPFS_CONSTRAINT_KEY, IPFS_CONSTRAINT);
-    transaction.addTag("Issuer", tags.issuer);
-    transaction.addTag("Network", tags.network);
-    transaction.addTag("Contract-Type", tags.contractType);
-    transaction.addTag("Participant", tags.participant);
-    transaction.addTag("App-Version", tags.version);
-    transaction.addTag("App-Name", "Ricardian Fabric");
+  if (arid !== null) {
+    return makeHashWithIds(h, "It's already permapined!", Status.AlreadyExists);
+  }
 
-    //fast blocks hack
-    const anchor_id = (await this.arweave.api.get("/tx_anchor")).data;
-    transaction.last_tx = anchor_id;
+  const ipfs = IpfsHttpClientLite(ipfsParams);
+  console.log("here");
+  const data: Buffer = await ipfs.cat(h);
+  console.log(data);
+  const options = verifyAndGetTags(data);
 
-    await this.arweave.transactions.sign(transaction);
-    await this.arweave.transactions.post(transaction);
-    return makeHashWithIds(h, transaction.id);
-  };
+  if (options.status === Status.Failure) {
+    return makeHashWithIds(h, "Not Ricardian Fabric Contract", Status.Failure);
+  }
+
+  const tags = options.tags;
+  console.log(tags);
+  const owner = await window.arweaveWallet.getActiveAddress();
+  let transaction = await arweave.createTransaction({
+    data: tou8(data),
+    owner,
+  });
+  transaction.addTag(IPFS_KEY, h);
+  transaction.addTag(IPFS_CONSTRAINT_KEY, IPFS_CONSTRAINT);
+  transaction.addTag("Issuer", tags.issuer);
+  transaction.addTag("Network", tags.network);
+  transaction.addTag("Contract-Type", tags.contractType);
+  transaction.addTag("Participant", tags.participant);
+  transaction.addTag("App-Version", tags.version);
+  transaction.addTag("App-Name", "Ricardian Fabric");
+  console.log(transaction);
+  //fast blocks hack, this is left here from the arweave ipfs library impl
+  const anchor_id = (await arweave.api.get("/tx_anchor")).data;
+  //@ts-ignore
+  transaction.last_tx = anchor_id;
+  console.log(transaction);
+  await window.arweaveWallet.sign(transaction);
+  return makeHashWithIds(h, transaction.id, Status.Success);
+  await arweave.transactions.post(transaction);
+  return makeHashWithIds(h, transaction.id, Status.Success);
 }
-const makeHashWithIds = (hash: string, id: string): HashWithIds => {
-  return { [hash]: id };
+
+const makeHashWithIds = (
+  hash: string,
+  message: string,
+  status: Status
+): HashWithIds => {
+  return { hash, message, status };
 };
+
+async function getArIdFromHash(
+  hash: string,
+  arweave: Arweave
+): Promise<string> {
+  const x = await arweave.arql({
+    op: "and",
+    expr1: {
+      op: "equals",
+      expr1: IPFS_KEY,
+      expr2: hash,
+    },
+    expr2: {
+      op: "equals",
+      expr1: IPFS_CONSTRAINT_KEY,
+      expr2: IPFS_CONSTRAINT,
+    },
+  });
+  console.log(x);
+  if (x.length > 0) {
+    return x[0];
+  } else {
+    return null;
+  }
+}
