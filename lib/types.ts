@@ -9,6 +9,7 @@ export enum Events {
   render = "render",
   stateChange = "stateChange",
 }
+
 //TODO: start using the success message too!!
 export enum RenderType {
   successMessage = "successMessage",
@@ -50,9 +51,15 @@ export enum RenderType {
   DocxDropper = "DocxDropper",
   uploadFile = "uploadFile",
   uploadSummary = "uploadSummary",
+  permapinPopup = "permapinPopup",
   hidePopup = "hidePopup",
   hideElement = "hideElement",
 }
+
+// TODO refactor to dispatchArgs for specifying the dispatch arguments
+// TODO: The render function should take these args
+export type dispatchArgs = State & { tmp: any };
+
 type RenderFunction = (props: any) => void;
 
 export type Renderer = {
@@ -93,6 +100,7 @@ export type Renderer = {
   [RenderType.DocxDropper]: RenderFunction;
   [RenderType.uploadFile]: RenderFunction;
   [RenderType.uploadSummary]: RenderFunction;
+  [RenderType.permapinPopup]: RenderFunction;
   [RenderType.hidePopup]: RenderFunction;
   [RenderType.hideElement]: RenderFunction;
 };
@@ -252,12 +260,13 @@ export type FulfilledPageProps = {
 export enum Status {
   Success,
   Failure,
+  AlreadyExists,
 }
-export type PinOptions = {
-  status: Status;
-  error: any;
-  result: Response;
-};
+// export type PinOptions = {
+//   status: Status;
+//   error: any;
+//   result: Response;
+// };
 
 export type IssuerHashedData = {
   legalContract: string;
@@ -276,6 +285,22 @@ export type Options = {
   error: any;
   data: any;
 };
+
+export type Tags = {
+  network: string;
+  issuer: string;
+  contractType: string;
+  participant: string;
+  version: string;
+};
+
+export type VerifyOptions = {
+  status: Status;
+  tags: Tags;
+  error: string;
+};
+
+export type HashWithIds = { hash: string; message: string; status: Status };
 
 declare global {
   interface Window {
