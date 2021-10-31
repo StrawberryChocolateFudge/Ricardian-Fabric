@@ -1,3 +1,4 @@
+import { showBanner } from "../business/bloc";
 import {
   dispatch_attachDateClickListener,
   dispatch_renderAcceptButton,
@@ -12,12 +13,14 @@ import { ContractTypes, SetHookArgs, State, StateProperties } from "../types";
 export const setStateHook = {
   [StateProperties.init]: (args: SetHookArgs) => {
     const currentPage = args.obj.contracttype;
+    const clone = cloneState(args.obj);
     if (currentPage === ContractTypes.create) {
-      const clone = cloneState(args.obj);
+      showBanner();
       dispatch_renderCreateButton(clone);
       dispatch_renderVersion(clone.version);
+
     } else if (currentPage === ContractTypes.acceptable) {
-      dispatch_renderAcceptButton(cloneState(args.obj));
+      dispatch_renderAcceptButton(clone);
     }
   },
   [StateProperties.ipfs]: (args: SetHookArgs) => {},
