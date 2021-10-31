@@ -10,7 +10,7 @@ export const transactionUrl = (props: State, url: string) => {
         overflow: hidden;
       }
 
-      #deploy-again-button {
+      .permapin-button {
         box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
         border-radius: 20px;
         border: none;
@@ -20,8 +20,21 @@ export const transactionUrl = (props: State, url: string) => {
         max-width: 200px;
         margin: 0 auto;
         padding: 5px;
-        padding-left:20px;
+        padding-left: 20px;
         padding-right: 20px;
+      }
+      .transaction-button-row {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+      }
+      .deploy-again {
+        cursor: pointer;
+        background-color: #f2f2f2;
+        border-radius: 20px;
+        padding: 5px;
+        color: black !important;
+        border: none;
       }
     </style>
 
@@ -29,21 +42,21 @@ export const transactionUrl = (props: State, url: string) => {
       <a class="center" aria-label="Link copied to clipboard" href="${url}"
         >Link copied to clipboard</a
       >
-      ${props.contracttype === ContractTypes.create
-        ? html`
-            <hr />
-            <button id="deploy-again-button">Again</button>
-          `
-        : null}
-      <p>
-        <small
-          >Please visit
-          <a href="https://bridge.ricardianfabric.com"
-            >bridge.ricardianfabric.com</a
-          >
-          to donate so we can offer a free permapin service. Thank you!</small
-        >
-      </p>
+      <hr />
+      <div class="transaction-button-row">
+        <button id="permapin-deployed-button" class="permapin-button">
+          Permapin to Arweave!
+        </button>
+        ${props.contracttype === ContractTypes.create
+          ? html`
+              <hr />
+              <button class="deploy-again" id="deploy-again-button">
+                Edit page again
+              </button>
+            `
+          : null}
+      </div>
+      <hr />
     </div>
   `;
 };
