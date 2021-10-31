@@ -1,26 +1,9 @@
+import { Status, Tags, VerifyOptions } from "../../types";
+
 //The contents of the ipfs data must be checked to make sure it is Ricardian Fabric.
 const DOMParser = require("xmldom").DOMParser;
 
-export enum Status {
-  Success,
-  Failure,
-}
-
-export type Tags = {
-  network: string;
-  issuer: string;
-  contractType: string;
-  participant: string;
-  version: string;
-};
-
-export type VerifyOptions = {
-  status: Status;
-  tags: Tags;
-  error: string;
-};
-
-export function verifyAndGetTags(data: Buffer): VerifyOptions {
+export function verifyAndGetTags(data): VerifyOptions {
   //This function verifies the data from IPFS is a valid Ricardian Fabric contract and returns the
   let tags: Tags = {
     network: "",
