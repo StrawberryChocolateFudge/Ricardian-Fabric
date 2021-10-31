@@ -50,6 +50,7 @@ import {
   renderUploadFile,
   renderUploadSummary,
   hideElement,
+  renderPermapinPopup,
 } from "./render";
 import { renderAcceptTools } from "./render";
 import { areYouSureButtons } from "./actions/areYouSureButtons";
@@ -75,7 +76,9 @@ import {
 import { constructSCActions, deploySCActions } from "./actions/deploySCActions";
 import { templateSelectActions } from "./actions/templateSelectActions";
 import {
+  permapinPopupActions,
   permawebSelectActions,
+  permawebTransactionAction,
   uploadFileListener,
   uploadSummaryActions,
 } from "./actions/permawebSelectActions";
@@ -119,6 +122,7 @@ const Render: Renderer = {
   },
   [RenderType.transaction]: (props: any) => {
     renderTransaction(props, props.url);
+    permawebTransactionAction(props, props.ipfsHash);
   },
   [RenderType.renderError]: (props: { message: string }) => {
     renderError(props.message);
@@ -221,18 +225,23 @@ const Render: Renderer = {
     onDocFileDropped(props);
     docxImportBackButton();
   },
-  [RenderType.uploadFile]: () => {
+  [RenderType.uploadFile]: (props: State) => {
     renderUploadFile();
-    uploadFileListener();
+    uploadFileListener(props);
   },
   [RenderType.uploadSummary]: (props: {
     file: File;
     transaction: any;
     fee: any;
     data: any;
+    props: State;
   }) => {
     renderUploadSummary(props.file, props.fee, props.transaction.id);
-    uploadSummaryActions(props.transaction, props.data);
+    uploadSummaryActions(props.transaction, props.data, props.props);
+  },
+  [RenderType.permapinPopup]: (props: State) => {
+    renderPermapinPopup();
+    permapinPopupActions(props);
   },
   [RenderType.hidePopup]: ({}) => {
     removePopup();
