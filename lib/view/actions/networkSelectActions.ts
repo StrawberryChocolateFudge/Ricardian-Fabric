@@ -68,7 +68,7 @@ export function addDeployButtonListener(props: State) {
 
 export function walletSelectListener() {
   const metamask = getById("metamask-logo-container");
-  const arconnect = getById("arconnect-logo-container");
+  const arconnect = getById("arweave-logo-container");
   metamask.onclick = function () {
     if (metamask.dataset.disabled === "false") {
       dispatch_setSelectedWallet(SelectedWallet.metamask);
