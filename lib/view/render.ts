@@ -27,6 +27,7 @@ import {
   setBannerDisplayBlock,
   setBannerDisplayNone,
 } from "./utils";
+import { PermapinPopup } from "./templates/popups/permapinPopup";
 
 export function renderAcceptTools(props: State) {
   const actionContainer = getById("action-container");
@@ -217,7 +218,7 @@ export function disableCreateInputs() {
   ) as HTMLInputElement;
 
   const metamask = getById("metamask-logo-container");
-  const arconnect = getById("arconnect-logo-container");
+  const arconnect = getById("arweave-logo-container");
 
   metamask.dataset.disabled = "true";
   metamask.style.cursor = "not-allowed";
@@ -274,7 +275,7 @@ export function enableCreateInputs() {
   ) as HTMLInputElement;
 
   const metamask = getById("metamask-logo-container");
-  const arconnect = getById("arconnect-logo-container");
+  const arconnect = getById("arweave-logo-container");
 
   metamask.dataset.disabled = "false";
   metamask.style.cursor = "pointer";
@@ -432,10 +433,10 @@ export function setDeployedSCAddressToDOM(address: string) {
 
 export function renderSelectedWallet(selectedWallet: SelectedWallet) {
   const metamask = getById("metamask-logo-container");
-  const arconnect = getById("arconnect-logo-container");
+  const arconnect = getById("arweave-logo-container");
   const selectNetwork = getById("network_checkbox_label");
   const permaweb = getById("permaweb_checkbox_label");
-  const createButton = getById("save-contract");
+  // const createButton = getById("save-contract");
 
   selectNetwork.classList.add("lightBlue-shadow");
   permaweb.classList.add("lightCoral-shadow");
@@ -445,14 +446,14 @@ export function renderSelectedWallet(selectedWallet: SelectedWallet) {
     arconnect.classList.remove("lightCoral-shadow");
     arconnect.classList.add("light-shadow");
 
-    createButton.classList.remove("lightCoral-shadow");
-    createButton.classList.add("lightBlue-shadow");
+    // createButton.classList.remove("lightCoral-shadow");
+    // createButton.classList.add("lightBlue-shadow");
   } else if (selectedWallet === SelectedWallet.arconnect) {
     metamask.classList.remove("lightBlue-shadow");
     metamask.classList.add("light-shadow");
     arconnect.classList.add("lightCoral-shadow");
-    createButton.classList.add("lightCoral-shadow");
-    createButton.classList.remove("lightBlue-shadow");
+    // createButton.classList.add("lightCoral-shadow");
+    // createButton.classList.remove("lightBlue-shadow");
   }
 }
 
@@ -473,4 +474,10 @@ export function renderUploadFile() {
 export function renderUploadSummary(file: File, fee: any, id: string) {
   const layout = getById("overlay-layout");
   render(uploadFileSummary(file.name, file.type, fee, id), layout);
+}
+
+export function renderPermapinPopup() {
+  setBannerDisplayBlock();
+  const layout = getById("overlay-layout");
+  render(PermapinPopup(), layout);
 }
