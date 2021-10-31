@@ -26,7 +26,8 @@ body {
     #fff;
   background-size: 109px 109px, 109px 109px, 100% 6px, 109px 109px, 109px 109px;
   background-position: 54px 55px, 0px 0px, 0px 0px, 0px 0px, 0px 0px;
-  font-family: Arial, Helvetica, sans-serif;
+  /* font-family: Arial, Helvetica, sans-serif; */
+  font-family: Sans-Serif;
 }
 
 input[type="text"],
@@ -263,10 +264,18 @@ hr {
   overflow: hidden;
 }
 
-.imgRow {
+.row {
   margin-top: 10px;
   display: flex;
   flex-direction: row;
+}
+
+.wide-row {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-around;
 }
 
 .fabric-color {
@@ -282,10 +291,10 @@ hr {
 }
 
 .lightBlue-shadow {
-  box-shadow: rgb(191, 233, 248) 0px 5px 15px !important;
+  box-shadow: rgb(104, 202, 235) 0px 5px 15px !important;
 }
 .lightCoral-shadow {
-  box-shadow: rgb(252, 199, 199) 0px 5px 15px !important;
+  box-shadow: rgb(240, 166, 166) 0px 5px 15px !important;
 }
 
 .light-shadow {
@@ -397,7 +406,7 @@ hr {
   color: black !important;
   border: none;
 }
-.SCNextButton {
+.NextButton {
   cursor: pointer;
   background-color: black;
   border-radius: 20px;
@@ -405,7 +414,7 @@ hr {
   color: white !important;
   border: none;
 }
-.SCNextButton :disabled {
+.NextButton :disabled {
   cursor: pointer;
   background-color: grey;
   border-radius: 20px;
@@ -426,7 +435,7 @@ hr {
   cursor: pointer;
 }
 
-#terms-checkbox-label {
+.terms-button-label {
   cursor: pointer;
   background-color: #f2f2f2;
   border-radius: 20px;
@@ -446,6 +455,10 @@ hr {
   max-width: 200px;
 }
 
+#arweave-circle-container {
+  width: 20px;
+  height: 20px;
+}
 
 #error-display {
   visibility: hidden; /* Hidden by default. Visible on click */
