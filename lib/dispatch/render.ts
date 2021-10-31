@@ -31,10 +31,14 @@ export function dispatch_removeLoadingIndicator(from: string) {
   });
 }
 
-export function dispatch_renderTransaction(props: State, url: string) {
+export function dispatch_renderTransaction(
+  props: State,
+  url: string,
+  ipfsHash: string
+) {
   dispatch(Events.render, {
     type: RenderType.transaction,
-    props: { ...props, url },
+    props: { ...props, url, ipfsHash },
   });
 }
 
@@ -228,10 +232,10 @@ export function dispatch_renderDocXDropper(props: State) {
   });
 }
 
-export function dispatch_renderUploadFilePopup() {
+export function dispatch_renderUploadFilePopup(props: State) {
   dispatch(Events.render, {
     type: RenderType.uploadFile,
-    props: {},
+    props,
   });
 }
 
@@ -246,11 +250,12 @@ export function dispatch_renderUploadSummary(
   file: File,
   transaction: any,
   fee: any,
-  data: any
+  data: any,
+  props: State
 ) {
   dispatch(Events.render, {
     type: RenderType.uploadSummary,
-    props: { transaction, file, fee,data },
+    props: { transaction, file, fee, data, props },
   });
 }
 
@@ -258,5 +263,12 @@ export function dispatch_hideElement(el: HTMLElement, hide: boolean) {
   dispatch(Events.render, {
     type: RenderType.hideElement,
     props: { el, hide },
+  });
+}
+
+export function dispatch_permapinPopup(props: State, ipfsHash) {
+  dispatch(Events.render, {
+    type: RenderType.permapinPopup,
+    props: { ...props, ipfsHash },
   });
 }
