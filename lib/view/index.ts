@@ -2,6 +2,7 @@ import {
   ContractTypes,
   DeploySC,
   Events,
+  RenderDispatchArgs,
   Renderer,
   RenderType,
   State,
@@ -51,6 +52,11 @@ import {
   renderUploadSummary,
   hideElement,
   renderPermapinPopup,
+  renderWalletPopup,
+  emptyWalletDropper,
+  renderAddNewIdentityPopup,
+  renderShowIdentity,
+  renderSwitchIdentities,
 } from "./render";
 import { renderAcceptTools } from "./render";
 import { areYouSureButtons } from "./actions/areYouSureButtons";
@@ -76,11 +82,15 @@ import {
 import { constructSCActions, deploySCActions } from "./actions/deploySCActions";
 import { templateSelectActions } from "./actions/templateSelectActions";
 import {
+  AddNewIdentityActions,
   permapinPopupActions,
   permawebSelectActions,
   permawebTransactionAction,
+  showIdentityActions,
+  switchIdentitiesActions,
   uploadFileListener,
   uploadSummaryActions,
+  walletCreateActions,
 } from "./actions/permawebSelectActions";
 
 const Render: Renderer = {
@@ -242,6 +252,25 @@ const Render: Renderer = {
   [RenderType.permapinPopup]: (props: State) => {
     renderPermapinPopup();
     permapinPopupActions(props);
+  },
+  [RenderType.walletPopup]: (props: State) => {
+    renderWalletPopup();
+    walletCreateActions(props);
+  },
+  [RenderType.emptyWalletDropper]: (props: State) => {
+    emptyWalletDropper();
+  },
+  [RenderType.addNewIdentityPopup]: (props: RenderDispatchArgs) => {
+    renderAddNewIdentityPopup(props.tmp.identity, props.tmp.name);
+    AddNewIdentityActions(props, props.tmp.identity, props.tmp.name);
+  },
+  [RenderType.showIdentityPopup]: (props: RenderDispatchArgs) => {
+    renderShowIdentity(props.identity.address, props.tmp.balance);
+    showIdentityActions(props);
+  },
+  [RenderType.switchIdentities]: (props: State) => {
+    renderSwitchIdentities();
+    switchIdentitiesActions(props);
   },
   [RenderType.hidePopup]: ({}) => {
     removePopup();
