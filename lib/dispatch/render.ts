@@ -272,3 +272,42 @@ export function dispatch_permapinPopup(props: State, ipfsHash) {
     props: { ...props, ipfsHash },
   });
 }
+
+export function dispatch_walletPopup(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.walletPopup,
+    props: { ...props },
+  });
+}
+
+export function dispatch_emptyWalletDropper(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.emptyWalletDropper,
+    props,
+  });
+}
+
+export function dispatch_addNewIdentityPopup(
+  props: State,
+  identity: Blob,
+  name: string
+) {
+  dispatch(Events.render, {
+    type: RenderType.addNewIdentityPopup,
+    props: { ...props, tmp: { identity, name } },
+  });
+}
+
+export function dispatch_showIdentityPopup(props: State, balance: string) {
+  dispatch(Events.render, {
+    type: RenderType.showIdentityPopup,
+    props: { ...props, tmp: { balance } },
+  });
+}
+
+export function dispatch_switch_identities(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.switchIdentities,
+    props,
+  });
+}
