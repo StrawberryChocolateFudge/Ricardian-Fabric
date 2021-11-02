@@ -1,6 +1,12 @@
 import { dispatch_renderError } from "../dispatch/render";
 import Arweave from "arweave";
 
+const ARWAEVECONFIG = {
+  host: "arweave.net",
+  port: 443,
+  protocol: "https",
+};
+
 export async function arConnect() {
   if (window.arweaveWallet === undefined) {
     //I don't have the wallet installed.
@@ -41,4 +47,22 @@ export async function uploadFile(transaction: any, data: any) {
   const arweave = Arweave.init(config);
   const posted = await arweave.transactions.post(transaction);
   return posted;
+}
+
+export async function createWallet() {
+  const arweave = Arweave.init(ARWAEVECONFIG);
+  const key = await arweave.wallets.generate();
+  return key;
+}
+
+export async function getWalletAddress(key: any) {
+  const arweave = Arweave.init(ARWAEVECONFIG);
+  const address = await arweave.wallets.jwkToAddress(key);
+  return address;
+}
+
+export async function getWalletBalance(address: string): Promise<string> {
+  const arweave = Arweave.init(ARWAEVECONFIG);
+  const balance = await arweave.wallets.getBalance(address);
+  return arweave.ar.winstonToAr(balance);
 }
