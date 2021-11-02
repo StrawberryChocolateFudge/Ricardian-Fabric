@@ -1,7 +1,5 @@
 import { BlockCountry } from "../types";
 
-const storageKEY = "RicardianFabric";
-
 export function getById(id: string): HTMLElement {
   const el = document.getElementById(id);
 
@@ -166,16 +164,15 @@ export function setBannerDisplayNone() {
 }
 
 export function setTermsAccepted(termsAccepted: boolean) {
-  localStorage.setItem(storageKEY, JSON.stringify({ termsAccepted }));
+  localStorage.setItem("termsAccepted", `${termsAccepted}`);
 }
 
 export function getTermsAccepted(): boolean {
-  const data = localStorage.getItem(storageKEY);
-  const parsed = JSON.parse(data);
-  if (parsed === null) {
-    return parsed;
+  const data = localStorage.getItem("termsAccepted");
+  if (data === null) {
+    return false;
   } else {
-    return parsed.termsAccepted;
+    return data === "true";
   }
 }
 
@@ -208,4 +205,28 @@ export function readFile(files: FileList, getContent: CallableFunction) {
   reader.onloadend = function (event) {
     getContent(event.target.result);
   };
+}
+
+export function readWalletFile(files: FileList, getContent: CallableFunction) {
+  const reader = new FileReader();
+  reader.onload = async function (e: ProgressEvent) {
+    const data = getKeyFromFile(e);
+    await getContent(data);
+  };
+
+  reader.onerror = function (e) {
+    console.log(e);
+  };
+
+  reader.readAsText(files[0], "UFT-8");
+}
+
+export function getKeyFromFile(fileEvent: ProgressEvent) {
+  try {
+    const fileReader: FileReader = fileEvent.target as FileReader;
+    const key = JSON.parse(fileReader.result as string);
+    return key;
+  } catch (e) {
+    // TODO: validation error
+  }
 }
