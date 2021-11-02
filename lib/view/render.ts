@@ -28,6 +28,12 @@ import {
   setBannerDisplayNone,
 } from "./utils";
 import { PermapinPopup } from "./templates/popups/permapinPopup";
+import {
+  AddNewIdentityPopup,
+  ShowIdentityPopup,
+  SwitchIdentities,
+  WalletPopup,
+} from "./templates/popups/walletPopup";
 
 export function renderAcceptTools(props: State) {
   const actionContainer = getById("action-container");
@@ -436,7 +442,6 @@ export function renderSelectedWallet(selectedWallet: SelectedWallet) {
   const arconnect = getById("arweave-logo-container");
   const selectNetwork = getById("network_checkbox_label");
   const permaweb = getById("permaweb_checkbox_label");
-  // const createButton = getById("save-contract");
 
   selectNetwork.classList.add("lightBlue-shadow");
   permaweb.classList.add("lightCoral-shadow");
@@ -446,14 +451,11 @@ export function renderSelectedWallet(selectedWallet: SelectedWallet) {
     arconnect.classList.remove("lightCoral-shadow");
     arconnect.classList.add("light-shadow");
 
-    // createButton.classList.remove("lightCoral-shadow");
-    // createButton.classList.add("lightBlue-shadow");
   } else if (selectedWallet === SelectedWallet.arconnect) {
     metamask.classList.remove("lightBlue-shadow");
     metamask.classList.add("light-shadow");
     arconnect.classList.add("lightCoral-shadow");
-    // createButton.classList.add("lightCoral-shadow");
-    // createButton.classList.remove("lightBlue-shadow");
+
   }
 }
 
@@ -480,4 +482,40 @@ export function renderPermapinPopup() {
   setBannerDisplayBlock();
   const layout = getById("overlay-layout");
   render(PermapinPopup(), layout);
+}
+
+export function renderWalletPopup() {
+  setBannerDisplayBlock();
+  const layout = getById("overlay-layout");
+  render(WalletPopup(), layout);
+}
+export function renderAddNewIdentityPopup(identity: Blob, address: string) {
+  const layout = getById("overlay-layout");
+  render(AddNewIdentityPopup(address), layout);
+}
+export function renderShowIdentity(address: string,balance: string) {
+  setBannerDisplayBlock();
+  const layout = getById("overlay-layout");
+  render(ShowIdentityPopup(address, balance), layout);
+}
+
+export function renderSwitchIdentities() {
+  const layout = getById("overlay-layout");
+  render(SwitchIdentities(), layout);
+}
+
+export function emptyWalletDropper() {
+  const fileInput = getById("wallet-input") as HTMLInputElement;
+  fileInput.value = "";
+  const prompt = getById("drop-prompt");
+  prompt.textContent = "Drop Your Arweave wallet file here ";
+  prompt.style.color = "#cccccc";
+}
+
+export function downloadBlob(blob: Blob, name: string) {
+  const dl = document.createElement("a");
+  dl.download = name;
+  dl.href = URL.createObjectURL(blob);
+  dl.click();
+  URL.revokeObjectURL(dl.href);
 }
