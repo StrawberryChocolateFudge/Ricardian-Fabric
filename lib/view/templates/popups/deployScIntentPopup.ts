@@ -3,7 +3,7 @@ import { helperTooltips } from "../components/helperTooltips";
 
 export function deploySCIntentPopup() {
   return html` <style></style>
-    <h2>Deploy a smart contract</h2>
+    <h2>Smart Contract Catalog</h2>
     <small>
       You can deploy a contract, compatible with Ricardian Fabric.
     </small>
