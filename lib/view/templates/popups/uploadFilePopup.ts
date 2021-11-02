@@ -15,6 +15,28 @@ export const uploadFilePopup = () => html`
     <input type="file" name="file" id="file-input" class="drop-zone__input" />
   </div>
   <hr />
+  <table>
+    <thead>
+      <tr>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><label for="walletPassword">Password:</label></td>
+        <td>
+          <input
+            readonly
+            onfocus="this.removeAttribute('readonly');"
+            autocomplete="off"
+            id="walletPassword"
+            type="password"
+          />
+        </td>
+      </tr>
+    </tbody>
+  </table>
   <div class="center marginBottom-10">
     <label
       aria-labelledby="I agree to the terms"
