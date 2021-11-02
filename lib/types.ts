@@ -52,13 +52,18 @@ export enum RenderType {
   uploadFile = "uploadFile",
   uploadSummary = "uploadSummary",
   permapinPopup = "permapinPopup",
+  walletPopup = "walletPopup",
+  emptyWalletDropper = "emptyWalletDropper",
+  addNewIdentityPopup = "addNewIdentityPopup",
+  showIdentityPopup = "showIdentityPopup",
+  switchIdentities = "switchIdentities",
   hidePopup = "hidePopup",
   hideElement = "hideElement",
 }
 
-// TODO refactor to dispatchArgs for specifying the dispatch arguments
-// TODO: The render function should take these args
-export type dispatchArgs = State & { tmp: any };
+// TODO refactor to RenderDispatchArgs for specifying the dispatch arguments
+// TODO: The render function signature below should take these args
+export type RenderDispatchArgs = State & { tmp: any };
 
 type RenderFunction = (props: any) => void;
 
@@ -101,6 +106,11 @@ export type Renderer = {
   [RenderType.uploadFile]: RenderFunction;
   [RenderType.uploadSummary]: RenderFunction;
   [RenderType.permapinPopup]: RenderFunction;
+  [RenderType.walletPopup]: RenderFunction;
+  [RenderType.emptyWalletDropper]: RenderFunction;
+  [RenderType.addNewIdentityPopup]: RenderFunction;
+  [RenderType.showIdentityPopup]: RenderFunction;
+  [RenderType.switchIdentities]: RenderFunction;
   [RenderType.hidePopup]: RenderFunction;
   [RenderType.hideElement]: RenderFunction;
 };
@@ -117,6 +127,7 @@ export enum EventType {
   setPosition = "setPosition",
   setERC20 = "setERC20",
   setSelectedWallet = "setSelectedWallet",
+  setNewIdentity = "setNewIdentity",
 }
 
 export enum StateProperties {
@@ -131,6 +142,7 @@ export enum StateProperties {
   position = "position",
   isERC20 = "isERC20",
   selectedWallet = "selectedWallet",
+  identity = "identity",
 }
 
 export enum ContractTypes {
@@ -150,6 +162,11 @@ export enum BlockCountry {
 export enum DeploySC {
   HRC20 = "HRC20",
   PST = "PST",
+}
+
+export enum WalletDropperType {
+  ENCRYPTED,
+  PLAINTEXT,
 }
 
 export enum SelectedWallet {
@@ -180,11 +197,14 @@ export type ERC20Params = {
 };
 
 export type NetworkType = "Mainnet" | "Testnet";
-
+export type Identity = {
+  data: Blob;
+  address: string;
+};
 export type State = {
   init: boolean;
   ipfs: IPFSParams;
-  ipfsArweaveBridge: string;
+  identity: Identity;
   editor: any;
   domParser: DOMParser;
   selectedDate: Date | string;
