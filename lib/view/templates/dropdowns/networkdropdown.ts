@@ -16,20 +16,22 @@ export const NetworkDropdown = () => html`
   <ul>
     <li>
       <button id="ropsten-testnet" class="dropdown-button">
-        Ropsten Testnet
+        <small>Ropsten Testnet</small>
       </button>
     </li>
     <li>
-      <button id="bsc-testnet" class="dropdown-button">BSC Testnet</button>
+      <button id="bsc-testnet" class="dropdown-button">
+        <small>BSC Testnet</small>
+      </button>
     </li>
     <li>
       <button id="polygon-testnet" class="dropdown-button">
-        Polygon Testnet
+        <small>Polygon Testnet</small>
       </button>
     </li>
     <li>
       <button id="network-hmny-testnet-shard0" class="dropdown-button">
-        Harmony Testnet Shard 0
+        <small>Harmony Testnet Shard 0</small>
       </button>
     </li>
     <li><hr /></li>

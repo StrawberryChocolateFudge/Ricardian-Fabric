@@ -14,20 +14,24 @@ export const PermawebDropdown = () => html`
   >
   <ul>
     <li>
-      <button id="Wallet" class="dropdown-button">Wallet</button>
+      <button id="identity-popup-button" class="dropdown-button">
+        <small>Identity</small>
+      </button>
     </li>
     <li>
       <button id="upload-popup-button" class="dropdown-button">
-        Upload File
+        <small>Upload File</small>
       </button>
     </li>
     <li>
       <button id="permapin-popup-button" class="dropdown-button">
-        Permapin
+        <small>Permapin</small>
       </button>
     </li>
     <li>
-      <button id="history-popup-button" class="dropdown-button">History</button>
+      <button id="history-popup-button" class="dropdown-button">
+        <small>History</small>
+      </button>
     </li>
   </ul>
 `;
