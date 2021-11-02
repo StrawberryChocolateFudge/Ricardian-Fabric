@@ -21,6 +21,18 @@ export const PermapinPopup = () => html`
         </td>
       </tr>
       <tr>
+        <td><label for="walletPassword">Password:</label></td>
+        <td>
+          <input
+            readonly
+            onfocus="this.removeAttribute('readonly');"
+            autocomplete="off"
+            id="walletPassword"
+            type="password"
+          />
+        </td>
+      </tr>
+      <tr>
         <td>
           <label id="terms-button" class="terms-button-label"
             >I accept the terms.</label
