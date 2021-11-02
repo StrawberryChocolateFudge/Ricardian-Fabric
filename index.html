@@ -40,7 +40,17 @@
         <div id="network-dropdown"></div>
         <div id="permaweb-dropdown"></div>
         <!-- <hr /> -->
-        <!-- <button id="permaweb-button">Verify a contract</button> -->
+        <button
+          aria-label="Deploy contract"
+          name="deploy"
+          id="deploy-sc-button"
+          class="labelButton"
+        >
+          Contract Catalog
+        </button>
+        <button class="labelButton" id="verify-contract-button">
+          Verify a contract
+        </button>
         <hr />
         <div id="template-dropdown"></div>
       </div>
@@ -129,14 +139,6 @@
               placeholder="0x..."
               class="cursor-text"
             />
-            <button
-              aria-label="Deploy contract"
-              name="deploy"
-              id="deploy-sc-button"
-              class="labelButton"
-            >
-              Create SmartContract
-            </button>
           </td>
           <td>
             <span id="smartcontract-tooltip"></span>
