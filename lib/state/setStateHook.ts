@@ -7,6 +7,7 @@ import {
   dispatch_renderBalance,
   dispatch_renderCreateButton,
   dispatch_renderVersion,
+  dispatch_showIdentityPopup,
 } from "../dispatch/render";
 import { ContractTypes, SetHookArgs, State, StateProperties } from "../types";
 
@@ -18,7 +19,6 @@ export const setStateHook = {
       showBanner();
       dispatch_renderCreateButton(clone);
       dispatch_renderVersion(clone.version);
-
     } else if (currentPage === ContractTypes.acceptable) {
       dispatch_renderAcceptButton(clone);
     }
@@ -56,6 +56,10 @@ export const setStateHook = {
       const clone = cloneState(args.obj);
       dispatch_renderCreateButton(clone);
     }
+  },
+  [StateProperties.identity]: (args: SetHookArgs) => {
+    const clone = cloneState(args.obj);
+    dispatch_renderCreateButton(clone);
   },
 };
 
