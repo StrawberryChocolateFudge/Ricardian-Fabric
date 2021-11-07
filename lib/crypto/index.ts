@@ -1,5 +1,5 @@
 import Web3 from "web3";
-import { BlockCountry, IssuerHashedData } from "../types";
+import { BlockCountry, IssuerHashedData, Options, Status } from "../types";
 
 export async function sha256(message) {
   const web3 = new Web3(window.ethereum);
@@ -110,18 +110,35 @@ export async function encryptWallet(file: any, passwd: string) {
   return endblob;
 }
 
-export async function decryptWallet(file: any, passwd: string) {
-  const startblob = new Blob([JSON.stringify(file, null, 2)], {
-    type: "application/json",
-  });
-  const decryptedBytes = await decrypt(startblob, passwd);
+export async function decryptWallet(
+  cipherbytes: ArrayBuffer,
+  passwd: string
+): Promise<Options> {
+  const options: Options = { error: "", data: "", status: Status.Success };
 
-  const endblob = new Blob([decryptedBytes], { type: "application/download" });
-  return endblob;
+  const onError = (err) => {
+    options.error = err;
+    options.status = Status.Failure;
+  };
+
+  const decryptedBytes = await decrypt(cipherbytes, passwd, onError);
+  console.log(decryptedBytes);
+  const decodedBytes = decodeUint8Array(decryptedBytes);
+  try {
+    options.data = JSON.parse(decodedBytes);
+  } catch (err) {
+    options.status = Status.Failure;
+    options.error = "Error Decrypting File, Wrong password.";
+  }
+  return options;
 }
 
-async function decrypt(startBlob: Blob, passwd: string) {
-  let cipherbytes = await startBlob.arrayBuffer();
+async function decrypt(
+  cipherbytes: ArrayBuffer,
+  passwd: string,
+  onError: CallableFunction
+): Promise<Uint8Array> {
+  // let cipherbytes = await startBlob.arrayBuffer();
   const pbkdf2iterations = 10000;
   const passphrasebytes = new TextEncoder().encode(passwd);
   const pbkdf2salt = cipherbytes.slice(8, 16);
@@ -130,7 +147,7 @@ async function decrypt(startBlob: Blob, passwd: string) {
       "deriveBits",
     ])
     .catch((err) => {
-      console.log(err);
+      onError(err);
     });
 
   let pbkdf2bytes = await window.crypto.subtle
@@ -145,7 +162,7 @@ async function decrypt(startBlob: Blob, passwd: string) {
       384
     )
     .catch((err) => {
-      console.log(err);
+      onError(err);
     });
   pbkdf2bytes = new Uint8Array(pbkdf2bytes as ArrayBuffer);
 
@@ -158,7 +175,7 @@ async function decrypt(startBlob: Blob, passwd: string) {
       "decrypt",
     ])
     .catch((err) => {
-      console.log(err);
+      onError(err);
     });
   let plaintextbytes = await window.crypto.subtle
     .decrypt(
@@ -167,15 +184,22 @@ async function decrypt(startBlob: Blob, passwd: string) {
       cipherbytes
     )
     .catch((err) => {
-      console.log("THORS");
-      console.log(err);
+      onError(err);
     });
 
   if (!plaintextbytes) {
-    console.log("ERROR DECRYPTING FILE, PASSWORD MAY BE WRONG");
+    onError("Error Decrypting File, Wrong password.");
   }
 
   plaintextbytes = new Uint8Array(plaintextbytes);
 
   return plaintextbytes;
+}
+
+export function decodeUint8Array(uint8array): string {
+  return new TextDecoder("utf-8").decode(uint8array);
+}
+
+export function encodeStringToUint8Array(data): Uint8Array {
+  return new TextEncoder().encode(data);
 }
