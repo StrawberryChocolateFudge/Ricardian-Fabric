@@ -2,7 +2,8 @@ import {
   ERC20Params,
   Events,
   EventType,
-  Identity,
+  Account,
+  PopupState,
   SelectedWallet,
   StashedDetails,
   State,
@@ -14,7 +15,6 @@ import {
   getCurrentPageDataProp,
   getExpiresFromDataProp,
   getHashFromDataProp,
-  getIdentityFromLocalStorage,
   getIsERC20FromDataProp,
   getIssuerDataProp,
   getIssuerSignatureFromDataProp,
@@ -24,7 +24,6 @@ import {
   getSmartContractFromDataProp,
   getSourceFromDataProp,
   getVersionFromDataProp,
-  setIdentityToLocalStorage,
 } from "./dataPropGetters";
 import createNewEditor from "./editor";
 import { setStateHook } from "./setStateHook";
@@ -39,7 +38,8 @@ import { setStateHook } from "./setStateHook";
         port: 5001,
         protocol: "http",
       },
-      identity: getIdentityFromLocalStorage(),
+      Account: { data: null, address: null, balance: null },
+      popupState: PopupState.NONE,
       editor: createNewEditor(),
       domParser: new DOMParser(),
       selectedDate: "",
@@ -110,9 +110,11 @@ import { setStateHook } from "./setStateHook";
     [EventType.setSelectedWallet]: (value: SelectedWallet) => {
       stateContainer.selectedWallet = value;
     },
-    [EventType.setNewIdentity]: (value: Identity) => {
-      setIdentityToLocalStorage(value);
-      stateContainer.identity = value;
+    [EventType.setNewAccount]: (value: Account) => {
+      stateContainer.Account = value;
+    },
+    [EventType.setPopupState]: (value: PopupState) => {
+      stateContainer.popupState = value;
     },
   };
 
