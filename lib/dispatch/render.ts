@@ -1,6 +1,7 @@
-import { DeploySC, RenderType, State } from "../types";
+import { DeploySC, RenderDispatchArgs, RenderType, State } from "../types";
 import { dispatch } from "./dispatch";
 import { Events } from "../types";
+import { TxData } from "ethereumjs-tx";
 
 export function dispatch_renderCreateButton(props: State) {
   dispatch(Events.render, {
@@ -191,6 +192,7 @@ export function dispatch_deployAgain(props: State) {
   });
 }
 
+// THis is a popup
 export function dispatch_deploySCIntent(props: State) {
   dispatch(Events.render, {
     type: RenderType.deploySCIntent,
@@ -249,13 +251,12 @@ export function dispatch_hidePopup() {
 export function dispatch_renderUploadSummary(
   file: File,
   transaction: any,
-  fee: any,
   data: any,
   props: State
 ) {
   dispatch(Events.render, {
     type: RenderType.uploadSummary,
-    props: { transaction, file, fee, data, props },
+    props: { transaction, file, data, props },
   });
 }
 
@@ -287,27 +288,82 @@ export function dispatch_emptyWalletDropper(props: State) {
   });
 }
 
-export function dispatch_addNewIdentityPopup(
+export function dispatch_addNewAccountPopup(
   props: State,
-  identity: Blob,
+  Account: ArrayBuffer,
   name: string
 ) {
   dispatch(Events.render, {
-    type: RenderType.addNewIdentityPopup,
-    props: { ...props, tmp: { identity, name } },
+    type: RenderType.addNewAccountPopup,
+    props: { ...props, tmp: { Account, name } },
   });
 }
 
-export function dispatch_showIdentityPopup(props: State, balance: string) {
+export function dispatch_showAccountPopup(
+  props: State,
+  balance: string,
+  address: string
+) {
   dispatch(Events.render, {
-    type: RenderType.showIdentityPopup,
-    props: { ...props, tmp: { balance } },
+    type: RenderType.showAccountPopup,
+    props: { ...props, tmp: { balance, address } },
   });
 }
 
-export function dispatch_switch_identities(props: State) {
+export function dispatch_switch_Accounts(props: State) {
   dispatch(Events.render, {
-    type: RenderType.switchIdentities,
+    type: RenderType.switchAccounts,
     props,
+  });
+}
+
+export function dispatch_renderTransferPage(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.transferPage,
+    props,
+  });
+}
+
+export function dispatch_renderTransferSummaryPage(
+  props: State,
+  mainTransaction: any,
+  amountToSend: string,
+  sendTip: boolean,
+  tipAmount: string,
+  tipTransaction: any,
+  jwk: any
+) {
+  dispatch(Events.render, {
+    type: RenderType.transferSummaryPage,
+    props: {
+      ...props,
+      tmp: {
+        mainTransaction,
+        amountToSend,
+        sendTip,
+        tipAmount,
+        tipTransaction,
+        jwk,
+      },
+    },
+  });
+}
+
+export function dispatch_renderPermapinSummaryPage(
+  props: State,
+  pinTransaction: any,
+  sendTip: boolean,
+  tipTransaction: any
+) {
+  dispatch(Events.render, {
+    type: RenderType.permapinSummaryPage,
+    props: { ...props, tmp: { pinTransaction, sendTip, tipTransaction } },
+  });
+}
+
+export function dispatch_renderTxId(to: string, txId: any) {
+  dispatch(Events.render, {
+    type: RenderType.txId,
+    props: { to, txId },
   });
 }
