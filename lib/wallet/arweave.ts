@@ -1,68 +1,115 @@
-import { dispatch_renderError } from "../dispatch/render";
 import Arweave from "arweave";
+import { readContract, selectWeightedPstHolder } from "smartweave";
+import TestWeave from "testweave-sdk";
 
-const ARWAEVECONFIG = {
-  host: "arweave.net",
-  port: 443,
-  protocol: "https",
+export const ARWAEVECONFIG = {
+  host: "localhost",
+  port: 1984,
+  protocol: "http",
 };
 
-export async function arConnect() {
-  if (window.arweaveWallet === undefined) {
-    //I don't have the wallet installed.
-    dispatch_renderError("You must install arconnect!");
-    window.open("https://arconnect.io");
-  } else {
-    await window.arweaveWallet.connect([
-      "ACCESS_ADDRESS",
-      "SIGNATURE",
-      "SIGN_TRANSACTION",
-      "ACCESS_ARWEAVE_CONFIG",
-    ]);
-  }
+const arweave = Arweave.init(ARWAEVECONFIG);
+
+// init TestWeave on the top of arweave
+export let testWeave;
+(async function () {
+  //@ts-ignore
+  testWeave = await TestWeave.init(arweave);
+  // → 🎉
+})();
+
+const PSTContract = "ligtZZ4M3Gy3BUi2qz4B6yXQiOcjJ_wU55QYhXFw7Ow";
+
+export const TIP = "0.01";
+
+export function getTip() {
+  return ArToWinston(TIP);
 }
 
 export async function createFileTransaction(
   type: string,
   data: any,
-  version: string
+  version: string,
+  key: any
 ) {
-  const config = await window.arweaveWallet.getArweaveConfig();
-  const arweave = Arweave.init(config);
-  const owner = await window.arweaveWallet.getActiveAddress();
-  const transaction = await arweave.createTransaction({ data, owner });
+  const transaction = await arweave.createTransaction(
+    { data },
+    testWeave.rootJWK
+  );
   transaction.addTag("Contract-Type", "File upload");
   transaction.addTag("Content-Type", type);
   transaction.addTag("App-Version", version);
   transaction.addTag("App-Name", "Ricardian Fabric");
-  const signedTransaction = await window.arweaveWallet.sign(transaction);
-  return {
-    tx: signedTransaction,
-    fee: arweave.ar.winstonToAr(signedTransaction.reward),
-  };
+
+  await arweave.transactions.sign(transaction, testWeave.rootJWK);
+  return transaction;
 }
 
-export async function uploadFile(transaction: any, data: any) {
-  const config = await window.arweaveWallet.getArweaveConfig();
-  const arweave = Arweave.init(config);
+export async function uploadData(transaction: any) {
+  let uploader = await arweave.transactions.getUploader(transaction);
+
+  while (!uploader.isComplete) {
+    await uploader.uploadChunk();
+    console.log(
+      `${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`
+    );
+  }
+  return uploader;
+}
+
+export async function postTransaction(transaction: any) {
   const posted = await arweave.transactions.post(transaction);
   return posted;
 }
 
 export async function createWallet() {
-  const arweave = Arweave.init(ARWAEVECONFIG);
   const key = await arweave.wallets.generate();
   return key;
 }
 
 export async function getWalletAddress(key: any) {
-  const arweave = Arweave.init(ARWAEVECONFIG);
-  const address = await arweave.wallets.jwkToAddress(key);
+  const address = await arweave.wallets.jwkToAddress(testWeave.rootJWK);
   return address;
 }
 
 export async function getWalletBalance(address: string): Promise<string> {
-  const arweave = Arweave.init(ARWAEVECONFIG);
   const balance = await arweave.wallets.getBalance(address);
   return arweave.ar.winstonToAr(balance);
+}
+
+export function ArToWinston(amount: string): string {
+  return arweave.ar.arToWinston(amount);
+}
+
+export function WinstonToAr(amount: string): string {
+  return arweave.ar.winstonToAr(amount);
+}
+
+export async function getTransferTransaction(
+  target: string,
+  quantity: string,
+  key: any,
+  version: string
+) {
+  const transaction = await arweave.createTransaction(
+    {
+      target,
+      quantity,
+    },
+    testWeave.rootJWK
+  );
+
+  transaction.addTag("Contract-Type", "File upload");
+  transaction.addTag("App-Version", version);
+  transaction.addTag("App-Name", "Ricardian Fabric");
+
+  await arweave.transactions.sign(transaction, testWeave.rootJWK);
+  return transaction;
+}
+
+export async function getWeighedPSTHolder() {
+  //@ts-ignore
+  const contractState = await readContract(arweave, PSTContract);
+  const holder = selectWeightedPstHolder(contractState.balances);
+  return holder;
 }
