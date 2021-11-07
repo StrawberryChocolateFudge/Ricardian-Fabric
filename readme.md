@@ -2,8 +2,7 @@
 
 The IPFS version of Ricardian fabric.
 
-This branch (withIPFS) is for Ricardian Fabric, this version uses IPFS and web3 and an ipfs-arweave bridge on the server side
-Now with with a docx dropper!
+This branch (withIPFS) is for Ricardian Fabric, this version uses IPFS and web3 and Arweave.
 
 ## Use
 
