@@ -546,3 +546,7 @@ hr {
     opacity: 0;
   }
 }
+
+.text-align-center {
+  text-align: center;
+}
