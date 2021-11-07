@@ -1,4 +1,5 @@
-import { dispatch_renderTerms } from "../../dispatch/render";
+import { dispatch_setPopupState } from "../../dispatch/stateChange";
+import { PopupState } from "../../types";
 import { getById } from "../utils";
 import { setTermsAccepted } from "../utils";
 
@@ -6,7 +7,7 @@ export const createPageAgreeTerms = function () {
   const termsCheckboxLabel = getById("terms-checkbox-label");
 
   termsCheckboxLabel.onclick = function () {
-    dispatch_renderTerms();
+    dispatch_setPopupState(PopupState.Terms);
   };
 };
 
@@ -16,5 +17,5 @@ export function attachTermsButtonListeners() {
 
 export function acceptTerms() {
   setTermsAccepted(true);
-  getById("overlay").style.display = "none";
+  dispatch_setPopupState(PopupState.NONE);
 }
