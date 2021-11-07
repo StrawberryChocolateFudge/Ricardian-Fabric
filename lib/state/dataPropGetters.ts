@@ -2,7 +2,7 @@ import {
   BlockCountry,
   ContractTypes,
   ERC20Params,
-  Identity,
+
   SelectedWallet,
 } from "../types";
 
@@ -82,19 +82,4 @@ export function getSelectedWalletFromDataProp(
   page: HTMLElement
 ): SelectedWallet {
   return page.dataset.selectedwallet as SelectedWallet;
-}
-
-export function getIdentityFromLocalStorage(): Identity {
-  const serializedId = window.localStorage.getItem("identity");
-  const data = new Blob([serializedId], { type: "application/download" });
-  const address = window.localStorage.getItem("address");
-
-  return { data, address };
-}
-
-export async function setIdentityToLocalStorage(identity: Identity) {
-  const serializedId = await identity.data.text();
-
-  window.localStorage.setItem("identity", serializedId);
-  window.localStorage.setItem("address", identity.address);
 }
