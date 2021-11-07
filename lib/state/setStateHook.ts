@@ -1,15 +1,31 @@
 import { showBanner } from "../business/bloc";
 import {
+  dispatch_addNewAccountPopup,
   dispatch_attachDateClickListener,
+  dispatch_deploySCIntent,
+  dispatch_hidePopup,
+  dispatch_permapinPopup,
   dispatch_renderAcceptButton,
   dispatch_renderAddress,
   dispatch_renderAreYouSure,
   dispatch_renderBalance,
   dispatch_renderCreateButton,
+  dispatch_renderDocXDropper,
+  dispatch_renderTerms,
+  dispatch_renderTransferPage,
+  dispatch_renderUploadFilePopup,
   dispatch_renderVersion,
-  dispatch_showIdentityPopup,
+  dispatch_showAccountPopup,
+  dispatch_switch_Accounts,
+  dispatch_walletPopup,
 } from "../dispatch/render";
-import { ContractTypes, SetHookArgs, State, StateProperties } from "../types";
+import {
+  ContractTypes,
+  PopupState,
+  SetHookArgs,
+  State,
+  StateProperties,
+} from "../types";
 
 export const setStateHook = {
   [StateProperties.init]: (args: SetHookArgs) => {
@@ -57,9 +73,52 @@ export const setStateHook = {
       dispatch_renderCreateButton(clone);
     }
   },
-  [StateProperties.identity]: (args: SetHookArgs) => {
-    const clone = cloneState(args.obj);
+  [StateProperties.Account]: (args: SetHookArgs) => {
+    const clone: State = cloneState(args.obj);
     dispatch_renderCreateButton(clone);
+  },
+  [StateProperties.popupState]: (args: SetHookArgs) => {
+    const clone = cloneState(args.obj);
+    switch (args.value) {
+      case PopupState.NONE:
+        dispatch_hidePopup();
+        break;
+      case PopupState.Catalog:
+        dispatch_deploySCIntent(clone);
+        break;
+      case PopupState.ImportTemplate:
+        dispatch_renderDocXDropper(clone);
+        break;
+      case PopupState.Terms:
+        dispatch_renderTerms();
+        break;
+      case PopupState.ShowAccount:
+        dispatch_showAccountPopup(
+          clone,
+          clone.Account.balance,
+          clone.Account.address
+        );
+        break;
+      case PopupState.NewAccount:
+        dispatch_walletPopup(clone);
+        break;
+      case PopupState.SwitchAccount:
+        dispatch_switch_Accounts(clone);
+        break;
+      case PopupState.TransferAr:
+        dispatch_renderTransferPage({
+          ...clone,
+        });
+        break;
+      case PopupState.UploadFile:
+        dispatch_renderUploadFilePopup(clone);
+        break;
+      case PopupState.Permapin:
+        dispatch_permapinPopup(clone, "");
+        break;
+      default:
+        break;
+    }
   },
 };
 
