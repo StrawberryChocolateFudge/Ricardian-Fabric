@@ -1,12 +1,12 @@
 import {
-  dispatch_hidePopup,
   dispatch_promptErrorDOCX,
   dispatch_promptSuccessDOCX,
   dispatch_removeError,
 } from "../../dispatch/render";
-import { State } from "../../types";
+import { PopupState, State } from "../../types";
 import { getById } from "../utils";
 import mammoth from "mammoth";
+import { dispatch_setPopupState } from "../../dispatch/stateChange";
 export function onDocFileDropped(props: State) {
   const editor = props.editor;
   const docxInput = getById("docx-input") as HTMLInputElement;
@@ -97,6 +97,6 @@ function readFileInputEventAsArrayBuffer(file, callback) {
 export function docxImportBackButton() {
   const back = getById("dropper-back-button");
   back.onclick = function () {
-    dispatch_hidePopup();
+    dispatch_setPopupState(PopupState.NONE);
   };
 }
