@@ -54,11 +54,15 @@ export enum RenderType {
   permapinPopup = "permapinPopup",
   walletPopup = "walletPopup",
   emptyWalletDropper = "emptyWalletDropper",
-  addNewIdentityPopup = "addNewIdentityPopup",
-  showIdentityPopup = "showIdentityPopup",
-  switchIdentities = "switchIdentities",
+  addNewAccountPopup = "addNewAccountPopup",
+  showAccountPopup = "showAccountPopup",
+  switchAccounts = "switchAccounts",
+  transferPage = "transferPage",
+  transferSummaryPage = "transferSummaryPage",
+  permapinSummaryPage = "permapinSummaryPage",
   hidePopup = "hidePopup",
   hideElement = "hideElement",
+  txId = "txId",
 }
 
 // TODO refactor to RenderDispatchArgs for specifying the dispatch arguments
@@ -108,11 +112,15 @@ export type Renderer = {
   [RenderType.permapinPopup]: RenderFunction;
   [RenderType.walletPopup]: RenderFunction;
   [RenderType.emptyWalletDropper]: RenderFunction;
-  [RenderType.addNewIdentityPopup]: RenderFunction;
-  [RenderType.showIdentityPopup]: RenderFunction;
-  [RenderType.switchIdentities]: RenderFunction;
+  [RenderType.addNewAccountPopup]: RenderFunction;
+  [RenderType.showAccountPopup]: RenderFunction;
+  [RenderType.switchAccounts]: RenderFunction;
+  [RenderType.transferPage]: RenderFunction;
+  [RenderType.transferSummaryPage]: RenderFunction;
+  [RenderType.permapinSummaryPage]: RenderFunction;
   [RenderType.hidePopup]: RenderFunction;
   [RenderType.hideElement]: RenderFunction;
+  [RenderType.txId]: RenderFunction;
 };
 
 export enum EventType {
@@ -127,7 +135,8 @@ export enum EventType {
   setPosition = "setPosition",
   setERC20 = "setERC20",
   setSelectedWallet = "setSelectedWallet",
-  setNewIdentity = "setNewIdentity",
+  setNewAccount = "setNewAccount",
+  setPopupState = "setPopupState",
 }
 
 export enum StateProperties {
@@ -142,7 +151,8 @@ export enum StateProperties {
   position = "position",
   isERC20 = "isERC20",
   selectedWallet = "selectedWallet",
-  identity = "identity",
+  Account = "Account",
+  popupState = "popupState",
 }
 
 export enum ContractTypes {
@@ -197,17 +207,35 @@ export type ERC20Params = {
 };
 
 export type NetworkType = "Mainnet" | "Testnet";
-export type Identity = {
-  data: Blob;
+export type Account = {
+  data: ArrayBuffer;
   address: string;
+  balance: string;
 };
+export enum PopupState {
+  NONE,
+  Terms,
+  ImportTemplate,
+  Catalog,
+  ShowAccount,
+  NewAccount,
+  AddNewAccount, //THE add new Account page is not used in state for more efficien passing of data
+  TransferAr,
+  SwitchAccount,
+  UploadFile,
+  UploadSummary, // Upload summary is not used in state because it get's passed a signed transaction
+  Permapin,
+  PermapinSummary, //Same as upload summary...
+}
+
 export type State = {
   init: boolean;
   ipfs: IPFSParams;
-  identity: Identity;
+  Account: Account;
   editor: any;
   domParser: DOMParser;
   selectedDate: Date | string;
+  popupState: PopupState;
   stashedPage: string;
   stashedDetails: StashedDetails;
   selectedWallet: SelectedWallet;
@@ -322,10 +350,11 @@ export type VerifyOptions = {
 
 export type HashWithIds = { hash: string; message: string; status: Status };
 
+export type HashWithTransaction = { hash: string; tx: any; status: Status };
+
 declare global {
   interface Window {
     ethereum: any;
-    arweaveWallet: any;
   }
 }
 
