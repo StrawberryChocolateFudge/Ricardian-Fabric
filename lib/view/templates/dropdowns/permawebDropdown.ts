@@ -14,8 +14,8 @@ export const PermawebDropdown = () => html`
   >
   <ul>
     <li>
-      <button id="identity-popup-button" class="dropdown-button">
-        <small>Identity</small>
+      <button id="Account-popup-button" class="dropdown-button">
+        <small>Account</small>
       </button>
     </li>
     <li>
@@ -26,11 +26,6 @@ export const PermawebDropdown = () => html`
     <li>
       <button id="permapin-popup-button" class="dropdown-button">
         <small>Permapin</small>
-      </button>
-    </li>
-    <li>
-      <button id="history-popup-button" class="dropdown-button">
-        <small>History</small>
       </button>
     </li>
   </ul>
