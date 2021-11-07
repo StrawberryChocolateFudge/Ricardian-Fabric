@@ -5,9 +5,11 @@ import {
 import { switchNetwork, web3Injected } from "../../wallet/web3";
 import { getById } from "../utils";
 import MetaMaskOnboarding from "@metamask/onboarding";
-import { Chains, SelectedWallet, State } from "../../types";
-import { dispatch_setSelectedWallet } from "../../dispatch/stateChange";
-import { arConnect } from "../../wallet/arweave";
+import { Chains, PopupState, SelectedWallet, State } from "../../types";
+import {
+  dispatch_setPopupState,
+  dispatch_setSelectedWallet,
+} from "../../dispatch/stateChange";
 
 export function networkSelectActions() {
   const switchnetworkToggle = getById(
@@ -62,25 +64,17 @@ export function addDeployButtonListener(props: State) {
   const deployButton = getById("deploy-sc-button");
 
   deployButton.onclick = function () {
-    dispatch_deploySCIntent(props);
+    dispatch_setPopupState(PopupState.Catalog);
   };
 }
 
 export function walletSelectListener() {
   const metamask = getById("metamask-logo-container");
-  const arconnect = getById("arweave-logo-container");
   metamask.onclick = function () {
     if (metamask.dataset.disabled === "false") {
       dispatch_setSelectedWallet(SelectedWallet.metamask);
     }
   };
 
-  arconnect.onclick = async function () {
-    if (arconnect.dataset.disabled === "false") {
-      dispatch_setSelectedWallet(SelectedWallet.arconnect);
-    }
 
-    //I can check if arconnect is installed if not then prompt to install it.
-    await arConnect();
-  };
 }
