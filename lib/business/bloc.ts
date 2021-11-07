@@ -6,7 +6,6 @@ import {
   dispatch_removeLoadingIndicator,
   dispatch_renderError,
   dispatch_renderLoadingIndicator,
-  dispatch_renderTerms,
 } from "../dispatch/render";
 import { fetchGeoCodingCSV } from "../fetch";
 import {
@@ -14,6 +13,7 @@ import {
   BlockCountry,
   FulfilledPageProps,
   Options,
+  PopupState,
   State,
   Status,
 } from "../types";
@@ -24,10 +24,12 @@ import {
   getFulfilledPagefromVDOM,
 } from "../view/vDom";
 import { GeoRecord } from "../geocoding/types";
-import { dispatch_setPosition } from "../dispatch/stateChange";
+import {
+  dispatch_setPopupState,
+  dispatch_setPosition,
+} from "../dispatch/stateChange";
 
 //TODO: move the businessLogic here from actions!! AW YEAH
-
 
 export async function getAcceptablePage(args: {
   props: State;
@@ -237,6 +239,6 @@ export async function getFulfilledPage(props: FulfilledPageProps) {
 export function showBanner() {
   const termsAccepted = getTermsAccepted();
   if (termsAccepted !== true) {
-    dispatch_renderTerms();
+    dispatch_setPopupState(PopupState.Terms);
   }
 }
