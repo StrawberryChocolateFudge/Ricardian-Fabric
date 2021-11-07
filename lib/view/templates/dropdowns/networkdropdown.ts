@@ -11,7 +11,7 @@ export const NetworkDropdown = () => html`
     id="network_checkbox_label"
     for="network_checkbox_toggle"
   >
-    Eth network
+    Eth_network
   </label>
   <ul>
     <li>
