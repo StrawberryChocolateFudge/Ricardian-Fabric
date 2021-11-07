@@ -14,7 +14,7 @@ import { SanctionsDropdown } from "./templates/dropdowns/sanctionsDropdown";
 import { SCConstructorPopup } from "./templates/popups/SCContructorPopup";
 import { TemplateDropdown } from "./templates/dropdowns/templatedropdown";
 import { termsLayout } from "./templates/terms";
-import { transactionUrl } from "./templates/components/transaction";
+import { transactionUrl, TxId } from "./templates/components/transaction";
 import {
   uploadFilePopup,
   uploadFileSummary,
@@ -27,11 +27,16 @@ import {
   setBannerDisplayBlock,
   setBannerDisplayNone,
 } from "./utils";
-import { PermapinPopup } from "./templates/popups/permapinPopup";
 import {
-  AddNewIdentityPopup,
-  ShowIdentityPopup,
-  SwitchIdentities,
+  PermapinPopup,
+  PermapinSummaryPage,
+} from "./templates/popups/permapinPopup";
+import {
+  AddNewAccountPopup,
+  ShowAccountPopup,
+  SwitchAccounts,
+  TransferPage,
+  TransferSummaryPage,
   WalletPopup,
 } from "./templates/popups/walletPopup";
 
@@ -450,12 +455,10 @@ export function renderSelectedWallet(selectedWallet: SelectedWallet) {
     metamask.classList.add("lightBlue-shadow");
     arconnect.classList.remove("lightCoral-shadow");
     arconnect.classList.add("light-shadow");
-
   } else if (selectedWallet === SelectedWallet.arconnect) {
     metamask.classList.remove("lightBlue-shadow");
     metamask.classList.add("light-shadow");
     arconnect.classList.add("lightCoral-shadow");
-
   }
 }
 
@@ -489,19 +492,44 @@ export function renderWalletPopup() {
   const layout = getById("overlay-layout");
   render(WalletPopup(), layout);
 }
-export function renderAddNewIdentityPopup(identity: Blob, address: string) {
+export function renderAddNewAccountPopup(account: Blob, address: string) {
   const layout = getById("overlay-layout");
-  render(AddNewIdentityPopup(address), layout);
+  render(AddNewAccountPopup(address), layout);
 }
-export function renderShowIdentity(address: string,balance: string) {
+export function renderShowAccount(address: string, balance: string) {
   setBannerDisplayBlock();
   const layout = getById("overlay-layout");
-  render(ShowIdentityPopup(address, balance), layout);
+  render(ShowAccountPopup(address, balance), layout);
 }
 
-export function renderSwitchIdentities() {
+export function renderSwitchAccounts() {
   const layout = getById("overlay-layout");
-  render(SwitchIdentities(), layout);
+  render(SwitchAccounts(), layout);
+}
+
+export function renderTransferPage(balance: string) {
+  const layout = getById("overlay-layout");
+  render(TransferPage(balance), layout);
+}
+
+export function renderTransferSummaryPage(arg: {
+  mainTransaction: any;
+  amountToSend: string;
+  sendTip: boolean;
+  tipAmount: string;
+  tipTransaction: any;
+}) {
+  const layout = getById("overlay-layout");
+  render(TransferSummaryPage(arg), layout);
+}
+
+export function renderPermapinSummaryPage(arg: {
+  permapinTx: any;
+  sendTip: boolean;
+  tipTx: any;
+}) {
+  const layout = getById("overlay-layout");
+  render(PermapinSummaryPage(arg), layout);
 }
 
 export function emptyWalletDropper() {
@@ -518,4 +546,9 @@ export function downloadBlob(blob: Blob, name: string) {
   dl.href = URL.createObjectURL(blob);
   dl.click();
   URL.revokeObjectURL(dl.href);
+}
+
+export function renderTxId(to: string, txId: string) {
+  const el = getById(to);
+  render(TxId(txId), el);
 }
