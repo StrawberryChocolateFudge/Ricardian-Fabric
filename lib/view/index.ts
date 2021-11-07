@@ -54,9 +54,13 @@ import {
   renderPermapinPopup,
   renderWalletPopup,
   emptyWalletDropper,
-  renderAddNewIdentityPopup,
-  renderShowIdentity,
-  renderSwitchIdentities,
+  renderAddNewAccountPopup,
+  renderShowAccount,
+  renderSwitchAccounts,
+  renderTransferPage,
+  renderTransferSummaryPage,
+  renderPermapinSummaryPage,
+  renderTxId,
 } from "./render";
 import { renderAcceptTools } from "./render";
 import { areYouSureButtons } from "./actions/areYouSureButtons";
@@ -82,12 +86,15 @@ import {
 import { constructSCActions, deploySCActions } from "./actions/deploySCActions";
 import { templateSelectActions } from "./actions/templateSelectActions";
 import {
-  AddNewIdentityActions,
+  AddNewAccountActions,
   permapinPopupActions,
+  permapinSummaryActions,
   permawebSelectActions,
   permawebTransactionAction,
-  showIdentityActions,
-  switchIdentitiesActions,
+  showAccountActions,
+  switchAccountsActions,
+  transferPageActions,
+  transferSummaryPageActions,
   uploadFileListener,
   uploadSummaryActions,
   walletCreateActions,
@@ -242,11 +249,15 @@ const Render: Renderer = {
   [RenderType.uploadSummary]: (props: {
     file: File;
     transaction: any;
-    fee: any;
     data: any;
     props: State;
   }) => {
-    renderUploadSummary(props.file, props.fee, props.transaction.id);
+    console.log(props);
+    renderUploadSummary(
+      props.file,
+      props.transaction.reward,
+      props.transaction.id
+    );
     uploadSummaryActions(props.transaction, props.data, props.props);
   },
   [RenderType.permapinPopup]: (props: State) => {
@@ -260,23 +271,48 @@ const Render: Renderer = {
   [RenderType.emptyWalletDropper]: (props: State) => {
     emptyWalletDropper();
   },
-  [RenderType.addNewIdentityPopup]: (props: RenderDispatchArgs) => {
-    renderAddNewIdentityPopup(props.tmp.identity, props.tmp.name);
-    AddNewIdentityActions(props, props.tmp.identity, props.tmp.name);
+  [RenderType.addNewAccountPopup]: (props: RenderDispatchArgs) => {
+    renderAddNewAccountPopup(props.tmp.Account, props.tmp.name);
+    AddNewAccountActions(props, props.tmp.Account, props.tmp.name);
   },
-  [RenderType.showIdentityPopup]: (props: RenderDispatchArgs) => {
-    renderShowIdentity(props.identity.address, props.tmp.balance);
-    showIdentityActions(props);
+  [RenderType.showAccountPopup]: (props: RenderDispatchArgs) => {
+    renderShowAccount(props.tmp.address, props.tmp.balance);
+    showAccountActions(props);
   },
-  [RenderType.switchIdentities]: (props: State) => {
-    renderSwitchIdentities();
-    switchIdentitiesActions(props);
+  [RenderType.switchAccounts]: (props: State) => {
+    renderSwitchAccounts();
+    switchAccountsActions(props);
+  },
+  [RenderType.transferPage]: (props: RenderDispatchArgs) => {
+    renderTransferPage(props.Account.balance);
+    transferPageActions(props);
+  },
+  [RenderType.transferSummaryPage]: (props: RenderDispatchArgs) => {
+    console.log(props);
+    renderTransferSummaryPage(props.tmp);
+    transferSummaryPageActions(props);
+  },
+  [RenderType.permapinSummaryPage]: (props: RenderDispatchArgs) => {
+    //permapin summary page actions
+    renderPermapinSummaryPage({
+      permapinTx: props.tmp.pinTransaction,
+      sendTip: props.tmp.sendTip,
+      tipTx: props.tmp.tipTransaction,
+    });
+    permapinSummaryActions({
+      permapinTx: props.tmp.pinTransaction,
+      sendTip: props.tmp.sendTip,
+      tipTx: props.tmp.tipTransaction,
+    });
   },
   [RenderType.hidePopup]: ({}) => {
     removePopup();
   },
   [RenderType.hideElement]: (props: { el: HTMLElement; hide: boolean }) => {
     hideElement(props.el, props.hide);
+  },
+  [RenderType.txId]: (props: { to: string; txId: string }) => {
+    renderTxId(props.to, props.txId);
   },
 };
 
