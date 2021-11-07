@@ -2,7 +2,8 @@ import {
   ERC20Params,
   Events,
   EventType,
-  Identity,
+  Account,
+  PopupState,
   SelectedWallet,
   StashedDetails,
 } from "../types";
@@ -64,9 +65,16 @@ export function dispatch_setSelectedWallet(to: SelectedWallet) {
   });
 }
 
-export function dispatch_setNewIdentity(value: Identity) {
+export function dispatch_setNewAccount(value: Account) {
   dispatch(Events.stateChange, {
-    type: EventType.setNewIdentity,
+    type: EventType.setNewAccount,
     value,
+  });
+}
+
+export function dispatch_setPopupState(to: PopupState) {
+  dispatch(Events.stateChange, {
+    type: EventType.setPopupState,
+    value: to,
   });
 }
