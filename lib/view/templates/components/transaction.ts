@@ -60,3 +60,12 @@ export const transactionUrl = (props: State, url: string) => {
     </div>
   `;
 };
+
+export const TxId = (txId: string) =>
+  html`<hr />
+    <small>It might take a few minutes for the transaction to be mined.</small>
+    <hr />
+    <div class="text-align-center"><a href="https://viewblock.io/arweave/tx/${txId}" class="transaction-layout"
+      >Check it here.</a
+    ></div>
+    <hr /> `;
