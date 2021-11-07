@@ -1,10 +1,16 @@
-import { HashWithIds, IPFSParams, Status } from "../../types";
+import {
+  HashWithIds,
+  HashWithTransaction,
+  IPFSParams,
+  Status,
+} from "../../types";
 import tou8 from "buffer-to-uint8array";
 import { verifyAndGetTags } from "./verification";
 import isIPFS from "is-ipfs";
 import IpfsHttpClientLite from "ipfs-http-client-lite";
 import { CID } from "multiformats";
 import Arweave from "arweave";
+import { ARWAEVECONFIG, testWeave } from "../arweave";
 const IPFS_KEY = "IPFS-Add";
 
 //temporary so it doesnt conflict with different data structure
@@ -13,8 +19,9 @@ const IPFS_CONSTRAINT = "v0.1";
 
 export async function addHash(
   hash: string,
-  ipfsParams: IPFSParams
-): Promise<HashWithIds> {
+  ipfsParams: IPFSParams,
+  key: any
+): Promise<HashWithIds | HashWithTransaction> {
   let h = hash;
   if (!isIPFS.multihash(h) && !isIPFS.base32cid(h)) {
     return makeHashWithIds(h, "Invalid IPFS hash", Status.Failure);
@@ -24,14 +31,10 @@ export async function addHash(
     const v0 = CID.parse(h);
     h = v0.toV1().toString();
   }
-  const config = await window.arweaveWallet.getArweaveConfig();
-  const arweave = Arweave.init(config);
-  console.log(arweave);
-  console.log(config);
-  console.log(isIPFS.multihash(h));
-
-  const arid = await getArIdFromHash(h, arweave);
-  console.log(arid);
+  const arweave = Arweave.init(ARWAEVECONFIG);
+//TODO:arql dont work on testnet
+  // const arid = await getArIdFromHash(h, arweave);
+  const arid = null;
 
   if (arid === "M") {
     // means method not allowed was returned
@@ -43,9 +46,7 @@ export async function addHash(
   }
 
   const ipfs = IpfsHttpClientLite(ipfsParams);
-  console.log("here");
   const data: Buffer = await ipfs.cat(h);
-  console.log(data);
   const options = verifyAndGetTags(data);
 
   if (options.status === Status.Failure) {
@@ -53,12 +54,12 @@ export async function addHash(
   }
 
   const tags = options.tags;
-  console.log(tags);
-  const owner = await window.arweaveWallet.getActiveAddress();
-  let transaction = await arweave.createTransaction({
-    data: tou8(data),
-    owner,
-  });
+  let transaction = await arweave.createTransaction(
+    {
+      data: tou8(data),
+    },
+    testWeave.rootJWK
+  );
   transaction.addTag(IPFS_KEY, h);
   transaction.addTag(IPFS_CONSTRAINT_KEY, IPFS_CONSTRAINT);
   transaction.addTag("Issuer", tags.issuer);
@@ -67,16 +68,16 @@ export async function addHash(
   transaction.addTag("Participant", tags.participant);
   transaction.addTag("App-Version", tags.version);
   transaction.addTag("App-Name", "Ricardian Fabric");
-  console.log(transaction);
   //fast blocks hack, this is left here from the arweave ipfs library impl
   const anchor_id = (await arweave.api.get("/tx_anchor")).data;
   //@ts-ignore
   transaction.last_tx = anchor_id;
-  console.log(transaction);
-  await window.arweaveWallet.sign(transaction);
-  return makeHashWithIds(h, transaction.id, Status.Success);
-  await arweave.transactions.post(transaction);
-  return makeHashWithIds(h, transaction.id, Status.Success);
+  await arweave.transactions.sign(transaction, testWeave.rootJWK);
+  return {
+    hash: h,
+    tx: transaction,
+    status: Status.Success,
+  } as HashWithTransaction;
 }
 
 const makeHashWithIds = (
@@ -104,7 +105,6 @@ async function getArIdFromHash(
       expr2: IPFS_CONSTRAINT,
     },
   });
-  console.log(x);
   if (x.length > 0) {
     return x[0];
   } else {
