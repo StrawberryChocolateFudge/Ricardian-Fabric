@@ -1,25 +1,26 @@
 import {
   dispatch_DisableSCInputs,
   dispatch_EnableSCInputs,
-  dispatch_hidePopup,
   dispatch_renderError,
   dispatch_SCDeploySelected,
   dispatch_setDeployedSCAddress,
 } from "../../dispatch/render";
-import { DeploySC, ERC20Params } from "../../types";
+import { DeploySC, ERC20Params, PopupState } from "../../types";
 import {
   deployContract,
   findConstructorParameters,
   getAddress,
   prepareType,
   requestAccounts,
-  watchAsset,
   web3Injected,
 } from "../../wallet/web3";
 import { getHRC20Abi, getHRC20Bytecode } from "../../wallet/abi/HRC20";
 import { getById } from "../utils";
 import MetaMaskOnboarding from "@metamask/onboarding";
-import { dispatch_setERC20 } from "../../dispatch/stateChange";
+import {
+  dispatch_setERC20,
+  dispatch_setPopupState,
+} from "../../dispatch/stateChange";
 
 export function deploySCActions() {
   const hrc20 = getById("HRC20-checkbox") as HTMLInputElement;
@@ -40,7 +41,7 @@ export function deploySCActions() {
   };
 
   backbutton.onclick = function () {
-    dispatch_hidePopup();
+    dispatch_setPopupState(PopupState.NONE);
   };
 
   nextButton.onclick = function () {
@@ -75,7 +76,7 @@ export function constructSCActions(selected: DeploySC) {
   const logoUrl = getById("logo-url-input") as HTMLInputElement;
   const acceptTerms = getById("agree-to-deploy-sc") as HTMLInputElement;
   backbutton.onclick = function () {
-    dispatch_hidePopup();
+    dispatch_setPopupState(PopupState.NONE);
   };
 
   nextButton.onclick = async function () {
@@ -121,7 +122,7 @@ export function constructSCActions(selected: DeploySC) {
       );
       dispatch_setDeployedSCAddress(receipt.contractAddress);
       dispatch_setERC20(erc20Params);
-      dispatch_hidePopup();
+      dispatch_setPopupState(PopupState.NONE);
     };
 
     await deployContract(
