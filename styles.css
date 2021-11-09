@@ -401,6 +401,15 @@ hr {
   box-shadow: rgb(211, 211, 146) 0px 5px 15px !important;
 }
 
+#import-docx-trigger {
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  background-color: #f2f2f2;
+  color: black;
+  box-shadow: lightgrey 0px 5px 15px !important;
+}
+
 .deploySCUL {
   list-style-type: none;
   list-style: none;
