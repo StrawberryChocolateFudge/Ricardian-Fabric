@@ -95,7 +95,7 @@ export async function signHash(
   );
 }
 
-function getmsgParams(
+export function getmsgParams(
   networkId: string,
   smartContract: string,
   hash: string,
@@ -135,7 +135,6 @@ function getmsgParams(
     primaryType: "doc",
     message,
   };
-  console.log(msgParams);
   return msgParams;
 }
 
@@ -255,7 +254,6 @@ export async function acceptAgreement(arg: {
   url: string;
   hash: string;
   contractAddress: string;
-  signature: string;
   signerAddress: string;
 }): Promise<Options> {
   const options: Options = {
@@ -271,11 +269,9 @@ export async function acceptAgreement(arg: {
       arg.contractAddress
     );
 
-    const sigParams = getSigParams(arg.signature);
-
     //TODO: handle onError, onReceipt
     const resp = await contract.methods
-      .Accept(sigParams.v, sigParams.r, sigParams.s, arg.hash, arg.url)
+      .accept(arg.hash)
       .send({ from: arg.signerAddress });
   } catch (err) {
     options.status = Status.Failure;
