@@ -72,44 +72,24 @@ async function smartContractActions(
   } else if (props.contracttype === ContractTypes.acceptable) {
     //I need to sign both the url and the hash
 
-    const onSuccess = async (signature: string) => {
-      //I NEED TO CALL THE ACCEPT AGREEMENT FROM HERE!
+    const options = await acceptAgreement({
+      url,
+      hash: props.stashedDetails.hash,
+      contractAddress: props.smartcontract,
+      signerAddress: props.stashedDetails.signerAddress,
+    });
 
-      const options = await acceptAgreement({
-        url,
-        hash: props.hash,
-        contractAddress: props.smartcontract,
-        signature: signature,
-        signerAddress: props.stashedDetails.signerAddress,
+    if (options.status == Status.Failure) {
+      dispatch_renderError(options.error);
+    }
+
+    if (props.isERC20.name !== undefined) {
+      await watchAsset(props.isERC20, () => {
+        dispatch_renderError(
+          "Failed to add " + props.isERC20.name + " token to wallet."
+        );
       });
-
-      if (options.status == Status.Failure) {
-        dispatch_renderError(options.error);
-      }
-
-      if (props.isERC20.name !== undefined) {
-        await watchAsset(props.isERC20, () => {
-          dispatch_renderError(
-            "Failed to add " + props.isERC20.name + " token to wallet."
-          );
-        });
-      }
-    };
-
-    const onError = (msg: string) => {
-      dispatch_renderError(msg);
-    };
-
-    await signHash(
-      hash,
-      signerAddress,
-      props.network,
-      props.smartcontract,
-      onSuccess,
-      onError,
-      props.contracttype,
-      url
-    );
+    }
   }
 }
 
