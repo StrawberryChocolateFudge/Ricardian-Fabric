@@ -12,7 +12,7 @@ import {
   dispatch_stashPage,
   dispatch_stashDetails,
 } from "../../dispatch/stateChange";
-import { State } from "../../types";
+import { State, Status } from "../../types";
 import {
   canUseContract,
   getAddress,
@@ -29,6 +29,7 @@ import {
   getRedirectTo,
   getSmartContract,
   getBlockedCountries,
+  getBlockedAddresses,
 } from "../utils";
 import MetaMaskOnboarding from "@metamask/onboarding";
 
@@ -58,6 +59,13 @@ export function renderCreateButtonClick(props: State) {
     }
 
     const blockedCountries = getBlockedCountries();
+    const blockedAddressOptions = getBlockedAddresses();
+
+    if (blockedAddressOptions.status !== Status.Success) {
+      dispatch_renderError("Blocked addresses are malformed");
+      return;
+    }
+
     const redirectto = getRedirectTo();
     //Terms and agreements need to be accepted again with a checkbox
     const termsCheckbox = getTermsCheckbox();
@@ -118,8 +126,8 @@ export function renderCreateButtonClick(props: State) {
           version,
           issuer,
           blockedCountries,
+          blockedAddresses: blockedAddressOptions.data,
           network,
-          hash,
           issuerSignature,
           smartContract,
           ERC20: JSON.stringify(props.isERC20),
