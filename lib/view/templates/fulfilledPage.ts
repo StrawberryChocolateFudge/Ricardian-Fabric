@@ -118,7 +118,6 @@ export const fulfilledPage = (props: FulfilledPageProps) => html`
     data-redirectto="${props.redirectto}"
     data-parentUrl="${props.parentUrl}"
     data-network="${props.network}"
-    data-hash="${props.hash}"
     data-issuer="${props.issuer}"
     data-issuersignature="${props.issuerSignature}"
     data-participant="${props.participant}"
