@@ -1,7 +1,11 @@
-import { DeploySC, RenderDispatchArgs, RenderType, State } from "../types";
+import {
+  DeploySC,
+  RenderType,
+  State,
+  VerificationState,
+} from "../types";
 import { dispatch } from "./dispatch";
 import { Events } from "../types";
-import { TxData } from "ethereumjs-tx";
 
 export function dispatch_renderCreateButton(props: State) {
   dispatch(Events.render, {
@@ -365,5 +369,21 @@ export function dispatch_renderTxId(to: string, txId: any) {
   dispatch(Events.render, {
     type: RenderType.txId,
     props: { to, txId },
+  });
+}
+
+export function dispatch_renderVerifyContract(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.verifyContract,
+    props,
+  });
+}
+
+export function dispatch_verificationState(
+  verificationState: VerificationState
+) {
+  dispatch(Events.render, {
+    type: RenderType.verificationState,
+    props: { tmp: { verificationState } },
   });
 }
