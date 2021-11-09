@@ -9,7 +9,7 @@ import {
   dispatch_stashDetails,
   dispatch_stashPage,
 } from "../../dispatch/stateChange";
-import { State } from "../../types";
+import { BlockCountry, State } from "../../types";
 import {
   canAgree,
   getAddress,
@@ -20,6 +20,7 @@ import {
 } from "../../wallet/web3";
 import { getAcceptableContract, getById, getFromUrl } from "../utils";
 import MetaMaskOnboarding from "@metamask/onboarding";
+import { getHash } from "../../crypto";
 
 export function renderAcceptOnCLick(props: State) {
   const acceptButton = getById("accept-button") as HTMLInputElement;
@@ -61,6 +62,11 @@ export function renderAcceptOnCLick(props: State) {
 
     const participant = await getAddress();
 
+    if (props.blockedAddresses.includes(participant)) {
+      dispatch_renderError("Your address is blocked.");
+      return;
+    }
+
     if (props.smartcontract !== "NONE") {
       const canAccept = await canAgree(props.smartcontract, participant);
       if (!canAccept) {
@@ -68,6 +74,8 @@ export function renderAcceptOnCLick(props: State) {
         return;
       }
     }
+
+    const hash = await getRecomputedHash();
 
     const signingSuccess = async (participantSignature: string) => {
       const page = await getFulfilledPage({
@@ -80,7 +88,6 @@ export function renderAcceptOnCLick(props: State) {
         expires: props.expires,
         redirectto: props.redirectto,
         network: props.network,
-        hash: props.hash,
         issuerSignature: props.issuerSignature,
         participant: participant,
         participantSignature: participantSignature,
@@ -90,7 +97,7 @@ export function renderAcceptOnCLick(props: State) {
       });
 
       dispatch_stashDetails({
-        hash: props.hash,
+        hash,
         signerAddress: participant,
         signature: participantSignature,
         network: props.network,
@@ -105,7 +112,7 @@ export function renderAcceptOnCLick(props: State) {
     };
 
     await signHash(
-      props.hash,
+      hash,
       participant,
       network,
       props.smartcontract,
@@ -116,4 +123,32 @@ export function renderAcceptOnCLick(props: State) {
     );
     dispatch_disableButton(props);
   };
+}
+
+async function getRecomputedHash() {
+  const legalContract = getById("contract-display").innerHTML;
+  const page = getById("page");
+  const createdDate = page.dataset.created;
+  const expires = page.dataset.expires;
+  const redirectto = page.dataset.redirectto;
+  const version = page.dataset.version;
+  const issuer = page.dataset.issuer;
+  const blockedCountries = JSON.parse(
+    page.dataset.blockedcountries
+  ) as BlockCountry[];
+  const network = page.dataset.network;
+  const smartContract = page.dataset.smartcontract;
+  const recomputedHash = await getHash({
+    legalContract,
+    createdDate,
+    expires,
+    redirectto,
+    version,
+    issuer,
+    blockedCountries,
+    network,
+    smartContract,
+  });
+
+  return recomputedHash;
 }
