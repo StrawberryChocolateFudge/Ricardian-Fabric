@@ -8,10 +8,7 @@ export const DocXDropper = () => html`
     <input type="file" name="docx" id="docx-input" class="drop-zone__input" />
   </div>
   <hr />
-  <small
-    >Loading a template will completely override the text area. If you typed
-    something already, make sure to save it.</small
-  >
+  <small>Loading a template will completely override the text area.</small>
   <hr />
   <div><button id="dropper-back-button" class="backButton">Back</button></div>
   <hr />
