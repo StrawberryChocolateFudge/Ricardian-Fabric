@@ -1,4 +1,4 @@
-import { BlockCountry } from "../types";
+import { BlockCountry, Options, Status } from "../types";
 
 export function getById(id: string): HTMLElement {
   const el = document.getElementById(id);
@@ -88,6 +88,29 @@ export function getBlockedCountries() {
   }
 
   return blockedCountries;
+}
+
+export function getBlockedAddresses(): Options {
+  const result: Options = { status: Status.Success, data: "", error: "" };
+  const blockkedAddressesEl = getById("blocked-addresses") as HTMLInputElement;
+  const blockedAddresses = blockkedAddressesEl.value;
+
+  // Function to remove all
+  // spaces from a given string
+  function removeSpace(str) {
+    str = str.replace(/\s/g, "");
+    return str;
+  }
+
+  const withoutSpaces = removeSpace(blockedAddresses);
+  try {
+    result.data = withoutSpaces.split(",");
+  } catch (err) {
+    result.status = Status.Failure;
+    result.error = err.message;
+  }
+  console.log(result);
+  return result;
 }
 
 function handleHTTPS(url: string) {
