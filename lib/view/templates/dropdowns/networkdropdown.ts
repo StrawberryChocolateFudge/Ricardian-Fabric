@@ -11,9 +11,14 @@ export const NetworkDropdown = () => html`
     id="network_checkbox_label"
     for="network_checkbox_toggle"
   >
-    Eth_network
+    Network
   </label>
   <ul>
+    <li>
+      <button id="network-hmny-testnet-shard0" class="dropdown-button">
+        <small>Harmony Testnet Shard 0</small>
+      </button>
+    </li>
     <li>
       <button id="ropsten-testnet" class="dropdown-button">
         <small>Ropsten Testnet</small>
@@ -29,11 +34,7 @@ export const NetworkDropdown = () => html`
         <small>Polygon Testnet</small>
       </button>
     </li>
-    <li>
-      <button id="network-hmny-testnet-shard0" class="dropdown-button">
-        <small>Harmony Testnet Shard 0</small>
-      </button>
-    </li>
+
     <li><hr /></li>
   </ul>
 `;
