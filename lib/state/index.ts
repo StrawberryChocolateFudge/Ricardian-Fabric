@@ -11,6 +11,7 @@ import {
 import { getCurrentUrl, getPage } from "../view/utils";
 import {
   getBlockCountriesFromDataProp,
+  getBlockedAddressesFromDataProp,
   getCreatedDateFromDataProp,
   getCurrentPageDataProp,
   getExpiresFromDataProp,
@@ -54,8 +55,8 @@ import { setStateHook } from "./setStateHook";
       bundleSrcUrl: getSourceFromDataProp(pageEl),
       currentUrl: getCurrentUrl(),
       blockedCountries: getBlockCountriesFromDataProp(pageEl),
+      blockedAddresses: getBlockedAddressesFromDataProp(pageEl),
       network: getNetworkFromDataProp(pageEl),
-      hash: getHashFromDataProp(pageEl),
       issuer: getIssuerDataProp(pageEl),
       issuerSignature: getIssuerSignatureFromDataProp(pageEl),
       participant: "",
