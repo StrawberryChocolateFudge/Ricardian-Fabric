@@ -63,6 +63,8 @@ export enum RenderType {
   hidePopup = "hidePopup",
   hideElement = "hideElement",
   txId = "txId",
+  verifyContract = "verifyContract",
+  verificationState = "verificationState",
 }
 
 // TODO refactor to RenderDispatchArgs for specifying the dispatch arguments
@@ -121,7 +123,15 @@ export type Renderer = {
   [RenderType.hidePopup]: RenderFunction;
   [RenderType.hideElement]: RenderFunction;
   [RenderType.txId]: RenderFunction;
+  [RenderType.verifyContract]: RenderFunction;
+  [RenderType.verificationState]: RenderFunction;
 };
+
+export enum VerificationState {
+  success,
+  failure,
+  none,
+}
 
 export enum EventType {
   init = "init",
@@ -226,6 +236,7 @@ export enum PopupState {
   UploadSummary, // Upload summary is not used in state because it get's passed a signed transaction
   Permapin,
   PermapinSummary, //Same as upload summary...
+  verifyContract,
 }
 
 export type State = {
@@ -247,8 +258,8 @@ export type State = {
   currentUrl: string;
   version: string;
   blockedCountries: BlockCountry[];
+  blockedAddresses: string[];
   network: string;
-  hash: string;
   issuer: string;
   issuerSignature: string;
   participant: string;
@@ -278,8 +289,8 @@ export type AcceptablePageProps = {
   domParser: DOMParser;
   legalContract: string;
   blockedCountries: BlockCountry[];
+  blockedAddresses: string[];
   network: string;
-  hash: string;
   issuerSignature: string;
   smartContract: string;
   ERC20: string;
@@ -297,7 +308,6 @@ export type FulfilledPageProps = {
   participant: string;
   parentUrl: string;
   network: string;
-  hash: string;
   issuerSignature: string;
   participantSignature: string;
   smartContract: string;
