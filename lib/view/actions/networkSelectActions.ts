@@ -60,7 +60,7 @@ export function addChainButtonListener(props: State) {
   };
 }
 
-export function addDeployButtonListener(props: State) {
+export function addCatalogButtonListener(props: State) {
   const deployButton = getById("deploy-sc-button");
 
   deployButton.onclick = function () {
