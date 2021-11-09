@@ -2,7 +2,6 @@ import {
   BlockCountry,
   ContractTypes,
   ERC20Params,
-
   SelectedWallet,
 } from "../types";
 
@@ -76,6 +75,14 @@ export function getBlockCountriesFromDataProp(
     return [] as BlockCountry[];
   }
   return JSON.parse(array) as BlockCountry[];
+}
+
+export function getBlockedAddressesFromDataProp(page: HTMLElement) {
+  const array = page.dataset.blockedaddresses;
+  if (array === undefined) {
+    return [];
+  }
+  return JSON.parse(array) as string[];
 }
 
 export function getSelectedWalletFromDataProp(
