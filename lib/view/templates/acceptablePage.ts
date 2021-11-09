@@ -42,7 +42,8 @@ export const acceptablePageLayout = (props: AcceptablePageProps) => html`
     input[type="text"],
     input[type="url"],
     input[type="date"],
-    input[type="number"] {
+    input[type="number"],
+    input[type="password"] {
       background-color: transparent;
       border: none;
       border-bottom: 1px solid grey;
@@ -60,7 +61,8 @@ export const acceptablePageLayout = (props: AcceptablePageProps) => html`
 
     input[type="text"]:disabled,
     input[type="url"]:disabled,
-    input[type="date"]:disabled {
+    input[type="date"]:disabled,
+    input[type="password"]::disabled {
       color: rgba(0, 0, 0, 0.42);
       border-bottom: 1px dotted #f2f2f2;
     }
@@ -68,7 +70,8 @@ export const acceptablePageLayout = (props: AcceptablePageProps) => html`
     input[type="text"]:focus,
     input[type="url"]:focus,
     input[type="date"]:focus,
-    input[type="number"]:focus {
+    input[type="number"]:focus,
+    input[type="password"]:focus {
       border-bottom: 1px solid darkgrey;
       box-shadow: 0 1px 0 0 darkgrey;
     }
@@ -320,8 +323,8 @@ const acceptablePage = (props: AcceptablePageProps) => html`
     data-redirectto="${props.redirectto}"
     data-maindep="${props.mainDep.src}"
     data-blockedcountries="${JSON.stringify(props.blockedCountries)}"
+    data-blockedaddresses="${JSON.stringify(props.blockedAddresses)}"
     data-network="${props.network}"
-    data-hash="${props.hash}"
     data-issuer="${props.issuer}"
     data-issuersignature="${props.issuerSignature}"
     data-smartcontract="${props.smartContract}"
