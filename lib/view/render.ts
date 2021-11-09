@@ -1,5 +1,11 @@
 import { html, render } from "lit-html";
-import { ContractTypes, DeploySC, SelectedWallet, State } from "../types";
+import {
+  ContractTypes,
+  DeploySC,
+  SelectedWallet,
+  State,
+  VerificationState,
+} from "../types";
 import { AcceptButton, acceptTools } from "./templates/components/acceptTools";
 import { createButton } from "./templates/components/createButton";
 import { CreateSummary } from "./templates/createSummary";
@@ -39,6 +45,11 @@ import {
   TransferSummaryPage,
   WalletPopup,
 } from "./templates/popups/walletPopup";
+import {
+  VerifyContract,
+  VerifyFailure,
+  VerifySuccess,
+} from "./templates/popups/verifyContract";
 
 export function renderAcceptTools(props: State) {
   const actionContainer = getById("action-container");
@@ -180,6 +191,7 @@ export function updatePromptErrorDOCX(message: string) {
 
 export function renderTooltips() {
   const sanctions = getById("sanctions-tooltip");
+  const blockedAddresses = getById("blocked-addresses-tooltip");
   const expires = getById("expires-tooltip");
   const redirectto = getById("redirectto-tooltip");
   const Scontract = getById("smartcontract-tooltip");
@@ -207,6 +219,11 @@ export function renderTooltips() {
       "Check this to use your own custom network in metamask. Default is Harmony."
     ),
     customNetwork
+  );
+
+  render(
+    helperTooltips("A comma separated list of addresses to block."),
+    blockedAddresses
   );
 }
 
@@ -551,4 +568,27 @@ export function downloadBlob(blob: Blob, name: string) {
 export function renderTxId(to: string, txId: string) {
   const el = getById(to);
   render(TxId(txId), el);
+}
+
+export function renderVerifyContractPopup() {
+  setBannerDisplayBlock();
+  const el = getById("overlay-layout");
+  render(VerifyContract(), el);
+}
+export function renderVerificationState(verificationState: VerificationState) {
+  const el = getById("verify-result-display");
+
+  switch (verificationState) {
+    case VerificationState.none:
+      render("", el);
+      break;
+    case VerificationState.success:
+      render(VerifySuccess(), el);
+      break;
+    case VerificationState.failure:
+      render(VerifyFailure(), el);
+      break;
+    default:
+      break;
+  }
 }
