@@ -14,6 +14,7 @@ import {
   dispatch_renderTerms,
   dispatch_renderTransferPage,
   dispatch_renderUploadFilePopup,
+  dispatch_renderVerifyContract,
   dispatch_renderVersion,
   dispatch_showAccountPopup,
   dispatch_switch_Accounts,
@@ -115,6 +116,9 @@ export const setStateHook = {
         break;
       case PopupState.Permapin:
         dispatch_permapinPopup(clone, "");
+        break;
+      case PopupState.verifyContract:
+        dispatch_renderVerifyContract(clone);
         break;
       default:
         break;
