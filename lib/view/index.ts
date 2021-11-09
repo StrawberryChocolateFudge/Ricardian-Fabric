@@ -61,6 +61,8 @@ import {
   renderTransferSummaryPage,
   renderPermapinSummaryPage,
   renderTxId,
+  renderVerifyContractPopup,
+  renderVerificationState,
 } from "./render";
 import { renderAcceptTools } from "./render";
 import { areYouSureButtons } from "./actions/areYouSureButtons";
@@ -78,8 +80,8 @@ import {
 } from "./actions/deployAgainButton";
 import { changeContainerSlotStyle } from "./utils";
 import {
+  addCatalogButtonListener,
   addChainButtonListener,
-  addDeployButtonListener,
   networkSelectActions,
   walletSelectListener,
 } from "./actions/networkSelectActions";
@@ -99,6 +101,10 @@ import {
   uploadSummaryActions,
   walletCreateActions,
 } from "./actions/permawebSelectActions";
+import {
+  verifyContractActions,
+  verifyContractPopupTrigger,
+} from "./actions/verifyContractActions";
 
 const Render: Renderer = {
   [RenderType.successMessage]: (props: State) => {},
@@ -121,7 +127,8 @@ const Render: Renderer = {
     renderTemplatesDropdown();
     templateSelectActions(props);
     handleDropdownClosing();
-    addDeployButtonListener(props);
+    addCatalogButtonListener(props);
+    verifyContractPopupTrigger();
   },
   [RenderType.acceptButton]: (props: State) => {
     renderAcceptTools(props);
@@ -313,6 +320,13 @@ const Render: Renderer = {
   },
   [RenderType.txId]: (props: { to: string; txId: string }) => {
     renderTxId(props.to, props.txId);
+  },
+  [RenderType.verifyContract]: (props: State) => {
+    renderVerifyContractPopup();
+    verifyContractActions(props);
+  },
+  [RenderType.verificationState]: (props: RenderDispatchArgs) => {
+    renderVerificationState(props.tmp.verificationState);
   },
 };
 
