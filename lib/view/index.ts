@@ -63,6 +63,8 @@ import {
   renderTxId,
   renderVerifyContractPopup,
   renderVerificationState,
+  renderCatalogDropdown,
+  renderCreateProposalPage,
 } from "./render";
 import { renderAcceptTools } from "./render";
 import { areYouSureButtons } from "./actions/areYouSureButtons";
@@ -105,6 +107,7 @@ import {
   verifyContractActions,
   verifyContractPopupTrigger,
 } from "./actions/verifyContractActions";
+import { createProposalActions } from "./actions/catalogActions";
 
 const Render: Renderer = {
   [RenderType.successMessage]: (props: State) => {},
@@ -126,8 +129,9 @@ const Render: Renderer = {
     permawebSelectActions(props);
     renderTemplatesDropdown();
     templateSelectActions(props);
-    handleDropdownClosing();
+    renderCatalogDropdown();
     addCatalogButtonListener(props);
+    handleDropdownClosing();
     verifyContractPopupTrigger();
   },
   [RenderType.acceptButton]: (props: State) => {
@@ -327,6 +331,10 @@ const Render: Renderer = {
   },
   [RenderType.verificationState]: (props: RenderDispatchArgs) => {
     renderVerificationState(props.tmp.verificationState);
+  },
+  [RenderType.createProposalPage]: (props: RenderDispatchArgs) => {
+    renderCreateProposalPage(props);
+    createProposalActions(props);
   },
 };
 
