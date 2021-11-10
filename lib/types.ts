@@ -65,6 +65,7 @@ export enum RenderType {
   txId = "txId",
   verifyContract = "verifyContract",
   verificationState = "verificationState",
+  createProposalPage = "createProposalPage",
 }
 
 // TODO refactor to RenderDispatchArgs for specifying the dispatch arguments
@@ -125,6 +126,7 @@ export type Renderer = {
   [RenderType.txId]: RenderFunction;
   [RenderType.verifyContract]: RenderFunction;
   [RenderType.verificationState]: RenderFunction;
+  [RenderType.createProposalPage]: RenderFunction;
 };
 
 export enum VerificationState {
@@ -237,6 +239,8 @@ export enum PopupState {
   Permapin,
   PermapinSummary, //Same as upload summary...
   verifyContract,
+  viewProposals,
+  createProposal,
 }
 
 export type State = {
@@ -369,3 +373,17 @@ declare global {
 }
 
 window.ethereum = window.ethereum || {};
+
+export type ProposalFormat = {
+  name: string;
+  description: string;
+  code: string;
+  abi: string;
+  terms: string;
+  git: string;
+  email: string;
+  premium: boolean;
+  price: number;
+  isERC20: boolean;
+  ERC20Params: ERC20Params;
+};
