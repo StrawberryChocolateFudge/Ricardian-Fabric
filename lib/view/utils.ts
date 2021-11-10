@@ -253,3 +253,21 @@ export function getKeyFromFile(fileEvent: ProgressEvent) {
     // TODO: validation error
   }
 }
+
+export function readSolcFile(
+  file: File,
+  getContent: CallableFunction,
+  onError: CallableFunction
+) {
+  const reader = new FileReader();
+  reader.onload = async function (e: ProgressEvent) {
+    const fileReader: FileReader = e.target as FileReader;
+    const res = fileReader.result as string;
+    getContent(res);
+  };
+  reader.onerror = function (e: any) {
+    onError(e.message);
+  };
+
+  reader.readAsText(file, "UTF-8");
+}
