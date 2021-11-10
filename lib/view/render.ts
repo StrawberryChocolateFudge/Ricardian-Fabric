@@ -9,7 +9,10 @@ import {
 import { AcceptButton, acceptTools } from "./templates/components/acceptTools";
 import { createButton } from "./templates/components/createButton";
 import { CreateSummary } from "./templates/createSummary";
-import { deploySCIntentPopup } from "./templates/popups/deployScIntentPopup";
+import {
+  createProposalPopup,
+  deploySCIntentPopup,
+} from "./templates/popups/catalogPopup";
 import { DocXDropper } from "./templates/components/docxDropper";
 import { helperTooltips } from "./templates/components/helperTooltips";
 import { loadingIndicator } from "./templates/components/loadingIndicator";
@@ -50,6 +53,7 @@ import {
   VerifyFailure,
   VerifySuccess,
 } from "./templates/popups/verifyContract";
+import { CatalogDropdown } from "./templates/dropdowns/catalogdropdown";
 
 export function renderAcceptTools(props: State) {
   const actionContainer = getById("action-container");
@@ -235,7 +239,7 @@ export function disableCreateInputs() {
   const termsCheckbox = getById("terms-checkbox") as HTMLInputElement;
   const termsCheckboxLabel = getById("terms-checkbox-label");
 
-  const docxDropper = getById("docx-input") as HTMLInputElement;
+  const docxDropper = getById("import-docx-trigger") as HTMLInputElement;
   const smartContract = getById("smartcontract-input") as HTMLInputElement;
   const sanctions = getById("sanctions_checkbox_toggle") as HTMLInputElement;
   const sanctionsLabel = getById("sanctions_checkbox_label");
@@ -245,18 +249,28 @@ export function disableCreateInputs() {
     "network_checkbox_label"
   ) as HTMLInputElement;
 
+  const catalogToggle = getById("catalog_checkbox_toggle") as HTMLInputElement;
+  const catalogLabel = getById("catalog_checkbox_label") as HTMLInputElement;
+
   const metamask = getById("metamask-logo-container");
-  const arconnect = getById("arweave-logo-container");
+
+  const blockedAddresses = getById("blocked-addresses") as HTMLInputElement;
+
+  blockedAddresses.disabled = true;
+  blockedAddresses.style.cursor = "not-allowed";
 
   metamask.dataset.disabled = "true";
   metamask.style.cursor = "not-allowed";
-  arconnect.dataset.disabled = "true";
-  arconnect.style.cursor = "not-allowed";
 
   switchNetwork.disabled = true;
   switchNetwork.style.cursor = "not-allowed";
   switchNetworkLabel.style.cursor = "not-allowed";
   switchNetworkLabel.style.backgroundColor = "white";
+
+  catalogToggle.disabled = true;
+  catalogToggle.style.cursor = "not-allowed";
+  catalogLabel.style.cursor = "not-allowed";
+  catalogLabel.style.backgroundColor = "white";
 
   editor.contentEditable = "false";
   editor.style.cursor = "not-allowed";
@@ -292,7 +306,7 @@ export function enableCreateInputs() {
   const termsCheckbox = getById("terms-checkbox") as HTMLInputElement;
   const termsCheckboxLabel = getById("terms-checkbox-label");
 
-  const docxDropper = getById("docx-input") as HTMLInputElement;
+  const docxDropper = getById("import-docx-trigger") as HTMLInputElement;
   const smartContract = getById("smartcontract-input") as HTMLInputElement;
   const sanctions = getById("sanctions_checkbox_toggle") as HTMLInputElement;
   const sanctionsLabel = getById("sanctions_checkbox_label");
@@ -303,12 +317,16 @@ export function enableCreateInputs() {
   ) as HTMLInputElement;
 
   const metamask = getById("metamask-logo-container");
-  const arconnect = getById("arweave-logo-container");
+
+  const blockedAddresses = getById("blocked-addresses") as HTMLInputElement;
+  const catalogToggle = getById("catalog_checkbox_toggle") as HTMLInputElement;
+  const catalogLabel = getById("catalog_checkbox_label") as HTMLInputElement;
+
+  blockedAddresses.disabled = false;
+  blockedAddresses.style.cursor = "pointer";
 
   metamask.dataset.disabled = "false";
   metamask.style.cursor = "pointer";
-  arconnect.dataset.disabled = "false";
-  arconnect.style.cursor = "pointer";
 
   switchNetwork.disabled = false;
   switchNetwork.style.cursor = "pointer";
@@ -320,6 +338,11 @@ export function enableCreateInputs() {
   sanctions.style.cursor = "pointer";
   sanctionsLabel.style.cursor = "pointer";
   sanctionsLabel.style.backgroundColor = "#f2f2f2";
+
+  catalogToggle.disabled = false;
+  catalogToggle.style.cursor = "pointer";
+  catalogLabel.style.cursor = "pointer";
+  catalogLabel.style.backgroundColor = "#f2f2f2";
 
   editor.contentEditable = "true";
   editor.style.cursor = "text";
@@ -366,6 +389,11 @@ export function renderTemplatesDropdown() {
   render(TemplateDropdown(), dropdown);
 }
 
+export function renderCatalogDropdown() {
+  const dropdown = getById("catalog-dropdown");
+  render(CatalogDropdown(), dropdown);
+}
+
 export function handleDropdownClosing() {
   const permawebDropdown = getById("permaweb-dropdown");
   const permawebToggle = getById(
@@ -382,6 +410,9 @@ export function handleDropdownClosing() {
     "template_checkbox_toggle"
   ) as HTMLInputElement;
 
+  const catalogToggle = getById("catalog_checkbox_toggle") as HTMLInputElement;
+  const catalogDropdown = getById("catalog-dropdown");
+
   const page = getById("page");
   page.onclick = function (ev: Event) {
     if (!ev.composedPath().includes(networkDropdown)) {
@@ -395,6 +426,9 @@ export function handleDropdownClosing() {
     }
     if (!ev.composedPath().includes(templateDropdown)) {
       templateToggle.checked = false;
+    }
+    if (!ev.composedPath().includes(catalogDropdown)) {
+      catalogToggle.checked = false;
     }
   };
 }
@@ -591,4 +625,10 @@ export function renderVerificationState(verificationState: VerificationState) {
     default:
       break;
   }
+}
+
+export function renderCreateProposalPage(props: State) {
+  setBannerDisplayBlock();
+  const layout = getById("overlay-layout");
+  render(createProposalPopup(), layout);
 }
