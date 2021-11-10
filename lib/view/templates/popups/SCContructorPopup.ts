@@ -10,59 +10,42 @@ export function SCConstructorPopup(selected: DeploySC) {
     constructorParams = findConstructorParameters(getHRC20Abi());
   }
 
-  const getLabelFromParamName = (name: string) => {
-    switch (name) {
-      case "tokenName":
-        return "Token name:";
-        break;
-      case "tokenSymbol":
-        return "Token Symbol:";
-        break;
-      case "initialSupply":
-        return "Initial Supply:";
-        break;
-      case "_decimals":
-        return "Decimals:";
-        break;
-      default:
-        break;
-    }
-  };
+  const getTypeFromType = (type: string) => {
+    let checkedType = type;
 
-  const getTypeFromName = (name: string) => {
-    switch (name) {
-      case "tokenName":
+    if (type.includes("int")) {
+      checkedType = "number";
+    }
+    if (type.includes("fixed")) {
+      checkedType = "number";
+    }
+    // In case it's address payable...
+    if (type.includes("address")) {
+      checkedType = "address";
+    }
+
+    if (type.includes("byte")) {
+      checkedType = "byte";
+    }
+
+    switch (checkedType) {
+      case "bool":
+        return "checkbox";
+        break;
+      case "string":
         return "text";
         break;
-      case "tokenSymbol":
+      case "number":
+        return "number";
+        break;
+      case "address":
         return "text";
         break;
-      case "initialSupply":
-        return "number";
-        break;
-      case "_decimals":
-        return "number";
+      case "byte":
+        return "text";
         break;
       default:
-        break;
-    }
-  };
-
-  const getTooltipFromName = (name: string) => {
-    switch (name) {
-      case "tokenName":
-        return "The name of the token. ";
-        break;
-      case "tokenSymbol":
-        return "The symbol of the token.";
-        break;
-      case "initialSupply":
-        return "The amount of tokens minted to the creator's address on contract creation.";
-        break;
-      case "_decimals":
-        return "Token decimals. Recommended is 18.";
-        break;
-      default:
+        return "text";
         break;
     }
   };
@@ -71,16 +54,16 @@ export function SCConstructorPopup(selected: DeploySC) {
     return html`<tr>
       <td>
         <label for="${params.name}-input"
-          >${getLabelFromParamName(params.name)}</label
+          >${params.name} (${params.type})</label
         >
       </td>
       <td>
         <input
           id="${params.name}-input"
-          type="${getTypeFromName(params.name)}"
+          type="${getTypeFromType(params.type)}"
         />
       </td>
-      <td>${helperTooltips(getTooltipFromName(params.name))}</td>
+      <td></td>
     </tr>`;
   });
 
@@ -102,26 +85,6 @@ export function SCConstructorPopup(selected: DeploySC) {
     <small
       >Make sure you enter the correct details.This is non-reversible.</small
     >
-    <hr />
-    <table>
-      <thead>
-        <tr>
-          <th></th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><label for="logo-url-input">Logo url:</label></td>
-          <td><input id="logo-url-input" type="text" /></td>
-          <td>
-            ${helperTooltips(
-              "Not required. The url of the logo will be used when it adds the tokens to the wallet."
-            )}
-          </td>
-        </tr>
-      </tbody>
-    </table>
     <hr />
     <div class="row">
       <label for="agree-to-deploy-sc">I agree to the terms.</label>
