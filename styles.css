@@ -34,7 +34,8 @@ input[type="text"],
 input[type="url"],
 input[type="date"],
 input[type="number"],
-input[type="password"] {
+input[type="password"],
+input[type="email"] {
   background-color: transparent;
   border: none;
   border-bottom: 1px solid grey;
@@ -53,7 +54,9 @@ input[type="password"] {
 input[type="text"]:disabled,
 input[type="url"]:disabled,
 input[type="date"]:disabled,
-input[type="password"]:disabled {
+input[type="password"]:disabled,
+input[type="email"]:disabled,
+input[type="number"]:disabled {
   color: rgba(0, 0, 0, 0.42);
   border-bottom: 1px dotted #f2f2f2;
 }
@@ -62,13 +65,20 @@ input[type="text"]:focus,
 input[type="url"]:focus,
 input[type="date"]:focus,
 input[type="number"]:focus,
-input[type="password"]:focus {
+input[type="password"]:focus,
+input[type="email"]:focus {
   border-bottom: 1px solid darkgrey;
   box-shadow: 0 1px 0 0 darkgrey;
 }
 
 input[type="checkbox"] {
   cursor: pointer;
+}
+
+input[type="file"] {
+  top: 10px;
+  left: 8px;
+  color: #b8b8b8;
 }
 
 #sanctions_checkbox_toggle {
@@ -304,6 +314,10 @@ hr {
   box-shadow: rgb(240, 166, 166) 0px 5px 15px !important;
 }
 
+.lightGreenish-shadow {
+  box-shadow: rgb(108, 177, 173) 0px 5px 15px !important;
+}
+
 .light-shadow {
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
@@ -322,17 +336,11 @@ hr {
   align-self: center;
 }
 
-/* #drop-zone-accordion {
-  cursor: pointer;
-  background-color: #f2f2f2;
-  padding: 5px;
-  color: black !important;
-  border: none;
-  border-radius: 25px;
-  width: 100px;
-  right: 0;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-} */
+#catalog-dropdown {
+  align-self: center;
+}
+
+
 
 .drop-zone {
   margin-top: 20px;
@@ -389,7 +397,6 @@ hr {
   cursor: pointer;
   background-color: #f2f2f2;
   color: black;
-  box-shadow: rgb(108, 177, 173) 0px 5px 15px !important;
 }
 
 #verify-contract-button {
