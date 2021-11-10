@@ -10,6 +10,7 @@ import {
   dispatch_renderAreYouSure,
   dispatch_renderBalance,
   dispatch_renderCreateButton,
+  dispatch_renderCreateProposalPage,
   dispatch_renderDocXDropper,
   dispatch_renderTerms,
   dispatch_renderTransferPage,
@@ -119,6 +120,9 @@ export const setStateHook = {
         break;
       case PopupState.verifyContract:
         dispatch_renderVerifyContract(clone);
+        break;
+      case PopupState.createProposal:
+        dispatch_renderCreateProposalPage(clone);
         break;
       default:
         break;
