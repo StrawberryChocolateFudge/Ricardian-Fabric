@@ -61,10 +61,16 @@ export function addChainButtonListener(props: State) {
 }
 
 export function addCatalogButtonListener(props: State) {
-  const deployButton = getById("deploy-sc-button");
+  const smartcontract = getById("smart-contracts-button");
+  const proposals = getById("view-proposals-button");
+  const createProp = getById("create-proposal-button");
 
-  deployButton.onclick = function () {
+  smartcontract.onclick = function () {
     dispatch_setPopupState(PopupState.Catalog);
+  };
+
+  createProp.onclick = function () {
+    dispatch_setPopupState(PopupState.createProposal);
   };
 }
 
@@ -75,6 +81,4 @@ export function walletSelectListener() {
       dispatch_setSelectedWallet(SelectedWallet.metamask);
     }
   };
-
-
 }
