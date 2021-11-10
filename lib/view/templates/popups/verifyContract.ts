@@ -30,7 +30,7 @@ export const VerifyContract = () => {
     <hr />
     <div id="verify-loading-indicator"></div>
     <div id="verify-result-display">
-      <p>Click on verify to proceed with the verification.</p>
+      <p>Add a url and click verify to proceed with the verification.</p>
     </div>
     <div class="wide-row">
       <button class="backButton" id="verify-back">back</button>
