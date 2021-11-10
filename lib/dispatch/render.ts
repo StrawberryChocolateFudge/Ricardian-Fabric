@@ -1,9 +1,4 @@
-import {
-  DeploySC,
-  RenderType,
-  State,
-  VerificationState,
-} from "../types";
+import { DeploySC, RenderType, State, VerificationState } from "../types";
 import { dispatch } from "./dispatch";
 import { Events } from "../types";
 
@@ -385,5 +380,12 @@ export function dispatch_verificationState(
   dispatch(Events.render, {
     type: RenderType.verificationState,
     props: { tmp: { verificationState } },
+  });
+}
+
+export function dispatch_renderCreateProposalPage(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.createProposalPage,
+    props,
   });
 }
