@@ -94,5 +94,5 @@ async function smartContractActions(
 }
 
 function getUrl(cid: CID) {
-  return `http://localhost:8080/ipfs/${cid.toString()}`;
+  return `https://ipfs.infura.io/ipfs/${cid.toString()}`;
 }
