@@ -35,9 +35,9 @@ import { setStateHook } from "./setStateHook";
     const state: State = {
       init: false,
       ipfs: {
-        host: "127.0.0.1",
+        host: "ipfs.infura.io",
         port: 5001,
-        protocol: "http",
+        protocol: "https",
       },
       Account: { data: null, address: null, balance: null },
       popupState: PopupState.NONE,
@@ -70,7 +70,6 @@ import { setStateHook } from "./setStateHook";
       set: function (obj: State, prop: string, value: any) {
         obj[prop] = value;
         setStateHook[prop]({ obj, prop, value });
-        console.log(obj);
         return true;
       },
     };
