@@ -82,10 +82,8 @@ import {
 } from "./actions/deployAgainButton";
 import { changeContainerSlotStyle } from "./utils";
 import {
-  addCatalogButtonListener,
   addChainButtonListener,
   networkSelectActions,
-  walletSelectListener,
 } from "./actions/networkSelectActions";
 import { constructSCActions, deploySCActions } from "./actions/deploySCActions";
 import { templateSelectActions } from "./actions/templateSelectActions";
@@ -107,7 +105,7 @@ import {
   verifyContractActions,
   verifyContractPopupTrigger,
 } from "./actions/verifyContractActions";
-import { createProposalActions } from "./actions/catalogActions";
+import { addCatalogButtonListener, createProposalActions, walletSelectListener } from "./actions/catalogActions";
 
 const Render: Renderer = {
   [RenderType.successMessage]: (props: State) => {},
@@ -263,7 +261,6 @@ const Render: Renderer = {
     data: any;
     props: State;
   }) => {
-    console.log(props);
     renderUploadSummary(
       props.file,
       props.transaction.reward,
