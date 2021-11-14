@@ -69,7 +69,6 @@ export async function signHash(
     contractType
   );
 
-  console.log(JSON.stringify(msgParams));
 
   await window.ethereum.sendAsync(
     {
@@ -80,7 +79,6 @@ export async function signHash(
       if (result.error) {
         onError(result.error.message);
       } else {
-        console.log(result.result);
         const recovered = await recoverTypedSignatures(
           msgParams,
           result.result
@@ -209,7 +207,6 @@ export async function canAgree(
     return !alreadyAccepted;
   } catch (err) {
     console.log(err);
-    console.log("error occured");
   }
   return false;
 }
