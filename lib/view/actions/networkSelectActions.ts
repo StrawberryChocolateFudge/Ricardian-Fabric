@@ -60,25 +60,3 @@ export function addChainButtonListener(props: State) {
   };
 }
 
-export function addCatalogButtonListener(props: State) {
-  const smartcontract = getById("smart-contracts-button");
-  const proposals = getById("view-proposals-button");
-  const createProp = getById("create-proposal-button");
-
-  smartcontract.onclick = function () {
-    dispatch_setPopupState(PopupState.Catalog);
-  };
-
-  createProp.onclick = function () {
-    dispatch_setPopupState(PopupState.createProposal);
-  };
-}
-
-export function walletSelectListener() {
-  const metamask = getById("metamask-logo-container");
-  metamask.onclick = function () {
-    if (metamask.dataset.disabled === "false") {
-      dispatch_setSelectedWallet(SelectedWallet.metamask);
-    }
-  };
-}
