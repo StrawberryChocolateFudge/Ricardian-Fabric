@@ -19,12 +19,12 @@ export const CatalogDropdown = () => html`
     </li>
     <li>
       <button id="view-proposals-button" class="dropdown-button">
-        <small>Proposals</small>
+        <small>Proposals(COMING SOON)</small>
       </button>
     </li>
     <li>
       <button id="create-proposal-button" class="dropdown-button">
-        <small>Create proposal</small>
+        <small>Create proposal(COMING SOON)</small>
       </button>
     </li>
   </ul>
