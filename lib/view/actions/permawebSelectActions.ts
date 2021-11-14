@@ -27,13 +27,10 @@ import {
   ArToWinston,
   createFileTransaction,
   createWallet,
-  getTip,
   getTransferTransaction,
   getWalletAddress,
   getWalletBalance,
-  getWeighedPSTHolder,
   postTransaction,
-  TIP,
   uploadData,
 } from "../../wallet/arweave";
 import { getById, readFile, readWalletFile } from "../utils";
@@ -196,7 +193,6 @@ export function uploadSummaryActions(
       // const res = await postTransaction(transaction);
       const uploader = await uploadData(transaction);
       //TODO: RENDER THE SAVED URL so people can save it!
-      console.log(uploader);
       if (uploader.isComplete) {
         //Nothing cuz the back button is the way to leave
       } else {
@@ -291,8 +287,6 @@ export function permapinPopupActions(props: any) {
       //     props.version
       //   );
       // }
-      console.log(txRes);
-      console.log(tipTransaction);
       //Dispatch the Permapin transaction and the TIP transaction summary Page!
       dispatch_renderPermapinSummaryPage(props, txRes, false, tipTransaction);
     }
@@ -300,7 +294,6 @@ export function permapinPopupActions(props: any) {
 }
 
 export function permawebTransactionAction(props: State, hash: string) {
-  console.log("permaweb transaction action");
   //This is called on the acceptable page, TODO: refactor
 
   const permapinButton = getById("permapin-deployed-button");
@@ -437,7 +430,6 @@ export function onWalletFileDropped(props: State, type: WalletDropperType) {
   dropZone.ondrop = function (e: DragEvent) {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
-    console.log(file.type);
     if (e.dataTransfer.files.length === 1 && file.type === requiredType) {
       walletInput.files = e.dataTransfer.files;
       dispatch_promptSuccess(e.dataTransfer.files[0]);
@@ -454,7 +446,6 @@ export function AddNewAccountActions(
   Account: ArrayBuffer,
   address: string
 ) {
-  console.log("add new Account actions");
   const cancelButton = getById("addNewAccount-cancel");
   const proceedButton = getById("addNewAccount-proceed");
 
@@ -470,7 +461,6 @@ export function AddNewAccountActions(
 }
 
 export function showAccountActions(props: State) {
-  console.log("show Account actions");
   const cancelButton = getById("Account-cancel");
   const proceedButton = getById("switchAccount-proceed");
   const newAccountButton = getById("new-Account");
@@ -493,7 +483,6 @@ export function showAccountActions(props: State) {
 }
 
 export function switchAccountsActions(props: State) {
-  console.log("switch Account actions");
 
   const cancelButton = getById("Account-cancel");
   const proceedButton = getById("switchAccount-proceed");
@@ -673,7 +662,6 @@ export function transferSummaryPageActions(props: RenderDispatchArgs) {
   postIt.onclick = async function () {
     dispatch_renderLoadingIndicator("transaction-loading");
     dispatch_hideElement(postIt, true);
-    console.log("sending transaction");
     const firstTX = (await postTransaction(mainTransaction).catch((err) => {
       dispatch_renderError(err);
     })) as {
@@ -681,7 +669,6 @@ export function transferSummaryPageActions(props: RenderDispatchArgs) {
       statusText: string;
       data: any;
     };
-    console.log(firstTX);
     if (sendTip) {
       const secondTX = (await postTransaction(tipTransaction).catch((err) => {
         dispatch_renderError(err);
