@@ -2,6 +2,8 @@ import { html } from "lit-html";
 
 const termsAndConditions = () => html`
   <p>THIS IS A TESTNET VERSION OF RICADIAN FABRIC!</p>
+  <p>The network you use is determined by your metamask config. Please use a testnet.</p>
+  <p>Arweave is not on testnet. Any funsd you spend or files you upload will charge real Ar.</p>
   <p>Ricardian Fabric is provided "as is", without warranty of any kind.</p>
   <p>Documents created with it may be applicable by law.</p>
   <p>
@@ -34,6 +36,7 @@ const termsAndConditions = () => html`
     the creators of Ricardian Fabric.
   </p>
   <p>Any financial activity conducted through this application is the responsibility of the user.</p>
+  <p>Ricardian Fabric is not responsible for any financial loss related caused by bugs or other reasons.</p>
   
 `;
 
