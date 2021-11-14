@@ -2,8 +2,9 @@ import {
   dispatch_hideElement,
   dispatch_renderError,
 } from "../../dispatch/render";
-import { dispatch_setPopupState } from "../../dispatch/stateChange";
-import { PopupState, State } from "../../types";
+import { dispatch_setPopupState, dispatch_setSelectedWallet } from "../../dispatch/stateChange";
+import { PopupState, SelectedWallet, State } from "../../types";
+// import { compileFile } from "../../wallet/solc";
 import { getById } from "../utils";
 
 export function createProposalActions(props: State) {
@@ -41,7 +42,9 @@ export function createProposalActions(props: State) {
     ERC20DecimalEl.disabled = !checked;
   };
 
-  proceed.onclick = function () {
+  proceed.onclick = async function () {
+    // console.log(await compileFile(codeEl.files[1]))
+
     if (nameEl.value === "") {
       dispatch_renderError("You must specify the name.");
       return;
@@ -89,6 +92,29 @@ export function createProposalActions(props: State) {
     if (termsAcceptedEl.checked === false) {
       dispatch_renderError("You must accept the terms.");
       return;
+    }
+  };
+}
+
+export function addCatalogButtonListener(props: State) {
+  const smartcontract = getById("smart-contracts-button");
+  //const proposals = getById("view-proposals-button");
+  //const createProp = getById("create-proposal-button");
+
+  smartcontract.onclick = function () {
+    dispatch_setPopupState(PopupState.Catalog);
+  };
+
+  // createProp.onclick = function () {
+  //   dispatch_setPopupState(PopupState.createProposal);
+  // };
+}
+
+export function walletSelectListener() {
+  const metamask = getById("metamask-logo-container");
+  metamask.onclick = function () {
+    if (metamask.dataset.disabled === "false") {
+      dispatch_setSelectedWallet(SelectedWallet.metamask);
     }
   };
 }
