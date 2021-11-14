@@ -50,7 +50,6 @@ export const AcceptButton = (positionNeeded: boolean) => {
       </div>`
     : "";
   const buttonText = positionNeeded ? "Add location" : "Accept";
-  console.log(buttonText);
   return html`
     <style>
       .width-200 {
