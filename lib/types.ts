@@ -369,6 +369,7 @@ export type HashWithTransaction = { hash: string; tx: any; status: Status };
 declare global {
   interface Window {
     ethereum: any;
+    Module: any;
   }
 }
 
