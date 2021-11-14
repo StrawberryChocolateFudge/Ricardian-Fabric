@@ -109,7 +109,6 @@ export function getBlockedAddresses(): Options {
     result.status = Status.Failure;
     result.error = err.message;
   }
-  console.log(result);
   return result;
 }
 
@@ -254,20 +253,13 @@ export function getKeyFromFile(fileEvent: ProgressEvent) {
   }
 }
 
-export function readSolcFile(
-  file: File,
-  getContent: CallableFunction,
-  onError: CallableFunction
-) {
-  const reader = new FileReader();
-  reader.onload = async function (e: ProgressEvent) {
-    const fileReader: FileReader = e.target as FileReader;
-    const res = fileReader.result as string;
-    getContent(res);
-  };
-  reader.onerror = function (e: any) {
-    onError(e.message);
-  };
-
-  reader.readAsText(file, "UTF-8");
+export async function readSolcFile(file: File) :Promise<string> {
+  return new Promise((resolve,reject) =>{
+    const fr = new FileReader();
+    fr.onerror = reject;
+    fr.onload = function(){
+      resolve(fr.result as string);
+    }
+    fr.readAsText(file,"UTF-8");
+  })
 }
