@@ -122,7 +122,6 @@ export async function decryptWallet(
   };
 
   const decryptedBytes = await decrypt(cipherbytes, passwd, onError);
-  console.log(decryptedBytes);
   const decodedBytes = decodeUint8Array(decryptedBytes);
   try {
     options.data = JSON.parse(decodedBytes);
@@ -138,7 +137,6 @@ async function decrypt(
   passwd: string,
   onError: CallableFunction
 ): Promise<Uint8Array> {
-  // let cipherbytes = await startBlob.arrayBuffer();
   const pbkdf2iterations = 10000;
   const passphrasebytes = new TextEncoder().encode(passwd);
   const pbkdf2salt = cipherbytes.slice(8, 16);
