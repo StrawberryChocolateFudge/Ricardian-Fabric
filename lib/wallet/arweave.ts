@@ -1,22 +1,22 @@
 import Arweave from "arweave";
 import { readContract, selectWeightedPstHolder } from "smartweave";
-import TestWeave from "testweave-sdk";
+// import TestWeave from "testweave-sdk";
 
 export const ARWAEVECONFIG = {
-  host: "localhost",
-  port: 1984,
-  protocol: "http",
+  host: "arweave.net",
+  port: 443,
+  protocol: "https",
 };
 
 const arweave = Arweave.init(ARWAEVECONFIG);
 
 // init TestWeave on the top of arweave
-export let testWeave;
-(async function () {
-  //@ts-ignore
-  testWeave = await TestWeave.init(arweave);
-  // → 🎉
-})();
+// export let testWeave;
+// (async function () {
+//   //@ts-ignore
+//   testWeave = await TestWeave.init(arweave);
+//   // → 🎉
+// })();
 
 const PSTContract = "ligtZZ4M3Gy3BUi2qz4B6yXQiOcjJ_wU55QYhXFw7Ow";
 
@@ -34,14 +34,14 @@ export async function createFileTransaction(
 ) {
   const transaction = await arweave.createTransaction(
     { data },
-    testWeave.rootJWK
+    key
   );
   transaction.addTag("Contract-Type", "File upload");
   transaction.addTag("Content-Type", type);
   transaction.addTag("App-Version", version);
   transaction.addTag("App-Name", "Ricardian Fabric");
 
-  await arweave.transactions.sign(transaction, testWeave.rootJWK);
+  await arweave.transactions.sign(transaction, key);
   return transaction;
 }
 
@@ -68,7 +68,7 @@ export async function createWallet() {
 }
 
 export async function getWalletAddress(key: any) {
-  const address = await arweave.wallets.jwkToAddress(testWeave.rootJWK);
+  const address = await arweave.wallets.jwkToAddress(key);
   return address;
 }
 
@@ -96,14 +96,14 @@ export async function getTransferTransaction(
       target,
       quantity,
     },
-    testWeave.rootJWK
+    key
   );
 
   transaction.addTag("Contract-Type", "File upload");
   transaction.addTag("App-Version", version);
   transaction.addTag("App-Name", "Ricardian Fabric");
 
-  await arweave.transactions.sign(transaction, testWeave.rootJWK);
+  await arweave.transactions.sign(transaction, key);
   return transaction;
 }
 
