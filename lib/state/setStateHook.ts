@@ -1,6 +1,5 @@
-import { showBanner } from "../business/bloc";
+import { showBanner } from "../business/utils";
 import {
-  dispatch_addNewAccountPopup,
   dispatch_attachDateClickListener,
   dispatch_deploySCIntent,
   dispatch_hidePopup,

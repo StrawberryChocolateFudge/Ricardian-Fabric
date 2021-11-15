@@ -1,4 +1,4 @@
-import { getAcceptablePage } from "../../business/bloc";
+import { getAcceptablePage } from "../utils";
 import { getHash } from "../../crypto";
 import {
   dispatch_disableButton,

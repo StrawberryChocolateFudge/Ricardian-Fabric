@@ -1,5 +1,5 @@
 import { CID } from "ipfs-http-client";
-import { handlePost } from "../../business/bloc";
+import { handlePost } from "../utils";
 import {
   dispatch_deployAgain,
   dispatch_enableAcceptableInputs,

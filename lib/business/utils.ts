@@ -30,7 +30,6 @@ import {
   dispatch_setPosition,
 } from "../dispatch/stateChange";
 
-//TODO: move the businessLogic here from actions!! AW YEAH
 
 export async function getAcceptablePage(args: {
   props: State;

@@ -1,4 +1,4 @@
-import { getFulfilledPage, getLocation, isBlocked } from "../bloc";
+import { getFulfilledPage, getLocation, isBlocked } from "../utils";
 import {
   dispatch_disableButton,
   dispatch_enableButton,
