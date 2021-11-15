@@ -1,15 +1,10 @@
 import {
-  dispatch_deploySCIntent,
   dispatch_renderError,
 } from "../../dispatch/render";
 import { switchNetwork, web3Injected } from "../../wallet/web3";
-import { getById } from "../utils";
+import { getById } from "../../view/utils";
 import MetaMaskOnboarding from "@metamask/onboarding";
-import { Chains, PopupState, SelectedWallet, State } from "../../types";
-import {
-  dispatch_setPopupState,
-  dispatch_setSelectedWallet,
-} from "../../dispatch/stateChange";
+import { Chains, State } from "../../types";
 
 export function networkSelectActions() {
   const switchnetworkToggle = getById(

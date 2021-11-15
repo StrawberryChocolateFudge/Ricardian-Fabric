@@ -5,7 +5,7 @@ import {
 import { dispatch_setPopupState, dispatch_setSelectedWallet } from "../../dispatch/stateChange";
 import { PopupState, SelectedWallet, State } from "../../types";
 // import { compileFile } from "../../wallet/solc";
-import { getById } from "../utils";
+import { getById } from "../../view/utils";
 
 export function createProposalActions(props: State) {
   const back = getById("createproposal-back");

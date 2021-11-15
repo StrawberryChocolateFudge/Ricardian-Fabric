@@ -7,9 +7,9 @@ import {
   RenderType,
   State,
 } from "../types";
-import { renderCreateButtonClick } from "./actions/createButtonClick";
-import { attachExpiryClickAndListener } from "./actions/attachExpiryClickAndListener";
-import { renderAcceptOnCLick } from "./actions/renderAcceptButton";
+import { renderCreateButtonClick } from "../business/actions/createButtonClick";
+import { attachExpiryClickAndListener } from "../business/actions/attachExpiryClickAndListener";
+import { renderAcceptOnCLick } from "../business/actions/renderAcceptButton";
 import {
   disableButton,
   disableCreateInputs,
@@ -67,26 +67,26 @@ import {
   renderCreateProposalPage,
 } from "./render";
 import { renderAcceptTools } from "./render";
-import { areYouSureButtons } from "./actions/areYouSureButtons";
+import { areYouSureButtons } from "../business/actions/areYouSureButtons";
 import {
   docxImportBackButton,
   onDocFileDropped,
-} from "./actions/onDocFileDropped";
+} from "../business/actions/onDocFileDropped";
 import {
   attachTermsButtonListeners,
   createPageAgreeTerms,
-} from "./actions/terms";
+} from "../business/actions/terms";
 import {
   deployAgainButtonActions,
   redirectAction,
-} from "./actions/deployAgainButton";
+} from "../business/actions/deployAgainButton";
 import { changeContainerSlotStyle } from "./utils";
 import {
   addChainButtonListener,
   networkSelectActions,
-} from "./actions/networkSelectActions";
-import { constructSCActions, deploySCActions } from "./actions/deploySCActions";
-import { templateSelectActions } from "./actions/templateSelectActions";
+} from "../business/actions/networkSelectActions";
+import { constructSCActions, deploySCActions } from "../business/actions/deploySCActions";
+import { templateSelectActions } from "../business/actions/templateSelectActions";
 import {
   AddNewAccountActions,
   permapinPopupActions,
@@ -100,17 +100,17 @@ import {
   uploadFileListener,
   uploadSummaryActions,
   walletCreateActions,
-} from "./actions/permawebSelectActions";
+} from "../business/actions/permawebSelectActions";
 import {
   verifyContractActions,
   verifyContractPopupTrigger,
-} from "./actions/verifyContractActions";
-import { addCatalogButtonListener, createProposalActions, walletSelectListener } from "./actions/catalogActions";
+} from "../business/actions/verifyContractActions";
+import { addCatalogButtonListener, createProposalActions, walletSelectListener } from "../business/actions/catalogActions";
 
 const Render: Renderer = {
-  [RenderType.successMessage]: (props: State) => {},
-  [RenderType.errorMessage]: (props: State) => {},
-  [RenderType.createPage]: (props: State) => {},
+  [RenderType.successMessage]: (props: State) => { },
+  [RenderType.errorMessage]: (props: State) => { },
+  [RenderType.createPage]: (props: State) => { },
   [RenderType.createButton]: (props: State) => {
     renderButtonSlotAlignment(true);
     createPageAgreeTerms();
@@ -224,8 +224,8 @@ const Render: Renderer = {
     //If we deployed, this will remove the transaction when we want to deploy again
     removeTransaction();
   },
-  [RenderType.disableAcceptableInputs]: (props: {}) => {},
-  [RenderType.enableAcceptableInputs]: (props: {}) => {},
+  [RenderType.disableAcceptableInputs]: (props: {}) => { },
+  [RenderType.enableAcceptableInputs]: (props: {}) => { },
   [RenderType.deployAgain]: (props: State) => {
     deployAgainButtonActions(props);
   },
@@ -313,7 +313,7 @@ const Render: Renderer = {
       tipTx: props.tmp.tipTransaction,
     });
   },
-  [RenderType.hidePopup]: ({}) => {
+  [RenderType.hidePopup]: ({ }) => {
     removePopup();
   },
   [RenderType.hideElement]: (props: { el: HTMLElement; hide: boolean }) => {

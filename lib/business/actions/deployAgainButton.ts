@@ -5,7 +5,7 @@ import {
   dispatch_removeError,
 } from "../../dispatch/render";
 import { ContractTypes, State } from "../../types";
-import { getById, redirect } from "../utils";
+import { getById, redirect } from "../../view/utils";
 
 export function deployAgainButtonActions(props: State) {
   const buttonEl = getById("deploy-again-button");

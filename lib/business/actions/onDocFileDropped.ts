@@ -4,7 +4,7 @@ import {
   dispatch_removeError,
 } from "../../dispatch/render";
 import { PopupState, State } from "../../types";
-import { getById } from "../utils";
+import { getById } from "../../view/utils";
 import mammoth from "mammoth";
 import { dispatch_setPopupState } from "../../dispatch/stateChange";
 export function onDocFileDropped(props: State) {

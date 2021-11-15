@@ -14,7 +14,7 @@ import {
   VerificationState,
 } from "../../types";
 import { getmsgParams, recoverTypedSignatures } from "../../wallet/web3";
-import { getById } from "../utils";
+import { getById } from "../../view/utils";
 
 export function verifyContractPopupTrigger() {
   const verify = getById("verify-contract-button");

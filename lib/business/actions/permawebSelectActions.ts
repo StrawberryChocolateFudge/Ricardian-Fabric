@@ -33,10 +33,10 @@ import {
   postTransaction,
   uploadData,
 } from "../../wallet/arweave";
-import { getById, readFile, readWalletFile } from "../utils";
+import { getById, readFile, readWalletFile } from "../../view/utils";
 import { addHash } from "../../wallet/permapin/ipfsArweave";
 import { decryptWallet, encryptWallet } from "../../crypto";
-import { downloadBlob } from "../render";
+import { downloadBlob } from "../../view/render";
 import {
   dispatch_setNewAccount,
   dispatch_setPopupState,

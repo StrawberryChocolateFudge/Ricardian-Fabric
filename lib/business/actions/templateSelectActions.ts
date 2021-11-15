@@ -1,7 +1,6 @@
-import { dispatch_renderDocXDropper } from "../../dispatch/render";
 import { dispatch_setPopupState } from "../../dispatch/stateChange";
 import { PopupState, State } from "../../types";
-import { getById } from "../utils";
+import { getById } from "../../view/utils";
 
 export function templateSelectActions(props: State) {
   const importDocX = getById("import-docx-trigger");

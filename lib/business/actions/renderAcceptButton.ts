@@ -1,4 +1,4 @@
-import { getFulfilledPage, getLocation, isBlocked } from "../../business/bloc";
+import { getFulfilledPage, getLocation, isBlocked } from "../bloc";
 import {
   dispatch_disableButton,
   dispatch_enableButton,
@@ -18,7 +18,7 @@ import {
   signHash,
   web3Injected,
 } from "../../wallet/web3";
-import { getAcceptableContract, getById, getFromUrl } from "../utils";
+import { getAcceptableContract, getById, getFromUrl } from "../../view/utils";
 import MetaMaskOnboarding from "@metamask/onboarding";
 import { getHash } from "../../crypto";
 

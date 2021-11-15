@@ -30,7 +30,7 @@ import {
   getSmartContract,
   getBlockedCountries,
   getBlockedAddresses,
-} from "../utils";
+} from "../../view/utils";
 import MetaMaskOnboarding from "@metamask/onboarding";
 
 export function renderCreateButtonClick(props: State) {

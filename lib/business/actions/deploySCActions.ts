@@ -15,7 +15,7 @@ import {
   web3Injected,
 } from "../../wallet/web3";
 import { getHRC20Abi, getHRC20Bytecode } from "../../wallet/abi/HRC20";
-import { getById } from "../utils";
+import { getById } from "../../view/utils";
 import MetaMaskOnboarding from "@metamask/onboarding";
 import {
   dispatch_setERC20,

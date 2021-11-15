@@ -12,12 +12,12 @@ import {
 } from "../../dispatch/render";
 import { IPFS_Add } from "../../ipfs/add";
 import { ContractTypes, Status, State } from "../../types";
+import { getById } from "../../view/utils";
 import {
   acceptAgreement,
   setTerms,
   watchAsset,
 } from "../../wallet/web3";
-import { getById } from "../utils";
 
 export function areYouSureButtons(props: State) {
   const noButton = getById("no-button");
