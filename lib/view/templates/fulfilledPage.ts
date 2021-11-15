@@ -127,7 +127,7 @@ export const fulfilledPage = (props: FulfilledPageProps) => html`
     data-selectedwallet="${props.selectedWallet}"
     id="page"
   >
-    <div class="center" id="contract-display"></div>
+    <div id="contract-display"></div>
     <table id="display-table">
       <tr>
         <th></th>
