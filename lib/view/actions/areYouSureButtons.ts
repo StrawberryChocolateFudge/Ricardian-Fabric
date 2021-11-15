@@ -15,7 +15,6 @@ import { ContractTypes, Status, State } from "../../types";
 import {
   acceptAgreement,
   setTerms,
-  signHash,
   watchAsset,
 } from "../../wallet/web3";
 import { getById } from "../utils";
@@ -35,20 +34,22 @@ export function areYouSureButtons(props: State) {
 
     const CID = await IPFS_Add(props.stashedPage, props.ipfs);
     const id = `${CID.toString()}`;
-    const url = getUrl(CID);
+
+    const url = getUrl(CID, false);
     dispatch_renderTransaction(props, url, id);
 
     const smartContract = props.stashedDetails.smartContract;
-
-    if (smartContract !== "NONE") {
-      await smartContractActions(props, url, smartContract);
-    }
 
     if (props.contracttype === ContractTypes.create) {
       dispatch_deployAgain(props);
     } else {
       await handlePost(props, id);
     }
+
+    if (smartContract !== "NONE") {
+      await smartContractActions(props, url, smartContract);
+    }
+
   };
 }
 
@@ -90,9 +91,15 @@ async function smartContractActions(
         );
       });
     }
+
+    return options;
   }
 }
 
-function getUrl(cid: CID) {
-  return `https://ipfs.infura.io/ipfs/${cid.toString()}`;
+function getUrl(cid: CID, testnet: boolean) {
+  if (testnet) {
+    return `http://localhost:8080/ipfs/${cid.toString()}`;
+  } else {
+    return `https://ipfs.infura.io/ipfs/${cid.toString()}`;
+  }
 }
