@@ -39,7 +39,7 @@ export const transactionUrl = (props: State, url: string) => {
     </style>
 
     <div class="transaction-layout">
-      <a class="center" aria-label="Link copied to clipboard" href="${url}"
+      <a class="center" aria-label="Link copied to clipboard" href="${url}" target="_blank" rel="noopener"
         >Link copied to clipboard</a
       >
       <hr />
