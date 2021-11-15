@@ -2,6 +2,7 @@ import { createRevGeocoder } from "../geocoding/index";
 import {
   dispatch_disableButton,
   dispatch_enableButton,
+  dispatch_hideElement,
   dispatch_redirect,
   dispatch_removeLoadingIndicator,
   dispatch_renderError,
@@ -18,7 +19,7 @@ import {
   Status,
 } from "../types";
 
-import { getTermsAccepted } from "../view/utils";
+import { getById, getTermsAccepted } from "../view/utils";
 import {
   getAcceptablePageFromVDOM,
   getFulfilledPagefromVDOM,
@@ -48,9 +49,10 @@ export async function getAcceptablePage(args: {
 }
 
 // Returns true if blocked
-export async function isBlocked(props: State) {
+export async function isBlocked(props: State, acceptButton: HTMLElement) {
   dispatch_renderLoadingIndicator("transaction-display");
   dispatch_disableButton(props);
+  dispatch_hideElement(acceptButton, true);
   const geoCodingOptions = await fetchGeoCodingCSV();
   const record = await getCountryCode(props.position, geoCodingOptions.data);
 
@@ -60,6 +62,7 @@ export async function isBlocked(props: State) {
 
   if (record) {
     dispatch_removeLoadingIndicator("transaction-display");
+    dispatch_hideElement(acceptButton, false);
     return isCountryBlocked(record, props.blockedCountries).data;
   }
 }
@@ -188,27 +191,33 @@ export async function getCountryCode(
   return result.record;
 }
 
-export function getLocation(props: State) {
+export function getLocation(props: State,acceptButton : HTMLElement) {
   dispatch_disableButton(props);
   dispatch_renderLoadingIndicator("transaction-display");
-
+  dispatch_hideElement(acceptButton, true);
   // Ask for permission and access the Geolocation API.
   if ("geolocation" in navigator) {
     navigator.geolocation.getCurrentPosition(
       async function (position) {
         dispatch_removeLoadingIndicator("transaction-display");
+        dispatch_hideElement(acceptButton, false);
+
         dispatch_setPosition(position);
       },
       function (err) {
         dispatch_enableButton(props);
         dispatch_renderError(err.message);
         dispatch_removeLoadingIndicator("transaction-display");
+        dispatch_hideElement(acceptButton, false);
+
       }
     );
   } else {
     dispatch_renderError("Can't get geolocation.");
     dispatch_enableButton(props);
     dispatch_removeLoadingIndicator("transaction-display");
+    dispatch_hideElement(acceptButton, false);
+
   }
 }
 
@@ -233,6 +242,7 @@ export async function getFulfilledPage(props: FulfilledPageProps) {
   dispatch_renderLoadingIndicator("transaction-display");
   const page = await getFulfilledPagefromVDOM(props);
   dispatch_removeLoadingIndicator("transaction-display");
+
   return page;
 }
 

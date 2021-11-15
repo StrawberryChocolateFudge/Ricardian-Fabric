@@ -29,12 +29,12 @@ export function renderAcceptOnCLick(props: State) {
     dispatch_removeError();
 
     if (props.blockedCountries.length > 0 && props.position === undefined) {
-      getLocation(props);
+      getLocation(props, acceptButton);
       return;
     }
 
     if (props.blockedCountries.length > 0) {
-      const blocked = await isBlocked(props);
+      const blocked = await isBlocked(props, acceptButton);
       if (blocked) {
         dispatch_renderError("You are not allowed to sign this contract.");
         dispatch_disableButton(props);
