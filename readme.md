@@ -55,7 +55,7 @@ List of countries blocked For EU:
 
 resources: https://sanctionsmap.eu/#/main,
 
-USA and New York State can be separately blocked.
+USA can be also blocked separatly.
 
 ## Permaweb
 Arweave is on testnet, the testweave docker is required to use it!
