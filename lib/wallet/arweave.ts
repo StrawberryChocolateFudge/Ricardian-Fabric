@@ -99,7 +99,7 @@ export async function getTransferTransaction(
     key
   );
 
-  transaction.addTag("Contract-Type", "File upload");
+  transaction.addTag("Contract-Type", "Transfer");
   transaction.addTag("App-Version", version);
   transaction.addTag("App-Name", "Ricardian Fabric");
 
