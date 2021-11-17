@@ -10,7 +10,7 @@ import isIPFS from "is-ipfs";
 import IpfsHttpClientLite from "ipfs-http-client-lite";
 import { CID } from "multiformats";
 import Arweave from "arweave";
-import { ARWAEVECONFIG, testWeave } from "../arweave";
+import { ARWAEVECONFIG } from "../arweave";
 const IPFS_KEY = "IPFS-Add";
 
 //temporary so it doesnt conflict with different data structure
@@ -33,9 +33,8 @@ export async function addHash(
   }
   const arweave = Arweave.init(ARWAEVECONFIG);
 //TODO:arql dont work on testnet
-  // const arid = await getArIdFromHash(h, arweave);
-  const arid = null;
-
+   const arid = await getArIdFromHash(h, arweave);
+  
   if (arid === "M") {
     // means method not allowed was returned
     return makeHashWithIds(h, "Error: Method not allowed", Status.Failure);
@@ -58,7 +57,7 @@ export async function addHash(
     {
       data: tou8(data),
     },
-    testWeave.rootJWK
+    key
   );
   transaction.addTag(IPFS_KEY, h);
   transaction.addTag(IPFS_CONSTRAINT_KEY, IPFS_CONSTRAINT);
@@ -72,7 +71,7 @@ export async function addHash(
   const anchor_id = (await arweave.api.get("/tx_anchor")).data;
   //@ts-ignore
   transaction.last_tx = anchor_id;
-  await arweave.transactions.sign(transaction, testWeave.rootJWK);
+  await arweave.transactions.sign(transaction, key);
   return {
     hash: h,
     tx: transaction,
