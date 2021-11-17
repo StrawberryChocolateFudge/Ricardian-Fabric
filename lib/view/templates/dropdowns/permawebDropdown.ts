@@ -20,12 +20,12 @@ export const PermawebDropdown = () => html`
     </li>
     <li>
       <button id="upload-popup-button" class="dropdown-button">
-        <small>Upload File</small>
+        <small>Upload File (Coming soon)</small>
       </button>
     </li>
     <li>
       <button id="permapin-popup-button" class="dropdown-button">
-        <small>Permapin</small>
+        <small>Permapin (Coming soon)</small>
       </button>
     </li>
   </ul>

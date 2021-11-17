@@ -46,13 +46,13 @@ export function permawebSelectActions(props: State) {
   const uploadFile = getById("upload-popup-button");
   const permapin = getById("permapin-popup-button");
   const Account = getById("Account-popup-button");
-  uploadFile.onclick = function () {
-    dispatch_setPopupState(PopupState.UploadFile);
-  };
+  // uploadFile.onclick = function () {
+  //   dispatch_setPopupState(PopupState.UploadFile);
+  // };
 
-  permapin.onclick = function () {
-    dispatch_setPopupState(PopupState.Permapin);
-  };
+  // permapin.onclick = function () {
+  //   dispatch_setPopupState(PopupState.Permapin);
+  // };
 
   Account.onclick = async function () {
     if (props.Account === null) {
@@ -190,13 +190,15 @@ export function uploadSummaryActions(
     dispatch_hideElement(proceed, true);
     dispatch_hideElement(back, true);
     try {
-      // const res = await postTransaction(transaction);
-      const uploader = await uploadData(transaction);
+      const res = await postTransaction(transaction);
       //TODO: RENDER THE SAVED URL so people can save it!
-      if (uploader.isComplete) {
+      if (res.status === Status.Success) {
         //Nothing cuz the back button is the way to leave
+        //TODO: I will show a success message or something
+        // dispatch_renderUploadDone()
+
       } else {
-        dispatch_renderError(uploader.lastResponseError);
+        dispatch_renderError(res.statusText);
         dispatch_hideElement(proceed, false);
         dispatch_hideElement(transactiondisplay, false);
       }
