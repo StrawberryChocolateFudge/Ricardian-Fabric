@@ -106,6 +106,7 @@ import {
   verifyContractPopupTrigger,
 } from "../business/actions/verifyContractActions";
 import { addCatalogButtonListener, createProposalActions, walletSelectListener } from "../business/actions/catalogActions";
+import { WinstonToAr } from "../wallet/arweave";
 
 const Render: Renderer = {
   [RenderType.successMessage]: (props: State) => { },
@@ -261,9 +262,10 @@ const Render: Renderer = {
     data: any;
     props: State;
   }) => {
+    const fee = WinstonToAr(props.transaction.reward);
     renderUploadSummary(
       props.file,
-      props.transaction.reward,
+      fee,
       props.transaction.id
     );
     uploadSummaryActions(props.transaction, props.data, props.props);
@@ -296,7 +298,6 @@ const Render: Renderer = {
     transferPageActions(props);
   },
   [RenderType.transferSummaryPage]: (props: RenderDispatchArgs) => {
-    console.log(props);
     renderTransferSummaryPage(props.tmp);
     transferSummaryPageActions(props);
   },
