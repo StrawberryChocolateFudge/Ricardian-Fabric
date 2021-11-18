@@ -149,6 +149,8 @@ export enum EventType {
   setSelectedWallet = "setSelectedWallet",
   setNewAccount = "setNewAccount",
   setPopupState = "setPopupState",
+  setIpfsCID = "setIpfsCID",
+  setEditFinished = "setEditFinished"
 }
 
 export enum StateProperties {
@@ -165,6 +167,8 @@ export enum StateProperties {
   selectedWallet = "selectedWallet",
   Account = "Account",
   popupState = "popupState",
+  ipfsCID = "ipfsCID",
+  editFinished = "editFinished"
 }
 
 export enum ContractTypes {
@@ -271,6 +275,8 @@ export type State = {
   smartcontract: string;
   position: GeolocationPosition;
   isERC20: ERC20Params;
+  ipfsCID: string;
+  editFinished: boolean;
 };
 
 export type SetHookArgs = {
