@@ -4,6 +4,7 @@ import {
   dispatch_deploySCIntent,
   dispatch_hidePopup,
   dispatch_permapinPopup,
+  dispatch_permawebselectActions,
   dispatch_renderAcceptButton,
   dispatch_renderAddress,
   dispatch_renderAreYouSure,
@@ -76,7 +77,7 @@ export const setStateHook = {
   },
   [StateProperties.Account]: (args: SetHookArgs) => {
     const clone: State = cloneState(args.obj);
-    dispatch_renderCreateButton(clone);
+    dispatch_permawebselectActions(clone);
   },
   [StateProperties.ipfsCID]: (args: SetHookArgs) => {
 

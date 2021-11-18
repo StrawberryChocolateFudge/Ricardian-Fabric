@@ -66,6 +66,7 @@ export enum RenderType {
   verifyContract = "verifyContract",
   verificationState = "verificationState",
   createProposalPage = "createProposalPage",
+  permawebSelectActions = "permawebSelectActions"
 }
 
 // TODO refactor to RenderDispatchArgs for specifying the dispatch arguments
@@ -127,6 +128,7 @@ export type Renderer = {
   [RenderType.verifyContract]: RenderFunction;
   [RenderType.verificationState]: RenderFunction;
   [RenderType.createProposalPage]: RenderFunction;
+  [RenderType.permawebSelectActions]: RenderFunction;
 };
 
 export enum VerificationState {

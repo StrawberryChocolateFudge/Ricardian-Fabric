@@ -335,6 +335,10 @@ const Render: Renderer = {
     renderCreateProposalPage(props);
     createProposalActions(props);
   },
+  [RenderType.permawebSelectActions]: (props: RenderDispatchArgs) => {
+    renderPermawebDropdown();
+    permawebSelectActions(props);
+  }
 };
 
 document.body.addEventListener(Events.render, (e: any) => {

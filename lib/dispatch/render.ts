@@ -389,3 +389,10 @@ export function dispatch_renderCreateProposalPage(props: State) {
     props,
   });
 }
+
+export function dispatch_permawebselectActions(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.permawebSelectActions,
+    props
+  })
+}
