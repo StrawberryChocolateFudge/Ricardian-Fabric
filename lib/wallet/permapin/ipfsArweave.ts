@@ -7,10 +7,10 @@ import {
 import tou8 from "buffer-to-uint8array";
 import { verifyAndGetTags } from "./verification";
 import isIPFS from "is-ipfs";
-import IpfsHttpClientLite from "ipfs-http-client-lite";
 import { CID } from "multiformats";
 import Arweave from "arweave";
 import { ARWAEVECONFIG } from "../arweave";
+import { IPFS_CAT } from "../../ipfs/add";
 const IPFS_KEY = "IPFS-Add";
 
 //temporary so it doesnt conflict with different data structure
@@ -32,9 +32,8 @@ export async function addHash(
     h = v0.toV1().toString();
   }
   const arweave = Arweave.init(ARWAEVECONFIG);
-//TODO:arql dont work on testnet
-   const arid = await getArIdFromHash(h, arweave);
-  
+  const arid = await getArIdFromHash(h, arweave);
+
   if (arid === "M") {
     // means method not allowed was returned
     return makeHashWithIds(h, "Error: Method not allowed", Status.Failure);
@@ -44,10 +43,8 @@ export async function addHash(
     return makeHashWithIds(h, "It's already permapined!", Status.AlreadyExists);
   }
 
-  const ipfs = IpfsHttpClientLite(ipfsParams);
-  const data: Buffer = await ipfs.cat(h);
+  const data = await IPFS_CAT(h, ipfsParams);
   const options = verifyAndGetTags(data);
-
   if (options.status === Status.Failure) {
     return makeHashWithIds(h, "Not Ricardian Fabric Contract", Status.Failure);
   }
@@ -59,6 +56,7 @@ export async function addHash(
     },
     key
   );
+
   transaction.addTag(IPFS_KEY, h);
   transaction.addTag(IPFS_CONSTRAINT_KEY, IPFS_CONSTRAINT);
   transaction.addTag("Issuer", tags.issuer);
@@ -67,10 +65,7 @@ export async function addHash(
   transaction.addTag("Participant", tags.participant);
   transaction.addTag("App-Version", tags.version);
   transaction.addTag("App-Name", "Ricardian Fabric");
-  //fast blocks hack, this is left here from the arweave ipfs library impl
-  const anchor_id = (await arweave.api.get("/tx_anchor")).data;
-  //@ts-ignore
-  transaction.last_tx = anchor_id;
+
   await arweave.transactions.sign(transaction, key);
   return {
     hash: h,
