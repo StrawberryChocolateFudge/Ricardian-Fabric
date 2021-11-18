@@ -1,5 +1,6 @@
 import Arweave from "arweave";
 import { readContract, selectWeightedPstHolder } from "smartweave";
+import { Options, Status } from "../types";
 // import TestWeave from "testweave-sdk";
 
 export const ARWAEVECONFIG = {
@@ -20,6 +21,10 @@ const arweave = Arweave.init(ARWAEVECONFIG);
 //   testWeave = await TestWeave.init(arweave);
 //   // → 🎉
 // })();
+
+// The address that deploys the javascript dependency.
+// stored for verification purposes
+export const dependencyDeployer = ["Ygcqww4Hq2mjMzqhWFnCTMsQ9VFEr4ytVWbYDbXCpDw"];
 
 const PSTContract = "ligtZZ4M3Gy3BUi2qz4B6yXQiOcjJ_wU55QYhXFw7Ow";
 
