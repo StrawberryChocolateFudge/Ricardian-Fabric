@@ -3,9 +3,12 @@ import { readContract, selectWeightedPstHolder } from "smartweave";
 // import TestWeave from "testweave-sdk";
 
 export const ARWAEVECONFIG = {
-  host: "arweave.net",
+  host: 'arweave.net',
   port: 443,
-  protocol: "https",
+  protocol: 'https',
+  timeout: 20000,
+  logging: false,
+  logger: console.log,
 };
 
 const arweave = Arweave.init(ARWAEVECONFIG);
@@ -58,7 +61,7 @@ export async function uploadData(transaction: any) {
 }
 
 export async function postTransaction(transaction: any) {
-  const posted = await arweave.transactions.post(transaction);
+  const posted = await arweave.transactions.post((Buffer.from(JSON.stringify(transaction), 'utf8')));
   return posted;
 }
 
