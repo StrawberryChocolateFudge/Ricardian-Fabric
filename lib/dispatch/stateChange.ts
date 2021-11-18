@@ -78,3 +78,17 @@ export function dispatch_setPopupState(to: PopupState) {
     value: to,
   });
 }
+
+export function dispatch_stashIpfsCID(id) {
+  dispatch(Events.stateChange, {
+    type: EventType.setIpfsCID,
+    value: id
+  })
+}
+
+export function dispatch_editFinished(done: boolean) {
+  dispatch(Events.stateChange, {
+    type: EventType.setEditFinished,
+    value: done
+  })
+}
