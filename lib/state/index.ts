@@ -15,7 +15,6 @@ import {
   getCreatedDateFromDataProp,
   getCurrentPageDataProp,
   getExpiresFromDataProp,
-  getHashFromDataProp,
   getIsERC20FromDataProp,
   getIssuerDataProp,
   getIssuerSignatureFromDataProp,
@@ -63,7 +62,9 @@ import { setStateHook } from "./setStateHook";
       participantSignature: "",
       smartcontract: getSmartContractFromDataProp(pageEl),
       position: undefined,
-      isERC20: getIsERC20FromDataProp(pageEl), //TODO: CHANGE THIS
+      isERC20: getIsERC20FromDataProp(pageEl),
+      ipfsCID: "",
+      editFinished: false,
     };
 
     const stateHandler = {
@@ -116,12 +117,17 @@ import { setStateHook } from "./setStateHook";
     [EventType.setPopupState]: (value: PopupState) => {
       stateContainer.popupState = value;
     },
+    [EventType.setIpfsCID]: (value: string) => {
+      stateContainer.ipfsCID = value;
+    },
+    [EventType.setEditFinished]: (value: boolean) => {
+      stateContainer.editFinished = value;
+    }
   };
 
   document.body.addEventListener(Events.stateChange, function (event: any) {
     const type: EventType = event.detail.type;
     const value = event.detail.value;
-
     stateSetter[type](value);
   });
 })();
