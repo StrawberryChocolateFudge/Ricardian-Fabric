@@ -40,8 +40,8 @@ export const setStateHook = {
       dispatch_renderAcceptButton(clone);
     }
   },
-  [StateProperties.ipfs]: (args: SetHookArgs) => {},
-  [StateProperties.editor]: (args: SetHookArgs) => {},
+  [StateProperties.ipfs]: (args: SetHookArgs) => { },
+  [StateProperties.editor]: (args: SetHookArgs) => { },
   [StateProperties.balance]: (args: SetHookArgs) => {
     dispatch_renderBalance(cloneState(args.obj));
   },
@@ -77,6 +77,9 @@ export const setStateHook = {
   [StateProperties.Account]: (args: SetHookArgs) => {
     const clone: State = cloneState(args.obj);
     dispatch_renderCreateButton(clone);
+  },
+  [StateProperties.ipfsCID]: (args: SetHookArgs) => {
+
   },
   [StateProperties.popupState]: (args: SetHookArgs) => {
     const clone = cloneState(args.obj);
@@ -115,7 +118,7 @@ export const setStateHook = {
         dispatch_renderUploadFilePopup(clone);
         break;
       case PopupState.Permapin:
-        dispatch_permapinPopup(clone, "");
+        dispatch_permapinPopup(clone, clone.ipfsCID);
         break;
       case PopupState.verifyContract:
         dispatch_renderVerifyContract(clone);
