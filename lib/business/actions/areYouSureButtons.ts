@@ -18,6 +18,7 @@ import {
   setTerms,
   watchAsset,
 } from "../../wallet/web3";
+import { dispatch_stashIpfsCID } from "../../dispatch/stateChange";
 
 export function areYouSureButtons(props: State) {
   const noButton = getById("no-button");
@@ -36,6 +37,7 @@ export function areYouSureButtons(props: State) {
     const id = `${CID.toString()}`;
 
     const url = getUrl(CID, false);
+    dispatch_stashIpfsCID(id);
     dispatch_renderTransaction(props, url, id);
 
     const smartContract = props.stashedDetails.smartContract;
