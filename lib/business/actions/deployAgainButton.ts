@@ -4,6 +4,7 @@ import {
   dispatch_noButtonPressed,
   dispatch_removeError,
 } from "../../dispatch/render";
+import { dispatch_stashIpfsCID } from "../../dispatch/stateChange";
 import { ContractTypes, State } from "../../types";
 import { getById, redirect } from "../../view/utils";
 
@@ -15,6 +16,7 @@ export function deployAgainButtonActions(props: State) {
   }
 
   buttonEl.onclick = function () {
+    dispatch_stashIpfsCID("");
     dispatch_enableCreateInputs();
     dispatch_noButtonPressed(props);
     dispatch_enableCreateInputs();
