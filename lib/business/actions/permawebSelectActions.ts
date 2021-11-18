@@ -50,9 +50,9 @@ export function permawebSelectActions(props: State) {
   //   dispatch_setPopupState(PopupState.UploadFile);
   // };
 
-  // permapin.onclick = function () {
-  //   dispatch_setPopupState(PopupState.Permapin);
-  // };
+  permapin.onclick = function () {
+    dispatch_setPopupState(PopupState.Permapin);
+  };
 
   Account.onclick = async function () {
     if (props.Account === null) {
