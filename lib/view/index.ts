@@ -288,6 +288,7 @@ const Render: Renderer = {
   [RenderType.showAccountPopup]: (props: RenderDispatchArgs) => {
     renderShowAccount(props.tmp.address, props.tmp.balance);
     showAccountActions(props);
+    permawebTransactionAction(props, props.ipfsCID);
   },
   [RenderType.switchAccounts]: (props: State) => {
     renderSwitchAccounts();
