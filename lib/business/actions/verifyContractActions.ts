@@ -15,6 +15,8 @@ import {
 } from "../../types";
 import { getmsgParams, recoverTypedSignatures } from "../../wallet/web3";
 import { getById } from "../../view/utils";
+import { dependencyDeployer } from "../../wallet/arweave";
+import { getOwnerFromTxId } from "../../fetch/graphql";
 
 export function verifyContractPopupTrigger() {
   const verify = getById("verify-contract-button");
@@ -91,8 +93,26 @@ async function verifyAcceptableContract(url: string, domParser: DOMParser) {
     dispatch_verificationState(VerificationState.failure);
     return;
   }
+  // I need to check the tx id of the dependency and verify it's from an official deployer!
+  const txId = getArweaveTxIdFromSRC(scriptTags[0].src);
+  if (!txId) {
+    dispatch_renderError("Invalid dependency.");
+    dispatch_verificationState(VerificationState.failure);
+    return;
+  }
+  const ownerOptions = await getOwnerFromTxId(txId);
+  if (ownerOptions.status !== Status.Success) {
+    dispatch_renderError(ownerOptions.error);
+    dispatch_verificationState(VerificationState.failure);
+    return;
+  }
 
-  //TODO: When the final dependency is deployed on arweave and I need to check who deployed it by getting the txId from the tag and checking the address!!
+  if (!dependencyDeployer.includes(ownerOptions.data)) {
+    dispatch_renderError("Unknown dependency deployer.");
+    dispatch_verificationState(VerificationState.failure);
+    return;
+  }
+
 
   // I need to recompute the hash now.
   const legalContract = html.getElementById("contract-display").innerHTML;
@@ -153,4 +173,7 @@ async function verifyAcceptableContract(url: string, domParser: DOMParser) {
   dispatch_verificationState(VerificationState.success);
 }
 
-export function recomputeHash(page: HTMLElement) {}
+export function getArweaveTxIdFromSRC(src: string) {
+  const split = src.split("https://arweave.net/");
+  return split[1];
+}
