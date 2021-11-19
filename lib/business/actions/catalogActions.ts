@@ -43,7 +43,6 @@ export function createProposalActions(props: State) {
   };
 
   proceed.onclick = async function () {
-    // console.log(await compileFile(codeEl.files[1]))
 
     if (nameEl.value === "") {
       dispatch_renderError("You must specify the name.");
