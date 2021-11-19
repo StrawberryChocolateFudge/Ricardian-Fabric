@@ -36,7 +36,7 @@ export const fulfilledPageLayout = (props: FulfilledPageProps) => html`
       background-size: 109px 109px, 109px 109px, 100% 6px, 109px 109px,
         109px 109px;
       background-position: 54px 55px, 0px 0px, 0px 0px, 0px 0px, 0px 0px;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: Sans-Serif;
     }
     label {
       font-size: 0.8rem;
@@ -110,23 +110,12 @@ export const fulfilledPageLayout = (props: FulfilledPageProps) => html`
   </body>
 `;
 export const fulfilledPage = (props: FulfilledPageProps) => html`
-  <div
-    data-contracttype="fulfilled"
-    data-version="${props.version}"
-    data-created="${props.createdDate}"
-    data-expires="${props.expires}"
-    data-redirectto="${props.redirectto}"
-    data-parentUrl="${props.parentUrl}"
-    data-network="${props.network}"
-    data-issuer="${props.issuer}"
-    data-issuersignature="${props.issuerSignature}"
-    data-participant="${props.participant}"
-    data-participantsignature="${props.participantSignature}"
-    data-smartcontract="${props.smartContract}"
-    data-erc20="${props.ERC20}"
-    data-selectedwallet="${props.selectedWallet}"
-    id="page"
-  >
+  <div data-contracttype="fulfilled" data-version="${props.version}" data-created="${props.createdDate}"
+    data-expires="${props.expires}" data-redirectto="${props.redirectto}" data-parentUrl="${props.parentUrl}"
+    data-network="${props.network}" data-issuer="${props.issuer}" data-issuersignature="${props.issuerSignature}"
+    data-participant="${props.participant}" data-participantsignature="${props.participantSignature}"
+    data-smartcontract="${props.smartContract}" data-erc20="${props.ERC20}" data-selectedwallet="${props.selectedWallet}"
+    id="page">
     <div id="contract-display"></div>
     <table id="display-table">
       <tr>
