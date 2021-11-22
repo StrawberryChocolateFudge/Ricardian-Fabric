@@ -23,6 +23,10 @@ export const transactionUrl = (props: State, url: string) => {
         padding-left: 20px;
         padding-right: 20px;
       }
+      .permapin-button:hover{
+          background-color: #ccc;
+          transform: scale(1.01);
+      }
       .transaction-button-row {
         display: flex;
         flex-direction: row;
@@ -36,6 +40,10 @@ export const transactionUrl = (props: State, url: string) => {
         color: black !important;
         border: none;
       }
+      .deploy-again:hover{
+        background-color: #ccc;
+        transform: scale(1.01);
+      }
     </style>
 
     <div class="transaction-layout">
@@ -45,20 +53,20 @@ export const transactionUrl = (props: State, url: string) => {
       <hr />
       <div class="transaction-button-row">
         ${props.contracttype === ContractTypes.create
-          ? html`
+      ? html`
               <button id="permapin-deployed-button" class="permapin-button">
                 Permapin to Arweave!
               </button>
             `
-          : null}
+      : null}
         ${props.contracttype === ContractTypes.create
-          ? html`
+      ? html`
               <hr />
               <button class="deploy-again" id="deploy-again-button">
                 Edit page again
               </button>
             `
-          : null}
+      : null}
       </div>
       <hr />
     </div>
@@ -67,13 +75,9 @@ export const transactionUrl = (props: State, url: string) => {
 
 export const TxId = (txId: string) =>
   html`<hr />
-    <small>It might take a few minutes for the transaction to be mined.</small>
-    <hr />
-    <div class="text-align-center">
-      <a
-        href="https://viewblock.io/arweave/tx/${txId}"
-        class="transaction-layout"
-        >Check it here.</a
-      >
-    </div>
-    <hr /> `;
+<small>It might take a few minutes for the transaction to be mined.</small>
+<hr />
+<div class="text-align-center">
+  <a href="https://viewblock.io/arweave/tx/${txId}" class="transaction-layout">Check it here.</a>
+</div>
+<hr />`;
