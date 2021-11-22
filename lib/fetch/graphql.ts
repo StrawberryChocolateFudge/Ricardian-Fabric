@@ -4,8 +4,8 @@ import { Options, Status } from '../types';
 const ARWEAVEAPI = "https://arweave.net/graphql";
 
 
-export async function getOwnerFromTxId(txId: string): Promise<Options> {
-    const options: Options = { status: Status.Success, error: "", data: "" };
+export async function getOwnerFromTxId(txId: string): Promise<Options<string>> {
+    const options: Options<string> = { status: Status.Success, error: "", data: "" };
 
     const query = `query {
     transaction(id: "${txId}") {
