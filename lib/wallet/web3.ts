@@ -26,7 +26,6 @@ export async function watchAsset(erc20Params: ERC20Params, onError: any) {
           address: erc20Params.address,
           symbol: erc20Params.symbol,
           decimals: erc20Params.decimals,
-          image: erc20Params.image,
         },
       },
     })
@@ -218,8 +217,8 @@ export async function setTerms(arg: {
   hash: string;
   contractAddress: string;
   signerAddress: string;
-}): Promise<Options> {
-  const options: Options = {
+}): Promise<Options<any>> {
+  const options: Options<any> = {
     error: "",
     status: Status.Success,
     data: {},
@@ -252,8 +251,8 @@ export async function acceptAgreement(arg: {
   hash: string;
   contractAddress: string;
   signerAddress: string;
-}): Promise<Options> {
-  const options: Options = {
+}): Promise<Options<any>> {
+  const options: Options<any> = {
     error: "",
     status: Status.Success,
     data: {},
