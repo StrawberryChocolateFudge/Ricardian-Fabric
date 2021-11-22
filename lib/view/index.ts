@@ -65,6 +65,7 @@ import {
   renderVerificationState,
   renderCatalogDropdown,
   renderCreateProposalPage,
+  renderAccordionOpener,
 } from "./render";
 import { renderAcceptTools } from "./render";
 import { areYouSureButtons } from "../business/actions/areYouSureButtons";
@@ -132,6 +133,7 @@ const Render: Renderer = {
     addCatalogButtonListener(props);
     handleDropdownClosing();
     verifyContractPopupTrigger();
+    renderAccordionOpener();
   },
   [RenderType.acceptButton]: (props: State) => {
     renderAcceptTools(props);
