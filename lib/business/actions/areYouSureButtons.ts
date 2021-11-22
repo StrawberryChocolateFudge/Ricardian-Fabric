@@ -52,8 +52,19 @@ export function areYouSureButtons(props: State) {
       await smartContractActions(props, url, smartContract);
     }
 
+    if (props.contracttype === ContractTypes.acceptable) {
+      if (props.isERC20 !== null) {
+        await watchAsset(props.isERC20, () => {
+          dispatch_renderError(
+            "Failed to add " + props.isERC20.name + " token to wallet."
+          );
+        });
+      }
+    }
   };
 }
+
+
 
 async function smartContractActions(
   props: State,
@@ -86,13 +97,6 @@ async function smartContractActions(
       dispatch_renderError(options.error);
     }
 
-    if (props.isERC20.name !== undefined) {
-      await watchAsset(props.isERC20, () => {
-        dispatch_renderError(
-          "Failed to add " + props.isERC20.name + " token to wallet."
-        );
-      });
-    }
 
     return options;
   }
