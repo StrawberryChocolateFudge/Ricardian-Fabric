@@ -1,4 +1,4 @@
-import { BlockCountry, Options, Status } from "../types";
+import { BlockCountry, ERC20Params, Options, Status } from "../types";
 
 export function getById(id: string): HTMLElement {
   const el = document.getElementById(id);
@@ -44,7 +44,7 @@ export function getRedirectTo() {
   }
 }
 
-export function getSmartContract() {
+export function getSmartContract(): string | "NONE" {
   const smartContract = getById("smartcontract-input") as HTMLInputElement;
   if (smartContract.value === "") {
     return "NONE";
@@ -53,6 +53,9 @@ export function getSmartContract() {
   }
 }
 
+export function getERCSmartContractElement(): HTMLInputElement {
+  return getById("erc20-address") as HTMLInputElement;
+}
 export function getOnlySigner() {
   const onlySigner = getById("onlysigner-input") as HTMLInputElement;
   if (onlySigner.value === "") {
@@ -90,8 +93,8 @@ export function getBlockedCountries() {
   return blockedCountries;
 }
 
-export function getBlockedAddresses(): Options {
-  const result: Options = { status: Status.Success, data: "", error: "" };
+export function getBlockedAddresses(): Options<string[]> {
+  const result: Options<string[]> = { status: Status.Success, data: [], error: "" };
   const blockkedAddressesEl = getById("blocked-addresses") as HTMLInputElement;
   const blockedAddresses = blockkedAddressesEl.value;
 
@@ -210,6 +213,10 @@ export function getTermsCheckbox(): HTMLInputElement {
   return getById("terms-checkbox") as HTMLInputElement;
 }
 
+export function getSameAsAboveButton(): HTMLButtonElement {
+  return getById("same-contract-button") as HTMLButtonElement;
+}
+
 export function changeContainerSlotStyle(to: boolean) {
   const container = getById("action-container");
 
@@ -253,13 +260,60 @@ export function getKeyFromFile(fileEvent: ProgressEvent) {
   }
 }
 
-export async function readSolcFile(file: File) :Promise<string> {
-  return new Promise((resolve,reject) =>{
+export async function readSolcFile(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
     const fr = new FileReader();
     fr.onerror = reject;
-    fr.onload = function(){
+    fr.onload = function () {
       resolve(fr.result as string);
     }
-    fr.readAsText(file,"UTF-8");
+    fr.readAsText(file, "UTF-8");
   })
+}
+
+export function getERC20Params(): Options<ERC20Params | string> {
+  const addToWallet = getById("add-erc20-checkbox") as HTMLInputElement;
+  const nameEl = getById("erc20-name") as HTMLInputElement;
+  const symbolEl = getById("erc20-symbol") as HTMLInputElement;
+  const decimalsEl = getById("erc20-decimals") as HTMLInputElement;
+  const addressEl = getById("erc20-address") as HTMLInputElement;
+  const options: Options<ERC20Params | string> = {
+    error: "",
+    data: null,
+    status: Status.Success
+  }
+  if (addToWallet.checked) {
+    try {
+      const name = nameEl.value;
+      const symbol = symbolEl.value;
+      const address = addressEl.value;
+      const decimals = parseInt(decimalsEl.value);
+
+      if (name.length === 0) {
+        throw new Error("Invalid ERC20 name")
+      }
+
+      if (symbol.length === 0) {
+        throw new Error("Invalid ERC20 symbol")
+      }
+      if (isNaN(decimals)) {
+        throw new Error("Invalid ERC20 decimals")
+      }
+      if (address.length === 0) {
+        throw new Error("Invalid  ERC20 address")
+      }
+
+      options.data = {
+        name,
+        symbol,
+        address,
+        decimals,
+      };
+    } catch (err) {
+      options.status = Status.Failure;
+      options.error = err.message;
+    }
+  }
+
+  return options;
 }
