@@ -198,8 +198,7 @@ export enum WalletDropperType {
 }
 
 export enum SelectedWallet {
-  metamask = "metamask",
-  arconnect = "arconnect",
+  metamask = "metamask"
 }
 
 export type StashedDetails = {
@@ -221,7 +220,6 @@ export type ERC20Params = {
   symbol: string;
   address: string;
   decimals: number;
-  image: string;
 };
 
 export type NetworkType = "Mainnet" | "Testnet";
@@ -306,7 +304,6 @@ export type AcceptablePageProps = {
   issuerSignature: string;
   smartContract: string;
   ERC20: string;
-  selectedWallet: SelectedWallet;
 };
 
 export type FulfilledPageProps = {
@@ -324,7 +321,8 @@ export type FulfilledPageProps = {
   participantSignature: string;
   smartContract: string;
   ERC20: string;
-  selectedWallet: SelectedWallet;
+  blockedCountries: BlockCountry[];
+  blockedAddresses: string[];
 };
 
 export enum Status {
@@ -346,14 +344,16 @@ export type IssuerHashedData = {
   version: string;
   issuer: string;
   blockedCountries: BlockCountry[];
+  blockedAddresses: string[];
   network: string;
   smartContract: string;
+  ERC20: string;
 };
 
-export type Options = {
+export type Options<T> = {
   status: Status;
   error: any;
-  data: any;
+  data: T;
 };
 
 export type Tags = {
