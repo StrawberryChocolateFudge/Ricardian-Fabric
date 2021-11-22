@@ -101,6 +101,65 @@
           <span id="smartcontract-tooltip"></span>
         </td>
       </tr>
+      <tr>
+        <td>
+          <label aria-labelledby="ERC20 details" for="erc20configurationButton">ERC20:</label>
+        </td>
+        <td><button id="erc20configurationButton" class="accordion">Wallet Configuration</button>
+          <div class="panel">
+            <table>
+              <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+              </tr>
+              <tr>
+                <td><label aria-labelledby="add ERC20 to wallet?" for="add-erc20-checkbox">Add ERC20 to wallet?</label>
+                </td>
+                <td><input id="add-erc20-checkbox" type="checkbox" /></td>
+                <td><span id="add-erc20-checkbox-tooltip"></span></td>
+              </tr>
+              <tr>
+                <td>
+                  <label aria-labelledby="ERC20 name" for="erc20-name">Name</label>
+                </td>
+                <td><input id="erc20-name" type="text" aria-label="erc20 name input" placeholder="..." /></td>
+                <td><span id="erc20-name-tooltip"></span></td>
+              </tr>
+              <tr>
+                <td>
+                  <label aria-labelledby="ERC20 symbol" for="erc20-symbol">Symbol</label>
+                </td>
+                <td><input id="erc20-symbol" aria-label="erc20 symbol" placeholder="..." type="text" /></td>
+                <td><span id="erc20-symbol-tooltip"></span></td>
+              </tr>
+              <tr>
+                <td>
+                  <label for="erc20-decimals" aria-labelledby="ERC20 decimals">Decimals</label>
+                </td>
+                <td><input aria-label="erc20 decimal input" placeholder="18" id="erc20-decimals" type="number" /></td>
+                <td><span id="erc20-decimal-tooltip"></span></td>
+              </tr>
+              <tr>
+                <td>
+                  <label for="erc20-address" aria-labelledby="ERC20 address">Contract address</label>
+                </td>
+                <td><input aria-label="erc20 contract address input" placeholder="0x" id="erc20-address" type="text" />
+                  <button aria-label="address is same as the above specified" name="same" class="backButton"
+                    id="same-contract-button">
+                    Same as above
+                  </button>
+                </td>
+                <td><span id="erc20-address-tooltip"></span></td>
+              </tr>
+            </table>
+            <hr />
+          </div>
+        </td>
+        <td>
+          <span id="erc20-tooltip"></span>
+        </td>
+      </tr>
     </table>
     <hr />
     <div class="center marginBottom-10">
