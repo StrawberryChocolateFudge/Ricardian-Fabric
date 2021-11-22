@@ -1,10 +1,10 @@
 import Web3 from "web3";
-import { BlockCountry, IssuerHashedData, Options, Status } from "../types";
+import { IssuerHashedData, Options, Status } from "../types";
 
 export async function sha256(message) {
-  const web3 = new Web3(window.ethereum);
+  const web3 = new Web3();
   const encoded = web3.eth.abi.encodeParameters(["string"], [message]);
-  const hash = web3.utils.sha3(encoded);
+  const hash = Web3.utils.sha3(encoded);
   return hash;
 }
 
@@ -16,14 +16,10 @@ function concatStrings(data: Array<String>) {
   return res;
 }
 
-function getBlockCountryArrayStrings(block: BlockCountry[]): string {
-  let res = "";
-  block.forEach((b) => (res += b.toString()));
-  return res;
-}
 
 function orderStringsForHashing(data: IssuerHashedData) {
-  const blockedCountries = getBlockCountryArrayStrings(data.blockedCountries);
+  const blockedCountries = JSON.stringify(data.blockedCountries);
+  const blockedAddresses = JSON.stringify(data.blockedAddresses)
   return concatStrings([
     data.legalContract,
     data.createdDate,
@@ -32,8 +28,10 @@ function orderStringsForHashing(data: IssuerHashedData) {
     data.version,
     data.issuer,
     blockedCountries,
+    blockedAddresses,
     data.network,
     data.smartContract,
+    data.ERC20
   ]);
 }
 
@@ -113,8 +111,8 @@ export async function encryptWallet(file: any, passwd: string) {
 export async function decryptWallet(
   cipherbytes: ArrayBuffer,
   passwd: string
-): Promise<Options> {
-  const options: Options = { error: "", data: "", status: Status.Success };
+): Promise<Options<string>> {
+  const options: Options<string> = { error: "", data: "", status: Status.Success };
 
   const onError = (err) => {
     options.error = err;
