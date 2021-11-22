@@ -200,6 +200,12 @@ export function renderTooltips() {
   const redirectto = getById("redirectto-tooltip");
   const Scontract = getById("smartcontract-tooltip");
   const customNetwork = getById("customnetwork-tooltip");
+  const erc20Tooltip = getById("erc20-tooltip");
+  const adderc20Tooltip = getById("add-erc20-checkbox-tooltip");
+  const erc20NameTooltip = getById("erc20-name-tooltip");
+  const erc20SymbolTooltip = getById("erc20-symbol-tooltip");
+  const erc20DecimalTooltip = getById("erc20-decimal-tooltip");
+  const erc20Address = getById("erc20-address-tooltip");
   render(
     helperTooltips(
       "Ricardian Fabric uses Geolocation to block access from sanctioned countries."
@@ -229,9 +235,21 @@ export function renderTooltips() {
     helperTooltips("A comma separated list of addresses to block."),
     blockedAddresses
   );
+  render(helperTooltips("Check this to add an ERC20 to the signer's wallet with the below config."), adderc20Tooltip);
+  render(helperTooltips("The contract will configure the wallet to this when it's accepted."), erc20Tooltip)
+  render(helperTooltips("The token name"), erc20NameTooltip);
+  render(helperTooltips("The token symbol"), erc20SymbolTooltip);
+  render(helperTooltips("Token decimals"), erc20DecimalTooltip);
+  render(helperTooltips("Token contract address"), erc20Address);
 }
 
 export function disableCreateInputs() {
+
+  const disable = (el: HTMLInputElement | HTMLButtonElement) => {
+    el.disabled = true;
+    el.style.cursor = "not-allowed"
+  }
+
   const editor = getById("editor") as HTMLInputElement;
   const expires = getById("expires-input") as HTMLInputElement;
   const never = getById("expires-reset") as HTMLInputElement;
@@ -256,49 +274,54 @@ export function disableCreateInputs() {
 
   const blockedAddresses = getById("blocked-addresses") as HTMLInputElement;
 
-  blockedAddresses.disabled = true;
-  blockedAddresses.style.cursor = "not-allowed";
+  const erc20Checkbox = getById("add-erc20-checkbox") as HTMLInputElement;
+  const erc20Name = getById("erc20-name") as HTMLInputElement;
+  const erc20Symbol = getById("erc20-symbol") as HTMLInputElement;
+  const erc20Decimals = getById("erc20-decimals") as HTMLInputElement;
+  const erc20SmartContract = getById("erc20-address") as HTMLInputElement;
+  const sameButton = getById("same-contract-button") as HTMLButtonElement;
+  disable(erc20Checkbox);
+  disable(erc20Name);
+  disable(erc20Symbol);
+  disable(erc20Decimals);
+  disable(erc20SmartContract);
+  disable(blockedAddresses);
+  disable(sameButton);
 
   metamask.dataset.disabled = "true";
   metamask.style.cursor = "not-allowed";
 
-  switchNetwork.disabled = true;
-  switchNetwork.style.cursor = "not-allowed";
+  disable(switchNetwork);
+
   switchNetworkLabel.style.cursor = "not-allowed";
   switchNetworkLabel.style.backgroundColor = "white";
 
-  catalogToggle.disabled = true;
-  catalogToggle.style.cursor = "not-allowed";
+  disable(catalogToggle);
+
   catalogLabel.style.cursor = "not-allowed";
   catalogLabel.style.backgroundColor = "white";
-
-  editor.contentEditable = "false";
-  editor.style.cursor = "not-allowed";
-
-  sanctions.disabled = true;
-
-  sanctions.style.cursor = "not-allowed";
+  disable(editor);
+  disable(sanctions);
   sanctionsLabel.style.cursor = "not-allowed";
   sanctionsLabel.style.backgroundColor = "white";
-
-  expires.disabled = true;
-  expires.style.cursor = "not-allowed";
-  never.disabled = true;
-  never.style.cursor = "not-allowed";
-  redirectto.disabled = true;
-  redirectto.style.cursor = "not-allowed";
-
-  termsCheckbox.disabled = true;
-  termsCheckbox.style.cursor = "not-allowed";
+  disable(expires);
+  disable(never);
+  disable(redirectto);
+  disable(termsCheckbox);
   termsCheckboxLabel.style.backgroundColor = "white";
-
-  docxDropper.disabled = true;
-  docxDropper.style.cursor = "not-allowed";
-
-  smartContract.disabled = true;
-  smartContract.style.cursor = "not-allowed";
+  disable(docxDropper);
+  disable(smartContract);
 }
 export function enableCreateInputs() {
+  enum Cursor {
+    pointer = "pointer",
+    auto = "auto"
+  }
+  const enable = (inp: HTMLInputElement | HTMLButtonElement, cursor: Cursor) => {
+    inp.style.cursor = cursor;
+    inp.disabled = false;
+  }
+
   const editor = getById("editor") as HTMLInputElement;
   const expires = getById("expires-input") as HTMLInputElement;
   const never = getById("expires-reset") as HTMLInputElement;
@@ -322,46 +345,52 @@ export function enableCreateInputs() {
   const catalogToggle = getById("catalog_checkbox_toggle") as HTMLInputElement;
   const catalogLabel = getById("catalog_checkbox_label") as HTMLInputElement;
 
-  blockedAddresses.disabled = false;
-  blockedAddresses.style.cursor = "pointer";
+  const erc20Checkbox = getById("add-erc20-checkbox") as HTMLInputElement;
+  const erc20Name = getById("erc20-name") as HTMLInputElement;
+  const erc20Symbol = getById("erc20-symbol") as HTMLInputElement;
+  const erc20Decimals = getById("erc20-decimals") as HTMLInputElement;
+  const erc20SmartContract = getById("erc20-address") as HTMLInputElement;
+  const sameButton = getById("same-contract-button") as HTMLButtonElement;
+  enable(erc20Checkbox, Cursor.pointer);
+  enable(erc20Name, Cursor.pointer);
+  enable(erc20Symbol, Cursor.pointer);
+  enable(erc20Decimals, Cursor.pointer);
+  enable(erc20SmartContract, Cursor.pointer);
+  enable(blockedAddresses, Cursor.pointer);
+  enable(sameButton, Cursor.pointer);
 
   metamask.dataset.disabled = "false";
   metamask.style.cursor = "pointer";
 
-  switchNetwork.disabled = false;
-  switchNetwork.style.cursor = "pointer";
+  enable(switchNetwork, Cursor.pointer);
 
   switchNetworkLabel.style.cursor = "pointer";
   switchNetworkLabel.style.backgroundColor = "#f2f2f2";
 
-  sanctions.disabled = false;
-  sanctions.style.cursor = "pointer";
+  enable(sanctions, Cursor.pointer);
+
   sanctionsLabel.style.cursor = "pointer";
   sanctionsLabel.style.backgroundColor = "#f2f2f2";
 
-  catalogToggle.disabled = false;
-  catalogToggle.style.cursor = "pointer";
+  enable(catalogToggle, Cursor.pointer);
+
   catalogLabel.style.cursor = "pointer";
   catalogLabel.style.backgroundColor = "#f2f2f2";
 
   editor.contentEditable = "true";
   editor.style.cursor = "text";
-  expires.disabled = false;
-  expires.style.cursor = "pointer";
-  never.disabled = false;
-  never.style.cursor = "pointer";
-  redirectto.disabled = false;
-  redirectto.style.cursor = "auto";
 
-  termsCheckbox.disabled = false;
-  termsCheckbox.style.cursor = "pointer";
+  enable(expires, Cursor.pointer);
+
+  enable(never, Cursor.pointer);
+  enable(redirectto, Cursor.auto);
+
+  enable(termsCheckbox, Cursor.pointer);
+
   termsCheckboxLabel.style.backgroundColor = "#f2f2f2";
 
-  docxDropper.disabled = false;
-  docxDropper.style.cursor = "pointer";
-
-  smartContract.disabled = false;
-  smartContract.style.cursor = "auto";
+  enable(docxDropper, Cursor.pointer);
+  enable(smartContract, Cursor.auto);
 }
 
 export function renderButtonSlotAlignment(center: boolean) {
@@ -495,7 +524,6 @@ export function setDeployedSCAddressToDOM(address: string) {
 
 export function renderSelectedWallet(selectedWallet: SelectedWallet) {
   const metamask = getById("metamask-logo-container");
-  const arconnect = getById("arweave-logo-container");
   const selectNetwork = getById("network_checkbox_label");
   const permaweb = getById("permaweb_checkbox_label");
 
@@ -504,12 +532,6 @@ export function renderSelectedWallet(selectedWallet: SelectedWallet) {
 
   if (selectedWallet === SelectedWallet.metamask) {
     metamask.classList.add("lightBlue-shadow");
-    arconnect.classList.remove("lightCoral-shadow");
-    arconnect.classList.add("light-shadow");
-  } else if (selectedWallet === SelectedWallet.arconnect) {
-    metamask.classList.remove("lightBlue-shadow");
-    metamask.classList.add("light-shadow");
-    arconnect.classList.add("lightCoral-shadow");
   }
 }
 
@@ -631,4 +653,20 @@ export function renderCreateProposalPage(props: State) {
   setBannerDisplayBlock();
   const layout = getById("overlay-layout");
   render(createProposalPopup(), layout);
+}
+
+export function renderAccordionOpener() {
+  const acc = document.getElementsByClassName("accordion");
+
+  for (let i = 0; i < acc.length; i++) {
+    acc[i].addEventListener("click", function () {
+      this.classList.toggle("active");
+      var panel = this.nextElementSibling;
+      if (panel.style.display === "block") {
+        panel.style.display = "none";
+      } else {
+        panel.style.display = "block";
+      }
+    });
+  }
 }
