@@ -21,6 +21,9 @@ export const acceptTools = (props: State) => {
         border: none;
         cursor: pointer;
       }
+      #accept-button:hover{
+        transform: scale(1.01);
+      }
     </style>
     ${expired
       ? html`
@@ -46,8 +49,8 @@ export const acceptTools = (props: State) => {
 export const AcceptButton = (positionNeeded: boolean) => {
   const labelEl = positionNeeded
     ? html`<div class="accept-button-label">
-        This contract is not available in all countries.
-      </div>`
+  This contract is not available in all countries.
+</div>`
     : "";
   const buttonText = positionNeeded ? "Add location" : "Accept";
   return html`
