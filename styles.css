@@ -5,24 +5,20 @@ body {
   background: radial-gradient(lightgrey 3px, transparent 4px),
     radial-gradient(lightgrey 3px, transparent 4px),
     linear-gradient(#fff 4px, transparent 0),
-    linear-gradient(
-      45deg,
+    linear-gradient(45deg,
       transparent 74px,
       transparent 75px,
       #a4a4a4 75px,
       #a4a4a4 76px,
       transparent 77px,
-      transparent 109px
-    ),
-    linear-gradient(
-      -45deg,
+      transparent 109px),
+    linear-gradient(-45deg,
       transparent 75px,
       transparent 76px,
       #a4a4a4 76px,
       #a4a4a4 77px,
       transparent 78px,
-      transparent 109px
-    ),
+      transparent 109px),
     #fff;
   background-size: 109px 109px, 109px 109px, 100% 6px, 109px 109px, 109px 109px;
   background-position: 54px 55px, 0px 0px, 0px 0px, 0px 0px, 0px 0px;
@@ -94,7 +90,7 @@ input[type="file"] {
   color: black !important;
 }
 
-#sanctions_checkbox_toggle:checked ~ ul {
+#sanctions_checkbox_toggle:checked~ul {
   display: block;
   list-style-type: none;
   list-style: none;
@@ -106,12 +102,16 @@ input[type="file"] {
   box-shadow: 1px 1px 1px 1px darkgrey;
 }
 
-#sanctions_checkbox_toggle ~ ul {
+#sanctions_checkbox_toggle~ul {
   display: none;
 }
 
 #sanctions_checkbox_label {
   cursor: pointer;
+}
+
+#sanctions_checkbox_label:hover {
+  background-color: #ccc;
 }
 
 .sanctions-span {
@@ -123,10 +123,14 @@ input[type="file"] {
 label {
   font-size: 0.8rem;
   color: grey;
-  -webkit-user-select: none; /* Safari */
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* IE10+/Edge */
-  user-select: none; /* Standard */
+  -webkit-user-select: none;
+  /* Safari */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* IE10+/Edge */
+  user-select: none;
+  /* Standard */
 }
 
 hr {
@@ -146,7 +150,11 @@ hr {
   color: black !important;
 }
 
-.dropdown_checkbox_toggle:checked ~ ul {
+.dropdown_checkbox_label:hover {
+  background-color: #ccc;
+}
+
+.dropdown_checkbox_toggle:checked~ul {
   display: block;
   list-style-type: none;
   list-style: none;
@@ -159,7 +167,7 @@ hr {
   z-index: 1;
 }
 
-.dropdown_checkbox_toggle ~ ul {
+.dropdown_checkbox_toggle~ul {
   display: none;
 }
 
@@ -248,6 +256,11 @@ hr {
   padding-right: 20px;
 }
 
+#save-contract:hover {
+  transform: scale(1.01);
+}
+
+
 #overlay {
   position: fixed;
   display: none;
@@ -310,6 +323,7 @@ hr {
 .lightBlue-shadow {
   box-shadow: rgb(104, 202, 235) 0px 5px 15px !important;
 }
+
 .lightCoral-shadow {
   box-shadow: rgb(240, 166, 166) 0px 5px 15px !important;
 }
@@ -332,6 +346,7 @@ hr {
 #network-dropdown {
   align-self: center;
 }
+
 #permaweb-dropdown {
   align-self: center;
 }
@@ -359,9 +374,11 @@ hr {
   border: 4px dashed #cccccc;
   border-radius: 10px;
 }
+
 .drop-zone--over {
   border-style: solid;
 }
+
 .drop-zone__input {
   display: none;
 }
@@ -383,12 +400,17 @@ hr {
   background-color: white;
   color: white;
 }
+
 #expires-reset {
   border-radius: 20px;
   border: none;
   cursor: pointer;
   background-color: #f2f2f2;
   color: black;
+}
+
+#expires-reset:hover {
+  background-color: #ccc;
 }
 
 #deploy-sc-button {
@@ -408,6 +430,10 @@ hr {
   box-shadow: rgb(211, 211, 146) 0px 5px 15px !important;
 }
 
+#verify-contract-button:hover {
+  background-color: #ccc;
+}
+
 #import-docx-trigger {
   border-radius: 20px;
   border: none;
@@ -415,6 +441,10 @@ hr {
   background-color: #f2f2f2;
   color: black;
   box-shadow: lightgrey 0px 5px 15px !important;
+}
+
+#import-docx-trigger:hover {
+  background-color: #ccc;
 }
 
 .deploySCUL {
@@ -440,6 +470,11 @@ hr {
   color: black !important;
   border: none;
 }
+
+.backButton:hover {
+  background-color: #ccc;
+}
+
 .NextButton {
   cursor: pointer;
   background-color: black;
@@ -448,6 +483,11 @@ hr {
   color: white !important;
   border: none;
 }
+
+.NextButton:hover {
+  background-color: #ccc;
+}
+
 .NextButton :disabled {
   cursor: pointer;
   background-color: grey;
@@ -456,11 +496,13 @@ hr {
   color: white !important;
   border: none;
 }
+
 .SCIntent-button-row {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
 }
+
 .cursor-text {
   cursor: text;
 }
@@ -475,6 +517,10 @@ hr {
   border-radius: 20px;
   padding: 5px;
   color: black;
+}
+
+.terms-button-label:hover {
+  background-color: #ccc;
 }
 
 #terms-checkbox {
@@ -494,24 +540,60 @@ hr {
   height: 20px;
 }
 
+.accordion {
+  background-color: #eee;
+  color: #444;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  transition: 0.4s;
+}
+
+.active, .accordion:hover {
+  background-color: #ccc;
+}
+
+.panel {
+  padding: 0 18px;
+  display: none;
+  background-color: white;
+  overflow: hidden;
+  z-index: 5;
+}
+
 #error-display {
-  visibility: hidden; /* Hidden by default. Visible on click */
-  min-width: 250px; /* Set a default minimum width */
-  background-color: #333; /* Black background color */
-  color: #fff; /* White text color */
-  text-align: center; /* Centered text */
-  border-radius: 2px; /* Rounded borders */
+  visibility: hidden;
+  /* Hidden by default. Visible on click */
+  min-width: 250px;
+  /* Set a default minimum width */
+  background-color: #333;
+  /* Black background color */
+  color: #fff;
+  /* White text color */
+  text-align: center;
+  /* Centered text */
+  border-radius: 2px;
+  /* Rounded borders */
   padding-top: 16px;
   padding-bottom: 16px;
-  position: fixed; /* Sit on top of the screen */
-  z-index: 5; /* Add a z-index if needed */
-  left: 0; /*Center the snackbar */
-  bottom: 30px; /*30px from the bottom */
+  position: fixed;
+  /* Sit on top of the screen */
+  z-index: 5;
+  /* Add a z-index if needed */
+  left: 0;
+  /*Center the snackbar */
+  bottom: 30px;
+  /*30px from the bottom */
 }
 
 /* Show the snackbar when clicking on a button (class added with JavaScript) */
 #error-display.show {
-  visibility: visible; /* Show the snackbar */
+  visibility: visible;
+  /* Show the snackbar */
   /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
   However, delay the fade out process for 2.5 seconds */
   -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
@@ -524,6 +606,7 @@ hr {
     bottom: 0;
     opacity: 0;
   }
+
   to {
     bottom: 30px;
     opacity: 1;
@@ -535,6 +618,7 @@ hr {
     bottom: 0;
     opacity: 0;
   }
+
   to {
     bottom: 30px;
     opacity: 1;
@@ -546,6 +630,7 @@ hr {
     bottom: 30px;
     opacity: 1;
   }
+
   to {
     bottom: 0;
     opacity: 0;
@@ -557,6 +642,7 @@ hr {
     bottom: 30px;
     opacity: 1;
   }
+
   to {
     bottom: 0;
     opacity: 0;
