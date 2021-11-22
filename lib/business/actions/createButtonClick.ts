@@ -30,11 +30,24 @@ import {
   getSmartContract,
   getBlockedCountries,
   getBlockedAddresses,
+  getSameAsAboveButton,
+  getERCSmartContractElement,
+  getERC20Params,
 } from "../../view/utils";
 import MetaMaskOnboarding from "@metamask/onboarding";
 
 export function renderCreateButtonClick(props: State) {
   const termsCheckbox = getTermsCheckbox();
+  const sameButton = getSameAsAboveButton();
+
+  sameButton.onclick = function () {
+    const smartC = getSmartContract();
+    if (smartC !== "NONE") {
+      const ercSmartC = getERCSmartContractElement();
+      ercSmartC.value = smartC;
+    }
+  }
+
 
   termsCheckbox.onclick = function () {
     if (termsCheckbox.checked) {
@@ -100,6 +113,14 @@ export function renderCreateButtonClick(props: State) {
         return;
       }
     }
+    const ERC20ParamsOptions = getERC20Params();
+
+    if (ERC20ParamsOptions.status === Status.Failure) {
+      dispatch_renderError(ERC20ParamsOptions.error);
+      return;
+    }
+
+    const ERC20 = JSON.stringify(ERC20ParamsOptions.data);
 
     //I need to create the hash from legalContract,createdDate,expires,redirectto,version,issuer,onlysigner,network
     const hash = await getHash({
@@ -112,6 +133,8 @@ export function renderCreateButtonClick(props: State) {
       blockedCountries,
       network,
       smartContract,
+      blockedAddresses: blockedAddressOptions.data,
+      ERC20,
     });
 
     const signingSuccess = async (issuerSignature: string) => {
@@ -130,8 +153,7 @@ export function renderCreateButtonClick(props: State) {
           network,
           issuerSignature,
           smartContract,
-          ERC20: JSON.stringify(props.isERC20),
-          selectedWallet: props.selectedWallet,
+          ERC20,
         },
       });
 
