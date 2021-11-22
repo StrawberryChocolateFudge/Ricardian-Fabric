@@ -69,7 +69,7 @@ export async function isBlocked(props: State, acceptButton: HTMLElement) {
 function isCountryBlocked(
   record: GeoRecord,
   blockedCountries: BlockCountry[]
-): Options {
+): Options<boolean> {
   let result = false;
   //TODO: OFEC ONLY blocks Crimera Region of Ukraine.
   //TODO: NEED TO CHECK EU FOR UKRAINE
