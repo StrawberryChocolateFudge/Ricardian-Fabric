@@ -75,7 +75,7 @@ export function renderAcceptOnCLick(props: State) {
       }
     }
 
-    const hash = await getRecomputedHash();
+    const hash = await getRecomputedHash(props);
 
     const signingSuccess = async (participantSignature: string) => {
       const page = await getFulfilledPage({
@@ -93,7 +93,8 @@ export function renderAcceptOnCLick(props: State) {
         participantSignature: participantSignature,
         smartContract: props.smartcontract,
         ERC20: JSON.stringify(props.isERC20),
-        selectedWallet: props.selectedWallet,
+        blockedAddresses: props.blockedAddresses,
+        blockedCountries: props.blockedCountries
       });
 
       dispatch_stashDetails({
@@ -125,19 +126,19 @@ export function renderAcceptOnCLick(props: State) {
   };
 }
 
-async function getRecomputedHash() {
+async function getRecomputedHash(props: State) {
   const legalContract = getById("contract-display").innerHTML;
-  const page = getById("page");
-  const createdDate = page.dataset.created;
-  const expires = page.dataset.expires;
-  const redirectto = page.dataset.redirectto;
-  const version = page.dataset.version;
-  const issuer = page.dataset.issuer;
-  const blockedCountries = JSON.parse(
-    page.dataset.blockedcountries
-  ) as BlockCountry[];
-  const network = page.dataset.network;
-  const smartContract = page.dataset.smartcontract;
+
+  const createdDate = props.createdDate;
+  const expires = props.expires;
+  const redirectto = props.redirectto;
+  const version = props.version;
+  const issuer = props.issuer;
+  const blockedCountries = props.blockedCountries;
+  const blockedAddresses = props.blockedAddresses;
+  const network = props.network
+  const smartContract = props.smartcontract;
+  const ERC20 = JSON.stringify(props.isERC20);
   const recomputedHash = await getHash({
     legalContract,
     createdDate,
@@ -148,6 +149,8 @@ async function getRecomputedHash() {
     blockedCountries,
     network,
     smartContract,
+    blockedAddresses,
+    ERC20
   });
 
   return recomputedHash;
