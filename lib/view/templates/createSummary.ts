@@ -28,6 +28,10 @@ export const CreateSummary = (props: State) => {
         background: black;
         color: white;
       }
+      #yes-button:hover{
+       transform: scale(1.01);
+       background-color: #ccc;
+      }
 
       .details-container {
         display: flex;
