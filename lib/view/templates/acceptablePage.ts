@@ -329,7 +329,6 @@ const acceptablePage = (props: AcceptablePageProps) => html`
     data-issuersignature="${props.issuerSignature}"
     data-smartcontract="${props.smartContract}"
     data-erc20="${props.ERC20}"
-    data-selectedwallet=${props.selectedWallet}
     id="page"
   >
     <div id="contract-display"></div>
