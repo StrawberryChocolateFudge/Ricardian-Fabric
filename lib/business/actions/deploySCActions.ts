@@ -115,13 +115,9 @@ export function constructSCActions(selected: DeploySC) {
     };
 
     const onReceipt = async (receipt) => {
-      const erc20Params = getERC20Params(
-        constructorElements,
-        receipt.contractAddress,
-        logoUrl.value
-      );
+
       dispatch_setDeployedSCAddress(receipt.contractAddress);
-      dispatch_setERC20(erc20Params);
+
       dispatch_setPopupState(PopupState.NONE);
     };
 
@@ -160,13 +156,3 @@ export function prepareArguments(constructorElements, params) {
   return preparedArgs;
 }
 
-function getERC20Params(constructorElements, contractAddress, imageUrl) {
-  const erc20: ERC20Params = {
-    name: constructorElements["tokenName"].el.value,
-    symbol: constructorElements["tokenSymbol"].el.value,
-    address: contractAddress,
-    decimals: constructorElements["_decimals"].el.value,
-    image: imageUrl,
-  };
-  return erc20;
-}
