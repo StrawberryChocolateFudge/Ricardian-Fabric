@@ -54,6 +54,13 @@ import {
   VerifySuccess,
 } from "./templates/popups/verifyContract";
 import { CatalogDropdown } from "./templates/dropdowns/catalogdropdown";
+import { CreatePage } from "./templates/createPage";
+
+
+export function renderCreatePage() {
+  const page = getById("page");
+  render(CreatePage(), page);
+}
 
 export function renderAcceptTools(props: State) {
   const actionContainer = getById("action-container");
@@ -247,7 +254,7 @@ export function disableCreateInputs() {
 
   const disable = (el: HTMLInputElement | HTMLButtonElement) => {
     el.disabled = true;
-    el.style.cursor = "not-allowed"
+    el.style.cursor = "not-allowed !important"
   }
 
   const editor = getById("editor") as HTMLInputElement;
@@ -265,10 +272,10 @@ export function disableCreateInputs() {
   const switchNetwork = getById("network_checkbox_toggle") as HTMLInputElement;
   const switchNetworkLabel = getById(
     "network_checkbox_label"
-  ) as HTMLInputElement;
+  ) as HTMLLabelElement;
 
   const catalogToggle = getById("catalog_checkbox_toggle") as HTMLInputElement;
-  const catalogLabel = getById("catalog_checkbox_label") as HTMLInputElement;
+  const catalogLabel = getById("catalog_checkbox_label") as HTMLLabelElement;
 
   const metamask = getById("metamask-logo-container");
 
@@ -297,9 +304,10 @@ export function disableCreateInputs() {
   switchNetworkLabel.style.backgroundColor = "white";
 
   disable(catalogToggle);
-
+  
   catalogLabel.style.cursor = "not-allowed";
   catalogLabel.style.backgroundColor = "white";
+
   disable(editor);
   disable(sanctions);
   sanctionsLabel.style.cursor = "not-allowed";
