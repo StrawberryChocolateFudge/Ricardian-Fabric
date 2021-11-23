@@ -1,5 +1,6 @@
 import { html } from "lit-html";
 import { ContractTypes, State } from "../../types";
+import { BackLogo } from "./components/logos";
 
 export const CreateSummary = (props: State) => {
   const centerText =
@@ -54,7 +55,7 @@ export const CreateSummary = (props: State) => {
     <div class="details-container">
 
       <div class="button-row">
-        <button id="no-button" class="width-100">No</button>
+        <button id="no-button" class="width-100">${BackLogo()} No</button>
         <button class="width-100" id="yes-button">Yes</button>
       </div>
     </div>
