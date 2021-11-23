@@ -1,5 +1,6 @@
 import { html } from "lit-html";
 import { ContractTypes, State } from "../../../types";
+import { EditAgainLogo } from "./logos";
 
 export const transactionUrl = (props: State, url: string) => {
   return html`
@@ -11,7 +12,6 @@ export const transactionUrl = (props: State, url: string) => {
       }
 
       .permapin-button {
-        box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
         border-radius: 20px;
         border: none;
         cursor: pointer;
@@ -63,7 +63,7 @@ export const transactionUrl = (props: State, url: string) => {
       ? html`
               <hr />
               <button class="deploy-again" id="deploy-again-button">
-                Edit page again
+                ${EditAgainLogo()}Edit page again
               </button>
             `
       : null}
