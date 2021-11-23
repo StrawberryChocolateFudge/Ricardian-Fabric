@@ -1,8 +1,14 @@
 import { html } from "lit-html";
 import { TIP, WinstonToAr } from "../../../wallet/arweave";
 import { helperTooltips } from "../components/helperTooltips";
+import { BackLogo, pinLogoWhite } from "../components/logos";
 
 export const PermapinPopup = () => html`
+<style>
+  #permapin-proceed{
+    padding-right: 10px;
+  }
+</style>
   <h2>Permapin a Contract</h2>
   <small>You can permapin the IPFS content on Arweave to store it forever.</small>
   <small>Only content created with Ricardian Fabric is allowed.</small>
@@ -30,12 +36,12 @@ export const PermapinPopup = () => html`
         <td>${helperTooltips("The password of the key file")}</td>
       </tr>
       <!-- <tr>
-          <td><label for="tipcheckbox">Send a tip:</label></td>
-          <td>
-            <input id="tipcheckbox" type="checkbox" checked />
-          </td>
-          <td>${helperTooltips(`Support us by sending a tip. ${TIP} Ar`)}</td>
-        </tr> -->
+                            <td><label for="tipcheckbox">Send a tip:</label></td>
+                            <td>
+                              <input id="tipcheckbox" type="checkbox" checked />
+                            </td>
+                            <td>${helperTooltips(`Support us by sending a tip. ${TIP} Ar`)}</td>
+                          </tr> -->
       <tr>
         <td>
           <label id="terms-button" class="terms-button-label">I accept the terms.</label>
@@ -46,8 +52,8 @@ export const PermapinPopup = () => html`
   </table>
   <hr />
   <div class="wide-row">
-    <button class="backButton" id="permapin-back">back</button>
-    <button class="NextButton" id="permapin-proceed">Pin!</button>
+    <button class="backButton" id="permapin-back">${BackLogo()} Back</button>
+    <button class="NextButton" id="permapin-proceed">${pinLogoWhite()} <strong>PIN!</strong></button>
   </div>
   <hr />
 `;
@@ -85,7 +91,7 @@ export const PermapinSummaryPage = (arg: {
 </table>
 <div id="transaction-loading"></div>
 <div class="wide-row">
-  <button class="backButton" id="permapinPost-back">Back</button>
+  <button class="backButton" id="permapinPost-back">${BackLogo()} Back</button>
   <button class="NextButton" id="permapinPost-proceed">
     Post Transaction
   </button>

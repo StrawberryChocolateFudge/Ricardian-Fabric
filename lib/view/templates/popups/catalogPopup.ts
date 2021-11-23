@@ -1,5 +1,6 @@
 import { html } from "lit-html";
 import { helperTooltips } from "../components/helperTooltips";
+import { BackLogo } from "../components/logos";
 
 export function deploySCIntentPopup() {
   return html` <style></style>
@@ -173,7 +174,7 @@ export function createProposalPopup() {
       </tbody>
     </table>
     <div class="row">
-      <button class="backButton" id="createproposal-back">Back</button>
+      <button class="backButton" id="createproposal-back">${BackLogo()} Back</button>
       <hr />
       <button class="NextButton" id="createproposal-proceed">Next</button>
     </div>

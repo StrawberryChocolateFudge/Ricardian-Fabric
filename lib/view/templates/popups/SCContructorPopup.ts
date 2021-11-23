@@ -2,7 +2,7 @@ import { html } from "lit-html";
 import { DeploySC } from "../../../types";
 import { findConstructorParameters } from "../../../wallet/web3";
 import { getHRC20Abi } from "../../../wallet/abi/HRC20";
-import { helperTooltips } from "../components/helperTooltips";
+import { BackLogo } from "../components/logos";
 
 export function SCConstructorPopup(selected: DeploySC) {
   let constructorParams;
@@ -52,19 +52,14 @@ export function SCConstructorPopup(selected: DeploySC) {
 
   const list = constructorParams.map((params) => {
     return html`<tr>
-      <td>
-        <label for="${params.name}-input"
-          >${params.name} (${params.type})</label
-        >
-      </td>
-      <td>
-        <input
-          id="${params.name}-input"
-          type="${getTypeFromType(params.type)}"
-        />
-      </td>
-      <td></td>
-    </tr>`;
+  <td>
+    <label for="${params.name}-input">${params.name} (${params.type})</label>
+  </td>
+  <td>
+    <input id="${params.name}-input" type="${getTypeFromType(params.type)}" />
+  </td>
+  <td></td>
+</tr>`;
   });
 
   return html`
@@ -82,21 +77,15 @@ export function SCConstructorPopup(selected: DeploySC) {
         ${list}
       </tbody>
     </table>
-    <small
-      >Make sure you enter the correct details.This is non-reversible.</small
-    >
+    <small>Make sure you enter the correct details.This is non-reversible.</small>
     <hr />
     <div class="row">
       <label for="agree-to-deploy-sc">I agree to the terms.</label>
-      <input
-        id="agree-to-deploy-sc"
-        aria-label="Agree to deploy checkbox"
-        type="checkbox"
-      />
+      <input id="agree-to-deploy-sc" aria-label="Agree to deploy checkbox" type="checkbox" />
     </div>
     <hr />
     <div>
-      <button id="SCConstructBackButton" class="backButton">Cancel</button>
+      <button id="SCConstructBackButton" class="backButton">${BackLogo()} Cancel</button>
       <button id="SCConstructCreateButton" class="NextButton">
         Create contract!
       </button>

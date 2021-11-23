@@ -1,5 +1,6 @@
 import { html } from "lit-html";
 import { helperTooltips } from "../components/helperTooltips";
+import { BackLogo } from "../components/logos";
 
 export const VerifyContract = () => {
   return html`<h2>Verify a contract</h2>
@@ -33,7 +34,7 @@ export const VerifyContract = () => {
       <p>Add a url and click verify to proceed with the verification.</p>
     </div>
     <div class="wide-row">
-      <button class="backButton" id="verify-back">back</button>
+      <button class="backButton" id="verify-back">${BackLogo()} back</button>
       <button class="NextButton" id="verify-proceed">Verify!</button>
     </div>
     <hr />`;
