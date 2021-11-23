@@ -66,6 +66,7 @@ import {
   renderCatalogDropdown,
   renderCreateProposalPage,
   renderAccordionOpener,
+  renderCreatePage,
 } from "./render";
 import { renderAcceptTools } from "./render";
 import { areYouSureButtons } from "../business/actions/areYouSureButtons";
@@ -114,6 +115,7 @@ const Render: Renderer = {
   [RenderType.errorMessage]: (props: State) => { },
   [RenderType.createPage]: (props: State) => { },
   [RenderType.createButton]: (props: State) => {
+    renderCreatePage();
     renderButtonSlotAlignment(true);
     createPageAgreeTerms();
     renderSelectedWallet(props.selectedWallet);
