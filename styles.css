@@ -671,8 +671,11 @@ hr {
   height: 20vh;
   overflow: hidden;
   -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
   -webkit-perspective: 1000;
+  perspective: 1000;
   -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
 }
 
 .FabricText {
