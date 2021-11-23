@@ -388,10 +388,16 @@ hr {
   display: none;
 }
 
+#erc20-table {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
 #input-table {
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
-  /* width: 100%; */
+  width: 100%;
 }
 
 #input-table tr {
