@@ -17,9 +17,9 @@ function concatStrings(data: Array<String>) {
 }
 
 
-function orderStringsForHashing(data: IssuerHashedData) {
+function orderStringsForHashing(data: IssuerHashedData): string {
   const blockedCountries = JSON.stringify(data.blockedCountries);
-  const blockedAddresses = JSON.stringify(data.blockedAddresses)
+  const blockedAddresses = JSON.stringify(data.blockedAddresses);
   return concatStrings([
     data.legalContract,
     data.createdDate,
@@ -33,6 +33,7 @@ function orderStringsForHashing(data: IssuerHashedData) {
     data.smartContract,
     data.ERC20
   ]);
+
 }
 
 export async function getHash(data: IssuerHashedData) {
