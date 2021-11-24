@@ -2,9 +2,9 @@ import { DeploySC, RenderType, State, VerificationState } from "../types";
 import { dispatch } from "./dispatch";
 import { Events } from "../types";
 
-export function dispatch_renderCreateButton(props: State) {
+export function dispatch_renderCreate(props: State) {
   dispatch(Events.render, {
-    type: RenderType.createButton,
+    type: RenderType.create,
     props,
   });
 }
