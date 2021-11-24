@@ -124,8 +124,11 @@ async function verifyAcceptableContract(url: string, domParser: DOMParser) {
   const blockedCountries = JSON.parse(
     page.dataset.blockedcountries
   ) as BlockCountry[];
+  const blockedAddresses = JSON.parse(page.dataset.blockedaddresses);
   const network = page.dataset.network;
   const smartContract = page.dataset.smartcontract;
+  const ERC20 = page.dataset.erc20;
+
   const recomputedHash = await getHash({
     legalContract,
     createdDate,
@@ -136,6 +139,8 @@ async function verifyAcceptableContract(url: string, domParser: DOMParser) {
     blockedCountries,
     network,
     smartContract,
+    blockedAddresses,
+    ERC20
   });
 
   // I need to verify the issuer signature now!
@@ -143,14 +148,12 @@ async function verifyAcceptableContract(url: string, domParser: DOMParser) {
   const msgParams = getmsgParams(
     network,
     smartContract,
-    recomputedHash,
-    undefined,
-    ContractTypes.create
+    recomputedHash
   );
 
   const signature = page.dataset.issuersignature;
 
-  const recovered = await recoverTypedSignatures(msgParams, signature);
+  const recovered = recoverTypedSignatures(msgParams, signature);
 
   // Check if the issuer address in the data prop and on the UI is the same as the recovered one!
   const issuerFromUI = html.getElementById("issuer-address").innerText;
