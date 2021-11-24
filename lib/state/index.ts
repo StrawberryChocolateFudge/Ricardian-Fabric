@@ -1,5 +1,4 @@
 import {
-  ERC20Params,
   Events,
   EventType,
   Account,
@@ -25,7 +24,6 @@ import {
   getSourceFromDataProp,
   getVersionFromDataProp,
 } from "./dataPropGetters";
-import createNewEditor from "./editor";
 import { setStateHook } from "./setStateHook";
 
 (function InitState() {
@@ -40,7 +38,6 @@ import { setStateHook } from "./setStateHook";
       },
       Account: { data: null, address: null, balance: null },
       popupState: PopupState.NONE,
-      editor: createNewEditor(),
       domParser: new DOMParser(),
       selectedDate: "",
       stashedPage: "",
@@ -90,9 +87,6 @@ import { setStateHook } from "./setStateHook";
         protocol: "https",
       };
     },
-    [EventType.setEditor]: (value: any) => {
-      stateContainer.editor = value;
-    },
     [EventType.setSelectedDate]: (value: { date: Date | string }) => {
       stateContainer.selectedDate = value.date;
     },
@@ -104,9 +98,6 @@ import { setStateHook } from "./setStateHook";
     },
     [EventType.setPosition]: (value: { position: GeolocationPosition }) => {
       stateContainer.position = value.position;
-    },
-    [EventType.setERC20]: (value: ERC20Params) => {
-      stateContainer.isERC20 = value;
     },
     [EventType.setSelectedWallet]: (value: SelectedWallet) => {
       stateContainer.selectedWallet = value;
