@@ -4,7 +4,6 @@ import {
 } from "../../dispatch/render";
 import { dispatch_setPopupState, dispatch_setSelectedWallet } from "../../dispatch/stateChange";
 import { PopupState, SelectedWallet, State } from "../../types";
-// import { compileFile } from "../../wallet/solc";
 import { getById } from "../../view/utils";
 
 export function createProposalActions(props: State) {

@@ -190,7 +190,7 @@ export async function getCountryCode(
   return result.record;
 }
 
-export function getLocation(props: State,acceptButton : HTMLElement) {
+export function getLocation(props: State, acceptButton: HTMLElement) {
   dispatch_disableButton(props);
   dispatch_renderLoadingIndicator("transaction-display");
   dispatch_hideElement(acceptButton, true);
