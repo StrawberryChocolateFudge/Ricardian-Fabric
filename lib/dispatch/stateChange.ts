@@ -51,12 +51,6 @@ export function dispatch_setPosition(position: GeolocationPosition) {
   });
 }
 
-export function dispatch_setERC20(to: ERC20Params) {
-  dispatch(Events.stateChange, {
-    type: EventType.setERC20,
-    value: to,
-  });
-}
 
 export function dispatch_setSelectedWallet(to: SelectedWallet) {
   dispatch(Events.stateChange, {
