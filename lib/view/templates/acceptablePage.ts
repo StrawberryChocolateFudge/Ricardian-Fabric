@@ -39,6 +39,10 @@ export const acceptablePageLayout = (props: AcceptablePageProps) => html`
       background-position: 54px 55px, 0px 0px, 0px 0px, 0px 0px, 0px 0px;
       font-family: Sans-Serif;
     }
+    svg {
+     vertical-align: middle;
+     display: inline-block;
+    }
     input[type="text"],
     input[type="url"],
     input[type="date"],
@@ -315,22 +319,12 @@ export const acceptablePageLayout = (props: AcceptablePageProps) => html`
   </body>
 `;
 const acceptablePage = (props: AcceptablePageProps) => html`
-  <div
-    data-contracttype="acceptable"
-    data-version="${props.version}"
-    data-created="${props.createdDate}"
-    data-expires="${props.expires}"
-    data-redirectto="${props.redirectto}"
-    data-maindep="${props.mainDep.src}"
+  <div data-contracttype="acceptable" data-version="${props.version}" data-created="${props.createdDate}"
+    data-expires="${props.expires}" data-redirectto="${props.redirectto}" data-maindep="${props.mainDep.src}"
     data-blockedcountries="${JSON.stringify(props.blockedCountries)}"
-    data-blockedaddresses="${JSON.stringify(props.blockedAddresses)}"
-    data-network="${props.network}"
-    data-issuer="${props.issuer}"
-    data-issuersignature="${props.issuerSignature}"
-    data-smartcontract="${props.smartContract}"
-    data-erc20="${props.ERC20}"
-    id="page"
-  >
+    data-blockedaddresses="${JSON.stringify(props.blockedAddresses)}" data-network="${props.network}"
+    data-issuer="${props.issuer}" data-issuersignature="${props.issuerSignature}"
+    data-smartcontract="${props.smartContract}" data-erc20="${props.ERC20}" id="page">
     <div id="contract-display"></div>
     <table id="display-table">
       <tr>
