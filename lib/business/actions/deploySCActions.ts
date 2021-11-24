@@ -18,7 +18,6 @@ import { getHRC20Abi, getHRC20Bytecode } from "../../wallet/abi/HRC20";
 import { getById } from "../../view/utils";
 import MetaMaskOnboarding from "@metamask/onboarding";
 import {
-  dispatch_setERC20,
   dispatch_setPopupState,
 } from "../../dispatch/stateChange";
 
@@ -73,7 +72,6 @@ export function constructSCActions(selected: DeploySC) {
 
   const backbutton = getById("SCConstructBackButton");
   const nextButton = getById("SCConstructCreateButton");
-  const logoUrl = getById("logo-url-input") as HTMLInputElement;
   const acceptTerms = getById("agree-to-deploy-sc") as HTMLInputElement;
   backbutton.onclick = function () {
     dispatch_setPopupState(PopupState.NONE);
