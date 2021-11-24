@@ -105,6 +105,7 @@ input[type="file"] {
   position: absolute;
   background-color: white;
   box-shadow: 1px 1px 1px 1px darkgrey;
+  z-index: 3;
 }
 
 #sanctions_checkbox_toggle~ul {
@@ -169,7 +170,7 @@ hr {
   position: absolute;
   background-color: white;
   box-shadow: 1px 1px 1px 1px darkgrey;
-  z-index: 1;
+  z-index: 3;
 }
 
 .dropdown_checkbox_toggle~ul {
@@ -276,7 +277,7 @@ hr {
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 2;
+  z-index: 4;
 }
 
 #overlay-layout {
@@ -448,7 +449,6 @@ hr {
 #import-docx-trigger {
   border-radius: 20px;
   border: none;
-  cursor: pointer;
   background-color: #f2f2f2;
   color: black;
   box-shadow: lightgrey 0px 5px 15px !important;
@@ -573,7 +573,7 @@ hr {
   display: none;
   background-color: white;
   overflow: hidden;
-  z-index: 5;
+  z-index: 2;
 }
 
 #error-display {
