@@ -111,10 +111,7 @@ import { addCatalogButtonListener, createProposalActions, walletSelectListener }
 import { WinstonToAr } from "../wallet/arweave";
 
 const Render: Renderer = {
-  [RenderType.successMessage]: (props: State) => { },
-  [RenderType.errorMessage]: (props: State) => { },
-  [RenderType.createPage]: (props: State) => { },
-  [RenderType.createButton]: (props: State) => {
+  [RenderType.create]: (props: State) => {
     renderCreatePage();
     renderButtonSlotAlignment(true);
     createPageAgreeTerms();
@@ -348,5 +345,6 @@ const Render: Renderer = {
 document.body.addEventListener(Events.render, (e: any) => {
   const type: RenderType = e.detail.type;
   const props: State = e.detail.props;
+  console.log(type);
   Render[type](props);
 });
