@@ -11,10 +11,7 @@ export enum Events {
 }
 
 export enum RenderType {
-  successMessage = "successMessage",
-  errorMessage = "errorMessage",
-  createPage = "createPage",
-  createButton = "createButton",
+  create = "create",
   acceptButton = "acceptButton",
   balance = "balance",
   addLoadingIndicator = "addLoadingIndicator",
@@ -75,10 +72,7 @@ export type RenderDispatchArgs = State & { tmp: any };
 type RenderFunction = (props: any) => void;
 
 export type Renderer = {
-  [RenderType.successMessage]: RenderFunction;
-  [RenderType.errorMessage]: RenderFunction;
-  [RenderType.createPage]: RenderFunction;
-  [RenderType.createButton]: RenderFunction;
+  [RenderType.create]: RenderFunction;
   [RenderType.acceptButton]: RenderFunction;
   [RenderType.addLoadingIndicator]: RenderFunction;
   [RenderType.removeLoadingIndicator]: RenderFunction;
@@ -163,7 +157,6 @@ export enum StateProperties {
   stashedPage = "stashedPage",
   stashedDetails = "stashedDetails",
   position = "position",
-  isERC20 = "isERC20",
   selectedWallet = "selectedWallet",
   Account = "Account",
   popupState = "popupState",
