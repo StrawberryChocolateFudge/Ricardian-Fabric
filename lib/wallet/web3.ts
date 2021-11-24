@@ -1,8 +1,7 @@
 import Web3 from "web3";
-import { recoverTypedSignature } from "eth-sig-util";
-import { ECDSASignature, fromRpcSig, toChecksumAddress } from "ethereumjs-util";
+import { recoverTypedSignature, SignTypedDataVersion } from "@metamask/eth-sig-util";
+import { toChecksumAddress } from "ethereumjs-util";
 import {
-  ContractTypes,
   ERC20Params,
   NetworkType,
   Options,
@@ -57,15 +56,11 @@ export async function signHash(
   smartContract: string,
   onSuccess: CallableFunction,
   onError: CallableFunction,
-  contractType: ContractTypes,
-  url: string | undefined
 ) {
   const msgParams = getmsgParams(
     networkId,
     smartContract,
-    hash,
-    url,
-    contractType
+    hash
   );
 
 
@@ -78,7 +73,7 @@ export async function signHash(
       if (result.error) {
         onError(result.error.message);
       } else {
-        const recovered = await recoverTypedSignatures(
+        const recovered = recoverTypedSignatures(
           msgParams,
           result.result
         );
@@ -95,24 +90,9 @@ export async function signHash(
 export function getmsgParams(
   networkId: string,
   smartContract: string,
-  hash: string,
-  url: string | undefined,
-  contractType: ContractTypes
-) {
-  const valueOnlyDOC = [{ name: "value", type: "string" }];
-
-  const withUrlDOC = [
-    { name: "value", type: "string" },
-    { name: "url", type: "string" },
-  ];
-
-  const doc = contractType === ContractTypes.create ? valueOnlyDOC : withUrlDOC;
-
-  const valueOnlyMSG = { value: hash };
-  const withUrlMSG = { value: hash, url: url };
-
-  const message =
-    contractType === ContractTypes.create ? valueOnlyMSG : withUrlMSG;
+  hash: string) {
+  const doc = [{ name: "value", type: "string" }];
+  const message = { value: hash };
   const msgParams = {
     domain: {
       chainId: networkId,
@@ -135,10 +115,12 @@ export function getmsgParams(
   return msgParams;
 }
 
-export async function recoverTypedSignatures(msgParams, signature) {
-  const recovered = await recoverTypedSignature({
+export function recoverTypedSignatures(msgParams, signature) {
+
+  const recovered = recoverTypedSignature({
     data: msgParams,
-    sig: signature,
+    signature: signature,
+    version: SignTypedDataVersion.V3
   });
   return recovered;
 }
@@ -160,9 +142,6 @@ export function web3Injected(): boolean {
   }
 }
 
-export function getSigParams(sig: string): ECDSASignature {
-  return fromRpcSig(sig);
-}
 
 // I'm using web3 in the below function because it throws errors nice for this validation.
 export async function canUseContract(
@@ -399,6 +378,38 @@ async function switch_to_Chain(chainId: string) {
   }
 }
 
+async function switchToAvalanche() {
+  //TODO: Add avalanche!!
+  //TODO: Add XDAI
+  //TODO: Add Fantom
+  //TODO: Add optimism
+  //TODO: Add arbitrum
+  const AVALANCHE_MAINNET_PARAMS = {
+    chainId: '0xA86A',
+    chainName: 'Avalanche Mainnet C-Chain',
+    nativeCurrency: {
+      name: 'Avalanche',
+      symbol: 'AVAX',
+      decimals: 18
+    },
+    rpcUrls: ['https://api.avax.network/ext/bc/C/rpc'],
+    blockExplorerUrls: ['https://snowtrace.io/']
+  }
+  const AVALANCHE_TESTNET_PARAMS = {
+    chainId: '0xA869',
+    chainName: 'Avalanche Testnet C-Chain',
+    nativeCurrency: {
+      name: 'Avalanche',
+      symbol: 'AVAX',
+      decimals: 18
+    },
+    rpcUrls: ['https://api.avax-test.network/ext/bc/C/rpc'],
+    blockExplorerUrls: ['https://testnet.snowtrace.io/']
+  }
+
+
+}
+
 function getHarmonyRPCURLS(shard: number, type: "Mainnet" | "Testnet") {
   if (type === "Mainnet") {
     switch (shard) {
@@ -460,6 +471,7 @@ export async function deployContract(
 }
 
 export function prepareType(type: string, value: string) {
+  //TODO: PREPARE THIS FOR ALL TYPES!!
   // This function only considers the HRC20 contract for now!
   switch (type) {
     case "string":
