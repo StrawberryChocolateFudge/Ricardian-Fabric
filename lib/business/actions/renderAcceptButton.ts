@@ -9,7 +9,7 @@ import {
   dispatch_stashDetails,
   dispatch_stashPage,
 } from "../../dispatch/stateChange";
-import { BlockCountry, State } from "../../types";
+import { State } from "../../types";
 import {
   canAgree,
   getAddress,
@@ -80,7 +80,8 @@ export function renderAcceptOnCLick(props: State) {
     const signingSuccess = async (participantSignature: string) => {
       const page = await getFulfilledPage({
         version: props.version,
-        createdDate: new Date().toISOString(),
+        signedDate: new Date().toISOString(),
+        createdDate: props.createdDate,
         issuer: props.issuer,
         legalContract: getAcceptableContract(),
         parentUrl: getFromUrl(),
@@ -118,9 +119,7 @@ export function renderAcceptOnCLick(props: State) {
       network,
       props.smartcontract,
       signingSuccess,
-      signingFailure,
-      props.contracttype,
-      undefined
+      signingFailure
     );
     dispatch_disableButton(props);
   };
