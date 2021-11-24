@@ -10,7 +10,6 @@ export enum Events {
   stateChange = "stateChange",
 }
 
-//TODO: start using the success message too!!
 export enum RenderType {
   successMessage = "successMessage",
   errorMessage = "errorMessage",
@@ -158,7 +157,6 @@ export enum EventType {
 export enum StateProperties {
   init = "init",
   ipfs = "ipfs",
-  editor = "editor",
   balance = "balance",
   address = "address",
   selectedDate = "selectedDate",
@@ -251,7 +249,6 @@ export type State = {
   init: boolean;
   ipfs: IPFSParams;
   Account: Account;
-  editor: any;
   domParser: DOMParser;
   selectedDate: Date | string;
   popupState: PopupState;
@@ -310,6 +307,7 @@ export type FulfilledPageProps = {
   version: string;
   issuer: string;
   createdDate: string;
+  signedDate: string;
   expires: string;
   redirectto: string;
   domParser: DOMParser;
