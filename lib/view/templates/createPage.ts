@@ -142,7 +142,7 @@ export const CreatePage = () => html`
             <td><input aria-label="erc20 contract address input" placeholder="0x" id="erc20-address" type="text" />
                 <button aria-label="address is same as the above specified" name="same" class="backButton"
                     id="same-contract-button">
-                    ${ContentPasteLogo()}Same as above
+                    ${ContentPasteLogo()}Same as contract config
                 </button>
             </td>
             <td><span id="erc20-address-tooltip"></span></td>
@@ -163,7 +163,7 @@ export const CreatePage = () => html`
 <div aria-label="transaction-display-slot" class="center" id="transaction-display"></div>
 
 <div id="button-slot"></div>
-</div>
+
 <div id="overlay">
     <div id="overlay-layout"></div>
 </div>`;
