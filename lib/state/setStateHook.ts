@@ -9,7 +9,7 @@ import {
   dispatch_renderAddress,
   dispatch_renderAreYouSure,
   dispatch_renderBalance,
-  dispatch_renderCreateButton,
+  dispatch_renderCreate,
   dispatch_renderCreateProposalPage,
   dispatch_renderDocXDropper,
   dispatch_renderTerms,
@@ -35,14 +35,13 @@ export const setStateHook = {
     const clone = cloneState(args.obj);
     if (currentPage === ContractTypes.create) {
       showBanner();
-      dispatch_renderCreateButton(clone);
+      dispatch_renderCreate(clone);
       dispatch_renderVersion(clone.version);
     } else if (currentPage === ContractTypes.acceptable) {
       dispatch_renderAcceptButton(clone);
     }
   },
   [StateProperties.ipfs]: (args: SetHookArgs) => { },
-  [StateProperties.editor]: (args: SetHookArgs) => { },
   [StateProperties.balance]: (args: SetHookArgs) => {
     dispatch_renderBalance(cloneState(args.obj));
   },
@@ -63,16 +62,12 @@ export const setStateHook = {
     // This happens only on acceptable pages
     dispatch_renderAcceptButton(cloneState(args.obj));
   },
-  [StateProperties.isERC20]: (args: SetHookArgs) => {
-    if (args.obj.contracttype === ContractTypes.create) {
-      const clone = cloneState(args.obj);
-      dispatch_renderCreateButton(clone);
-    }
-  },
   [StateProperties.selectedWallet]: (args: SetHookArgs) => {
     if (args.obj.contracttype === ContractTypes.create) {
       const clone = cloneState(args.obj);
-      dispatch_renderCreateButton(clone);
+      //TODO: This is not working right now,
+      // there could be a bug if used because createPage has the editor locally and this will reinitialize it/
+      // dispatch_renderCreateButton(clone);
     }
   },
   [StateProperties.Account]: (args: SetHookArgs) => {
