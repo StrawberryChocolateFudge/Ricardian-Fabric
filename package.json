@@ -21,7 +21,6 @@
     "@metamask/onboarding": "^1.0.1",
     "arweave": "1.10.0",
     "buffer-to-uint8array": "^1.1.0",
-    "eth-sig-util": "^3.0.1",
     "ethereumjs-tx": "^2.1.2",
     "ethereumjs-util": "^7.1.2",
     "graphql": "^16.0.1",
