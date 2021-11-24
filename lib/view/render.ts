@@ -294,19 +294,18 @@ export function disableCreateInputs() {
   disable(erc20SmartContract);
   disable(blockedAddresses);
   disable(sameButton);
-
+  sameButton.style.cursor = "not-allowed";
+  sameButton.style.backgroundColor = "white";
   metamask.dataset.disabled = "true";
   metamask.style.cursor = "not-allowed";
 
   disable(switchNetwork);
 
   switchNetworkLabel.style.cursor = "not-allowed";
-  switchNetworkLabel.style.backgroundColor = "white";
 
   disable(catalogToggle);
-  
+
   catalogLabel.style.cursor = "not-allowed";
-  catalogLabel.style.backgroundColor = "white";
 
   disable(editor);
   disable(sanctions);
@@ -314,9 +313,12 @@ export function disableCreateInputs() {
   sanctionsLabel.style.backgroundColor = "white";
   disable(expires);
   disable(never);
+  never.style.cursor = "not-allowed";
+  never.style.backgroundColor = "white";
   disable(redirectto);
   disable(termsCheckbox);
   termsCheckboxLabel.style.backgroundColor = "white";
+  docxDropper.style.cursor = "not-allowed"
   disable(docxDropper);
   disable(smartContract);
 }
@@ -360,12 +362,13 @@ export function enableCreateInputs() {
   const erc20SmartContract = getById("erc20-address") as HTMLInputElement;
   const sameButton = getById("same-contract-button") as HTMLButtonElement;
   enable(erc20Checkbox, Cursor.pointer);
-  enable(erc20Name, Cursor.pointer);
-  enable(erc20Symbol, Cursor.pointer);
-  enable(erc20Decimals, Cursor.pointer);
-  enable(erc20SmartContract, Cursor.pointer);
-  enable(blockedAddresses, Cursor.pointer);
+  enable(erc20Name, Cursor.auto);
+  enable(erc20Symbol, Cursor.auto);
+  enable(erc20Decimals, Cursor.auto);
+  enable(erc20SmartContract, Cursor.auto);
+  enable(blockedAddresses, Cursor.auto);
   enable(sameButton, Cursor.pointer);
+  sameButton.style.backgroundColor = "#f2f2f2";
 
   metamask.dataset.disabled = "false";
   metamask.style.cursor = "pointer";
@@ -378,12 +381,10 @@ export function enableCreateInputs() {
   enable(sanctions, Cursor.pointer);
 
   sanctionsLabel.style.cursor = "pointer";
-  sanctionsLabel.style.backgroundColor = "#f2f2f2";
 
   enable(catalogToggle, Cursor.pointer);
 
   catalogLabel.style.cursor = "pointer";
-  catalogLabel.style.backgroundColor = "#f2f2f2";
 
   editor.contentEditable = "true";
   editor.style.cursor = "text";
@@ -391,6 +392,8 @@ export function enableCreateInputs() {
   enable(expires, Cursor.pointer);
 
   enable(never, Cursor.pointer);
+  never.style.backgroundColor = "#f2f2f2";
+
   enable(redirectto, Cursor.auto);
 
   enable(termsCheckbox, Cursor.pointer);
