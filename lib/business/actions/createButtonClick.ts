@@ -35,8 +35,11 @@ import {
   getERC20Params,
 } from "../../view/utils";
 import MetaMaskOnboarding from "@metamask/onboarding";
+import createNewEditor from "../../state/editor";
 
 export function renderCreateButtonClick(props: State) {
+  const editor = createNewEditor();
+
   const termsCheckbox = getTermsCheckbox();
   const sameButton = getSameAsAboveButton();
 
@@ -99,7 +102,7 @@ export function renderCreateButtonClick(props: State) {
 
     await requestAccounts();
 
-    const legalContract = props.editor.getContent();
+    const legalContract = editor.getContent();
     const createdDate = new Date().toISOString();
     const version = props.version;
     const network = `${await getNetwork()}`;
@@ -181,9 +184,7 @@ export function renderCreateButtonClick(props: State) {
       network,
       smartContract,
       signingSuccess,
-      onSigningFailure,
-      props.contracttype,
-      undefined
+      onSigningFailure
     );
     dispatch_disableButton(props);
     dispatch_disableCreateInputs();
