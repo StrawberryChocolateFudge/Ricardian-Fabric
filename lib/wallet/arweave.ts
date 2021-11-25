@@ -53,16 +53,23 @@ export async function createFileTransaction(
   return transaction;
 }
 
-export async function uploadData(transaction: any) {
-  let uploader = await arweave.transactions.getUploader(transaction);
+export async function uploadData(transaction: any, progressLogger: CallableFunction): Promise<Options<string>> {
+  const options: Options<string> = { status: Status.Success, error: "", data: "" }
+  try {
+    let uploader = await arweave.transactions.getUploader(transaction);
 
-  while (!uploader.isComplete) {
-    await uploader.uploadChunk();
-    console.log(
-      `${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`
-    );
+    while (!uploader.isComplete) {
+      await uploader.uploadChunk();
+      progressLogger(uploader);
+      console.log(
+        `${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`
+      );
+    }
+  } catch (error) {
+    options.status = Status.Failure;
+    options.error = error.message;
   }
-  return uploader;
+  return options;
 }
 
 export async function postTransaction(transaction: any) {
