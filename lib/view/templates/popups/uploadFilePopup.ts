@@ -23,6 +23,16 @@ export const uploadFilePopup = () => html`
     </thead>
     <tbody>
       <tr>
+        <td></td>
+        <td><button id="clearFileButton" class="backButton">Clear File</button></td>
+        <td>${helperTooltips("Click this to empty the file dropper.")}</td>
+      </tr>
+      <tr>
+        <td><label aria-labelledby="edit content type field" for="content-type-input">Content-Type:</label></td>
+        <td><input id="content-type-input" type="text" placeholder="" aria-label="edit content type field" /></td>
+        <td>${helperTooltips("Specify the content type. Importing will fill it out.")}</td>
+      </tr>
+      <tr>
         <td><label for="walletPassword">Password:</label></td>
         <td>
           <input readonly onfocus="this.removeAttribute('readonly');" autocomplete="off" id="walletPassword"
@@ -31,12 +41,12 @@ export const uploadFilePopup = () => html`
         <td>${helperTooltips("The password of the encrypted keyfile")}</td>
       </tr>
       <!-- <tr>
-            <td><label for="tipcheckbox">Send a tip:</label></td>
-            <td>
-              <input id="tipcheckbox" type="checkbox" checked />
-            </td>
-            <td>${helperTooltips(`Support us by sending a tip. ${TIP} Ar`)}</td>
-          </tr> -->
+                                                      <td><label for="tipcheckbox">Send a tip:</label></td>
+                                                      <td>
+                                                        <input id="tipcheckbox" type="checkbox" checked />
+                                                      </td>
+                                                      <td>${helperTooltips(`Support us by sending a tip. ${TIP} Ar`)}</td>
+                                                    </tr> -->
     </tbody>
   </table>
   <hr />
@@ -93,6 +103,8 @@ export const uploadFileSummary = (
   <label for="uploadSummary-tx">Content will be available at this url after posting it to the
     network:</label>
   <small id="uploadSummary-tx">https://arweave.net/${id}</small>
+  <hr />
+  <small id="upload-status"></small>
   <hr />
   <div class="button-row">
     <button class="marginRight-20 backButton" id="uploadSummary-cancel">
