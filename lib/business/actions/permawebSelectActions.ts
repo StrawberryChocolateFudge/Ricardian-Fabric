@@ -1,5 +1,6 @@
 import {
   dispatch_addNewAccountPopup,
+  dispatch_discardFile,
   dispatch_emptyWalletDropper,
   dispatch_hideElement,
   dispatch_permapinPopup,
@@ -12,6 +13,7 @@ import {
   dispatch_renderPermapinSummaryPage,
   dispatch_renderTransferSummaryPage,
   dispatch_renderTxId,
+  dispatch_renderUploadStatus,
   dispatch_renderUploadSummary,
 } from "../../dispatch/render";
 import {
@@ -46,9 +48,9 @@ export function permawebSelectActions(props: State) {
   const uploadFile = getById("upload-popup-button");
   const permapin = getById("permapin-popup-button");
   const Account = getById("Account-popup-button");
-  // uploadFile.onclick = function () {
-  //   dispatch_setPopupState(PopupState.UploadFile);
-  // };
+  uploadFile.onclick = function () {
+    dispatch_setPopupState(PopupState.UploadFile);
+  };
 
   permapin.onclick = function () {
     dispatch_setPopupState(PopupState.Permapin);
@@ -71,12 +73,17 @@ export function uploadFileListener(props: State) {
   const uploadButton = getById("upload-proceed") as HTMLButtonElement;
   const termsLabel = getById("terms-button");
   const passwordEl = getById("walletPassword") as HTMLInputElement;
+  const contentTypeEl = getById("content-type-input") as HTMLInputElement;
+  const clearFileButton = getById("clearFileButton") as HTMLButtonElement;
+
+  clearFileButton.onclick = function () {
+    dispatch_discardFile(props);
+  }
 
   termsLabel.onclick = function () {
     dispatch_setPopupState(PopupState.Terms);
   };
 
-  function showButtons() {}
 
   backbutton.onclick = function () {
     dispatch_setPopupState(PopupState.NONE);
@@ -112,11 +119,10 @@ export function uploadFileListener(props: State) {
     readFile(fileInput.files, async (data) => {
       uploadButton.disabled = true;
       dispatch_renderLoadingIndicator("upload-loading-indicator");
-      //TODO: NEEDS THE KEY
-
+      const contentType = contentTypeEl.value;
       try {
         const tx = await createFileTransaction(
-          fileInput.files[0].type,
+          contentType,
           data,
           props.version,
           decryptOptions.data
@@ -136,6 +142,8 @@ export function uploadFileListener(props: State) {
 export function onFileDropped() {
   const fileInput = getById("file-input") as HTMLInputElement;
   const dropZone = getById("file-dropzone");
+  const contentTypeEl = getById("content-type-input") as HTMLInputElement;
+
   dropZone.onclick = function () {
     fileInput.click();
   };
@@ -144,6 +152,7 @@ export function onFileDropped() {
     if (fileInput.files.length === 1) {
       // It's valid
       dispatch_promptSuccess(fileInput.files[0]);
+      contentTypeEl.value = fileInput.files[0].type;
       dispatch_removeError();
     } else {
       dispatch_promptError("You can only upload a single file.");
@@ -166,6 +175,7 @@ export function onFileDropped() {
     if (e.dataTransfer.files.length === 1) {
       fileInput.files = e.dataTransfer.files;
       dispatch_promptSuccess(e.dataTransfer.files[0]);
+      contentTypeEl.value = fileInput.files[0].type;
       dispatch_removeError();
     } else {
       dispatch_promptError("You can only upload a single filezs");
@@ -190,15 +200,11 @@ export function uploadSummaryActions(
     dispatch_hideElement(proceed, true);
     dispatch_hideElement(back, true);
     try {
-      const res = await postTransaction(transaction);
-      //TODO: RENDER THE SAVED URL so people can save it!
-      if (res.status === Status.Success) {
-        //Nothing cuz the back button is the way to leave
-        //TODO: I will show a success message or something
-        // dispatch_renderUploadDone()
-
-      } else {
-        dispatch_renderError(res.statusText);
+      const res = await uploadData(transaction, (uploader) => {
+        dispatch_renderUploadStatus(props, `${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`)
+      })
+      if (res.status === Status.Failure) {
+        dispatch_renderError(res.error);
         dispatch_hideElement(proceed, false);
         dispatch_hideElement(transactiondisplay, false);
       }
