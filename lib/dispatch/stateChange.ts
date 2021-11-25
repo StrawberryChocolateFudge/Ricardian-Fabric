@@ -86,3 +86,10 @@ export function dispatch_editFinished(done: boolean) {
     value: done
   })
 }
+
+export function dispatch_setEditor(editor: any) {
+  dispatch(Events.stateChange, {
+    type: EventType.setEditor,
+    value: editor
+  })
+}
