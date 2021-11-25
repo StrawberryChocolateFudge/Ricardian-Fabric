@@ -38,6 +38,7 @@ import { setStateHook } from "./setStateHook";
       },
       Account: { data: null, address: null, balance: null },
       popupState: PopupState.NONE,
+      editor: null,
       domParser: new DOMParser(),
       selectedDate: "",
       stashedPage: "",
@@ -86,6 +87,9 @@ import { setStateHook } from "./setStateHook";
         port: 5001,
         protocol: "https",
       };
+    },
+    [EventType.setEditor]: (value: any) => {
+      stateContainer.editor = value;
     },
     [EventType.setSelectedDate]: (value: { date: Date | string }) => {
       stateContainer.selectedDate = value.date;
