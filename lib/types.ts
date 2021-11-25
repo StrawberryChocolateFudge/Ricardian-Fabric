@@ -47,6 +47,8 @@ export enum RenderType {
   DocxDropper = "DocxDropper",
   uploadFile = "uploadFile",
   uploadSummary = "uploadSummary",
+  uploadStatus = "uploadStatus",
+  discardFile = "discardFile",
   permapinPopup = "permapinPopup",
   walletPopup = "walletPopup",
   emptyWalletDropper = "emptyWalletDropper",
@@ -106,6 +108,8 @@ export type Renderer = {
   [RenderType.DocxDropper]: RenderFunction;
   [RenderType.uploadFile]: RenderFunction;
   [RenderType.uploadSummary]: RenderFunction;
+  [RenderType.uploadStatus]: RenderFunction;
+  [RenderType.discardFile]: RenderFunction;
   [RenderType.permapinPopup]: RenderFunction;
   [RenderType.walletPopup]: RenderFunction;
   [RenderType.emptyWalletDropper]: RenderFunction;
@@ -161,7 +165,8 @@ export enum StateProperties {
   Account = "Account",
   popupState = "popupState",
   ipfsCID = "ipfsCID",
-  editFinished = "editFinished"
+  editFinished = "editFinished",
+  editor = "editor",
 }
 
 export enum ContractTypes {
@@ -242,6 +247,7 @@ export type State = {
   init: boolean;
   ipfs: IPFSParams;
   Account: Account;
+  editor: any;
   domParser: DOMParser;
   selectedDate: Date | string;
   popupState: PopupState;
