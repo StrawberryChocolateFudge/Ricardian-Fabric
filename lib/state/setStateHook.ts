@@ -42,6 +42,7 @@ export const setStateHook = {
     }
   },
   [StateProperties.ipfs]: (args: SetHookArgs) => { },
+  [StateProperties.editor]: (args: SetHookArgs) => { },
   [StateProperties.balance]: (args: SetHookArgs) => {
     dispatch_renderBalance(cloneState(args.obj));
   },
