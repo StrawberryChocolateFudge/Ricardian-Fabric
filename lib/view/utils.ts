@@ -229,7 +229,7 @@ export function changeContainerSlotStyle(to: boolean) {
 
 export function readFile(files: FileList, getContent: CallableFunction) {
   const reader = new FileReader();
-  reader.readAsDataURL(files[0]);
+  reader.readAsArrayBuffer(files[0]);
 
   reader.onloadend = function (event) {
     getContent(event.target.result);
