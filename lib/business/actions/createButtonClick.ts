@@ -11,6 +11,7 @@ import {
 import {
   dispatch_stashPage,
   dispatch_stashDetails,
+  dispatch_setEditor,
 } from "../../dispatch/stateChange";
 import { State, Status } from "../../types";
 import {
@@ -38,7 +39,12 @@ import MetaMaskOnboarding from "@metamask/onboarding";
 import createNewEditor from "../../state/editor";
 
 export function renderCreateButtonClick(props: State) {
-  const editor = createNewEditor();
+  let editor = props.editor;
+
+  if (props.editor === null) {
+    editor = createNewEditor();
+    dispatch_setEditor(editor);
+  }
 
   const termsCheckbox = getTermsCheckbox();
   const sameButton = getSameAsAboveButton();
