@@ -67,6 +67,8 @@ import {
   renderCreateProposalPage,
   renderAccordionOpener,
   renderCreatePage,
+  renderUploadStatus,
+  discardFile,
 } from "./render";
 import { renderAcceptTools } from "./render";
 import { areYouSureButtons } from "../business/actions/areYouSureButtons";
@@ -270,6 +272,12 @@ const Render: Renderer = {
       props.transaction.id
     );
     uploadSummaryActions(props.transaction, props.data, props.props);
+  },
+  [RenderType.uploadStatus]: (props: RenderDispatchArgs) => {
+    renderUploadStatus(props.tmp.progress)
+  },
+  [RenderType.discardFile]: (props: State) => {
+    discardFile();
   },
   [RenderType.permapinPopup]: (props: State) => {
     renderPermapinPopup();
