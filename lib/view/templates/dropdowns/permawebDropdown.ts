@@ -13,7 +13,7 @@ export const PermawebDropdown = () => html`
     </li>
     <li>
       <button id="upload-popup-button" class="dropdown-button">
-        <small>${uploadLogo()} Upload File (Coming soon)</small>
+        <small>${uploadLogo()} Upload File</small>
       </button>
     </li>
     <li>
