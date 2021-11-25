@@ -565,6 +565,21 @@ export function renderUploadSummary(file: File, fee: any, id: string) {
   render(uploadFileSummary(file.name, file.type, fee, id), layout);
 }
 
+export function renderUploadStatus(status: string) {
+  const statusDisplay = getById("upload-status");
+  statusDisplay.innerHTML = status;
+}
+
+export function discardFile() {
+  const fileInput = getById("file-input") as HTMLInputElement;
+  fileInput.value = "";
+  const prompt = getById("drop-prompt");
+  prompt.textContent = "Drop File here or click to upload";
+  prompt.style.color = "#cccccc";
+  const contentTypeEl = getById("content-type-input") as HTMLInputElement;
+  contentTypeEl.value = "";
+}
+
 export function renderPermapinPopup() {
   setBannerDisplayBlock();
   const layout = getById("overlay-layout");
