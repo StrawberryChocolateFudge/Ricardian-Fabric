@@ -240,6 +240,20 @@ export function dispatch_renderUploadFilePopup(props: State) {
   });
 }
 
+export function dispatch_renderUploadStatus(props: State, progress: string) {
+  dispatch(Events.render, {
+    type: RenderType.uploadStatus,
+    props: { ...props, tmp: { progress } }
+  })
+}
+
+export function dispatch_discardFile(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.discardFile,
+    props
+  })
+}
+
 export function dispatch_hidePopup() {
   dispatch(Events.render, {
     type: RenderType.hidePopup,
