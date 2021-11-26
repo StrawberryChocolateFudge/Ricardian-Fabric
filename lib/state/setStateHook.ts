@@ -12,11 +12,11 @@ import {
   dispatch_renderCreate,
   dispatch_renderCreateProposalPage,
   dispatch_renderDocXDropper,
+  dispatch_renderMenu,
   dispatch_renderTerms,
   dispatch_renderTransferPage,
   dispatch_renderUploadFilePopup,
   dispatch_renderVerifyContract,
-  dispatch_renderVersion,
   dispatch_showAccountPopup,
   dispatch_switch_Accounts,
   dispatch_walletPopup,
@@ -34,9 +34,9 @@ export const setStateHook = {
     const currentPage = args.obj.contracttype;
     const clone = cloneState(args.obj);
     if (currentPage === ContractTypes.create) {
-      showBanner();
-      dispatch_renderCreate(clone);
-      dispatch_renderVersion(clone.version);
+
+      dispatch_renderMenu(clone);
+      // showBanner();
     } else if (currentPage === ContractTypes.acceptable) {
       dispatch_renderAcceptButton(clone);
     }
