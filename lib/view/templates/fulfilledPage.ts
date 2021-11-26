@@ -100,7 +100,6 @@ export const fulfilledPageLayout = (props: FulfilledPageProps) => html`
       border: none;
       font-size: 16px;
       padding: 10px;
-      border-radius: 20px;
       color: black;
     }
   </style>
