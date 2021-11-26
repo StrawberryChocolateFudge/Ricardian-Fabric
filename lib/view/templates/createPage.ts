@@ -1,15 +1,12 @@
 import { html } from "lit-html";
-import { ContentPasteLogo, ContractConfigurationLogo, Erc20Logo, importLogo, neverLogo, Policylogo, verifyLogo } from "./components/logos";
+import { BackLogo, ContentPasteLogo, ContractConfigurationLogo, Erc20Logo, importLogo, neverLogo, Policylogo, verifyLogo } from "./components/logos";
 
 export const CreatePage = () => html`
 <hr />
 <div class="row">
+    <button class="labelButton" id="toMenuButton">${BackLogo()}Menu</button>
     <div id="network-dropdown"></div>
     <div id="permaweb-dropdown"></div>
-    <div id="catalog-dropdown"></div>
-    <button class="labelButton" id="verify-contract-button">
-        ${verifyLogo()} Verify a contract
-    </button>
     <hr />
     <button id="import-docx-trigger" class="labelButton">
         ${importLogo()} Import template
@@ -163,9 +160,6 @@ export const CreatePage = () => html`
 <div aria-label="transaction-display-slot" class="center" id="transaction-display"></div>
 
 <div id="button-slot"></div>
-
-<div id="overlay">
-    <div id="overlay-layout"></div>
-</div>`;
+`;
 
 
