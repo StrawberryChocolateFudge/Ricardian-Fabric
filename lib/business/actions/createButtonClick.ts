@@ -7,6 +7,7 @@ import {
   dispatch_disableCreateInputs,
   dispatch_enableButton,
   dispatch_enableCreateInputs,
+  dispatch_renderMenu,
 } from "../../dispatch/render";
 import {
   dispatch_stashPage,
@@ -34,6 +35,7 @@ import {
   getSameAsAboveButton,
   getERCSmartContractElement,
   getERC20Params,
+  getToMenuButton,
 } from "../../view/utils";
 import MetaMaskOnboarding from "@metamask/onboarding";
 import createNewEditor from "../../state/editor";
@@ -48,6 +50,11 @@ export function renderCreateButtonClick(props: State) {
 
   const termsCheckbox = getTermsCheckbox();
   const sameButton = getSameAsAboveButton();
+  const toMenuButton = getToMenuButton();
+
+  toMenuButton.onclick = function () {
+    dispatch_renderMenu(props);
+  }
 
   sameButton.onclick = function () {
     const smartC = getSmartContract();
@@ -56,7 +63,6 @@ export function renderCreateButtonClick(props: State) {
       ercSmartC.value = smartC;
     }
   }
-
 
   termsCheckbox.onclick = function () {
     if (termsCheckbox.checked) {
