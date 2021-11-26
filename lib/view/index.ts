@@ -37,7 +37,6 @@ import {
   renderTerms,
   renderTooltips,
   renderTransaction,
-  renderVersion,
   setDeployedSCAddressToDOM,
   updatePromptError,
   updatePromptErrorDOCX,
@@ -69,6 +68,7 @@ import {
   renderCreatePage,
   renderUploadStatus,
   discardFile,
+  renderMenuPage,
 } from "./render";
 import { renderAcceptTools } from "./render";
 import { areYouSureButtons } from "../business/actions/areYouSureButtons";
@@ -111,14 +111,24 @@ import {
 } from "../business/actions/verifyContractActions";
 import { addCatalogButtonListener, createProposalActions, walletSelectListener } from "../business/actions/catalogActions";
 import { WinstonToAr } from "../wallet/arweave";
+import { menuActions } from "../business/actions/menuActions";
 
 const Render: Renderer = {
+  [RenderType.menu]: (props: State) => {
+    renderMenuPage(props);
+    menuActions(props);
+
+  },
   [RenderType.create]: (props: State) => {
     renderCreatePage();
     renderButtonSlotAlignment(true);
     createPageAgreeTerms();
+
+    // TODO: Check these, I will add web3 modal!
     renderSelectedWallet(props.selectedWallet);
     walletSelectListener();
+
+
     renderCreateButton(true);
     renderCreateButtonClick(props);
     attachExpiryClickAndListener(props);
@@ -130,10 +140,15 @@ const Render: Renderer = {
     permawebSelectActions(props);
     renderTemplatesDropdown();
     templateSelectActions(props);
+
+    // Catalog goes to another page
     renderCatalogDropdown();
     addCatalogButtonListener(props);
+
     handleDropdownClosing();
-    verifyContractPopupTrigger();
+
+
+
     renderAccordionOpener();
   },
   [RenderType.acceptButton]: (props: State) => {
@@ -165,9 +180,6 @@ const Render: Renderer = {
   },
   [RenderType.disableButton]: (props: State) => {
     disableButton(props);
-  },
-  [RenderType.version]: (props: { version: string }) => {
-    renderVersion(props.version);
   },
   [RenderType.redirect]: (props: { url: string }) => {
     renderredirect();
