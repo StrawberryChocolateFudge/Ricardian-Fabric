@@ -85,11 +85,11 @@ export const HarmonyLogo = () => html` <style>
   </svg>`;
 
 
-export const EthLogo = () => html`
+export const EthLogo = (marginRight: string) => html`
 <style>
   .eth-logo{
     width:20px;
-    margin-right: 10px;
+    margin-right: ${marginRight};
     vertical-align: middle;
     display: inline-block;
 }
@@ -243,15 +243,15 @@ export const pinLogo = () => html`
 
 export const pinLogoWhite = () => html`
 <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px"
-    fill="#FFFFFF">
-    <g>
-        <rect fill="none" height="24" width="24" />
-    </g>
-    <g>
-        <path
-            d="M16,9V4l1,0c0.55,0,1-0.45,1-1v0c0-0.55-0.45-1-1-1H7C6.45,2,6,2.45,6,3v0 c0,0.55,0.45,1,1,1l1,0v5c0,1.66-1.34,3-3,3h0v2h5.97v7l1,1l1-1v-7H19v-2h0C17.34,12,16,10.66,16,9z"
-            fill-rule="evenodd" />
-    </g>
+  fill="#FFFFFF">
+  <g>
+    <rect fill="none" height="24" width="24" />
+  </g>
+  <g>
+    <path
+      d="M16,9V4l1,0c0.55,0,1-0.45,1-1v0c0-0.55-0.45-1-1-1H7C6.45,2,6,2.45,6,3v0 c0,0.55,0.45,1,1,1l1,0v5c0,1.66-1.34,3-3,3h0v2h5.97v7l1,1l1-1v-7H19v-2h0C17.34,12,16,10.66,16,9z"
+      fill-rule="evenodd" />
+  </g>
 </svg>`
 
 
@@ -325,37 +325,37 @@ export const Erc20Logo = () => html`
 
 export const ContentPasteLogo = () => html`
 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
-    <path d="M0 0h24v24H0z" fill="none" />
-    <path
-        d="M19 2h-4.18C14.4.84 13.3 0 12 0c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm7 18H5V4h2v3h10V4h2v16z" />
+  <path d="M0 0h24v24H0z" fill="none" />
+  <path
+    d="M19 2h-4.18C14.4.84 13.3 0 12 0c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm7 18H5V4h2v3h10V4h2v16z" />
 </svg>`
 
 export const Policylogo = () => html`
 <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px"
-    fill="#000000">
+  fill="#000000">
+  <g>
+    <rect fill="none" height="24" width="24" />
+  </g>
+  <g>
+    <g />
     <g>
-        <rect fill="none" height="24" width="24" />
+      <path
+        d="M21,5l-9-4L3,5v6c0,5.55,3.84,10.74,9,12c2.3-0.56,4.33-1.9,5.88-3.71l-3.12-3.12c-1.94,1.29-4.58,1.07-6.29-0.64 c-1.95-1.95-1.95-5.12,0-7.07c1.95-1.95,5.12-1.95,7.07,0c1.71,1.71,1.92,4.35,0.64,6.29l2.9,2.9C20.29,15.69,21,13.38,21,11V5z" />
+      <circle cx="12" cy="12" r="3" />
     </g>
-    <g>
-        <g />
-        <g>
-            <path
-                d="M21,5l-9-4L3,5v6c0,5.55,3.84,10.74,9,12c2.3-0.56,4.33-1.9,5.88-3.71l-3.12-3.12c-1.94,1.29-4.58,1.07-6.29-0.64 c-1.95-1.95-1.95-5.12,0-7.07c1.95-1.95,5.12-1.95,7.07,0c1.71,1.71,1.92,4.35,0.64,6.29l2.9,2.9C20.29,15.69,21,13.38,21,11V5z" />
-            <circle cx="12" cy="12" r="3" />
-        </g>
-    </g>
+  </g>
 </svg>`
 
 
 export const EditAgainLogo = () => html`
 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
-    <path d="M0 0h24v24H0z" fill="none" />
-    <path
-        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
+  <path d="M0 0h24v24H0z" fill="none" />
+  <path
+    d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
 </svg>`
 
 export const ContractConfigurationLogo = () => html`<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
-    <path d="M0 0h24v24H0z" fill="none" />
-    <path
-        d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" />
+  <path d="M0 0h24v24H0z" fill="none" />
+  <path
+    d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" />
 </svg>`
