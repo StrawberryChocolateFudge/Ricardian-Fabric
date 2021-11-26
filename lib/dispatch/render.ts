@@ -2,6 +2,14 @@ import { DeploySC, RenderType, State, VerificationState } from "../types";
 import { dispatch } from "./dispatch";
 import { Events } from "../types";
 
+
+export function dispatch_renderMenu(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.menu,
+    props
+  })
+}
+
 export function dispatch_renderCreate(props: State) {
   dispatch(Events.render, {
     type: RenderType.create,
@@ -66,13 +74,6 @@ export function dispatch_renderError(message: string) {
   dispatch(Events.render, {
     type: RenderType.renderError,
     props: { message },
-  });
-}
-
-export function dispatch_renderVersion(version: string) {
-  dispatch(Events.render, {
-    type: RenderType.version,
-    props: { version },
   });
 }
 
