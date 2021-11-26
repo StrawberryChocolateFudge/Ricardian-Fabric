@@ -45,6 +45,14 @@ import {
 } from "../../dispatch/stateChange";
 
 export function permawebSelectActions(props: State) {
+
+  const permawebCheckboxToggle = getById("permaweb_checkbox_toggle");
+  const permawebCheckboxButton = getById("permaweb_checkbox_button");
+
+  permawebCheckboxButton.onclick = function () {
+    permawebCheckboxToggle.click();
+  }
+
   const uploadFile = getById("upload-popup-button");
   const permapin = getById("permapin-popup-button");
   const Account = getById("Account-popup-button");
