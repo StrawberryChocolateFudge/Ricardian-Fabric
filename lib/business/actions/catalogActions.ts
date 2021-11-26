@@ -95,6 +95,13 @@ export function createProposalActions(props: State) {
 }
 
 export function addCatalogButtonListener(props: State) {
+  const catalogCheckboxToggle = getById("catalog_checkbox_toggle");
+  const catalogCheckboxButton = getById("catalog_checkbox_button");
+
+  catalogCheckboxButton.onclick = function () {
+    catalogCheckboxToggle.click();
+  }
+
   const smartcontract = getById("smart-contracts-button");
   //const proposals = getById("view-proposals-button");
   //const createProp = getById("create-proposal-button");
