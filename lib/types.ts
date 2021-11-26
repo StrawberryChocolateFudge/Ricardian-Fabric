@@ -11,6 +11,7 @@ export enum Events {
 }
 
 export enum RenderType {
+  menu = "menu",
   create = "create",
   acceptButton = "acceptButton",
   balance = "balance",
@@ -21,7 +22,6 @@ export enum RenderType {
   removeError = "removeError",
   enableButton = "enableButton",
   disableButton = "disableButton",
-  version = "version",
   redirect = "redirect",
   dateClickListener = "dateClickListener",
   renderTerms = "renderTerms",
@@ -74,6 +74,7 @@ export type RenderDispatchArgs = State & { tmp: any };
 type RenderFunction = (props: any) => void;
 
 export type Renderer = {
+  [RenderType.menu]: RenderFunction;
   [RenderType.create]: RenderFunction;
   [RenderType.acceptButton]: RenderFunction;
   [RenderType.addLoadingIndicator]: RenderFunction;
@@ -83,7 +84,6 @@ export type Renderer = {
   [RenderType.removeError]: RenderFunction;
   [RenderType.enableButton]: RenderFunction;
   [RenderType.disableButton]: RenderFunction;
-  [RenderType.version]: RenderFunction;
   [RenderType.redirect]: RenderFunction;
   [RenderType.dateClickListener]: RenderFunction;
   [RenderType.renderTerms]: RenderFunction;
