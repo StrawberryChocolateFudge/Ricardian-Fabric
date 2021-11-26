@@ -217,6 +217,10 @@ export function getSameAsAboveButton(): HTMLButtonElement {
   return getById("same-contract-button") as HTMLButtonElement;
 }
 
+export function getToMenuButton(): HTMLButtonElement {
+  return getById("toMenuButton") as HTMLButtonElement;
+}
+
 export function changeContainerSlotStyle(to: boolean) {
   const container = getById("action-container");
 
