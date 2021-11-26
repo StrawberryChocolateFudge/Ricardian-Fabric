@@ -209,8 +209,8 @@ export const acceptablePageLayout = (props: AcceptablePageProps) => html`
       border: none;
       font-size: 16px;
       padding: 10px;
+      padding-left: 0px;
       cursor: pointer;
-      border-radius: 20px;
     }
 
     .network-button:hover {
