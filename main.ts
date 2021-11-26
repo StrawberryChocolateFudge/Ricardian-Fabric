@@ -6,6 +6,6 @@ import { dispatch_setInit } from "./lib/dispatch/stateChange";
 
 
   //Wait for the animation, then dispatch set init
-  setTimeout(function () { dispatch_setInit() }, 3000);
+  setTimeout(function () { dispatch_setInit() }, 4000);
 
 })();
