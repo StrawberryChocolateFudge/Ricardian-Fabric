@@ -1,6 +1,7 @@
 @import "medium-editor/dist/css/themes/default.css";
 @import "medium-editor/dist/css/medium-editor.css";
 
+
 body {
   background: radial-gradient(lightgrey 3px, transparent 4px),
     radial-gradient(lightgrey 3px, transparent 4px),
@@ -338,12 +339,17 @@ hr {
   box-shadow: rgb(108, 177, 173) 0px 5px 15px !important;
 }
 
+.lightSlateGray-shadow {
+  box-shadow: lightslategray 0px 5px 15px !important;
+}
+
 .light-shadow {
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
 .labelButton {
   border-radius: 25px;
+  border: none;
   cursor: pointer;
   padding: 10px;
   margin: 5px;
