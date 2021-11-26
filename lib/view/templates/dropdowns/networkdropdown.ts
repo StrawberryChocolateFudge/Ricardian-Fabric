@@ -3,10 +3,11 @@ import { BSCLogo, EthLogo, HarmonyLogo, networkLogo, PolygonLogo } from "../comp
 
 export const NetworkDropdown = () => html`
   <input type="checkbox" id="network_checkbox_toggle" class="dropdown_checkbox_toggle" />
-  <label class="labelButton dropdown_checkbox_label lightBlue-shadow" id="network_checkbox_label"
+  <button class="labelButton dropdown_checkbox_label lightBlue-shadow" id="network_checkbox_button"
     for="network_checkbox_toggle">
     ${networkLogo()} Network
-  </label>
+  </button>
+  
   <ul>
     <li>
       <button id="network-hmny-testnet-shard0" class="dropdown-button">
@@ -15,7 +16,7 @@ export const NetworkDropdown = () => html`
     </li>
     <li>
       <button id="ropsten-testnet" class="dropdown-button">
-        ${EthLogo()} <small>Ropsten Testnet</small>
+        ${EthLogo("10px")} <small>Ropsten Testnet</small>
       </button>
     </li>
     <li>
@@ -28,7 +29,6 @@ export const NetworkDropdown = () => html`
         ${PolygonLogo()} <small>Polygon Testnet</small>
       </button>
     </li>
-  
     <li>
       <hr />
     </li>
