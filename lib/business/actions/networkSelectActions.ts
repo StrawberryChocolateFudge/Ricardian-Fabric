@@ -10,6 +10,13 @@ export function networkSelectActions() {
   const switchnetworkToggle = getById(
     "network_checkbox_toggle"
   ) as HTMLInputElement;
+
+  const switchnetworkButton = getById("network_checkbox_button");
+
+  switchnetworkButton.onclick = function () {
+    switchnetworkToggle.click();
+  }
+
   switchnetworkToggle.onclick = function () {
     if (!web3Injected()) {
       switchnetworkToggle.checked = false;
