@@ -3,8 +3,8 @@ import { accountLogo, arweaveLogo, pinLogo, uploadLogo } from "../components/log
 
 export const PermawebDropdown = () => html`
   <input type="checkbox" id="permaweb_checkbox_toggle" class="dropdown_checkbox_toggle" />
-  <label class="labelButton dropdown_checkbox_label lightCoral-shadow" id="permaweb_checkbox_label"
-    for="permaweb_checkbox_toggle">${arweaveLogo()} Permaweb</label>
+  <button class="labelButton dropdown_checkbox_label lightCoral-shadow" id="permaweb_checkbox_button"
+    for="permaweb_checkbox_toggle">${arweaveLogo()} Permaweb</button>
   <ul>
     <li>
       <button id="Account-popup-button" class="dropdown-button">
