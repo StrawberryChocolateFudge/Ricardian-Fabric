@@ -31,6 +31,7 @@ import {
 import {
   copyStringToClipboard,
   getById,
+  getCurrentUrl,
   getPromptEl,
   getPromptElDOCX,
   setBannerDisplayBlock,
@@ -55,7 +56,12 @@ import {
 } from "./templates/popups/verifyContract";
 import { CatalogDropdown } from "./templates/dropdowns/catalogdropdown";
 import { CreatePage } from "./templates/createPage";
+import { MenuPage } from "./templates/menuPage";
 
+export function renderMenuPage(props: State) {
+  const page = getById("page");
+  render(MenuPage(), page);
+}
 
 export function renderCreatePage() {
   const page = getById("page");
@@ -108,9 +114,6 @@ export function removeError() {
   errorDisplay.innerHTML = "";
 }
 
-export function renderVersion(version: string) {
-  getById("version").textContent = version;
-}
 
 export function renderredirect() {
   const counterEl = getById("redirect-display");
@@ -271,11 +274,11 @@ export function disableCreateInputs() {
 
   const switchNetwork = getById("network_checkbox_toggle") as HTMLInputElement;
   const switchNetworkLabel = getById(
-    "network_checkbox_label"
-  ) as HTMLLabelElement;
+    "network_checkbox_button"
+  ) as HTMLButtonElement;
 
   const catalogToggle = getById("catalog_checkbox_toggle") as HTMLInputElement;
-  const catalogLabel = getById("catalog_checkbox_label") as HTMLLabelElement;
+  const catalogLabel = getById("catalog_checkbox_button") as HTMLButtonElement;
 
   const metamask = getById("metamask-logo-container");
 
@@ -346,14 +349,14 @@ export function enableCreateInputs() {
 
   const switchNetwork = getById("network_checkbox_toggle") as HTMLInputElement;
   const switchNetworkLabel = getById(
-    "network_checkbox_label"
-  ) as HTMLInputElement;
+    "network_checkbox_button"
+  ) as HTMLButtonElement;
 
   const metamask = getById("metamask-logo-container");
 
   const blockedAddresses = getById("blocked-addresses") as HTMLInputElement;
   const catalogToggle = getById("catalog_checkbox_toggle") as HTMLInputElement;
-  const catalogLabel = getById("catalog_checkbox_label") as HTMLInputElement;
+  const catalogLabel = getById("catalog_checkbox_button") as HTMLButtonElement;
 
   const erc20Checkbox = getById("add-erc20-checkbox") as HTMLInputElement;
   const erc20Name = getById("erc20-name") as HTMLInputElement;
@@ -534,9 +537,10 @@ export function setDeployedSCAddressToDOM(address: string) {
 }
 
 export function renderSelectedWallet(selectedWallet: SelectedWallet) {
+  //TODO: I DONT NEED THIS ANYMORE< DEPRECATED!
   const metamask = getById("metamask-logo-container");
-  const selectNetwork = getById("network_checkbox_label");
-  const permaweb = getById("permaweb_checkbox_label");
+  const selectNetwork = getById("network_checkbox_button");
+  const permaweb = getById("permaweb_checkbox_button");
 
   selectNetwork.classList.add("lightBlue-shadow");
   permaweb.classList.add("lightCoral-shadow");
