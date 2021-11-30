@@ -193,9 +193,9 @@ export function dispatch_deployAgain(props: State) {
 }
 
 // THis is a popup
-export function dispatch_deploySCIntent(props: State) {
+export function dispatch_catalogPage(props: State) {
   dispatch(Events.render, {
-    type: RenderType.deploySCIntent,
+    type: RenderType.catalogPage,
     props,
   });
 }
