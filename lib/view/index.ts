@@ -32,7 +32,6 @@ import {
   renderLoadingIndicator,
   renderNetworkDropdown,
   renderSanctionsDropdown,
-  renderSCIntentPopup,
   renderSummary,
   renderTerms,
   renderTooltips,
@@ -69,6 +68,7 @@ import {
   renderUploadStatus,
   discardFile,
   renderMenuPage,
+  renderCatalogPage,
 } from "./render";
 import { renderAcceptTools } from "./render";
 import { areYouSureButtons } from "../business/actions/areYouSureButtons";
@@ -245,8 +245,9 @@ const Render: Renderer = {
   [RenderType.deployAgain]: (props: State) => {
     deployAgainButtonActions(props);
   },
-  [RenderType.deploySCIntent]: (props: State) => {
-    renderSCIntentPopup();
+  [RenderType.catalogPage]: (props: State) => {
+    renderCatalogPage();
+
     deploySCActions();
   },
   [RenderType.SCDeploySelected]: (props: { deploy: DeploySC }) => {
