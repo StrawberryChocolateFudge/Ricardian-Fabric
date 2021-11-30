@@ -13,6 +13,7 @@ export enum Events {
 export enum RenderType {
   menu = "menu",
   create = "create",
+  catalog = "catalog",
   acceptButton = "acceptButton",
   balance = "balance",
   addLoadingIndicator = "addLoadingIndicator",
@@ -39,7 +40,7 @@ export enum RenderType {
   disableAcceptableInputs = "disableAcceptableInputs",
   enableAcceptableInputs = "enableAcceptableInputs",
   deployAgain = "deployAgain",
-  deploySCIntent = "deploySCIntent",
+  catalogPage = "catalogPage",
   SCDeploySelected = "SCDeploySelected",
   DisableSCInputs = "DisableSCInputs",
   EnableSCInputs = "EnableSCInputs",
@@ -100,7 +101,7 @@ export type Renderer = {
   [RenderType.disableAcceptableInputs]: RenderFunction;
   [RenderType.enableAcceptableInputs]: RenderFunction;
   [RenderType.deployAgain]: RenderFunction;
-  [RenderType.deploySCIntent]: RenderFunction;
+  [RenderType.catalogPage]: RenderFunction;
   [RenderType.SCDeploySelected]: RenderFunction;
   [RenderType.DisableSCInputs]: RenderFunction;
   [RenderType.EnableSCInputs]: RenderFunction;
@@ -228,7 +229,6 @@ export enum PopupState {
   NONE,
   Terms,
   ImportTemplate,
-  Catalog,
   ShowAccount,
   NewAccount,
   AddNewAccount, //THE add new Account page is not used in state for more efficien passing of data
@@ -240,7 +240,6 @@ export enum PopupState {
   PermapinSummary, //Same as upload summary...
   verifyContract,
   viewProposals,
-  createProposal,
 }
 
 export type State = {
