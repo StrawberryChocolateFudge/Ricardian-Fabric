@@ -1,7 +1,6 @@
 import { showBanner } from "../business/utils";
 import {
   dispatch_attachDateClickListener,
-  dispatch_deploySCIntent,
   dispatch_hidePopup,
   dispatch_permapinPopup,
   dispatch_permawebselectActions,
@@ -9,8 +8,6 @@ import {
   dispatch_renderAddress,
   dispatch_renderAreYouSure,
   dispatch_renderBalance,
-  dispatch_renderCreate,
-  dispatch_renderCreateProposalPage,
   dispatch_renderDocXDropper,
   dispatch_renderMenu,
   dispatch_renderTerms,
@@ -84,9 +81,6 @@ export const setStateHook = {
       case PopupState.NONE:
         dispatch_hidePopup();
         break;
-      case PopupState.Catalog:
-        dispatch_deploySCIntent(clone);
-        break;
       case PopupState.ImportTemplate:
         dispatch_renderDocXDropper(clone);
         break;
@@ -119,9 +113,6 @@ export const setStateHook = {
         break;
       case PopupState.verifyContract:
         dispatch_renderVerifyContract(clone);
-        break;
-      case PopupState.createProposal:
-        dispatch_renderCreateProposalPage(clone);
         break;
       default:
         break;
