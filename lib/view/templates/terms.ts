@@ -60,5 +60,6 @@ export const termsLayout = () => html` <style>
     >
       I agree to the terms and conditions!
     </button>
-    
+    <hr/>
+    <hr/>
   </div>`;
