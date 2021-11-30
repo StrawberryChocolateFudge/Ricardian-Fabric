@@ -10,8 +10,8 @@ import { AcceptButton, acceptTools } from "./templates/components/acceptTools";
 import { createButton } from "./templates/components/createButton";
 import { CreateSummary } from "./templates/createSummary";
 import {
+  catalogPage,
   createProposalPopup,
-  deploySCIntentPopup,
 } from "./templates/popups/catalogPopup";
 import { DocXDropper } from "./templates/components/docxDropper";
 import { helperTooltips } from "./templates/components/helperTooltips";
@@ -31,7 +31,6 @@ import {
 import {
   copyStringToClipboard,
   getById,
-  getCurrentUrl,
   getPromptEl,
   getPromptElDOCX,
   setBannerDisplayBlock,
@@ -60,13 +59,23 @@ import { MenuPage } from "./templates/menuPage";
 
 export function renderMenuPage(props: State) {
   const page = getById("page");
-  render(MenuPage(), page);
+  // Extracts the ID from the page to add to the blockie. If I use a query param in the future, I handle that already.
+  // I don't expect to use any extra paths so only query string
+  const href = window.location.href;
+  const idFromPage = href.split("arweave.net/")[1]?.split("?")[0]
+  render(MenuPage(idFromPage), page);
 }
 
 export function renderCreatePage() {
   const page = getById("page");
   render(CreatePage(), page);
 }
+
+export function renderCatalogPage() {
+  const page = getById("page");
+  render(catalogPage(), page);
+}
+
 
 export function renderAcceptTools(props: State) {
   const actionContainer = getById("action-container");
@@ -481,12 +490,6 @@ export function renderSanctionsDropdown() {
   render(SanctionsDropdown(true), dropdown);
 }
 
-export function renderSCIntentPopup() {
-  setBannerDisplayBlock();
-  const layout = getById("overlay-layout");
-  layout.style.maxHeight = "100%";
-  render(deploySCIntentPopup(), layout);
-}
 
 export function removePopup() {
   setBannerDisplayNone();
