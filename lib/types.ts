@@ -239,7 +239,6 @@ export enum PopupState {
   Permapin,
   PermapinSummary, //Same as upload summary...
   verifyContract,
-  viewProposals,
 }
 
 export type State = {
