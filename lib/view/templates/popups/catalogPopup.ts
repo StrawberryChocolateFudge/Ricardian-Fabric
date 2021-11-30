@@ -2,13 +2,16 @@ import { html } from "lit-html";
 import { helperTooltips } from "../components/helperTooltips";
 import { BackLogo } from "../components/logos";
 
-export function deploySCIntentPopup() {
+export function wrongCatalogNetwork(networkName: string) {return html``}
+
+
+export function catalogPage() {
   return html` <style></style>
     <h2>Smart Contract Catalog</h2>
     <small>
       You can deploy a contract, compatible with Ricardian Fabric.
     </small>
-    <div class="deploySCIntentContainer">
+    <div class="catalogContainer">
       <ul class="deploySCUL">
         <li id="HRC20-li" class="deploySCLI">
           <input id="HRC20-checkbox" type="checkbox" checked />ERC20
