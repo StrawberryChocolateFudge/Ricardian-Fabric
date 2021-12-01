@@ -7,14 +7,14 @@ import {
   dispatch_disableCreateInputs,
   dispatch_enableButton,
   dispatch_enableCreateInputs,
-  dispatch_renderMenu,
 } from "../../dispatch/render";
 import {
   dispatch_stashPage,
   dispatch_stashDetails,
   dispatch_setEditor,
+  dispatch_setPage,
 } from "../../dispatch/stateChange";
-import { State, Status } from "../../types";
+import { PageState, State, Status } from "../../types";
 import {
   canUseContract,
   getAddress,
@@ -53,8 +53,8 @@ export function renderCreateButtonClick(props: State) {
   const toMenuButton = getToMenuButton();
 
   toMenuButton.onclick = function () {
-    dispatch_renderMenu(props);
-  }
+    dispatch_setPage(PageState.Menu);
+  };
 
   sameButton.onclick = function () {
     const smartC = getSmartContract();
@@ -62,7 +62,7 @@ export function renderCreateButtonClick(props: State) {
       const ercSmartC = getERCSmartContractElement();
       ercSmartC.value = smartC;
     }
-  }
+  };
 
   termsCheckbox.onclick = function () {
     if (termsCheckbox.checked) {
