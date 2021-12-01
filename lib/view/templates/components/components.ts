@@ -50,7 +50,7 @@ export const issuerTemplate = (address: string) => {
       <td aria-labelledby="issuer label">
         <label for="issuer-address"><label for="issuer-address">Issuer:</label></label>
       </td>
-      <td id="issuer-address" aria-label="address">${getBlockie(address, "20px")}<small>${address}</small></td>
+      <td id="issuer-address" aria-label="address">${getBlockie(address, "20px","")}<small>${address}</small></td>
       <td></td>
     </tr>
   `;
@@ -147,7 +147,7 @@ export const getParticipantFromTemplate = (participant: string) => html`<tr>
   <td aria-labelledby="participant label">
     <label for="participant">Participant:</label>
   </td>
-  <td id="participant" aria-label="participant">${getBlockie(participant, "20px")}<small>${participant}</small></td>
+  <td id="participant" aria-label="participant">${getBlockie(participant, "20px","")}<small>${participant}</small></td>
   <td></td>
 </tr>`;
 
