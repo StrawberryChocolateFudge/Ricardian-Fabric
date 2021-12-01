@@ -1,7 +1,7 @@
 import { render } from "lit-html";
 import { AcceptablePageProps, FulfilledPageProps } from "../types";
-import { acceptablePageLayout } from "./templates/acceptablePage";
-import { fulfilledPageLayout } from "./templates/fulfilledPage";
+import { acceptablePageLayout } from "./templates/pages/acceptablePage";
+import { fulfilledPageLayout } from "./templates/pages/fulfilledPage";
 import { initialStringDom } from "./templates/components/initialDom";
 
 export async function getAcceptablePageFromVDOM(
