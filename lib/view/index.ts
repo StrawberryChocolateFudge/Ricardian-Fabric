@@ -61,7 +61,6 @@ import {
   renderTxId,
   renderVerifyContractPopup,
   renderVerificationState,
-  renderCatalogDropdown,
   renderCreateProposalPage,
   renderAccordionOpener,
   renderCreatePage,
@@ -89,7 +88,7 @@ import {
   addChainButtonListener,
   networkSelectActions,
 } from "../business/actions/networkSelectActions";
-import { constructSCActions, deploySCActions } from "../business/actions/deploySCActions";
+import { constructSCActions } from "../business/actions/deploySCActions";
 import { templateSelectActions } from "../business/actions/templateSelectActions";
 import {
   AddNewAccountActions,
@@ -105,11 +104,12 @@ import {
   uploadSummaryActions,
   walletCreateActions,
 } from "../business/actions/permawebSelectActions";
+import { verifyContractActions } from "../business/actions/verifyContractActions";
 import {
-  verifyContractActions,
-  verifyContractPopupTrigger,
-} from "../business/actions/verifyContractActions";
-import { addCatalogButtonListener, createProposalActions, walletSelectListener } from "../business/actions/catalogActions";
+  catalogAction,
+  createProposalActions,
+  walletSelectListener,
+} from "../business/actions/catalogActions";
 import { WinstonToAr } from "../wallet/arweave";
 import { menuActions } from "../business/actions/menuActions";
 
@@ -117,7 +117,6 @@ const Render: Renderer = {
   [RenderType.menu]: (props: State) => {
     renderMenuPage(props);
     menuActions(props);
-
   },
   [RenderType.create]: (props: State) => {
     renderCreatePage();
@@ -127,7 +126,6 @@ const Render: Renderer = {
     // TODO: Check these, I will add web3 modal!
     renderSelectedWallet(props.selectedWallet);
     walletSelectListener();
-
 
     renderCreateButton(true);
     renderCreateButtonClick(props);
@@ -141,13 +139,7 @@ const Render: Renderer = {
     renderTemplatesDropdown();
     templateSelectActions(props);
 
-    // Catalog goes to another page
-    renderCatalogDropdown();
-    addCatalogButtonListener(props);
-
     handleDropdownClosing();
-
-
 
     renderAccordionOpener();
   },
@@ -240,15 +232,14 @@ const Render: Renderer = {
     //If we deployed, this will remove the transaction when we want to deploy again
     removeTransaction();
   },
-  [RenderType.disableAcceptableInputs]: (props: {}) => { },
-  [RenderType.enableAcceptableInputs]: (props: {}) => { },
+  [RenderType.disableAcceptableInputs]: (props: {}) => {},
+  [RenderType.enableAcceptableInputs]: (props: {}) => {},
   [RenderType.deployAgain]: (props: State) => {
     deployAgainButtonActions(props);
   },
   [RenderType.catalogPage]: (props: State) => {
     renderCatalogPage();
-
-    deploySCActions();
+    catalogAction(props);
   },
   [RenderType.SCDeploySelected]: (props: { deploy: DeploySC }) => {
     renderContructorInputs(props.deploy);
@@ -279,15 +270,11 @@ const Render: Renderer = {
     props: State;
   }) => {
     const fee = WinstonToAr(props.transaction.reward);
-    renderUploadSummary(
-      props.file,
-      fee,
-      props.transaction.id
-    );
+    renderUploadSummary(props.file, fee, props.transaction.id);
     uploadSummaryActions(props.transaction, props.data, props.props);
   },
   [RenderType.uploadStatus]: (props: RenderDispatchArgs) => {
-    renderUploadStatus(props.tmp.progress)
+    renderUploadStatus(props.tmp.progress);
   },
   [RenderType.discardFile]: (props: State) => {
     discardFile();
@@ -337,7 +324,7 @@ const Render: Renderer = {
       tipTx: props.tmp.tipTransaction,
     });
   },
-  [RenderType.hidePopup]: ({ }) => {
+  [RenderType.hidePopup]: ({}) => {
     removePopup();
   },
   [RenderType.hideElement]: (props: { el: HTMLElement; hide: boolean }) => {
@@ -360,7 +347,8 @@ const Render: Renderer = {
   [RenderType.permawebSelectActions]: (props: RenderDispatchArgs) => {
     renderPermawebDropdown();
     permawebSelectActions(props);
-  }
+    handleDropdownClosing();
+  },
 };
 
 document.body.addEventListener(Events.render, (e: any) => {
