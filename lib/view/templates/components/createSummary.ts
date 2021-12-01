@@ -1,6 +1,5 @@
 import { html } from "lit-html";
-import { ContractTypes, State } from "../../types";
-import { BackLogo } from "./components/logos";
+import { ContractTypes, State } from "../../../types";
 
 export const CreateSummary = (props: State) => {
   const centerText =

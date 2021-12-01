@@ -1,13 +1,13 @@
 import { html } from "lit-html";
-import { AcceptablePageProps } from "../../types";
+import { AcceptablePageProps } from "../../../types";
 import {
   createdDateTemplate,
   expiryTemplate,
   issuerTemplate,
   networkTemplate,
-} from "./components/components";
-import { mainDep } from "./components/dependencies";
-import { loadingIndicator } from "./components/loadingIndicator";
+} from "../components/components";
+import { mainDep } from "../components/dependencies";
+import { loadingIndicator } from "../components/loadingIndicator";
 
 export const acceptablePageLayout = (props: AcceptablePageProps) => html`
   <style>
@@ -40,8 +40,8 @@ export const acceptablePageLayout = (props: AcceptablePageProps) => html`
       font-family: Sans-Serif;
     }
     svg {
-     vertical-align: middle;
-     display: inline-block;
+      vertical-align: middle;
+      display: inline-block;
     }
     input[type="text"],
     input[type="url"],
@@ -319,12 +319,22 @@ export const acceptablePageLayout = (props: AcceptablePageProps) => html`
   </body>
 `;
 const acceptablePage = (props: AcceptablePageProps) => html`
-  <div data-contracttype="acceptable" data-version="${props.version}" data-created="${props.createdDate}"
-    data-expires="${props.expires}" data-redirectto="${props.redirectto}" data-maindep="${props.mainDep.src}"
+  <div
+    data-contracttype="acceptable"
+    data-version="${props.version}"
+    data-created="${props.createdDate}"
+    data-expires="${props.expires}"
+    data-redirectto="${props.redirectto}"
+    data-maindep="${props.mainDep.src}"
     data-blockedcountries="${JSON.stringify(props.blockedCountries)}"
-    data-blockedaddresses="${JSON.stringify(props.blockedAddresses)}" data-network="${props.network}"
-    data-issuer="${props.issuer}" data-issuersignature="${props.issuerSignature}"
-    data-smartcontract="${props.smartContract}" data-erc20="${props.ERC20}" id="page">
+    data-blockedaddresses="${JSON.stringify(props.blockedAddresses)}"
+    data-network="${props.network}"
+    data-issuer="${props.issuer}"
+    data-issuersignature="${props.issuerSignature}"
+    data-smartcontract="${props.smartContract}"
+    data-erc20="${props.ERC20}"
+    id="page"
+  >
     <div id="contract-display"></div>
     <table id="display-table">
       <tr>

@@ -1,5 +1,5 @@
 import { html } from "lit-html";
-import { BackLogo, ContentPasteLogo, ContractConfigurationLogo, Erc20Logo, importLogo, neverLogo, Policylogo, verifyLogo } from "./components/logos";
+import { BackLogo, ContentPasteLogo, ContractConfigurationLogo, Erc20Logo, importLogo, neverLogo, Policylogo, verifyLogo } from "../components/logos";
 
 export const CreatePage = () => html`
 <hr />
@@ -156,7 +156,6 @@ export const CreatePage = () => html`
     <input aria-label="I agree to the terms checkbox" id="terms-checkbox" type="checkbox" />
 </div>
 <hr />
-<div aria-label="error-display-slot" class="center red" id="error-display"></div>
 <div aria-label="transaction-display-slot" class="center" id="transaction-display"></div>
 
 <div id="button-slot"></div>

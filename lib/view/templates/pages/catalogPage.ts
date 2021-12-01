@@ -1,30 +1,122 @@
 import { html } from "lit-html";
+import { getBlockie } from "../components/getBlockies";
 import { helperTooltips } from "../components/helperTooltips";
 import { BackLogo } from "../components/logos";
 
-export function wrongCatalogNetwork(networkName: string) {return html``}
+function getCategories() {
+  return html` <select>
+    <option>Registries</option>
+    <option>Tokens</option>
+    <option>Token Sale</option>
+    <option>Payments</option>
+    <option>Governance</option>
+    <option>Other</option>
+  </select>`;
+}
 
+function getSmartContracts() {
+  return html`
+    ${SmartContractCards(
+      `Generic ERC-20", "Tokens","All"`,
+      "Generic ERC-20",
+      "Tokens",
+      "All"
+    )}
+    ${SmartContractCards(
+      `"Capped tokens", "Tokens","All"`,
+      "Capped tokens",
+      "Tokens",
+      "All"
+    )}
+    ${SmartContractCards(
+      `"Escrow with xDai", "Finance","xDai"`,
+      "Escrow with xDai",
+      "Finance",
+      "xDai"
+    )}
+    ${SmartContractCards(`zsfasfaa`, "Generic ERC-20", "Tokens", "All")}
+    ${SmartContractCards(`zsfasfaa`, "Generic ERC-20", "Tokens", "All")}
+  `;
+}
 
 export function catalogPage() {
   return html` <style></style>
     <h2>Smart Contract Catalog</h2>
     <small>
-      You can deploy a contract, compatible with Ricardian Fabric.
+      You can deploy a contract, compatible with Ricardian Fabric, propose a new
+      one or Vote.
     </small>
-    <div class="catalogContainer">
-      <ul class="deploySCUL">
-        <li id="HRC20-li" class="deploySCLI">
-          <input id="HRC20-checkbox" type="checkbox" checked />ERC20
-          ${helperTooltips("Tokens deployed are compatible with the standard.")}
-        </li>
-      </ul>
-
+    <div>
+      <button class="labelButton" id="create-proposal-button">Create a proposal</button>
+      <button class="labelButton">Review and Vote</button>
+    </div>
+    <table>
+      <thead>
+        <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <label id="categories-label">Category:</label>
+          </td>
+          <td>
+    ${getCategories()}
+          </td>
+          <td><hr/></td>
+          <td>
+            <button class="labelButton">Search:</button>
+          </td>
+          <td>
+            <input id="search-input" type="text" placeholder="Search for..."/>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="catalogList">
+     ${getSmartContracts()}
+</div>
+<hr/>
       <div class="SCIntent-button-row">
         <button class="backButton" id="SCIntentBackButton">Back</button>
-        <hr />
-        <button class="NextButton" id="SCIntentNextButton">Next</button>
       </div>
       <hr />
+    </div>`;
+}
+
+export function SmartContractCards(
+  id: string,
+  name: string,
+  category: string,
+  network: string
+) {
+  return html`<style>
+      .card {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        transition: 0.3s;
+        /* width: 20%; */
+        margin-top: 10px;
+        cursor: pointer;
+      }
+
+      .card:hover {
+        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+      }
+    </style>
+    <div class="card">
+      ${getBlockie(id, "100%", "")}
+      <div>
+        <h4><b>${name}</b></h4>
+        <label for="category_parag">Category:</label>
+        <p id="category_parag">${category}</p>
+        <label for="network_parag">Network:</label>
+        <p id="network_parag">${network}</p>
+      </div>
     </div>`;
 }
 
@@ -35,6 +127,10 @@ export function createProposalPopup() {
       >You can propose a new smart contract. The DAO will decide if it's
       eligible to be added to the catalog.</small
     >
+    <small>Proposal data is uploaded to the permaweb.</small>
+    <hr/>
+    <p>TODO: Add tabs</p>
+    <div id="permaweb-dropdown">Permaweb</div>
     <table>
       <thead>
         <tr>
@@ -65,6 +161,19 @@ export function createProposalPopup() {
               "A short description to show in the proposal and the catalog."
             )}
           </td>
+          <tr>
+            <td>
+              <label for="Network-options">Network:</label>
+            </td>
+            <td><select>
+              <option>All</option>
+              <option>Harmony</option>
+            </select>></td> 
+            <td>${helperTooltips("Choose the compatible network")}</td>
+          </tr>
+        </tr><td>
+         <label for=""></label>
+        </td>
         </tr>
         <tr>
           <td>
@@ -80,47 +189,6 @@ export function createProposalPopup() {
           <td></td>
           <td></td>
         </tr>
-        <tr>
-          <td>
-            <label for="smartcontract-isERC20">ERC20?</label>
-          </td>
-          <td>
-            <input type="checkbox" id="smartcontract-isERC20" />
-          </td>
-          <td>
-            ${helperTooltips(
-              "Is it an erc20? Used for adding tokens to the wallet automaticly."
-            )}
-          </td>
-        </tr>
-        <tr id="erc20-name-row">
-          <td>
-            <label for="isERC20-name">ERC20 name:</label>
-          </td>
-          <td>
-            <input id="isERC20-name" type="text" disabled />
-          </td>
-          <td>${helperTooltips("The name of the ERC20")}</td>
-        </tr>
-        <tr id="erc20-symbol-row">
-          <td>
-            <label for="isERC20-symbol">ERC20 Symbol:</label>
-          </td>
-          <td>
-            <input id="isERC20-symbol" type="text" disabled />
-          </td>
-          <td>${helperTooltips("The symbol of the ERC20")}</td>
-        </tr>
-        <tr id="erc20-decimals-row">
-          <td>
-            <label for="isERC20-decimals">ERC20 Decimals:</label>
-          </td>
-          <td>
-            <input id="isERC20-decimals" type="number" disabled />
-          </td>
-          <td>${helperTooltips("The decimals of the ERC20")}</td>
-        </tr>
-        <tr>
           <td><hr /></td>
           <td></td>
           <td></td>
@@ -177,7 +245,9 @@ export function createProposalPopup() {
       </tbody>
     </table>
     <div class="row">
-      <button class="backButton" id="createproposal-back">${BackLogo()} Back</button>
+      <button class="backButton" id="createproposal-back">
+        ${BackLogo()} Back
+      </button>
       <hr />
       <button class="NextButton" id="createproposal-proceed">Next</button>
     </div>
