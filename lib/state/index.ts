@@ -6,6 +6,7 @@ import {
   SelectedWallet,
   StashedDetails,
   State,
+  PageState,
 } from "../types";
 import { getCurrentUrl, getPage } from "../view/utils";
 import {
@@ -38,6 +39,7 @@ import { setStateHook } from "./setStateHook";
       },
       Account: { data: null, address: null, balance: null },
       popupState: PopupState.NONE,
+      pageState: PageState.Menu,
       editor: null,
       domParser: new DOMParser(),
       selectedDate: "",
@@ -69,6 +71,7 @@ import { setStateHook } from "./setStateHook";
       set: function (obj: State, prop: string, value: any) {
         obj[prop] = value;
         setStateHook[prop]({ obj, prop, value });
+        console.log(obj);
         return true;
       },
     };
@@ -117,7 +120,10 @@ import { setStateHook } from "./setStateHook";
     },
     [EventType.setEditFinished]: (value: boolean) => {
       stateContainer.editFinished = value;
-    }
+    },
+    [EventType.setPageState]: (value: PageState) => {
+      stateContainer.pageState = value;
+    },
   };
 
   document.body.addEventListener(Events.stateChange, function (event: any) {
