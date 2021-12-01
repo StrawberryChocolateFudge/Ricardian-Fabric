@@ -2,10 +2,9 @@ import {
   dispatch_DisableSCInputs,
   dispatch_EnableSCInputs,
   dispatch_renderError,
-  dispatch_SCDeploySelected,
   dispatch_setDeployedSCAddress,
 } from "../../dispatch/render";
-import { DeploySC, ERC20Params, PopupState } from "../../types";
+import { DeploySC, PopupState } from "../../types";
 import {
   deployContract,
   findConstructorParameters,
@@ -17,38 +16,7 @@ import {
 import { getHRC20Abi, getHRC20Bytecode } from "../../wallet/abi/HRC20";
 import { getById } from "../../view/utils";
 import MetaMaskOnboarding from "@metamask/onboarding";
-import {
-  dispatch_setPopupState,
-} from "../../dispatch/stateChange";
-
-export function deploySCActions() {
-  const hrc20 = getById("HRC20-checkbox") as HTMLInputElement;
-  const hrc20Li = getById("HRC20-li");
-  const backbutton = getById("SCIntentBackButton") as HTMLButtonElement;
-  const nextButton = getById("SCIntentNextButton") as HTMLButtonElement;
-
-  hrc20.onchange = function () {
-    if (!hrc20.checked) {
-      nextButton.disabled = true;
-    } else {
-      nextButton.disabled = false;
-    }
-  };
-
-  hrc20Li.onclick = function () {
-    hrc20.checked = !hrc20.checked;
-  };
-
-  backbutton.onclick = function () {
-    dispatch_setPopupState(PopupState.NONE);
-  };
-
-  nextButton.onclick = function () {
-    if (hrc20.checked) {
-      dispatch_SCDeploySelected(DeploySC.HRC20);
-    }
-  };
-}
+import { dispatch_setPopupState } from "../../dispatch/stateChange";
 
 export function constructSCActions(selected: DeploySC) {
   let abi;
@@ -113,7 +81,6 @@ export function constructSCActions(selected: DeploySC) {
     };
 
     const onReceipt = async (receipt) => {
-
       dispatch_setDeployedSCAddress(receipt.contractAddress);
 
       dispatch_setPopupState(PopupState.NONE);
@@ -153,4 +120,3 @@ export function prepareArguments(constructorElements, params) {
   });
   return preparedArgs;
 }
-
