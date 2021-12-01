@@ -6,6 +6,7 @@ import {
   PopupState,
   SelectedWallet,
   StashedDetails,
+  PageState,
 } from "../types";
 import { dispatch } from "./dispatch";
 
@@ -51,7 +52,6 @@ export function dispatch_setPosition(position: GeolocationPosition) {
   });
 }
 
-
 export function dispatch_setSelectedWallet(to: SelectedWallet) {
   dispatch(Events.stateChange, {
     type: EventType.setSelectedWallet,
@@ -76,20 +76,27 @@ export function dispatch_setPopupState(to: PopupState) {
 export function dispatch_stashIpfsCID(id) {
   dispatch(Events.stateChange, {
     type: EventType.setIpfsCID,
-    value: id
-  })
+    value: id,
+  });
 }
 
 export function dispatch_editFinished(done: boolean) {
   dispatch(Events.stateChange, {
     type: EventType.setEditFinished,
-    value: done
-  })
+    value: done,
+  });
 }
 
 export function dispatch_setEditor(editor: any) {
   dispatch(Events.stateChange, {
     type: EventType.setEditor,
-    value: editor
-  })
+    value: editor,
+  });
+}
+
+export function dispatch_setPage(pageState: PageState) {
+  dispatch(Events.stateChange, {
+    type: EventType.setPageState,
+    value: pageState,
+  });
 }
