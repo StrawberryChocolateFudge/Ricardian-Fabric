@@ -1,17 +1,17 @@
-import { dispatch_renderCreate } from "../../dispatch/render";
-import { State } from "../../types";
+import { dispatch_setPage } from "../../dispatch/stateChange";
+import { PageState, State } from "../../types";
 import { getById } from "../../view/utils";
 import { verifyContractPopupTrigger } from "./verifyContractActions";
 
 export function menuActions(props: State) {
-    verifyContractPopupTrigger();
-    const createPage = getById("create-contract-button");
-    const smartContractButton = getById("smart-contract-catalog-button");
-    createPage.onclick = function () {
-        dispatch_renderCreate(props);
-    }
+  verifyContractPopupTrigger(props);
+  const createPage = getById("create-contract-button");
+  const smartContractButton = getById("smart-contract-catalog-button");
+  createPage.onclick = function () {
+    dispatch_setPage(PageState.CreateRicardian);
+  };
 
-    smartContractButton.onclick = function () {
-        console.log("smnart contract button clicked")
-    }
+  smartContractButton.onclick = function () {
+    dispatch_setPage(PageState.Catalog);
+  };
 }
