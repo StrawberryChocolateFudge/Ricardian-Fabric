@@ -8,11 +8,11 @@ import {
 } from "../types";
 import { AcceptButton, acceptTools } from "./templates/components/acceptTools";
 import { createButton } from "./templates/components/createButton";
-import { CreateSummary } from "./templates/createSummary";
+import { CreateSummary } from "./templates/components/createSummary";
 import {
   catalogPage,
   createProposalPopup,
-} from "./templates/popups/catalogPopup";
+} from "./templates/pages/catalogPage";
 import { DocXDropper } from "./templates/components/docxDropper";
 import { helperTooltips } from "./templates/components/helperTooltips";
 import { loadingIndicator } from "./templates/components/loadingIndicator";
@@ -52,17 +52,17 @@ import {
   VerifyContract,
   VerifyFailure,
   VerifySuccess,
-} from "./templates/popups/verifyContract";
+} from "./templates/pages/verifyContractPage";
 import { CatalogDropdown } from "./templates/dropdowns/catalogdropdown";
-import { CreatePage } from "./templates/createPage";
-import { MenuPage } from "./templates/menuPage";
+import { CreatePage } from "./templates/pages/createPage";
+import { MenuPage } from "./templates/pages/menuPage";
 
 export function renderMenuPage(props: State) {
   const page = getById("page");
   // Extracts the ID from the page to add to the blockie. If I use a query param in the future, I handle that already.
   // I don't expect to use any extra paths so only query string
   const href = window.location.href;
-  const idFromPage = href.split("arweave.net/")[1]?.split("?")[0]
+  const idFromPage = href.split("arweave.net/")[1]?.split("?")[0];
   render(MenuPage(idFromPage), page);
 }
 
@@ -75,7 +75,6 @@ export function renderCatalogPage() {
   const page = getById("page");
   render(catalogPage(), page);
 }
-
 
 export function renderAcceptTools(props: State) {
   const actionContainer = getById("action-container");
@@ -122,7 +121,6 @@ export function removeError() {
   errorDisplay.className = errorDisplay.className.replace("show", "");
   errorDisplay.innerHTML = "";
 }
-
 
 export function renderredirect() {
   const counterEl = getById("redirect-display");
@@ -254,8 +252,18 @@ export function renderTooltips() {
     helperTooltips("A comma separated list of addresses to block."),
     blockedAddresses
   );
-  render(helperTooltips("Check this to add an ERC20 to the signer's wallet with the below config."), adderc20Tooltip);
-  render(helperTooltips("The contract will configure the wallet to this when it's accepted."), erc20Tooltip)
+  render(
+    helperTooltips(
+      "Check this to add an ERC20 to the signer's wallet with the below config."
+    ),
+    adderc20Tooltip
+  );
+  render(
+    helperTooltips(
+      "The contract will configure the wallet to this when it's accepted."
+    ),
+    erc20Tooltip
+  );
   render(helperTooltips("The token name"), erc20NameTooltip);
   render(helperTooltips("The token symbol"), erc20SymbolTooltip);
   render(helperTooltips("Token decimals"), erc20DecimalTooltip);
@@ -263,11 +271,10 @@ export function renderTooltips() {
 }
 
 export function disableCreateInputs() {
-
   const disable = (el: HTMLInputElement | HTMLButtonElement) => {
     el.disabled = true;
-    el.style.cursor = "not-allowed !important"
-  }
+    el.style.cursor = "not-allowed !important";
+  };
 
   const editor = getById("editor") as HTMLInputElement;
   const expires = getById("expires-input") as HTMLInputElement;
@@ -330,19 +337,22 @@ export function disableCreateInputs() {
   disable(redirectto);
   disable(termsCheckbox);
   termsCheckboxLabel.style.backgroundColor = "white";
-  docxDropper.style.cursor = "not-allowed"
+  docxDropper.style.cursor = "not-allowed";
   disable(docxDropper);
   disable(smartContract);
 }
 export function enableCreateInputs() {
   enum Cursor {
     pointer = "pointer",
-    auto = "auto"
+    auto = "auto",
   }
-  const enable = (inp: HTMLInputElement | HTMLButtonElement, cursor: Cursor) => {
+  const enable = (
+    inp: HTMLInputElement | HTMLButtonElement,
+    cursor: Cursor
+  ) => {
     inp.style.cursor = cursor;
     inp.disabled = false;
-  }
+  };
 
   const editor = getById("editor") as HTMLInputElement;
   const expires = getById("expires-input") as HTMLInputElement;
@@ -489,7 +499,6 @@ export function renderSanctionsDropdown() {
   const dropdown = getById("sanctions-dropdown");
   render(SanctionsDropdown(true), dropdown);
 }
-
 
 export function removePopup() {
   setBannerDisplayNone();
@@ -660,8 +669,7 @@ export function renderTxId(to: string, txId: string) {
 }
 
 export function renderVerifyContractPopup() {
-  setBannerDisplayBlock();
-  const el = getById("overlay-layout");
+  const el = getById("page");
   render(VerifyContract(), el);
 }
 export function renderVerificationState(verificationState: VerificationState) {
@@ -683,9 +691,8 @@ export function renderVerificationState(verificationState: VerificationState) {
 }
 
 export function renderCreateProposalPage(props: State) {
-  setBannerDisplayBlock();
-  const layout = getById("overlay-layout");
-  render(createProposalPopup(), layout);
+  const page = getById("page");
+  render(createProposalPopup(), page);
 }
 
 export function renderAccordionOpener() {
