@@ -1,34 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link inline rel="stylesheet" href="./styles.css" />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link inline rel="stylesheet" href="./styles.css" />
+    <head> </head>
+    <title>Ricardian Fabric</title>
+  </head>
 
-  <head> </head>
-  <title>Ricardian Fabric</title>
-</head>
-
-<body class="background">
-  <div data-dependency="http://localhost:1234/main.c39d6dcf.js"
-    data-logosrc="https://ybiydesxc7lhiuyfju6h2wn7jhxrrct4666e3b6swktqas56fqgq.arweave.net/wFGBklcX1nRTBU08fVm_Se8Yinz3vE2H0rKnAEu-LA0"
-    data-version="0.0.4" data-contracttype="create" id="page" data-selectedwallet="metamask">
-    <div class="intro-logo-container">
-      <div class="FabricText">Ricardian Fabric</div>
-      <div class="DaoText">
-        <span>DAO</span>
+  <body class="background">
+    <div
+      data-dependency="http://localhost:1234/main.c39d6dcf.js"
+      data-logosrc="https://ybiydesxc7lhiuyfju6h2wn7jhxrrct4666e3b6swktqas56fqgq.arweave.net/wFGBklcX1nRTBU08fVm_Se8Yinz3vE2H0rKnAEu-LA0"
+      data-version="0.0.4"
+      data-contracttype="create"
+      id="page"
+      data-selectedwallet="metamask"
+    >
+      <div class="intro-logo-container">
+        <div class="FabricText">Ricardian Fabric</div>
+        <div class="DaoText">
+          <span>DAO</span>
+        </div>
       </div>
     </div>
+    <div
+      aria-label="error-display-slot"
+      class="center red"
+      id="error-display"
+    ></div>
 
-  </div>
-
-  <div id="overlay">
-    <div id="overlay-layout"></div>
-  </div>
-
-</body>
-<script id="main-script" inline src="./main.ts"></script>
-
+    <div id="overlay">
+      <div id="overlay-layout"></div>
+    </div>
+  </body>
+  <script id="main-script" inline src="./main.ts"></script>
 </html>
