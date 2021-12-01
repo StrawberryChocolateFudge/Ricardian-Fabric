@@ -3,12 +3,11 @@ import {
   dispatch_renderError,
   dispatch_verificationState,
 } from "../../dispatch/render";
-import { dispatch_setPopupState } from "../../dispatch/stateChange";
 import { fetchAcceptableContract } from "../../fetch";
 import {
   BlockCountry,
   ContractTypes,
-  PopupState,
+  PageState,
   State,
   Status,
   VerificationState,
@@ -17,11 +16,12 @@ import { getmsgParams, recoverTypedSignatures } from "../../wallet/web3";
 import { getById } from "../../view/utils";
 import { dependencyDeployer } from "../../wallet/arweave";
 import { getOwnerFromTxId } from "../../fetch/graphql";
+import { dispatch_setPage } from "../../dispatch/stateChange";
 
-export function verifyContractPopupTrigger() {
+export function verifyContractPopupTrigger(props: State) {
   const verify = getById("verify-contract-button");
   verify.onclick = function () {
-    dispatch_setPopupState(PopupState.verifyContract);
+    dispatch_setPage(PageState.VerifyContract);
   };
 }
 
@@ -32,7 +32,7 @@ export function verifyContractActions(props: State) {
   const acceptableUrl = getById("acceptable-contract-url") as HTMLInputElement;
 
   backbutton.onclick = function () {
-    dispatch_setPopupState(PopupState.NONE);
+    dispatch_setPage(PageState.Menu);
   };
 
   verifyProceed.onclick = async function () {
@@ -113,7 +113,6 @@ async function verifyAcceptableContract(url: string, domParser: DOMParser) {
     return;
   }
 
-
   // I need to recompute the hash now.
   const legalContract = html.getElementById("contract-display").innerHTML;
   const createdDate = page.dataset.created;
@@ -140,16 +139,12 @@ async function verifyAcceptableContract(url: string, domParser: DOMParser) {
     network,
     smartContract,
     blockedAddresses,
-    ERC20
+    ERC20,
   });
 
   // I need to verify the issuer signature now!
 
-  const msgParams = getmsgParams(
-    network,
-    smartContract,
-    recomputedHash
-  );
+  const msgParams = getmsgParams(network, smartContract, recomputedHash);
 
   const signature = page.dataset.issuersignature;
 
