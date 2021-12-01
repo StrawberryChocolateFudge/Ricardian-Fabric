@@ -2,18 +2,24 @@
 
 The IPFS version of Ricardian fabric.
 
-
 # 0.0.4
-The latest version of ricadian fabric, still under development and not in production. 
+
+The latest version of ricadian fabric, still under development and not in production.
 The latest version on testnet is 0.0.3 and there are breaking changes in contract verification and signing between the versions.
-It is advised to wait to use the version on the website till I update it to the latest version. 
- 
+It is advised to wait to use the version on the website till I update it to the latest version.
 
 ## Use
 
 Run the front end
 
 `yarn run dev`
+
+#### version blockie
+
+Because the version blockie is the arweave transaction ID
+add this to the development URL to render it after localhost:1234/
+
+"arweave.net/whateverIDIMakeUp"
 
 ## Deployment
 
@@ -32,6 +38,6 @@ Then run `yarn inline`
 
 The final bundle.html is ready to be deployed!
 
-## 
+##
 
 Detailed docs on how to use it can be found on docs.ricadianfabric.com, currently version 0.0.3 is documented there.
