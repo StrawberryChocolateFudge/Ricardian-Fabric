@@ -65,7 +65,7 @@ export enum RenderType {
   verifyContract = "verifyContract",
   verificationState = "verificationState",
   createProposalPage = "createProposalPage",
-  permawebSelectActions = "permawebSelectActions"
+  permawebSelectActions = "permawebSelectActions",
 }
 
 // TODO refactor to RenderDispatchArgs for specifying the dispatch arguments
@@ -150,7 +150,8 @@ export enum EventType {
   setNewAccount = "setNewAccount",
   setPopupState = "setPopupState",
   setIpfsCID = "setIpfsCID",
-  setEditFinished = "setEditFinished"
+  setEditFinished = "setEditFinished",
+  setPageState = "setPageState",
 }
 
 export enum StateProperties {
@@ -168,6 +169,7 @@ export enum StateProperties {
   ipfsCID = "ipfsCID",
   editFinished = "editFinished",
   editor = "editor",
+  pageState = "pageState",
 }
 
 export enum ContractTypes {
@@ -195,7 +197,7 @@ export enum WalletDropperType {
 }
 
 export enum SelectedWallet {
-  metamask = "metamask"
+  metamask = "metamask",
 }
 
 export type StashedDetails = {
@@ -238,7 +240,15 @@ export enum PopupState {
   UploadSummary, // Upload summary is not used in state because it get's passed a signed transaction
   Permapin,
   PermapinSummary, //Same as upload summary...
-  verifyContract,
+}
+
+export enum PageState {
+  Menu,
+  CreateRicardian,
+  VerifyContract,
+  Staking,
+  Catalog,
+  Proposals,
 }
 
 export type State = {
@@ -249,6 +259,7 @@ export type State = {
   domParser: DOMParser;
   selectedDate: Date | string;
   popupState: PopupState;
+  pageState: PageState;
   stashedPage: string;
   stashedDetails: StashedDetails;
   selectedWallet: SelectedWallet;
