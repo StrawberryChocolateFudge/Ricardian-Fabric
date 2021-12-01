@@ -192,7 +192,6 @@ export function dispatch_deployAgain(props: State) {
   });
 }
 
-// THis is a popup
 export function dispatch_catalogPage(props: State) {
   dispatch(Events.render, {
     type: RenderType.catalogPage,
