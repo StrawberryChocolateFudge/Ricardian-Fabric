@@ -1,6 +1,6 @@
-import { showBanner } from "../business/utils";
 import {
   dispatch_attachDateClickListener,
+  dispatch_catalogPage,
   dispatch_hidePopup,
   dispatch_permapinPopup,
   dispatch_permawebselectActions,
@@ -8,6 +8,8 @@ import {
   dispatch_renderAddress,
   dispatch_renderAreYouSure,
   dispatch_renderBalance,
+  dispatch_renderCreate,
+  dispatch_renderCreateProposalPage,
   dispatch_renderDocXDropper,
   dispatch_renderMenu,
   dispatch_renderTerms,
@@ -20,6 +22,7 @@ import {
 } from "../dispatch/render";
 import {
   ContractTypes,
+  PageState,
   PopupState,
   SetHookArgs,
   State,
@@ -31,15 +34,14 @@ export const setStateHook = {
     const currentPage = args.obj.contracttype;
     const clone = cloneState(args.obj);
     if (currentPage === ContractTypes.create) {
-
       dispatch_renderMenu(clone);
       // showBanner();
     } else if (currentPage === ContractTypes.acceptable) {
       dispatch_renderAcceptButton(clone);
     }
   },
-  [StateProperties.ipfs]: (args: SetHookArgs) => { },
-  [StateProperties.editor]: (args: SetHookArgs) => { },
+  [StateProperties.ipfs]: (args: SetHookArgs) => {},
+  [StateProperties.editor]: (args: SetHookArgs) => {},
   [StateProperties.balance]: (args: SetHookArgs) => {
     dispatch_renderBalance(cloneState(args.obj));
   },
@@ -72,9 +74,7 @@ export const setStateHook = {
     const clone: State = cloneState(args.obj);
     dispatch_permawebselectActions(clone);
   },
-  [StateProperties.ipfsCID]: (args: SetHookArgs) => {
-
-  },
+  [StateProperties.ipfsCID]: (args: SetHookArgs) => {},
   [StateProperties.popupState]: (args: SetHookArgs) => {
     const clone = cloneState(args.obj);
     switch (args.value) {
@@ -111,8 +111,30 @@ export const setStateHook = {
       case PopupState.Permapin:
         dispatch_permapinPopup(clone, clone.ipfsCID);
         break;
-      case PopupState.verifyContract:
+      default:
+        break;
+    }
+  },
+  [StateProperties.pageState]: (args: SetHookArgs) => {
+    const clone = cloneState(args.obj);
+    switch (args.value) {
+      case PageState.Menu:
+        dispatch_renderMenu(clone);
+        break;
+      case PageState.CreateRicardian:
+        dispatch_renderCreate(clone);
+        break;
+      case PageState.Catalog:
+        dispatch_catalogPage(clone);
+        break;
+      case PageState.VerifyContract:
         dispatch_renderVerifyContract(clone);
+        break;
+      case PageState.Proposals:
+        dispatch_renderCreateProposalPage(clone);
+        dispatch_permawebselectActions(clone);
+        break;
+      case PageState.Staking:
         break;
       default:
         break;
