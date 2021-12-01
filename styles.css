@@ -1,25 +1,28 @@
 @import "medium-editor/dist/css/themes/default.css";
 @import "medium-editor/dist/css/medium-editor.css";
 
-
 body {
   background: radial-gradient(lightgrey 3px, transparent 4px),
     radial-gradient(lightgrey 3px, transparent 4px),
     linear-gradient(#fff 4px, transparent 0),
-    linear-gradient(45deg,
+    linear-gradient(
+      45deg,
       transparent 74px,
       transparent 75px,
       #a4a4a4 75px,
       #a4a4a4 76px,
       transparent 77px,
-      transparent 109px),
-    linear-gradient(-45deg,
+      transparent 109px
+    ),
+    linear-gradient(
+      -45deg,
       transparent 75px,
       transparent 76px,
       #a4a4a4 76px,
       #a4a4a4 77px,
       transparent 78px,
-      transparent 109px),
+      transparent 109px
+    ),
     #fff;
   background-size: 109px 109px, 109px 109px, 100% 6px, 109px 109px, 109px 109px;
   background-position: 54px 55px, 0px 0px, 0px 0px, 0px 0px, 0px 0px;
@@ -37,7 +40,8 @@ input[type="url"],
 input[type="date"],
 input[type="number"],
 input[type="password"],
-input[type="email"] {
+input[type="email"],
+select {
   background-color: transparent;
   border: none;
   border-bottom: 1px solid grey;
@@ -58,7 +62,8 @@ input[type="url"]:disabled,
 input[type="date"]:disabled,
 input[type="password"]:disabled,
 input[type="email"]:disabled,
-input[type="number"]:disabled {
+input[type="number"]:disabled,
+select {
   color: rgba(0, 0, 0, 0.42);
   border-bottom: 1px dotted #f2f2f2;
 }
@@ -68,9 +73,14 @@ input[type="url"]:focus,
 input[type="date"]:focus,
 input[type="number"]:focus,
 input[type="password"]:focus,
-input[type="email"]:focus {
+input[type="email"]:focus,
+select {
   border-bottom: 1px solid darkgrey;
   box-shadow: 0 1px 0 0 darkgrey;
+}
+
+option {
+  color: black;
 }
 
 input[type="checkbox"] {
@@ -96,7 +106,7 @@ input[type="file"] {
   color: black !important;
 }
 
-#sanctions_checkbox_toggle:checked~ul {
+#sanctions_checkbox_toggle:checked ~ ul {
   display: block;
   list-style-type: none;
   list-style: none;
@@ -109,7 +119,7 @@ input[type="file"] {
   z-index: 3;
 }
 
-#sanctions_checkbox_toggle~ul {
+#sanctions_checkbox_toggle ~ ul {
   display: none;
 }
 
@@ -161,7 +171,7 @@ hr {
   background-color: #ccc;
 }
 
-.dropdown_checkbox_toggle:checked~ul {
+.dropdown_checkbox_toggle:checked ~ ul {
   display: block;
   list-style-type: none;
   list-style: none;
@@ -174,7 +184,7 @@ hr {
   z-index: 3;
 }
 
-.dropdown_checkbox_toggle~ul {
+.dropdown_checkbox_toggle ~ ul {
   display: none;
 }
 
@@ -267,7 +277,6 @@ hr {
   transform: scale(1.01);
 }
 
-
 #overlay {
   position: fixed;
   display: none;
@@ -354,6 +363,9 @@ hr {
   padding: 10px;
   margin: 5px;
 }
+.labelButton:hover {
+  background-color: #ccc;
+}
 
 #network-dropdown {
   align-self: center;
@@ -366,8 +378,6 @@ hr {
 #catalog-dropdown {
   align-self: center;
 }
-
-
 
 .drop-zone {
   margin-top: 20px;
@@ -464,19 +474,11 @@ hr {
   background-color: #ccc;
 }
 
-.deploySCUL {
-  list-style-type: none;
-  list-style: none;
-  list-style-position: initial;
-  padding: 0;
-}
-
-.deploySCLI {
-  padding: 8px;
-  border-radius: 1px;
-  background-color: white;
-  box-shadow: 1px 1px 1px 1px darkgrey;
-  cursor: pointer;
+.catalogList {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
 }
 
 .backButton {
@@ -570,7 +572,8 @@ hr {
   transition: 0.4s;
 }
 
-.active, .accordion:hover {
+.active,
+.accordion:hover {
   background-color: #ccc;
 }
 
@@ -581,6 +584,28 @@ hr {
   overflow: hidden;
   z-index: 2;
 }
+
+.routes-buttons-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.routes-buttons {
+  width: 200px;
+  height: 200px;
+  margin-left: 30px;
+  margin-right: 30px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  cursor: pointer;
+  border-radius: 25px;
+  border: none;
+}
+
 
 #error-display {
   visibility: hidden;
@@ -670,13 +695,12 @@ hr {
   text-align: center;
 }
 
-
 /* LOGO ANIMATION START */
 .intro-logo-container {
   text-align: center;
   /* background: linear-gradient(141deg, #ccc 25%, #eee 40%, #ddd 55%); */
   color: #555;
-  font-family: 'Roboto';
+  font-family: "Roboto";
   font-weight: 300;
   font-size: 32px;
   padding-top: 10vh;
@@ -770,7 +794,5 @@ hr {
     width: 100px;
   }
 }
-
-
 
 /* LOGO ANIMATION END */
