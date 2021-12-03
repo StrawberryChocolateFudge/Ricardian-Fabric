@@ -4,9 +4,9 @@ import { Options, Status } from "../types";
 // import TestWeave from "testweave-sdk";
 
 export const ARWAEVECONFIG = {
-  host: 'arweave.net',
+  host: "arweave.net",
   port: 443,
-  protocol: 'https',
+  protocol: "https",
   timeout: 20000,
   logging: false,
   logger: console.log,
@@ -24,7 +24,9 @@ const arweave = Arweave.init(ARWAEVECONFIG);
 
 // The address that deploys the javascript dependency.
 // stored for verification purposes
-export const dependencyDeployer = ["Ygcqww4Hq2mjMzqhWFnCTMsQ9VFEr4ytVWbYDbXCpDw"];
+export const dependencyDeployer = [
+  "Ygcqww4Hq2mjMzqhWFnCTMsQ9VFEr4ytVWbYDbXCpDw",
+];
 
 const PSTContract = "ligtZZ4M3Gy3BUi2qz4B6yXQiOcjJ_wU55QYhXFw7Ow";
 
@@ -40,10 +42,7 @@ export async function createFileTransaction(
   version: string,
   key: any
 ) {
-  const transaction = await arweave.createTransaction(
-    { data },
-    key
-  );
+  const transaction = await arweave.createTransaction({ data }, key);
   transaction.addTag("Contract-Type", "File upload");
   transaction.addTag("Content-Type", type);
   transaction.addTag("App-Version", version);
@@ -53,8 +52,40 @@ export async function createFileTransaction(
   return transaction;
 }
 
-export async function uploadData(transaction: any, progressLogger: CallableFunction): Promise<Options<string>> {
-  const options: Options<string> = { status: Status.Success, error: "", data: "" }
+export async function createProposalTransaction(
+  data: any,
+  version: string,
+  key: any,
+  name: string,
+  category: string,
+  chainid: string,
+  simpleTerms: boolean
+) {
+  const transaction = await arweave.createTransaction(
+    { data: JSON.stringify(data) },
+    key
+  );
+  transaction.addTag("Contract-Type", "Proposal");
+  transaction.addTag("Content-Type", "application/json");
+  transaction.addTag("App-Version", version);
+  transaction.addTag("App-Name", "Ricardian Fabric");
+  transaction.addTag("Name", name);
+  transaction.addTag("Category", category);
+  transaction.addTag("ChainId", chainid);
+  transaction.addTag("SimpleTerms", `${simpleTerms}`);
+  await arweave.transactions.sign(transaction, key);
+  return transaction;
+}
+
+export async function uploadData(
+  transaction: any,
+  progressLogger: CallableFunction
+): Promise<Options<string>> {
+  const options: Options<string> = {
+    status: Status.Success,
+    error: "",
+    data: "",
+  };
   try {
     let uploader = await arweave.transactions.getUploader(transaction);
 
@@ -73,7 +104,9 @@ export async function uploadData(transaction: any, progressLogger: CallableFunct
 }
 
 export async function postTransaction(transaction: any) {
-  const posted = await arweave.transactions.post((Buffer.from(JSON.stringify(transaction), 'utf8')));
+  const posted = await arweave.transactions.post(
+    Buffer.from(JSON.stringify(transaction), "utf8")
+  );
   return posted;
 }
 
