@@ -2,12 +2,11 @@ import { DeploySC, RenderType, State, VerificationState } from "../types";
 import { dispatch } from "./dispatch";
 import { Events } from "../types";
 
-
 export function dispatch_renderMenu(props: State) {
   dispatch(Events.render, {
     type: RenderType.menu,
-    props
-  })
+    props,
+  });
 }
 
 export function dispatch_renderCreate(props: State) {
@@ -243,15 +242,15 @@ export function dispatch_renderUploadFilePopup(props: State) {
 export function dispatch_renderUploadStatus(props: State, progress: string) {
   dispatch(Events.render, {
     type: RenderType.uploadStatus,
-    props: { ...props, tmp: { progress } }
-  })
+    props: { ...props, tmp: { progress } },
+  });
 }
 
 export function dispatch_discardFile(props: State) {
   dispatch(Events.render, {
     type: RenderType.discardFile,
-    props
-  })
+    props,
+  });
 }
 
 export function dispatch_hidePopup() {
@@ -270,6 +269,13 @@ export function dispatch_renderUploadSummary(
   dispatch(Events.render, {
     type: RenderType.uploadSummary,
     props: { transaction, file, data, props },
+  });
+}
+
+export function dispatch_renderProposalSummary(transaction: any, props: State) {
+  dispatch(Events.render, {
+    type: RenderType.proposalSummary,
+    props: { ...props, tmp: { transaction } },
   });
 }
 
@@ -404,9 +410,23 @@ export function dispatch_renderCreateProposalPage(props: State) {
   });
 }
 
+export function dispatch_renderReviewAndVotePage(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.reviewAndVotePage,
+    props,
+  });
+}
+
 export function dispatch_permawebselectActions(props: State) {
   dispatch(Events.render, {
     type: RenderType.permawebSelectActions,
-    props
-  })
+    props,
+  });
+}
+
+export function dispatch_uploadProposal(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.uploadProposal,
+    props,
+  });
 }
