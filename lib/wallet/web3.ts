@@ -1,7 +1,12 @@
 import Web3 from "web3";
-import { recoverTypedSignature, SignTypedDataVersion } from "@metamask/eth-sig-util";
+import {
+  recoverTypedSignature,
+  SignTypedDataVersion,
+} from "@metamask/eth-sig-util";
 import { toChecksumAddress } from "ethereumjs-util";
 import {
+  ChainName,
+  Chains,
   ERC20Params,
   NetworkType,
   Options,
@@ -55,14 +60,9 @@ export async function signHash(
   networkId: string,
   smartContract: string,
   onSuccess: CallableFunction,
-  onError: CallableFunction,
+  onError: CallableFunction
 ) {
-  const msgParams = getmsgParams(
-    networkId,
-    smartContract,
-    hash
-  );
-
+  const msgParams = getmsgParams(networkId, smartContract, hash);
 
   await window.ethereum.sendAsync(
     {
@@ -73,10 +73,7 @@ export async function signHash(
       if (result.error) {
         onError(result.error.message);
       } else {
-        const recovered = recoverTypedSignatures(
-          msgParams,
-          result.result
-        );
+        const recovered = recoverTypedSignatures(msgParams, result.result);
         if (compareAddresses(from, recovered)) {
           await onSuccess(result.result);
         } else {
@@ -90,7 +87,8 @@ export async function signHash(
 export function getmsgParams(
   networkId: string,
   smartContract: string,
-  hash: string) {
+  hash: string
+) {
   const doc = [{ name: "value", type: "string" }];
   const message = { value: hash };
   const msgParams = {
@@ -116,11 +114,10 @@ export function getmsgParams(
 }
 
 export function recoverTypedSignatures(msgParams, signature) {
-
   const recovered = recoverTypedSignature({
     data: msgParams,
     signature: signature,
-    version: SignTypedDataVersion.V3
+    version: SignTypedDataVersion.V3,
   });
   return recovered;
 }
@@ -141,7 +138,6 @@ export function web3Injected(): boolean {
     return false;
   }
 }
-
 
 // I'm using web3 in the below function because it throws errors nice for this validation.
 export async function canUseContract(
@@ -255,24 +251,34 @@ export async function acceptAgreement(arg: {
   return options;
 }
 
+export function getChains() {
+  return [
+    { name: "All", id: "ALL" },
+    { name: ChainName.Harmony, id: Chains.harmonyTestnetShard0 },
+    { name: ChainName.Ropsten, id: Chains.Ropsten },
+    { name: ChainName.BSC, id: Chains.bscTestnet },
+    { name: ChainName.Polygon, id: Chains.polygonTestnet },
+  ];
+}
+
 export async function switchNetwork(
-  network: "Harmony" | "Ropsten" | "BSC" | "Polygon",
+  network: ChainName,
   shard: number,
   type: NetworkType
 ) {
-  if (network === "Harmony") {
+  if (network === ChainName.Harmony) {
     await switchToHarmony(shard, type);
   }
-  if (network === "Ropsten") {
+  if (network === ChainName.Ropsten) {
     await switch_to_Chain("0x3");
     // Ropsten is in metamask by default so adding it is redundant
   }
 
-  if (network === "BSC") {
+  if (network === ChainName.BSC) {
     await switchToBSC(type);
   }
 
-  if (network === "Polygon") {
+  if (network === ChainName.Polygon) {
     await switchToPolygon(type);
   }
 }
@@ -385,29 +391,27 @@ async function switchToAvalanche() {
   //TODO: Add optimism
   //TODO: Add arbitrum
   const AVALANCHE_MAINNET_PARAMS = {
-    chainId: '0xA86A',
-    chainName: 'Avalanche Mainnet C-Chain',
+    chainId: "0xA86A",
+    chainName: "Avalanche Mainnet C-Chain",
     nativeCurrency: {
-      name: 'Avalanche',
-      symbol: 'AVAX',
-      decimals: 18
+      name: "Avalanche",
+      symbol: "AVAX",
+      decimals: 18,
     },
-    rpcUrls: ['https://api.avax.network/ext/bc/C/rpc'],
-    blockExplorerUrls: ['https://snowtrace.io/']
-  }
+    rpcUrls: ["https://api.avax.network/ext/bc/C/rpc"],
+    blockExplorerUrls: ["https://snowtrace.io/"],
+  };
   const AVALANCHE_TESTNET_PARAMS = {
-    chainId: '0xA869',
-    chainName: 'Avalanche Testnet C-Chain',
+    chainId: "0xA869",
+    chainName: "Avalanche Testnet C-Chain",
     nativeCurrency: {
-      name: 'Avalanche',
-      symbol: 'AVAX',
-      decimals: 18
+      name: "Avalanche",
+      symbol: "AVAX",
+      decimals: 18,
     },
-    rpcUrls: ['https://api.avax-test.network/ext/bc/C/rpc'],
-    blockExplorerUrls: ['https://testnet.snowtrace.io/']
-  }
-
-
+    rpcUrls: ["https://api.avax-test.network/ext/bc/C/rpc"],
+    blockExplorerUrls: ["https://testnet.snowtrace.io/"],
+  };
 }
 
 function getHarmonyRPCURLS(shard: number, type: "Mainnet" | "Testnet") {
