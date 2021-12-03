@@ -41,12 +41,15 @@ import MetaMaskOnboarding from "@metamask/onboarding";
 import createNewEditor from "../../state/editor";
 
 export function renderCreateButtonClick(props: State) {
-  let editor = props.editor;
+  const editor = createNewEditor();
 
-  if (props.editor === null) {
-    editor = createNewEditor();
-    dispatch_setEditor(editor);
+  if (props.editor !== null) {
+    editor.setContent(props.editor.getContent());
   }
+
+  dispatch_setEditor(editor);
+
+  //TODO: Initialize the page!!
 
   const termsCheckbox = getTermsCheckbox();
   const sameButton = getSameAsAboveButton();
