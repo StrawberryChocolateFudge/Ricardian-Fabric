@@ -4,6 +4,9 @@ import { getBlockie } from "../components/getBlockies";
 export const MenuPage = (blockieData: string) => html`
   <hr />
   ${getBlockie(blockieData, "50px", "")}
+  <div class="logo-container">
+    <div class="Fabric">Ricardian Fabric DAO</div>
+  </div>
   <hr />
   <div>
     <div class="routes-buttons-container">
@@ -22,7 +25,7 @@ export const MenuPage = (blockieData: string) => html`
     </div>
     <div class="routes-buttons-container">
       <button class="routes-buttons" id="staking-button">
-        Staking and Profit-Sharing
+        Stake and Profit-Sharing
       </button>
 
       <button class="routes-buttons" id="verify-contract-button">
