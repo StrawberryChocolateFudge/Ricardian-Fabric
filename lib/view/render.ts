@@ -2,6 +2,7 @@ import { html, render } from "lit-html";
 import {
   ContractTypes,
   DeploySC,
+  PageState,
   SelectedWallet,
   State,
   VerificationState,
@@ -9,10 +10,7 @@ import {
 import { AcceptButton, acceptTools } from "./templates/components/acceptTools";
 import { createButton } from "./templates/components/createButton";
 import { CreateSummary } from "./templates/components/createSummary";
-import {
-  catalogPage,
-  createProposalPopup,
-} from "./templates/pages/catalogPage";
+import { catalogPage, createProposalPage } from "./templates/pages/catalogPage";
 import { DocXDropper } from "./templates/components/docxDropper";
 import { helperTooltips } from "./templates/components/helperTooltips";
 import { loadingIndicator } from "./templates/components/loadingIndicator";
@@ -56,6 +54,11 @@ import {
 import { CatalogDropdown } from "./templates/dropdowns/catalogdropdown";
 import { CreatePage } from "./templates/pages/createPage";
 import { MenuPage } from "./templates/pages/menuPage";
+import {
+  UploadProposalPopup,
+  UploadProposalSummary,
+} from "./templates/popups/uploadProposalPopup";
+import { ReviewAndVote } from "./templates/pages/reviewAndVotePage";
 
 export function renderMenuPage(props: State) {
   const page = getById("page");
@@ -441,9 +444,9 @@ export function renderNetworkDropdown() {
   render(NetworkDropdown(), dropdown);
 }
 
-export function renderPermawebDropdown() {
+export function renderPermawebDropdown(page: PageState) {
   const dropdown = getById("permaweb-dropdown");
-  render(PermawebDropdown(), dropdown);
+  render(PermawebDropdown(page), dropdown);
 }
 
 export function renderTemplatesDropdown() {
@@ -692,7 +695,13 @@ export function renderVerificationState(verificationState: VerificationState) {
 
 export function renderCreateProposalPage(props: State) {
   const page = getById("page");
-  render(createProposalPopup(), page);
+
+  render(createProposalPage(props.proposalType), page);
+}
+
+export function renderReviewAndVotePage(props: State) {
+  const page = getById("page");
+  render(ReviewAndVote(), page);
 }
 
 export function renderAccordionOpener() {
@@ -709,4 +718,17 @@ export function renderAccordionOpener() {
       }
     });
   }
+}
+
+export function renderUploadProposal() {
+  setBannerDisplayBlock();
+  const layout = getById("overlay-layout");
+  layout.style.maxHeight = "100%";
+  render(UploadProposalPopup(), layout);
+}
+
+export function renderProposalSummary(fee: string, id: string) {
+  const layout = getById("overlay-layout");
+
+  render(UploadProposalSummary(fee, id), layout);
 }
