@@ -4,7 +4,12 @@ export enum Chains {
   polygonTestnet = "80001",
   harmonyTestnetShard0 = "1666700000",
 }
-
+export enum ChainName {
+  Harmony = "Harmony",
+  Ropsten = "Ropsten",
+  BSC = "BSC",
+  Polygon = "Polygon",
+}
 export enum Events {
   render = "render",
   stateChange = "stateChange",
@@ -65,7 +70,10 @@ export enum RenderType {
   verifyContract = "verifyContract",
   verificationState = "verificationState",
   createProposalPage = "createProposalPage",
+  reviewAndVotePage = "reviewAndVotePage",
   permawebSelectActions = "permawebSelectActions",
+  uploadProposal = "uploadProposal",
+  proposalSummary = "proposalSummary",
 }
 
 // TODO refactor to RenderDispatchArgs for specifying the dispatch arguments
@@ -126,7 +134,10 @@ export type Renderer = {
   [RenderType.verifyContract]: RenderFunction;
   [RenderType.verificationState]: RenderFunction;
   [RenderType.createProposalPage]: RenderFunction;
+  [RenderType.reviewAndVotePage]: RenderFunction;
   [RenderType.permawebSelectActions]: RenderFunction;
+  [RenderType.uploadProposal]: RenderFunction;
+  [RenderType.proposalSummary]: RenderFunction;
 };
 
 export enum VerificationState {
@@ -152,6 +163,7 @@ export enum EventType {
   setIpfsCID = "setIpfsCID",
   setEditFinished = "setEditFinished",
   setPageState = "setPageState",
+  setProposalType = "setProposalType",
 }
 
 export enum StateProperties {
@@ -170,6 +182,7 @@ export enum StateProperties {
   editFinished = "editFinished",
   editor = "editor",
   pageState = "pageState",
+  proposalType = "proposalType",
 }
 
 export enum ContractTypes {
@@ -222,6 +235,7 @@ export type ERC20Params = {
 };
 
 export type NetworkType = "Mainnet" | "Testnet";
+
 export type Account = {
   data: ArrayBuffer;
   address: string;
@@ -240,6 +254,7 @@ export enum PopupState {
   UploadSummary, // Upload summary is not used in state because it get's passed a signed transaction
   Permapin,
   PermapinSummary, //Same as upload summary...
+  UploadProposal,
 }
 
 export enum PageState {
@@ -249,6 +264,7 @@ export enum PageState {
   Staking,
   Catalog,
   Proposals,
+  ReviewAndVote,
 }
 
 export type State = {
@@ -260,6 +276,7 @@ export type State = {
   selectedDate: Date | string;
   popupState: PopupState;
   pageState: PageState;
+  proposalType: ProposalType;
   stashedPage: string;
   stashedDetails: StashedDetails;
   selectedWallet: SelectedWallet;
@@ -392,13 +409,18 @@ window.ethereum = window.ethereum || {};
 export type ProposalFormat = {
   name: string;
   description: string;
-  code: string;
-  abi: string;
+  artifact: string;
   terms: string;
   git: string;
-  email: string;
+  commit: string;
   premium: boolean;
   price: number;
-  isERC20: boolean;
-  ERC20Params: ERC20Params;
+  network: string;
+  category: string;
+  simpleterms: boolean;
 };
+
+export enum ProposalType {
+  Rank,
+  NewSmartContract,
+}
