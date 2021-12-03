@@ -1,10 +1,12 @@
 import { html } from "lit-html";
+import { ProposalType } from "../../../types";
+import { getChains } from "../../../wallet/web3";
 import { getBlockie } from "../components/getBlockies";
 import { helperTooltips } from "../components/helperTooltips";
 import { BackLogo } from "../components/logos";
 
-function getCategories() {
-  return html` <select>
+export function getCategories() {
+  return html` <select id="select-category">
     <option>Registries</option>
     <option>Tokens</option>
     <option>Token Sale</option>
@@ -29,13 +31,13 @@ function getSmartContracts() {
       "All"
     )}
     ${SmartContractCards(
-      `"Escrow with xDai", "Finance","xDai"`,
-      "Escrow with xDai",
-      "Finance",
-      "xDai"
+      `"Escrow on Harmony", "Finance","Harmony"`,
+      "Escrow on Harmony",
+      "Payments",
+      "Harmony"
     )}
-    ${SmartContractCards(`zsfasfaa`, "Generic ERC-20", "Tokens", "All")}
-    ${SmartContractCards(`zsfasfaa`, "Generic ERC-20", "Tokens", "All")}
+    ${SmartContractCards(`zsfasfaa`, "Burnable ERC-20", "Tokens", "All")}
+    ${SmartContractCards(`Generic NFT contract`, "Generic NFT contract", "Tokens", "All")}
   `;
 }
 
@@ -48,7 +50,7 @@ export function catalogPage() {
     </small>
     <div>
       <button class="labelButton" id="create-proposal-button">Create a proposal</button>
-      <button class="labelButton">Review and Vote</button>
+      <button class="labelButton" id="review-and-vote-button">Review and Vote</button>
     </div>
     <table>
       <thead>
@@ -63,20 +65,32 @@ export function catalogPage() {
       <tbody>
         <tr>
           <td>
-            <label id="categories-label">Category:</label>
+            <label id="categories-label" for="select-category">Category:</label>
           </td>
           <td>
     ${getCategories()}
           </td>
           <td><hr/></td>
           <td>
-            <button class="labelButton">Search:</button>
+            <button class="labelButton">Search</button>
+          </td>
+          <td><input id="search-input" type="text" placeholder="Search for..."/></td>
+        </tr>
+        <tr>
+           <td>
+            <label>Sort by date</label>
           </td>
           <td>
-            <input id="search-input" type="text" placeholder="Search for..."/>
+            <select>
+              <option>Ascending</option>
+              <option>Descending</option>
+            </select>
           </td>
+          <td><hr/></td>
+          <td><label>Premium</label> <input type="checkbox"/></td>
+          <td> <label>ISimpleTerms</label> <input type="checkbox"/></td>
         </tr>
-      </tbody>
+        </tbody>
     </table>
     <div class="catalogList">
      ${getSmartContracts()}
@@ -102,6 +116,7 @@ export function SmartContractCards(
         /* width: 20%; */
         margin-top: 10px;
         cursor: pointer;
+        width: 120px;
       }
 
       .card:hover {
@@ -120,17 +135,38 @@ export function SmartContractCards(
     </div>`;
 }
 
-export function createProposalPopup() {
+export function createProposalPage(proposalType: ProposalType) {
   return html`
     <h2>Create a Proposal</h2>
+    <div class="row">
+      <button class="labelButton" id="createproposal-back">
+        ${BackLogo()} Back
+      </button>
+      <button id="get-rank-tab-button" class="labelButton">Get Rank</button>
+      <button id="propose-new-contract-tab-button" class="labelButton">
+        Propose a new smart contract
+      </button>
+    </div>
+    ${proposalType === ProposalType.NewSmartContract
+      ? proposeNewContract()
+      : proposeGetRank()}
+    <div class="row">
+      <hr />
+      <!-- <button class="NextButton" id="createproposal-proceed">Submit</button> -->
+    </div>
+    <hr />
+  `;
+}
+
+function proposeGetRank() {
+  return html`
+    <h4 id="rankHeader"></h4>
+    <small>You need to get Rank to propose a new smart contract.</small>
     <small
-      >You can propose a new smart contract. The DAO will decide if it's
-      eligible to be added to the catalog.</small
+      >To create a proposal, add your github repo link, to show off your skills,
+      with an open issue to comment on.</small
     >
-    <small>Proposal data is uploaded to the permaweb.</small>
-    <hr/>
-    <p>TODO: Add tabs</p>
-    <div id="permaweb-dropdown">Permaweb</div>
+    <hr />
     <table>
       <thead>
         <tr>
@@ -142,115 +178,50 @@ export function createProposalPopup() {
       <tbody>
         <tr>
           <td>
-            <label for="smartcontract-name">Name:</label>
+            <label aria-labelledby="github url link" for="github-url"
+              >Github url</label
+            >
           </td>
           <td>
-            <input id="smartcontract-name" type="text" />
-          </td>
-          <td>${helperTooltips("The name of the smart contract")}</td>
-        </tr>
-        <tr>
-          <td>
-            <label for="smartcontract-description">Description:</label>
-          </td>
-          <td>
-            <input id="smartcontract-description" type="text" />
+            <input id="github-url" type="url" />
+            <button id="create-rank-proposal" class="labelButton">
+              Submit
+            </button>
           </td>
           <td>
             ${helperTooltips(
-              "A short description to show in the proposal and the catalog."
-            )}
-          </td>
-          <tr>
-            <td>
-              <label for="Network-options">Network:</label>
-            </td>
-            <td><select>
-              <option>All</option>
-              <option>Harmony</option>
-            </select>></td> 
-            <td>${helperTooltips("Choose the compatible network")}</td>
-          </tr>
-        </tr><td>
-         <label for=""></label>
-        </td>
-        </tr>
-        <tr>
-          <td>
-            <label for="smartcontract-code">Code:</label>
-          </td>
-          <td>
-            <input type="file" id="smartcontract-code" />
-          </td>
-          <td>${helperTooltips("The code of the contract. A .sol file.")}</td>
-        </tr>
-        <tr>
-          <td><hr /></td>
-          <td></td>
-          <td></td>
-        </tr>
-          <td><hr /></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>
-            <label for="smartcontract-terms">Terms:</label>
-          </td>
-          <td>
-            <input type="file" id="smartcontract-terms" />
-          </td>
-          <td>${helperTooltips("The terms of the contract. A .docx file.")}</td>
-        </tr>
-        <tr>
-          <td>
-            <label for="smartcontract-repo">Git repo:</label>
-          </td>
-          <td>
-            <input type="url" id="smartcontract-repo" />
-          </td>
-          <td>${helperTooltips("The url of the git repo")}</td>
-        </tr>
-        <tr>
-          <td>
-            <label for="smartcontract-premium">Premium:</label>
-          </td>
-          <td>
-            <input id="smartcontract-premium" type="checkbox" />
-          </td>
-          <td>${helperTooltips("Is the contract for sale of free?")}</td>
-        </tr>
-        <tr>
-          <td>
-            <label for="smartcontract-price">Price (Ric):</label>
-          </td>
-          <td>
-            <input id="smartcontract-price" type="number" disabled />
-          </td>
-          <td>${helperTooltips("The cost of the contract in RIC tokens.")}</td>
-        </tr>
-        <tr>
-          <td>
-            <label for="accepted-terms">I accept the terms.</label>
-          </td>
-          <td>
-            <input type="checkbox" id="accepted-terms" />
-          </td>
-          <td>
-            ${helperTooltips(
-              "Accept the Ricardian Fabric terms and agreements!"
+              "A github link to your repositiory containing code to show off."
             )}
           </td>
         </tr>
       </tbody>
     </table>
-    <div class="row">
-      <button class="backButton" id="createproposal-back">
-        ${BackLogo()} Back
-      </button>
-      <hr />
-      <button class="NextButton" id="createproposal-proceed">Next</button>
-    </div>
     <hr />
+  `;
+}
+
+export function getNetworkSelect() {
+  const chains = getChains();
+
+  return chains.map((ch) => html`<option value="${ch.id}">${ch.name}</option>`);
+}
+
+function proposeNewContract() {
+  return html`
+    <small
+      >You can propose a new smart contract. The DAO will decide if it's
+      eligible to be added to the catalog.</small
+    >
+    <small
+      >Proposal data is uploaded to the permaweb. Select it from the
+      dropdown.</small
+    >
+    <div id="permaweb-dropdown">Permaweb</div>
+
+    <div class="row">
+      <label for="proposal-tx-id">Proposal Tx Id:</label>
+      <input id="proposal-tx-id" type="text" />
+      <button class="labelButton" id="proposal-submit-button">Submit</button>
+    </div>
   `;
 }
