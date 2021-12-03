@@ -45,17 +45,22 @@ import {
 } from "../../dispatch/stateChange";
 
 export function permawebSelectActions(props: State) {
-
   const permawebCheckboxToggle = getById("permaweb_checkbox_toggle");
   const permawebCheckboxButton = getById("permaweb_checkbox_button");
 
   permawebCheckboxButton.onclick = function () {
     permawebCheckboxToggle.click();
-  }
+  };
 
   const uploadFile = getById("upload-popup-button");
   const permapin = getById("permapin-popup-button");
   const Account = getById("Account-popup-button");
+  const uploadProposal = getById("upload-proposal-button");
+
+  uploadProposal.onclick = function () {
+    dispatch_setPopupState(PopupState.UploadProposal);
+  };
+
   uploadFile.onclick = function () {
     dispatch_setPopupState(PopupState.UploadFile);
   };
@@ -86,12 +91,11 @@ export function uploadFileListener(props: State) {
 
   clearFileButton.onclick = function () {
     dispatch_discardFile(props);
-  }
+  };
 
   termsLabel.onclick = function () {
     dispatch_setPopupState(PopupState.Terms);
   };
-
 
   backbutton.onclick = function () {
     dispatch_setPopupState(PopupState.NONE);
@@ -209,8 +213,11 @@ export function uploadSummaryActions(
     dispatch_hideElement(back, true);
     try {
       const res = await uploadData(transaction, (uploader) => {
-        dispatch_renderUploadStatus(props, `${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`)
-      })
+        dispatch_renderUploadStatus(
+          props,
+          `${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`
+        );
+      });
       if (res.status === Status.Failure) {
         dispatch_renderError(res.error);
         dispatch_hideElement(proceed, false);
@@ -499,7 +506,6 @@ export function showAccountActions(props: State) {
 }
 
 export function switchAccountsActions(props: State) {
-
   const cancelButton = getById("Account-cancel");
   const proceedButton = getById("switchAccount-proceed");
   onWalletFileDropped(props, WalletDropperType.ENCRYPTED);
