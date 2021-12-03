@@ -12,18 +12,21 @@ import {
   dispatch_renderCreateProposalPage,
   dispatch_renderDocXDropper,
   dispatch_renderMenu,
+  dispatch_renderReviewAndVotePage,
   dispatch_renderTerms,
   dispatch_renderTransferPage,
   dispatch_renderUploadFilePopup,
   dispatch_renderVerifyContract,
   dispatch_showAccountPopup,
   dispatch_switch_Accounts,
+  dispatch_uploadProposal,
   dispatch_walletPopup,
 } from "../dispatch/render";
 import {
   ContractTypes,
   PageState,
   PopupState,
+  ProposalType,
   SetHookArgs,
   State,
   StateProperties,
@@ -111,6 +114,9 @@ export const setStateHook = {
       case PopupState.Permapin:
         dispatch_permapinPopup(clone, clone.ipfsCID);
         break;
+      case PopupState.UploadProposal:
+        dispatch_uploadProposal(clone);
+        break;
       default:
         break;
     }
@@ -134,10 +140,20 @@ export const setStateHook = {
         dispatch_renderCreateProposalPage(clone);
         dispatch_permawebselectActions(clone);
         break;
+      case PageState.ReviewAndVote:
+        dispatch_renderReviewAndVotePage(clone);
+        break;
       case PageState.Staking:
         break;
       default:
         break;
+    }
+  },
+  [StateProperties.proposalType]: (args: SetHookArgs) => {
+    const clone = cloneState(args.obj);
+    dispatch_renderCreateProposalPage(clone);
+    if (args.value === ProposalType.NewSmartContract) {
+      dispatch_permawebselectActions(clone);
     }
   },
 };
