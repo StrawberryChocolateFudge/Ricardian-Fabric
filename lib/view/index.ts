@@ -68,6 +68,9 @@ import {
   discardFile,
   renderMenuPage,
   renderCatalogPage,
+  renderReviewAndVotePage,
+  renderUploadProposal,
+  renderProposalSummary,
 } from "./render";
 import { renderAcceptTools } from "./render";
 import { areYouSureButtons } from "../business/actions/areYouSureButtons";
@@ -108,10 +111,12 @@ import { verifyContractActions } from "../business/actions/verifyContractActions
 import {
   catalogAction,
   createProposalActions,
+  uploadProposalActions,
   walletSelectListener,
 } from "../business/actions/catalogActions";
 import { WinstonToAr } from "../wallet/arweave";
 import { menuActions } from "../business/actions/menuActions";
+import { reviewAndVotePageActions } from "../business/actions/reviewAndVote";
 
 const Render: Renderer = {
   [RenderType.menu]: (props: State) => {
@@ -134,7 +139,7 @@ const Render: Renderer = {
     renderSanctionsDropdown();
     renderNetworkDropdown();
     networkSelectActions();
-    renderPermawebDropdown();
+    renderPermawebDropdown(props.pageState);
     permawebSelectActions(props);
     renderTemplatesDropdown();
     templateSelectActions(props);
@@ -343,17 +348,31 @@ const Render: Renderer = {
   [RenderType.createProposalPage]: (props: RenderDispatchArgs) => {
     renderCreateProposalPage(props);
     createProposalActions(props);
+    renderAccordionOpener();
+  },
+  [RenderType.reviewAndVotePage]: (props: RenderDispatchArgs) => {
+    renderReviewAndVotePage(props);
+    reviewAndVotePageActions(props);
   },
   [RenderType.permawebSelectActions]: (props: RenderDispatchArgs) => {
-    renderPermawebDropdown();
+    renderPermawebDropdown(props.pageState);
     permawebSelectActions(props);
     handleDropdownClosing();
+  },
+  [RenderType.uploadProposal]: (props: RenderDispatchArgs) => {
+    renderUploadProposal();
+    uploadProposalActions(props);
+  },
+  [RenderType.proposalSummary]: (props: RenderDispatchArgs) => {
+    const fee = WinstonToAr(props.tmp.transaction.reward);
+    const id = props.tmp.transaction.id;
+    renderProposalSummary(fee, id);
+    //TODO: actions
   },
 };
 
 document.body.addEventListener(Events.render, (e: any) => {
   const type: RenderType = e.detail.type;
   const props: State = e.detail.props;
-  console.log(type);
   Render[type](props);
 });
