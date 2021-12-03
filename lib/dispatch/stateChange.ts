@@ -7,6 +7,7 @@ import {
   SelectedWallet,
   StashedDetails,
   PageState,
+  ProposalType,
 } from "../types";
 import { dispatch } from "./dispatch";
 
@@ -98,5 +99,12 @@ export function dispatch_setPage(pageState: PageState) {
   dispatch(Events.stateChange, {
     type: EventType.setPageState,
     value: pageState,
+  });
+}
+
+export function dispatch_setProposalType(proposalType: ProposalType) {
+  dispatch(Events.stateChange, {
+    type: EventType.setProposalType,
+    value: proposalType,
   });
 }
