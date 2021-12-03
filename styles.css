@@ -93,6 +93,10 @@ input[type="file"] {
   color: #b8b8b8;
 }
 
+textarea {
+  width: 100%;
+}
+
 #sanctions_checkbox_toggle {
   display: none;
   cursor: pointer;
@@ -241,6 +245,10 @@ hr {
 
 .width-200 {
   width: 200px;
+}
+
+.width-100Percent {
+  width: 100%;
 }
 
 .red {
@@ -606,7 +614,6 @@ hr {
   border: none;
 }
 
-
 #error-display {
   visibility: hidden;
   /* Hidden by default. Visible on click */
@@ -729,6 +736,26 @@ hr {
   animation: reveal 7s infinite;
 }
 
+.logo-container {
+  text-align: center;
+  /* background: linear-gradient(141deg, #ccc 25%, #eee 40%, #ddd 55%); */
+  color: #555;
+  font-family: "Roboto";
+  font-weight: 300;
+  font-size: 32px;
+  overflow: hidden;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  perspective: 1000;
+}
+
+.Fabric {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
 .DaoText span {
   margin-left: -355px;
   animation: slidein 7s infinite;
@@ -795,4 +822,12 @@ hr {
   }
 }
 
-/* LOGO ANIMATION END */
+.uploadProposalDiv {
+  display: block;
+  width: 100%;
+  overflow: auto;
+}
+
+.height500{
+  height: 500px;
+}
