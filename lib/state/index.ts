@@ -7,6 +7,7 @@ import {
   StashedDetails,
   State,
   PageState,
+  ProposalType,
 } from "../types";
 import { getCurrentUrl, getPage } from "../view/utils";
 import {
@@ -40,6 +41,7 @@ import { setStateHook } from "./setStateHook";
       Account: { data: null, address: null, balance: null },
       popupState: PopupState.NONE,
       pageState: PageState.Menu,
+      proposalType: ProposalType.Rank,
       editor: null,
       domParser: new DOMParser(),
       selectedDate: "",
@@ -123,6 +125,9 @@ import { setStateHook } from "./setStateHook";
     },
     [EventType.setPageState]: (value: PageState) => {
       stateContainer.pageState = value;
+    },
+    [EventType.setProposalType]: (value: ProposalType) => {
+      stateContainer.proposalType = value;
     },
   };
 
