@@ -10,6 +10,16 @@ export function getById(id: string): HTMLElement {
   }
 }
 
+export function elementExists(id: string) {
+  const el = document.getElementById(id);
+
+  if (el === null) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
 export function getPage(): HTMLElement {
   return getById("page");
 }
@@ -94,7 +104,11 @@ export function getBlockedCountries() {
 }
 
 export function getBlockedAddresses(): Options<string[]> {
-  const result: Options<string[]> = { status: Status.Success, data: [], error: "" };
+  const result: Options<string[]> = {
+    status: Status.Success,
+    data: [],
+    error: "",
+  };
   const blockkedAddressesEl = getById("blocked-addresses") as HTMLInputElement;
   const blockedAddresses = blockkedAddressesEl.value;
 
@@ -270,9 +284,9 @@ export async function readSolcFile(file: File): Promise<string> {
     fr.onerror = reject;
     fr.onload = function () {
       resolve(fr.result as string);
-    }
+    };
     fr.readAsText(file, "UTF-8");
-  })
+  });
 }
 
 export function getERC20Params(): Options<ERC20Params | string> {
@@ -284,8 +298,8 @@ export function getERC20Params(): Options<ERC20Params | string> {
   const options: Options<ERC20Params | string> = {
     error: "",
     data: null,
-    status: Status.Success
-  }
+    status: Status.Success,
+  };
   if (addToWallet.checked) {
     try {
       const name = nameEl.value;
@@ -294,17 +308,17 @@ export function getERC20Params(): Options<ERC20Params | string> {
       const decimals = parseInt(decimalsEl.value);
 
       if (name.length === 0) {
-        throw new Error("Invalid ERC20 name")
+        throw new Error("Invalid ERC20 name");
       }
 
       if (symbol.length === 0) {
-        throw new Error("Invalid ERC20 symbol")
+        throw new Error("Invalid ERC20 symbol");
       }
       if (isNaN(decimals)) {
-        throw new Error("Invalid ERC20 decimals")
+        throw new Error("Invalid ERC20 decimals");
       }
       if (address.length === 0) {
-        throw new Error("Invalid  ERC20 address")
+        throw new Error("Invalid  ERC20 address");
       }
 
       options.data = {
