@@ -53,11 +53,6 @@ export function renderCreateButtonClick(props: State) {
 
   const termsCheckbox = getTermsCheckbox();
   const sameButton = getSameAsAboveButton();
-  const toMenuButton = getToMenuButton();
-
-  toMenuButton.onclick = function () {
-    dispatch_setPage(PageState.Menu);
-  };
 
   sameButton.onclick = function () {
     const smartC = getSmartContract();
