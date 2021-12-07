@@ -228,11 +228,9 @@ hr {
   min-width: 350px;
   height: 100%;
   flex-direction: column;
-  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
   padding-bottom: 20px;
   padding-left: 20px;
   padding-right: 20px;
-  background-color: white;
 }
 
 .center {
@@ -370,6 +368,7 @@ hr {
   cursor: pointer;
   padding: 10px;
   margin: 5px;
+  overflow: hidden;
 }
 .labelButton:hover {
   background-color: #ccc;
@@ -603,7 +602,7 @@ hr {
   margin: 0 auto;
 }
 .routes-buttons {
-  width: 200px;
+  /* width: 200px;
   height: 200px;
   margin-left: 30px;
   margin-right: 30px;
@@ -611,7 +610,8 @@ hr {
   margin-bottom: 30px;
   cursor: pointer;
   border-radius: 25px;
-  border: none;
+  border: none; */
+  z-index: 3;
 }
 
 #error-display {
@@ -828,6 +828,37 @@ hr {
   overflow: auto;
 }
 
-.height500{
+.height500 {
   height: 500px;
+}
+
+/* // sidebar */
+
+#sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 3;
+  background: white;
+  width: 100px;
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.5);
+  transition: width 0.35s;
+  overflow: auto;
+  height: 100%;
+}
+
+#sidebar.collapsed {
+  width: 0;
+}
+
+#content {
+  width: 100%;
+}
+
+.position-fixed {
+  position: fixed;
+}
+
+.text-align-center {
+  text-align: center;
 }
