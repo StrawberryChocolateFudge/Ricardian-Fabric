@@ -1,3 +1,4 @@
+import { dispatch } from "../dispatch/dispatch";
 import {
   dispatch_attachDateClickListener,
   dispatch_catalogPage,
@@ -18,6 +19,7 @@ import {
   dispatch_renderUploadFilePopup,
   dispatch_renderVerifyContract,
   dispatch_showAccountPopup,
+  dispatch_sideBar,
   dispatch_switch_Accounts,
   dispatch_uploadProposal,
   dispatch_walletPopup,
@@ -37,8 +39,10 @@ export const setStateHook = {
     const currentPage = args.obj.contracttype;
     const clone = cloneState(args.obj);
     if (currentPage === ContractTypes.create) {
+      dispatch_sideBar(clone);
       dispatch_renderMenu(clone);
       // showBanner();
+      
     } else if (currentPage === ContractTypes.acceptable) {
       dispatch_renderAcceptButton(clone);
     }
