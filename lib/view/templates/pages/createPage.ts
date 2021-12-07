@@ -11,8 +11,10 @@ import {
 
 export const CreatePage = () => html`
   <hr />
+  <div class="logo-container">
+    <div class="Fabric">Create a Ricardian Contract</div>
+  </div>
   <div class="row">
-    <button class="labelButton" id="toMenuButton">${BackLogo()}Menu</button>
     <div id="network-dropdown"></div>
     <div id="permaweb-dropdown"></div>
     <hr />
