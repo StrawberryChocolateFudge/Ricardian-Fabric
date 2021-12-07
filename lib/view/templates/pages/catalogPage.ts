@@ -37,13 +37,20 @@ function getSmartContracts() {
       "Harmony"
     )}
     ${SmartContractCards(`zsfasfaa`, "Burnable ERC-20", "Tokens", "All")}
-    ${SmartContractCards(`Generic NFT contract`, "Generic NFT contract", "Tokens", "All")}
+    ${SmartContractCards(
+      `Generic NFT contract`,
+      "Generic NFT contract",
+      "Tokens",
+      "All"
+    )}
   `;
 }
 
 export function catalogPage() {
   return html` <style></style>
-    <h2>Smart Contract Catalog</h2>
+    <div class="logo-container">
+    <div class="Fabric">Smart Contract catalog</div>
+  </div>
     <small>
       You can deploy a contract, compatible with Ricardian Fabric, propose a new
       one or Vote.
@@ -95,10 +102,6 @@ export function catalogPage() {
     <div class="catalogList">
      ${getSmartContracts()}
 </div>
-<hr/>
-      <div class="SCIntent-button-row">
-        <button class="backButton" id="SCIntentBackButton">Back</button>
-      </div>
       <hr />
     </div>`;
 }
@@ -128,9 +131,9 @@ export function SmartContractCards(
       <div>
         <h4><b>${name}</b></h4>
         <label for="category_parag">Category:</label>
-        <p id="category_parag">${category}</p>
+        <small id="category_parag">${category}</small>
         <label for="network_parag">Network:</label>
-        <p id="network_parag">${network}</p>
+        <small id="network_parag">${network}</small>
       </div>
     </div>`;
 }
