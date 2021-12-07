@@ -16,6 +16,13 @@ export function dispatch_renderCreate(props: State) {
   });
 }
 
+export function dispatch_sideBar(props: State){
+  dispatch(Events.render,{
+    type: RenderType.sidebar,
+    props
+  })
+}
+
 export function dispatch_renderAcceptButton(props: State) {
   dispatch(Events.render, { type: RenderType.acceptButton, props });
 }
