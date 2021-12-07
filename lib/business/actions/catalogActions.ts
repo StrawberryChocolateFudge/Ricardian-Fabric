@@ -75,16 +75,11 @@ export function createProposalActions(props: State) {
 }
 
 export function catalogAction(props: State) {
-  const backbutton = getById("SCIntentBackButton") as HTMLButtonElement;
   const nextButton = getById("SCIntentNextButton") as HTMLButtonElement;
   const createProposalButton = getById("create-proposal-button");
   const reviewAndVoteButton = getById("review-and-vote-button");
   createProposalButton.onclick = function () {
     dispatch_setPage(PageState.Proposals);
-  };
-
-  backbutton.onclick = function () {
-    dispatch_setPage(PageState.Menu);
   };
 
   reviewAndVoteButton.onclick = function () {
