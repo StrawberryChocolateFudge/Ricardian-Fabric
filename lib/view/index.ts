@@ -71,6 +71,7 @@ import {
   renderReviewAndVotePage,
   renderUploadProposal,
   renderProposalSummary,
+  renderSidebar,
 } from "./render";
 import { renderAcceptTools } from "./render";
 import { areYouSureButtons } from "../business/actions/areYouSureButtons";
@@ -147,6 +148,9 @@ const Render: Renderer = {
     handleDropdownClosing();
 
     renderAccordionOpener();
+  },
+  [RenderType.sidebar]: (props: State) => {
+    renderSidebar(props);
   },
   [RenderType.acceptButton]: (props: State) => {
     renderAcceptTools(props);
