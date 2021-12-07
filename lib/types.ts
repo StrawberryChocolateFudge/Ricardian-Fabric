@@ -18,6 +18,7 @@ export enum Events {
 export enum RenderType {
   menu = "menu",
   create = "create",
+  sidebar = "sidebar",
   catalog = "catalog",
   acceptButton = "acceptButton",
   balance = "balance",
@@ -85,6 +86,7 @@ type RenderFunction = (props: any) => void;
 export type Renderer = {
   [RenderType.menu]: RenderFunction;
   [RenderType.create]: RenderFunction;
+  [RenderType.sidebar]: RenderFunction;
   [RenderType.acceptButton]: RenderFunction;
   [RenderType.addLoadingIndicator]: RenderFunction;
   [RenderType.removeLoadingIndicator]: RenderFunction;
