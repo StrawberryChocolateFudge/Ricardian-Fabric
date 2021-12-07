@@ -59,14 +59,41 @@ import {
   UploadProposalSummary,
 } from "./templates/popups/uploadProposalPopup";
 import { ReviewAndVote } from "./templates/pages/reviewAndVotePage";
+import { SideBar } from "./templates/components/sideBar";
 
 export function renderMenuPage(props: State) {
-  const page = getById("page");
+  const menuItems = getById("menuItems");
   // Extracts the ID from the page to add to the blockie. If I use a query param in the future, I handle that already.
   // I don't expect to use any extra paths so only query string
   const href = window.location.href;
   const idFromPage = href.split("arweave.net/")[1]?.split("?")[0];
-  render(MenuPage(idFromPage), page);
+  render(MenuPage(idFromPage), menuItems);
+
+  //I need to set the background of page
+  const page = getById("page");
+  page.style.backgroundColor = "white";
+  page.style.boxShadow =
+    "rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px";
+}
+
+export function renderSidebar(props: State) {
+  const sidebarSlot = getById("sidebarSlot");
+
+  render(SideBar(), sidebarSlot);
+
+  const toggle = getById("toggleClose");
+  const toggleOpen = getById("toggleOpen") as HTMLButtonElement;
+  const sidebar = getById("sidebar");
+
+  toggleOpen.disabled = false;
+  sidebar.classList.toggle("collapsed");
+  toggle.onclick = function () {
+    sidebar.classList.toggle("collapsed");
+  };
+
+  toggleOpen.onclick = function () {
+    sidebar.classList.toggle("collapsed");
+  };
 }
 
 export function renderCreatePage() {
