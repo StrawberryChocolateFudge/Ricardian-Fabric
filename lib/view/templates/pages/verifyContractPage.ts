@@ -3,7 +3,9 @@ import { helperTooltips } from "../components/helperTooltips";
 import { BackLogo } from "../components/logos";
 
 export const VerifyContract = () => {
-  return html`<h2>Verify a contract</h2>
+  return html` <div class="logo-container">
+      <div class="Fabric">Verify a contract</div>
+    </div>
     <table>
       <thead>
         <tr>
