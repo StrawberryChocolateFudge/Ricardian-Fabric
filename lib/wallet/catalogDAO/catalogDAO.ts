@@ -2,7 +2,13 @@
 import Web3 from "web3";
 import { getCatalogDAOAbi } from "../abi/catalogDAOABI";
 import { Contract } from "web3-eth-contract";
-import { MyProposals, RankProposal, SmartContractProposal } from "../../types";
+import {
+  AcceptedSmartContractProposal,
+  MyProposals,
+  RankProposal,
+  RemovalProposal,
+  SmartContractProposal,
+} from "../../types";
 import BN from "bn.js";
 const CATALOGDAOADDRESS = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"; // On local hardhat testnet
 
@@ -211,7 +217,7 @@ export async function getAcceptedSmartContractIndex(
 export async function getAcceptedSCProposalsByIndex(
   catalogDAO: Contract,
   sCIndex: BN
-) {
+): Promise<AcceptedSmartContractProposal> {
   return await catalogDAO.methods.getAcceptedSCProposalsByIndex(sCIndex).call();
 }
 
@@ -232,6 +238,6 @@ export async function getRemovalProposalIndex(
 export async function getRemovalProposalByIndex(
   catalogDAO: Contract,
   index: BN
-) {
+): Promise<RemovalProposal> {
   return await catalogDAO.methods.getRemovalProposalByIndex(index).call();
 }

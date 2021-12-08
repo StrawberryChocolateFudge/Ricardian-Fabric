@@ -1,3 +1,5 @@
+import BN from "bn.js";
+
 export enum Chains {
   Ropsten = "3",
   bscTestnet = "97",
@@ -426,3 +428,46 @@ export enum ProposalType {
   Rank,
   NewSmartContract,
 }
+
+export type RankProposal = {
+  repository: string;
+  creator: string;
+  createdBlock: BN;
+  approvals: BN;
+  rejections: BN;
+  closed: boolean;
+};
+
+export type MyProposals = {
+  rank: BN[];
+  smartContract: BN[];
+  acceptedSCProposals: BN[];
+  removedFromMe: BN[];
+  removal: BN[];
+};
+
+export type SmartContractProposal = {
+  arweaveTxId: string;
+  creator: string;
+  createdBlock: BN;
+  approvals: BN;
+  rejections: BN;
+  closed: boolean;
+};
+
+export type AcceptedSmartContractProposal = {
+  arweaveTxId: string;
+  creator: string;
+  removed: boolean;
+};
+
+export type RemovalProposal = {
+  discussionUrl: string;
+  creator: string;
+  malicious: boolean;
+  acceptedIndex: BN; // The index from acceptedSCProposals
+  createdBlock: BN;
+  approvals: BN;
+  rejections: BN;
+  closed: boolean;
+};
