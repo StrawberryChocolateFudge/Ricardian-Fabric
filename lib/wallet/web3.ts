@@ -152,7 +152,7 @@ export async function canUseContract(
       address
     );
 
-    //If accepted terms is false, means I can use
+    //If accepted terms is false, means I can use, this line below is for checking if it throws error
     const resul = await agreementContract.methods.acceptedTerms(issuer).call();
   } catch (err) {
     success = false;
