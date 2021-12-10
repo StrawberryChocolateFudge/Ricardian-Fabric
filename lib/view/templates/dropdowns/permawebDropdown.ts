@@ -1,5 +1,5 @@
 import { html } from "lit-html";
-import { PageState } from "../../../types";
+import { ContractTypes, PageState } from "../../../types";
 import {
   accountLogo,
   arweaveLogo,
@@ -8,7 +8,10 @@ import {
   uploadLogo,
 } from "../components/logos";
 
-export const PermawebDropdown = (page: PageState) => html`
+export const PermawebDropdown = (
+  contractType: ContractTypes,
+  page: PageState
+) => html`
   <input
     type="checkbox"
     id="permaweb_checkbox_toggle"
@@ -27,23 +30,32 @@ export const PermawebDropdown = (page: PageState) => html`
         <small>${accountLogo()} Account</small>
       </button>
     </li>
-    <li>
-      <button id="upload-popup-button" class="dropdown-button">
-        <small>${uploadLogo()} Upload File</small>
-      </button>
-    </li>
-    ${page === PageState.CreateRicardian
-      ? html`<li>
+
+    ${contractType === ContractTypes.create
+      ? html` <li>
+          <button id="upload-popup-button" class="dropdown-button">
+            <small>${uploadLogo()} Upload File</small>
+          </button>
+        </li>`
+      : null}
+    ${contractType === ContractTypes.create
+      ? html`${page === PageState.CreateRicardian
+          ? html`<li>
+              <button id="permapin-popup-button" class="dropdown-button">
+                <small>${pinLogo()} Permapin</small>
+              </button>
+            </li>`
+          : html`
+              <li>
+                <button class="dropdown-button" id="upload-proposal-button">
+                  <small>${BallotLogo()} Upload proposal</small>
+                </button>
+              </li>
+            `}`
+      : html`<li>
           <button id="permapin-popup-button" class="dropdown-button">
             <small>${pinLogo()} Permapin</small>
           </button>
-        </li>`
-      : html`
-          <li>
-            <button class="dropdown-button" id="upload-proposal-button">
-              <small>${BallotLogo()} Upload proposal</small>
-            </button>
-          </li>
-        `}
+        </li>`}
   </ul>
 `;
