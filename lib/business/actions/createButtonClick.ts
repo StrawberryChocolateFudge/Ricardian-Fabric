@@ -7,14 +7,21 @@ import {
   dispatch_disableCreateInputs,
   dispatch_enableButton,
   dispatch_enableCreateInputs,
+  dispatch_initializeCreateRicardian,
 } from "../../dispatch/render";
 import {
   dispatch_stashPage,
   dispatch_stashDetails,
   dispatch_setEditor,
-  dispatch_setPage,
+  dispatch_setCreateRicardianState,
 } from "../../dispatch/stateChange";
-import { PageState, State, Status } from "../../types";
+import {
+  BlockCountry,
+  CreateRicardianPageProps,
+  RenderType,
+  State,
+  Status,
+} from "../../types";
 import {
   canUseContract,
   getAddress,
@@ -35,21 +42,20 @@ import {
   getSameAsAboveButton,
   getERCSmartContractElement,
   getERC20Params,
-  getToMenuButton,
+  getEditorElementInnerHTML,
 } from "../../view/utils";
 import MetaMaskOnboarding from "@metamask/onboarding";
-import createNewEditor from "../../state/editor";
 
-export function renderCreateButtonClick(props: State) {
-  const editor = createNewEditor();
+export function renderCreateButtonClick(props: State, calledAt: RenderType) {
+  if (calledAt === RenderType.create) {
+    const content = props.editor.getContent();
+    props.editor.destroy();
+    props.editor.setup();
+    props.editor.setContent(content, 0);
 
-  if (props.editor !== null) {
-    editor.setContent(props.editor.getContent());
+    //Initialize the rest of the page!!
+    dispatch_initializeCreateRicardian(props, props.createRicardianPageProps);
   }
-
-  dispatch_setEditor(editor);
-
-  //TODO: Initialize the page!!
 
   const termsCheckbox = getTermsCheckbox();
   const sameButton = getSameAsAboveButton();
@@ -112,7 +118,8 @@ export function renderCreateButtonClick(props: State) {
 
     await requestAccounts();
 
-    const legalContract = editor.getContent();
+    const legalContract = getEditorElementInnerHTML(); //editor.getContent();
+
     const createdDate = new Date().toISOString();
     const version = props.version;
     const network = `${await getNetwork()}`;
@@ -199,4 +206,33 @@ export function renderCreateButtonClick(props: State) {
     dispatch_disableButton(props);
     dispatch_disableCreateInputs();
   };
+}
+
+export function saveCreatePageData() {
+  const blockedCountries: BlockCountry[] = getBlockedCountries();
+  const blockkedAddressesEl = getById("blocked-addresses") as HTMLInputElement;
+  const expiresEl = getById("expires-input") as HTMLInputElement;
+  const redirecttoEl = getById("redirectto-input") as HTMLInputElement;
+  const smartcontractEl = getById("smartcontract-input") as HTMLInputElement;
+
+  const erc20AddEl = getById("add-erc20-checkbox") as HTMLInputElement;
+  const erc20NameEl = getById("erc20-name") as HTMLInputElement;
+  const erc20SymbolEl = getById("erc20-symbol") as HTMLInputElement;
+  const erc20DecimalsEl = getById("erc20-decimals") as HTMLInputElement;
+  const erc20AddressEl = getById("erc20-address") as HTMLInputElement;
+
+  const ricardianPageProps: CreateRicardianPageProps = {
+    blockedCountries,
+    blockedAddresses: blockkedAddressesEl.value,
+    expires: expiresEl.value,
+    redirectto: redirecttoEl.value,
+    smartContract: smartcontractEl.value,
+    erc20Add: erc20AddEl.checked,
+    erc20Name: erc20NameEl.value,
+    erc20Decimals: erc20DecimalsEl.value,
+    erc20Address: erc20AddressEl.value,
+    erc20Symbol: erc20SymbolEl.value,
+  };
+
+  dispatch_setCreateRicardianState(ricardianPageProps);
 }
