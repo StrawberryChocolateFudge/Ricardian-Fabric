@@ -8,6 +8,7 @@ import {
   State,
   PageState,
   ProposalType,
+  CreateRicardianPageProps,
 } from "../types";
 import { getCurrentUrl, getPage } from "../view/utils";
 import {
@@ -26,7 +27,8 @@ import {
   getSourceFromDataProp,
   getVersionFromDataProp,
 } from "./dataPropGetters";
-import { setStateHook } from "./setStateHook";
+import createNewEditor from "./editor";
+import { beforePageSetHook, setStateHook } from "./setStateHook";
 
 (function InitState() {
   function createState() {
@@ -40,9 +42,10 @@ import { setStateHook } from "./setStateHook";
       },
       Account: { data: null, address: null, balance: null },
       popupState: PopupState.NONE,
-      pageState: PageState.Menu,
+      pageState: PageState.CreateRicardian,
       proposalType: ProposalType.Rank,
-      editor: null,
+      createRicardianPageProps: null,
+      editor: createNewEditor(),
       domParser: new DOMParser(),
       selectedDate: "",
       stashedPage: "",
@@ -124,10 +127,17 @@ import { setStateHook } from "./setStateHook";
       stateContainer.editFinished = value;
     },
     [EventType.setPageState]: (value: PageState) => {
+      beforePageSetHook(stateContainer.pageState);
+
       stateContainer.pageState = value;
     },
     [EventType.setProposalType]: (value: ProposalType) => {
       stateContainer.proposalType = value;
+    },
+    [EventType.setCreateRicardianPageProps]: (
+      value: CreateRicardianPageProps
+    ) => {
+      stateContainer.createRicardianPageProps = value;
     },
   };
 
