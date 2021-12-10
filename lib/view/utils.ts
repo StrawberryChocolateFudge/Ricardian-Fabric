@@ -335,3 +335,7 @@ export function getERC20Params(): Options<ERC20Params | string> {
 
   return options;
 }
+
+export function getEditorElementInnerHTML() {
+  return getById("editor").innerHTML;
+}
