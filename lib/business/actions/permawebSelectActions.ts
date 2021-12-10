@@ -45,7 +45,9 @@ import {
 } from "../../dispatch/stateChange";
 
 export function permawebSelectActions(props: State) {
-  const permawebCheckboxToggle = getById("permaweb_checkbox_toggle");
+  const permawebCheckboxToggle = getById(
+    "permaweb_checkbox_toggle"
+  ) as HTMLInputElement;
   const permawebCheckboxButton = getById("permaweb_checkbox_button");
 
   permawebCheckboxButton.onclick = function () {
@@ -59,14 +61,17 @@ export function permawebSelectActions(props: State) {
 
   uploadProposal.onclick = function () {
     dispatch_setPopupState(PopupState.UploadProposal);
+    permawebCheckboxToggle.checked = false;
   };
 
   uploadFile.onclick = function () {
     dispatch_setPopupState(PopupState.UploadFile);
+    permawebCheckboxToggle.checked = false;
   };
 
   permapin.onclick = function () {
     dispatch_setPopupState(PopupState.Permapin);
+    permawebCheckboxToggle.checked = false;
   };
 
   Account.onclick = async function () {
@@ -76,6 +81,7 @@ export function permawebSelectActions(props: State) {
     } else {
       await goToShowAccountPage(props);
     }
+    permawebCheckboxToggle.checked = false;
   };
 }
 
