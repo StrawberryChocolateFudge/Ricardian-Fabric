@@ -111,9 +111,11 @@ export const acceptablePageLayout = (props: AcceptablePageProps) => html`
     }
     .labelButton {
       border-radius: 25px;
+      border: none;
       cursor: pointer;
       padding: 10px;
       margin: 5px;
+      overflow: hidden;
     }
     .drop-zone {
       margin: 0 auto;
@@ -255,7 +257,7 @@ export const acceptablePageLayout = (props: AcceptablePageProps) => html`
       flex-direction: column;
       align-items: center;
       background: white;
-      max-width: 500px;
+      max-width: 600px;
       margin: 0 auto;
       margin-top: 30px;
       box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
@@ -313,6 +315,65 @@ export const acceptablePageLayout = (props: AcceptablePageProps) => html`
         opacity: 0;
       }
     }
+    .row {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: row;
+    }
+    .dropdown_checkbox_toggle {
+      display: none;
+      cursor: pointer;
+    }
+
+    .dropdown_checkbox_label {
+      cursor: pointer;
+      background-color: #f2f2f2;
+      border-radius: 20px;
+      padding: 5px;
+      color: black !important;
+    }
+
+    .dropdown_checkbox_label:hover {
+      background-color: #ccc;
+    }
+
+    .dropdown_checkbox_toggle:checked ~ ul {
+      display: block;
+      list-style-type: none;
+      list-style: none;
+      list-style-position: inside;
+      padding: 8px;
+      border-radius: 1px;
+      position: absolute;
+      background-color: white;
+      box-shadow: 1px 1px 1px 1px darkgrey;
+      z-index: 3;
+    }
+
+    .dropdown_checkbox_toggle ~ ul {
+      display: none;
+    }
+
+    .dropdown_checkbox_label {
+      cursor: pointer;
+    }
+
+    .dropdown-button {
+      background-color: white;
+      border: none;
+      font-size: 16px;
+      padding: 10px;
+      cursor: pointer;
+      width: 100%;
+      text-align: left;
+    }
+
+    .dropdown-button:hover {
+      background-color: lightgray;
+    }
+    .text-align-center {
+      text-align: center;
+    }
   </style>
   <body>
     ${acceptablePage(props)} ${mainDep(props.mainDep.src)}
@@ -335,6 +396,9 @@ const acceptablePage = (props: AcceptablePageProps) => html`
     data-erc20="${props.ERC20}"
     id="page"
   >
+    <div class="row">
+      <div id="permaweb-dropdown"></div>
+    </div>
     <div id="contract-display"></div>
     <table id="display-table">
       <tr>
