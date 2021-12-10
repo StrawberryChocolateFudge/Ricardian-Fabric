@@ -77,6 +77,7 @@ export enum RenderType {
   permawebSelectActions = "permawebSelectActions",
   uploadProposal = "uploadProposal",
   proposalSummary = "proposalSummary",
+  initializeCreateRicardian = "initializeCreateRicardian",
 }
 
 // TODO refactor to RenderDispatchArgs for specifying the dispatch arguments
@@ -142,6 +143,7 @@ export type Renderer = {
   [RenderType.permawebSelectActions]: RenderFunction;
   [RenderType.uploadProposal]: RenderFunction;
   [RenderType.proposalSummary]: RenderFunction;
+  [RenderType.initializeCreateRicardian]: RenderFunction;
 };
 
 export enum VerificationState {
@@ -168,11 +170,13 @@ export enum EventType {
   setEditFinished = "setEditFinished",
   setPageState = "setPageState",
   setProposalType = "setProposalType",
+  setCreateRicardianPageProps = "setCreateRicardianPageProps",
 }
 
 export enum StateProperties {
   init = "init",
   ipfs = "ipfs",
+  createRicardianPageProps = "createRicardianPageProps",
   balance = "balance",
   address = "address",
   selectedDate = "selectedDate",
@@ -280,6 +284,7 @@ export type State = {
   selectedDate: Date | string;
   popupState: PopupState;
   pageState: PageState;
+  createRicardianPageProps: CreateRicardianPageProps;
   proposalType: ProposalType;
   stashedPage: string;
   stashedDetails: StashedDetails;
@@ -313,6 +318,19 @@ export type SetHookArgs = {
 
 type Dependency = {
   src: string;
+};
+
+export type CreateRicardianPageProps = {
+  blockedCountries: BlockCountry[];
+  blockedAddresses: string;
+  expires: string;
+  redirectto: string;
+  smartContract: string;
+  erc20Add: boolean;
+  erc20Name: string;
+  erc20Symbol: string;
+  erc20Decimals: string;
+  erc20Address: string;
 };
 
 export type AcceptablePageProps = {
