@@ -20,8 +20,40 @@ import {
 } from "../../types";
 import { getById, readFile } from "../../view/utils";
 import { createProposalTransaction } from "../../wallet/arweave";
+import { getAddress, requestAccounts, web3Injected } from "../../wallet/web3";
+import MetaMaskOnboarding from "@metamask/onboarding";
+import {
+  getCatalogDAOContract,
+  getRank,
+} from "../../wallet/catalogDAO/contractCalls";
+import { OptionsBuilder } from "../utils";
 
-export function createProposalActions(props: State) {
+export async function createProposalActions(props: State) {
+  if (!web3Injected()) {
+    dispatch_renderError("Found no injected web3, install metamask");
+    const onboarding = new MetaMaskOnboarding();
+    onboarding.startOnboarding();
+    return;
+  }
+
+  //TODO: CHECK NETWORK CONNECTION!!
+  // IT MUST BE HARMONY NETWORK!
+  // If it's not, prompt to switch to harmony
+
+  await requestAccounts();
+
+  const myAddress = await getAddress();
+  const catalogDAO = await getCatalogDAOContract();
+
+  const rankOptions = await OptionsBuilder(() =>
+    getRank(catalogDAO, myAddress)
+  );
+
+  if (rankOptions.status === Status.Failure) {
+    dispatch_renderError("Failed to fetch the Rank!");
+    return;
+  }
+
   const createRankButton = getById("get-rank-tab-button");
 
   createRankButton.onclick = function () {
@@ -163,7 +195,7 @@ export function uploadProposalActions(props: State) {
   };
 
   createContractProposal.onclick = async function () {
-    console.log(props.Account);
+
 
     if (nameEl.value === "") {
       dispatch_renderError("You must specify the name.");
