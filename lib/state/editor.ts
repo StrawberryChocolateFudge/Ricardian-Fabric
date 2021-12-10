@@ -1,7 +1,6 @@
 import MediumEditor from "medium-editor";
 
-
-export default function createNewEditor() {
+export default function createNewEditor(): MediumEditor {
   //@ts-ignore
   return new MediumEditor(".editable", {
     imageDragging: false,

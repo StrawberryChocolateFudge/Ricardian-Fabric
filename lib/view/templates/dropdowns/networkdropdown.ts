@@ -1,13 +1,26 @@
 import { html } from "lit-html";
-import { BSCLogo, EthLogo, HarmonyLogo, networkLogo, PolygonLogo } from "../components/logos";
+import {
+  BSCLogo,
+  EthLogo,
+  HarmonyLogo,
+  networkLogo,
+  PolygonLogo,
+} from "../components/logos";
 
 export const NetworkDropdown = () => html`
-  <input type="checkbox" id="network_checkbox_toggle" class="dropdown_checkbox_toggle" />
-  <button class="labelButton dropdown_checkbox_label lightBlue-shadow" id="network_checkbox_button"
-    for="network_checkbox_toggle">
+  <input
+    type="checkbox"
+    id="network_checkbox_toggle"
+    class="dropdown_checkbox_toggle"
+  />
+  <button
+    class="labelButton dropdown_checkbox_label lightBlue-shadow"
+    id="network_checkbox_button"
+    for="network_checkbox_toggle"
+  >
     ${networkLogo()} Network
   </button>
-  
+
   <ul>
     <li>
       <button id="network-hmny-testnet-shard0" class="dropdown-button">
@@ -34,4 +47,3 @@ export const NetworkDropdown = () => html`
     </li>
   </ul>
 `;
-

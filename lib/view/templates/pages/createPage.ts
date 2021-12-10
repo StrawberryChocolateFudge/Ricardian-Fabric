@@ -28,7 +28,6 @@ export const CreatePage = () => html`
     <div id="editor" aria-label="Editor" class="cursor-text editable"></div>
     <div id="editor-control"></div>
   </div>
-
   <hr />
   <button class="accordion">
     ${ContractConfigurationLogo()}Contract Configuration

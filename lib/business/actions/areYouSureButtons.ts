@@ -13,11 +13,7 @@ import {
 import { IPFS_Add } from "../../ipfs/add";
 import { ContractTypes, Status, State } from "../../types";
 import { getById } from "../../view/utils";
-import {
-  acceptAgreement,
-  setTerms,
-  watchAsset,
-} from "../../wallet/web3";
+import { acceptAgreement, setTerms, watchAsset } from "../../wallet/web3";
 import { dispatch_stashIpfsCID } from "../../dispatch/stateChange";
 
 export function areYouSureButtons(props: State) {
@@ -64,8 +60,6 @@ export function areYouSureButtons(props: State) {
   };
 }
 
-
-
 async function smartContractActions(
   props: State,
   url: string,
@@ -96,7 +90,6 @@ async function smartContractActions(
     if (options.status == Status.Failure) {
       dispatch_renderError(options.error);
     }
-
 
     return options;
   }
