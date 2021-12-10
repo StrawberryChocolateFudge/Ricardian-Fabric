@@ -8,6 +8,7 @@ import {
   StashedDetails,
   PageState,
   ProposalType,
+  CreateRicardianPageProps,
 } from "../types";
 import { dispatch } from "./dispatch";
 
@@ -106,5 +107,14 @@ export function dispatch_setProposalType(proposalType: ProposalType) {
   dispatch(Events.stateChange, {
     type: EventType.setProposalType,
     value: proposalType,
+  });
+}
+
+export function dispatch_setCreateRicardianState(
+  pageData: CreateRicardianPageProps
+) {
+  dispatch(Events.stateChange, {
+    type: EventType.setCreateRicardianPageProps,
+    value: pageData,
   });
 }
