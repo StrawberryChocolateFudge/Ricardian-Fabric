@@ -1,6 +1,8 @@
 import { html, render } from "lit-html";
 import {
+  BlockCountry,
   ContractTypes,
+  CreateRicardianPageProps,
   DeploySC,
   PageState,
   SelectedWallet,
@@ -305,8 +307,19 @@ export function disableCreateInputs() {
     el.disabled = true;
     el.style.cursor = "not-allowed !important";
   };
-
   const editor = getById("editor") as HTMLInputElement;
+
+  editor.contentEditable = "false";
+
+  const smartContractCatalogButton = getById(
+    "smart-contract-catalog-button"
+  ) as HTMLButtonElement;
+  const stakingButton = getById("staking-button") as HTMLButtonElement;
+  const verifyButton = getById("verify-contract-button") as HTMLButtonElement;
+  smartContractCatalogButton.disabled = true;
+  stakingButton.disabled = true;
+  verifyButton.disabled = true;
+
   const expires = getById("expires-input") as HTMLInputElement;
   const never = getById("expires-reset") as HTMLInputElement;
   const redirectto = getById("redirectto-input") as HTMLInputElement;
@@ -356,7 +369,6 @@ export function disableCreateInputs() {
 
   catalogLabel.style.cursor = "not-allowed";
 
-  disable(editor);
   disable(sanctions);
   sanctionsLabel.style.cursor = "not-allowed";
   sanctionsLabel.style.backgroundColor = "white";
@@ -385,6 +397,18 @@ export function enableCreateInputs() {
   };
 
   const editor = getById("editor") as HTMLInputElement;
+
+  editor.contentEditable = "true";
+
+  const smartContractCatalogButton = getById(
+    "smart-contract-catalog-button"
+  ) as HTMLButtonElement;
+  const stakingButton = getById("staking-button") as HTMLButtonElement;
+  const verifyButton = getById("verify-contract-button") as HTMLButtonElement;
+  smartContractCatalogButton.disabled = false;
+  stakingButton.disabled = false;
+  verifyButton.disabled = false;
+
   const expires = getById("expires-input") as HTMLInputElement;
   const never = getById("expires-reset") as HTMLInputElement;
   const redirectto = getById("redirectto-input") as HTMLInputElement;
@@ -471,9 +495,12 @@ export function renderNetworkDropdown() {
   render(NetworkDropdown(), dropdown);
 }
 
-export function renderPermawebDropdown(page: PageState) {
+export function renderPermawebDropdown(
+  page: PageState,
+  contractType: ContractTypes
+) {
   const dropdown = getById("permaweb-dropdown");
-  render(PermawebDropdown(page), dropdown);
+  render(PermawebDropdown(contractType, page), dropdown);
 }
 
 export function renderTemplatesDropdown() {
@@ -758,4 +785,57 @@ export function renderProposalSummary(fee: string, id: string) {
   const layout = getById("overlay-layout");
 
   render(UploadProposalSummary(fee, id), layout);
+}
+
+export function setBlockedCountries(blockedCountries: BlockCountry[]) {
+  const ofec = getById("ofec_checkbox") as HTMLInputElement;
+  const eu = getById("eu-checkbox") as HTMLInputElement;
+  const un = getById("un-checkbox") as HTMLInputElement;
+  const usa = getById("usa-checkbox") as HTMLInputElement;
+  if (blockedCountries.includes(BlockCountry.OFEC)) {
+    ofec.checked = true;
+  } else {
+    ofec.checked = false;
+  }
+
+  if (blockedCountries.includes(BlockCountry.EU)) {
+    eu.checked = true;
+  } else {
+    eu.checked = false;
+  }
+  if (blockedCountries.includes(BlockCountry.UN)) {
+    un.checked = true;
+  } else {
+    un.checked = false;
+  }
+  if (blockedCountries.includes(BlockCountry.BLOCKUSA)) {
+    usa.checked = true;
+  } else {
+    usa.checked = false;
+  }
+}
+
+export function setCreatePageProps(pageProps: CreateRicardianPageProps) {
+  const blockkedAddressesEl = getById("blocked-addresses") as HTMLInputElement;
+  const expiresEl = getById("expires-input") as HTMLInputElement;
+  const redirecttoEl = getById("redirectto-input") as HTMLInputElement;
+  const smartcontractEl = getById("smartcontract-input") as HTMLInputElement;
+  const erc20AddEl = getById("add-erc20-checkbox") as HTMLInputElement;
+  const erc20NameEl = getById("erc20-name") as HTMLInputElement;
+  const erc20SymbolEl = getById("erc20-symbol") as HTMLInputElement;
+  const erc20DecimalsEl = getById("erc20-decimals") as HTMLInputElement;
+  const erc20AddressEl = getById("erc20-address") as HTMLInputElement;
+
+  blockkedAddressesEl.value = pageProps.blockedAddresses;
+  expiresEl.value = pageProps.expires;
+  redirecttoEl.value = pageProps.redirectto;
+  smartcontractEl.value = pageProps.smartContract;
+  erc20AddEl.checked = pageProps.erc20Add;
+  erc20NameEl.value = pageProps.erc20Name;
+  erc20SymbolEl.value = pageProps.erc20Symbol;
+  erc20DecimalsEl.value = pageProps.erc20Decimals;
+  erc20AddressEl.value = pageProps.erc20Address;
+
+  // Need to wait for the page to render because the blocked countries are pretty deep down the DOM tree
+  setTimeout(() => setBlockedCountries(pageProps.blockedCountries), 1000);
 }
