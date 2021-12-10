@@ -14,22 +14,7 @@ import BN from "bn.js";
 const CATALOGDAOADDRESS = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"; // On local hardhat testnet
 import { Options } from "../../types";
 
-export async function OptionsBuilder(
-  method: CallableFunction
-): Promise<Options<any>> {
-  const options: Options<any> = {
-    status: Status.Success,
-    error: "",
-    data: null,
-  };
-  try {
-    options.data = method();
-  } catch (err) {
-    options.error = err.message;
-    options.status = Status.Failure;
-  }
-  return options;
-}
+
 
 export async function getCatalogDAOContract() {
   const web3 = new Web3(window.ethereum);
