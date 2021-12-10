@@ -1,10 +1,8 @@
-import {
-  dispatch_renderError,
-} from "../../dispatch/render";
+import { dispatch_renderError } from "../../dispatch/render";
 import { switchNetwork, web3Injected } from "../../wallet/web3";
 import { getById } from "../../view/utils";
 import MetaMaskOnboarding from "@metamask/onboarding";
-import { Chains, State } from "../../types";
+import { ChainName, Chains, State } from "../../types";
 
 export function networkSelectActions() {
   const switchnetworkToggle = getById(
@@ -15,7 +13,7 @@ export function networkSelectActions() {
 
   switchnetworkButton.onclick = function () {
     switchnetworkToggle.click();
-  }
+  };
 
   switchnetworkToggle.onclick = function () {
     if (!web3Injected()) {
@@ -33,16 +31,20 @@ export function networkSelectActions() {
   const hmnyTestnetShard0 = getById("network-hmny-testnet-shard0");
 
   ropsten.onclick = async function () {
-    await switchNetwork("Ropsten", 0, "Testnet");
+    switchnetworkToggle.checked = false;
+    await switchNetwork(ChainName.Ropsten, 0, "Testnet");
   };
   bscTestnet.onclick = async function () {
-    await switchNetwork("BSC", 0, "Testnet");
+    switchnetworkToggle.checked = false;
+    await switchNetwork(ChainName.BSC, 0, "Testnet");
   };
   polygonTestnet.onclick = async function () {
-    await switchNetwork("Polygon", 0, "Testnet");
+    switchnetworkToggle.checked = false;
+    await switchNetwork(ChainName.Polygon, 0, "Testnet");
   };
   hmnyTestnetShard0.onclick = async function () {
-    await switchNetwork("Harmony", 0, "Testnet");
+    switchnetworkToggle.checked = false;
+    await switchNetwork(ChainName.Harmony, 0, "Testnet");
   };
 }
 
@@ -51,14 +53,14 @@ export function addChainButtonListener(props: State) {
   addChainButton.onclick = async function () {
     const chains = {
       [Chains.Ropsten]: async () =>
-        await switchNetwork("Ropsten", 0, "Testnet"),
-      [Chains.bscTestnet]: async () => await switchNetwork("BSC", 0, "Testnet"),
+        await switchNetwork(ChainName.Ropsten, 0, "Testnet"),
+      [Chains.bscTestnet]: async () =>
+        await switchNetwork(ChainName.BSC, 0, "Testnet"),
       [Chains.polygonTestnet]: async () =>
-        await switchNetwork("Polygon", 0, "Testnet"),
+        await switchNetwork(ChainName.Polygon, 0, "Testnet"),
       [Chains.harmonyTestnetShard0]: async () =>
-        await switchNetwork("Harmony", 0, "Testnet"),
+        await switchNetwork(ChainName.Harmony, 0, "Testnet"),
     };
     await chains[props.network]();
   };
 }
-
