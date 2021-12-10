@@ -1,4 +1,10 @@
-import { DeploySC, RenderType, State, VerificationState } from "../types";
+import {
+  CreateRicardianPageProps,
+  DeploySC,
+  RenderType,
+  State,
+  VerificationState,
+} from "../types";
 import { dispatch } from "./dispatch";
 import { Events } from "../types";
 
@@ -16,11 +22,11 @@ export function dispatch_renderCreate(props: State) {
   });
 }
 
-export function dispatch_sideBar(props: State){
-  dispatch(Events.render,{
+export function dispatch_sideBar(props: State) {
+  dispatch(Events.render, {
     type: RenderType.sidebar,
-    props
-  })
+    props,
+  });
 }
 
 export function dispatch_renderAcceptButton(props: State) {
@@ -435,5 +441,15 @@ export function dispatch_uploadProposal(props: State) {
   dispatch(Events.render, {
     type: RenderType.uploadProposal,
     props,
+  });
+}
+
+export function dispatch_initializeCreateRicardian(
+  props: State,
+  pageProps: CreateRicardianPageProps
+) {
+  dispatch(Events.render, {
+    type: RenderType.initializeCreateRicardian,
+    props: { ...props, tmp: { pageProps } },
   });
 }
