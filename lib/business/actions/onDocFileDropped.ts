@@ -33,6 +33,7 @@ export function onDocFileDropped(props: State) {
       dispatch_promptSuccessDOCX(docxInput.files[0]);
       dispatch_removeError();
       convertToHTML(docxInput.files[0], editor);
+      dispatch_setPopupState(PopupState.NONE);
     } else {
       dispatch_promptErrorDOCX("Invalid file,must be a docx file");
     }
@@ -65,6 +66,7 @@ export function onDocFileDropped(props: State) {
       dispatch_promptSuccessDOCX(e.dataTransfer.files[0]);
       dispatch_removeError();
       convertToHTML(e.dataTransfer.files[0], editor);
+      dispatch_setPopupState(PopupState.NONE);
     } else {
       dispatch_promptErrorDOCX("Invalid file, must be a docx file");
     }
