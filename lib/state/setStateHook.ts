@@ -1,4 +1,4 @@
-import { dispatch } from "../dispatch/dispatch";
+import { saveCreatePageData } from "../business/actions/createButtonClick";
 import {
   dispatch_attachDateClickListener,
   dispatch_catalogPage,
@@ -41,13 +41,15 @@ export const setStateHook = {
     if (currentPage === ContractTypes.create) {
       dispatch_sideBar(clone);
       dispatch_renderMenu(clone);
+      dispatch_renderCreate(clone);
       // showBanner();
-      
     } else if (currentPage === ContractTypes.acceptable) {
       dispatch_renderAcceptButton(clone);
+      dispatch_permawebselectActions(clone);
     }
   },
   [StateProperties.ipfs]: (args: SetHookArgs) => {},
+  [StateProperties.createRicardianPageProps]: (args: SetHookArgs) => {},
   [StateProperties.editor]: (args: SetHookArgs) => {},
   [StateProperties.balance]: (args: SetHookArgs) => {
     dispatch_renderBalance(cloneState(args.obj));
@@ -164,4 +166,10 @@ export const setStateHook = {
 
 function cloneState(state: State) {
   return Object.assign({}, state);
+}
+
+export function beforePageSetHook(prevPageState: PageState) {
+  if (prevPageState === PageState.CreateRicardian) {
+    saveCreatePageData();
+  }
 }
