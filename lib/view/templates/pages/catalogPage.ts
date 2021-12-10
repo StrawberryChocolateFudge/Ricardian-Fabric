@@ -49,7 +49,7 @@ function getSmartContracts() {
 export function catalogPage() {
   return html` <style></style>
     <div class="logo-container">
-    <div class="Fabric">Smart Contract catalog</div>
+    <div class="Fabric">Catalogue of Smart Contracts</div>
   </div>
     <small>
       You can deploy a contract, compatible with Ricardian Fabric, propose a new
@@ -119,7 +119,7 @@ export function SmartContractCards(
         /* width: 20%; */
         margin-top: 10px;
         cursor: pointer;
-        width: 120px;
+        width: 60px;
       }
 
       .card:hover {
@@ -128,7 +128,8 @@ export function SmartContractCards(
     </style>
     <div class="card">
       ${getBlockie(id, "100%", "")}
-      <div>
+      <div class="row">
+        <div class="column"></div>
         <h4><b>${name}</b></h4>
         <label for="category_parag">Category:</label>
         <small id="category_parag">${category}</small>
