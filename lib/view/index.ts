@@ -72,6 +72,7 @@ import {
   renderUploadProposal,
   renderProposalSummary,
   renderSidebar,
+  setCreatePageProps,
 } from "./render";
 import { renderAcceptTools } from "./render";
 import { areYouSureButtons } from "../business/actions/areYouSureButtons";
@@ -134,13 +135,13 @@ const Render: Renderer = {
     walletSelectListener();
 
     renderCreateButton(true);
-    renderCreateButtonClick(props);
+    renderCreateButtonClick(props, RenderType.create);
     attachExpiryClickAndListener(props);
     renderTooltips();
     renderSanctionsDropdown();
     renderNetworkDropdown();
     networkSelectActions();
-    renderPermawebDropdown(props.pageState);
+    renderPermawebDropdown(props.pageState, props.contracttype);
     permawebSelectActions(props);
     renderTemplatesDropdown();
     templateSelectActions(props);
@@ -157,7 +158,6 @@ const Render: Renderer = {
     renderAcceptButton(props);
     renderAcceptOnCLick(props);
     enableButton(props);
-
     addChainButtonListener(props);
   },
   [RenderType.addLoadingIndicator]: (props: { to: string }) => {
@@ -205,7 +205,7 @@ const Render: Renderer = {
   [RenderType.noButtonPressed]: (props: State) => {
     if (props.contracttype === ContractTypes.create) {
       renderCreateButton(true);
-      renderCreateButtonClick(props);
+      renderCreateButtonClick(props, RenderType.noButtonPressed);
     } else if (props.contracttype === ContractTypes.acceptable) {
       changeContainerSlotStyle(false);
       renderAcceptButton(props);
@@ -349,9 +349,9 @@ const Render: Renderer = {
   [RenderType.verificationState]: (props: RenderDispatchArgs) => {
     renderVerificationState(props.tmp.verificationState);
   },
-  [RenderType.createProposalPage]: (props: RenderDispatchArgs) => {
+  [RenderType.createProposalPage]: async (props: RenderDispatchArgs) => {
     renderCreateProposalPage(props);
-    createProposalActions(props);
+    await createProposalActions(props);
     renderAccordionOpener();
   },
   [RenderType.reviewAndVotePage]: (props: RenderDispatchArgs) => {
@@ -359,7 +359,7 @@ const Render: Renderer = {
     reviewAndVotePageActions(props);
   },
   [RenderType.permawebSelectActions]: (props: RenderDispatchArgs) => {
-    renderPermawebDropdown(props.pageState);
+    renderPermawebDropdown(props.pageState, props.contracttype);
     permawebSelectActions(props);
     handleDropdownClosing();
   },
@@ -373,10 +373,15 @@ const Render: Renderer = {
     renderProposalSummary(fee, id);
     //TODO: actions
   },
+  [RenderType.initializeCreateRicardian]: (props: RenderDispatchArgs) => {
+    if (props.tmp.pageProps !== null) {
+      setCreatePageProps(props.tmp.pageProps);
+    }
+  },
 };
 
-document.body.addEventListener(Events.render, (e: any) => {
+document.body.addEventListener(Events.render, async (e: any) => {
   const type: RenderType = e.detail.type;
   const props: State = e.detail.props;
-  Render[type](props);
+  await Render[type](props);
 });
