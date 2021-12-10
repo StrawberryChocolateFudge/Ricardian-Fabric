@@ -30,6 +30,22 @@ import {
   dispatch_setPosition,
 } from "../dispatch/stateChange";
 
+export async function OptionsBuilder(
+  method: CallableFunction
+): Promise<Options<any>> {
+  const options: Options<any> = {
+    status: Status.Success,
+    error: "",
+    data: null,
+  };
+  try {
+    options.data = method();
+  } catch (err) {
+    options.error = err.message;
+    options.status = Status.Failure;
+  }
+  return options;
+}
 
 export async function getAcceptablePage(args: {
   props: State;
@@ -208,7 +224,6 @@ export function getLocation(props: State, acceptButton: HTMLElement) {
         dispatch_renderError(err.message);
         dispatch_removeLoadingIndicator("transaction-display");
         dispatch_hideElement(acceptButton, false);
-
       }
     );
   } else {
@@ -216,7 +231,6 @@ export function getLocation(props: State, acceptButton: HTMLElement) {
     dispatch_enableButton(props);
     dispatch_removeLoadingIndicator("transaction-display");
     dispatch_hideElement(acceptButton, false);
-
   }
 }
 
