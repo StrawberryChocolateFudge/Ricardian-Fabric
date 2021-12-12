@@ -5,6 +5,8 @@ import {
   CreateRicardianPageProps,
   DeploySC,
   PageState,
+  PopupState,
+  RenderType,
   SelectedWallet,
   State,
   VerificationState,
@@ -12,7 +14,7 @@ import {
 import { AcceptButton, acceptTools } from "./templates/components/acceptTools";
 import { createButton } from "./templates/components/createButton";
 import { CreateSummary } from "./templates/components/createSummary";
-import { catalogPage, createProposalPage } from "./templates/pages/catalogPage";
+import { catalogPage } from "./templates/pages/catalogPage";
 import { DocXDropper } from "./templates/components/docxDropper";
 import { helperTooltips } from "./templates/components/helperTooltips";
 import { loadingIndicator } from "./templates/components/loadingIndicator";
@@ -62,6 +64,11 @@ import {
 } from "./templates/popups/uploadProposalPopup";
 import { ReviewAndVote } from "./templates/pages/reviewAndVotePage";
 import { SideBar } from "./templates/components/sideBar";
+import { createProposalPage } from "./templates/pages/createProposalPage";
+import {
+  proposeContractRemoval,
+  proposeNewSmartContract,
+} from "../wallet/catalogDAO/contractCalls";
 
 export function renderMenuPage(props: State) {
   const menuItems = getById("menuItems");
@@ -750,7 +757,7 @@ export function renderVerificationState(verificationState: VerificationState) {
 export function renderCreateProposalPage(props: State) {
   const page = getById("page");
 
-  render(createProposalPage(props.proposalType), page);
+  render(createProposalPage(), page);
 }
 
 export function renderReviewAndVotePage(props: State) {
@@ -774,11 +781,44 @@ export function renderAccordionOpener() {
   }
 }
 
-export function renderUploadProposal() {
+export function renderUploadProposal(step: PopupState) {
   setBannerDisplayBlock();
   const layout = getById("overlay-layout");
   layout.style.maxHeight = "100%";
   render(UploadProposalPopup(), layout);
+  const step1: HTMLElement = getById("uploadProposalStep1");
+  const step2: HTMLElement = getById("uploadProposalStep2");
+  const step3: HTMLElement = getById("uploadProposalStep3");
+  const step4: HTMLElement = getById("uploadProposalStep4");
+
+  switch (step) {
+    case PopupState.UploadProposal:
+      step1.style.display = "block";
+      step2.style.display = "none";
+      step3.style.display = "none";
+      step4.style.display = "none";
+      break;
+    case PopupState.UploadProposalStep2:
+      step1.style.display = "none";
+      step2.style.display = "block";
+      step3.style.display = "none";
+      step4.style.display = "none";
+      break;
+    case PopupState.UploadProposalStep3:
+      step1.style.display = "none";
+      step2.style.display = "none";
+      step3.style.display = "block";
+      step4.style.display = "none";
+      break;
+    case PopupState.UploadProposalStep4:
+      step1.style.display = "none";
+      step2.style.display = "none";
+      step3.style.display = "none";
+      step4.style.display = "block";
+      break;
+    default:
+      break;
+  }
 }
 
 export function renderProposalSummary(fee: string, id: string) {
@@ -838,4 +878,62 @@ export function setCreatePageProps(pageProps: CreateRicardianPageProps) {
 
   // Need to wait for the page to render because the blocked countries are pretty deep down the DOM tree
   setTimeout(() => setBlockedCountries(pageProps.blockedCountries), 1000);
+}
+
+export function proposalUpload(
+  props: State,
+  elements: {
+    nameEl: HTMLInputElement;
+    descriptionEl: HTMLInputElement;
+    artifactEl: HTMLInputElement;
+    termsEl: HTMLInputElement;
+    gitEl: HTMLInputElement;
+    commitEl: HTMLInputElement;
+    networkEl: HTMLSelectElement;
+    categoryEl: HTMLSelectElement;
+    implementsSimpleTerms: HTMLInputElement;
+  }
+) {
+  const {
+    nameEl,
+    descriptionEl,
+    artifactEl,
+    termsEl,
+    gitEl,
+    commitEl,
+    networkEl,
+    categoryEl,
+    implementsSimpleTerms,
+  } = elements;
+
+  const proposalProps = props.uploadProposalProps;
+
+  nameEl.value = proposalProps.name;
+  descriptionEl.value = proposalProps.description;
+  artifactEl.value = proposalProps.artifact;
+  if (proposalProps.terms != undefined) {
+    updatePromptSuccessDOCX(proposalProps.terms as File);
+  }
+  gitEl.value = proposalProps.git;
+  commitEl.value = proposalProps.commit;
+  networkEl.value = proposalProps.network;
+  categoryEl.value = proposalProps.category;
+  implementsSimpleTerms.checked = proposalProps.simpleterms;
+}
+
+export function render_createProposalPageContent(renderType: RenderType) {
+  const proposeContract = getById("proposeNewContract");
+  const proposeNewRank = getById("proposeNewRank");
+  switch (renderType) {
+    case RenderType.proposeNewRank:
+      proposeNewRank.style.display = "block";
+      proposeContract.style.display = "none";
+      break;
+    case RenderType.proposeNewContract:
+      proposeNewRank.style.display = "none";
+      proposeContract.style.display = "block";
+      break;
+    default:
+      break;
+  }
 }
