@@ -35,7 +35,12 @@ import {
   postTransaction,
   uploadData,
 } from "../../wallet/arweave";
-import { getById, readFile, readWalletFile } from "../../view/utils";
+import {
+  copyAddressToClipboard,
+  getById,
+  readFile,
+  readWalletFile,
+} from "../../view/utils";
 import { addHash } from "../../wallet/permapin/ipfsArweave";
 import { decryptWallet, encryptWallet } from "../../crypto";
 import { downloadBlob } from "../../view/render";
@@ -134,7 +139,7 @@ export function uploadFileListener(props: State) {
     }
 
     dispatch_hideElement(uploadButton, true);
-    readFile(fileInput.files, async (data) => {
+    readFile(fileInput.files[0], async (data) => {
       uploadButton.disabled = true;
       dispatch_renderLoadingIndicator("upload-loading-indicator");
       const contentType = contentTypeEl.value;
@@ -494,6 +499,7 @@ export function showAccountActions(props: State) {
   const proceedButton = getById("switchAccount-proceed");
   const newAccountButton = getById("new-Account");
   const transferButton = getById("transferPage-button");
+  const copyButton = getById("copy-address-button");
 
   transferButton.onclick = async function () {
     dispatch_setPopupState(PopupState.TransferAr);
@@ -508,6 +514,10 @@ export function showAccountActions(props: State) {
 
   newAccountButton.onclick = function () {
     dispatch_setPopupState(PopupState.NewAccount);
+  };
+
+  copyButton.onclick = function () {
+    copyAddressToClipboard();
   };
 }
 
