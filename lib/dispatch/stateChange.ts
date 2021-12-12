@@ -7,8 +7,8 @@ import {
   SelectedWallet,
   StashedDetails,
   PageState,
-  ProposalType,
   CreateRicardianPageProps,
+  ProposalFormat,
 } from "../types";
 import { dispatch } from "./dispatch";
 
@@ -103,18 +103,18 @@ export function dispatch_setPage(pageState: PageState) {
   });
 }
 
-export function dispatch_setProposalType(proposalType: ProposalType) {
-  dispatch(Events.stateChange, {
-    type: EventType.setProposalType,
-    value: proposalType,
-  });
-}
-
 export function dispatch_setCreateRicardianState(
   pageData: CreateRicardianPageProps
 ) {
   dispatch(Events.stateChange, {
     type: EventType.setCreateRicardianPageProps,
     value: pageData,
+  });
+}
+
+export function dispatch_setUploadProposalProps(proposalProps: ProposalFormat) {
+  dispatch(Events.stateChange, {
+    type: EventType.saveToStateUploadProposalProps,
+    value: proposalProps,
   });
 }
