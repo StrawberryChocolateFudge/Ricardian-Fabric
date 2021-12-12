@@ -1,6 +1,7 @@
 import {
   CreateRicardianPageProps,
   DeploySC,
+  PopupState,
   RenderType,
   State,
   VerificationState,
@@ -437,10 +438,10 @@ export function dispatch_permawebselectActions(props: State) {
   });
 }
 
-export function dispatch_uploadProposal(props: State) {
+export function dispatch_uploadProposal(props: State, step: PopupState) {
   dispatch(Events.render, {
     type: RenderType.uploadProposal,
-    props,
+    props: { ...props, tmp: { step } },
   });
 }
 
@@ -451,5 +452,39 @@ export function dispatch_initializeCreateRicardian(
   dispatch(Events.render, {
     type: RenderType.initializeCreateRicardian,
     props: { ...props, tmp: { pageProps } },
+  });
+}
+
+export function dispatch_initializeProposalUpload(
+  props: State,
+  tmp: {
+    nameEl: HTMLInputElement;
+    descriptionEl: HTMLInputElement;
+    artifactEl: HTMLInputElement;
+    termsEl: HTMLInputElement;
+    gitEl: HTMLInputElement;
+    commitEl: HTMLInputElement;
+    networkEl: HTMLSelectElement;
+    categoryEl: HTMLSelectElement;
+    implementsSimpleTerms: HTMLInputElement;
+  }
+) {
+  dispatch(Events.render, {
+    type: RenderType.initializeProposalUpload,
+    props: { ...props, tmp },
+  });
+}
+
+export function dispatch_proposeNewRank() {
+  dispatch(Events.render, {
+    type: RenderType.proposeNewRank,
+    props: {},
+  });
+}
+
+export function dispatch_proposeNewContract() {
+  dispatch(Events.render, {
+    type: RenderType.proposeNewContract,
+    props: {},
   });
 }
