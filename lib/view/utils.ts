@@ -245,9 +245,9 @@ export function changeContainerSlotStyle(to: boolean) {
   }
 }
 
-export function readFile(files: FileList, getContent: CallableFunction) {
+export function readFile(file: File, getContent: CallableFunction) {
   const reader = new FileReader();
-  reader.readAsArrayBuffer(files[0]);
+  reader.readAsArrayBuffer(file);
 
   reader.onloadend = function (event) {
     getContent(event.target.result);
@@ -338,4 +338,9 @@ export function getERC20Params(): Options<ERC20Params | string> {
 
 export function getEditorElementInnerHTML() {
   return getById("editor").innerHTML;
+}
+
+export function copyAddressToClipboard() {
+  const addressEl = getById("arweave-address");
+  copyStringToClipboard(addressEl.dataset.address);
 }
