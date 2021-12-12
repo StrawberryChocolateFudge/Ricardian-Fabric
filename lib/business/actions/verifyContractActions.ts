@@ -26,14 +26,9 @@ export function verifyContractPopupTrigger(props: State) {
 }
 
 export function verifyContractActions(props: State) {
-  const backbutton = getById("verify-back");
   const verifyProceed = getById("verify-proceed");
 
   const acceptableUrl = getById("acceptable-contract-url") as HTMLInputElement;
-
-  backbutton.onclick = function () {
-    dispatch_setPage(PageState.Menu);
-  };
 
   verifyProceed.onclick = async function () {
     if (acceptableUrl.value === "") {
