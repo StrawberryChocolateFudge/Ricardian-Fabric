@@ -831,7 +831,31 @@ hr {
 .uploadProposalDiv {
   display: block;
   width: 100%;
-  overflow: auto;
+  height: 100%;
+}
+
+#uploadProposalStep1 {
+  display: none;
+}
+
+#uploadProposalStep2 {
+  display: none;
+}
+
+#uploadProposalStep3 {
+  display: none;
+}
+
+#uploadProposalStep4 {
+  display: none;
+}
+
+#proposeNewContract {
+  display: none;
+}
+
+#proposeNewRank {
+  display: none;
 }
 
 .height500 {
