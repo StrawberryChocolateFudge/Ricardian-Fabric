@@ -52,13 +52,8 @@ export function catalogPage() {
     <div class="Fabric">Catalogue of Smart Contracts</div>
   </div>
     <small>
-      You can deploy a contract, compatible with Ricardian Fabric, propose a new
-      one or Vote.
+     Select a smart contract for your specific use case.
     </small>
-    <div>
-      <button class="labelButton" id="create-proposal-button">Create a proposal</button>
-      <button class="labelButton" id="review-and-vote-button">Review and Vote</button>
-    </div>
     <table>
       <thead>
         <tr>
@@ -139,93 +134,3 @@ export function SmartContractCards(
     </div>`;
 }
 
-export function createProposalPage(proposalType: ProposalType) {
-  return html`
-    <h2>Create a Proposal</h2>
-    <div class="row">
-      <button class="labelButton" id="createproposal-back">
-        ${BackLogo()} Back
-      </button>
-      <button id="get-rank-tab-button" class="labelButton">Get Rank</button>
-      <button id="propose-new-contract-tab-button" class="labelButton">
-        Propose a new smart contract
-      </button>
-    </div>
-    ${proposalType === ProposalType.NewSmartContract
-      ? proposeNewContract()
-      : proposeGetRank()}
-    <div class="row">
-      <hr />
-      <!-- <button class="NextButton" id="createproposal-proceed">Submit</button> -->
-    </div>
-    <hr />
-  `;
-}
-
-function proposeGetRank() {
-  return html`
-    <h4 id="rankHeader"></h4>
-    <small>You need to get Rank to propose a new smart contract.</small>
-    <small
-      >To create a proposal, add your github repo link, to show off your skills,
-      with an open issue to comment on.</small
-    >
-    <hr />
-    <table>
-      <thead>
-        <tr>
-          <th></th>
-          <th></th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            <label aria-labelledby="github url link" for="github-url"
-              >Github url</label
-            >
-          </td>
-          <td>
-            <input id="github-url" type="url" />
-            <button id="create-rank-proposal" class="labelButton">
-              Submit
-            </button>
-          </td>
-          <td>
-            ${helperTooltips(
-              "A github link to your repositiory containing code to show off."
-            )}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <hr />
-  `;
-}
-
-export function getNetworkSelect() {
-  const chains = getChains();
-
-  return chains.map((ch) => html`<option value="${ch.id}">${ch.name}</option>`);
-}
-
-function proposeNewContract() {
-  return html`
-    <small
-      >You can propose a new smart contract. The DAO will decide if it's
-      eligible to be added to the catalog.</small
-    >
-    <small
-      >Proposal data is uploaded to the permaweb. Select it from the
-      dropdown.</small
-    >
-    <div id="permaweb-dropdown">Permaweb</div>
-
-    <div class="row">
-      <label for="proposal-tx-id">Proposal Tx Id:</label>
-      <input id="proposal-tx-id" type="text" />
-      <button class="labelButton" id="proposal-submit-button">Submit</button>
-    </div>
-  `;
-}
