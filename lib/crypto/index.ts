@@ -16,7 +16,6 @@ function concatStrings(data: Array<String>) {
   return res;
 }
 
-
 function orderStringsForHashing(data: IssuerHashedData): string {
   const blockedCountries = JSON.stringify(data.blockedCountries);
   const blockedAddresses = JSON.stringify(data.blockedAddresses);
@@ -31,9 +30,8 @@ function orderStringsForHashing(data: IssuerHashedData): string {
     blockedAddresses,
     data.network,
     data.smartContract,
-    data.ERC20
+    data.ERC20,
   ]);
-
 }
 
 export async function getHash(data: IssuerHashedData) {
@@ -113,20 +111,24 @@ export async function decryptWallet(
   cipherbytes: ArrayBuffer,
   passwd: string
 ): Promise<Options<string>> {
-  const options: Options<string> = { error: "", data: "", status: Status.Success };
+  const options: Options<string> = {
+    error: "",
+    data: "",
+    status: Status.Success,
+  };
 
   const onError = (err) => {
     options.error = err;
     options.status = Status.Failure;
   };
 
-  const decryptedBytes = await decrypt(cipherbytes, passwd, onError);
-  const decodedBytes = decodeUint8Array(decryptedBytes);
   try {
+    const decryptedBytes = await decrypt(cipherbytes, passwd, onError);
+    const decodedBytes = decodeUint8Array(decryptedBytes);
     options.data = JSON.parse(decodedBytes);
   } catch (err) {
     options.status = Status.Failure;
-    options.error = "Error Decrypting File, Wrong password.";
+    options.error = err.message;
   }
   return options;
 }
