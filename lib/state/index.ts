@@ -7,8 +7,8 @@ import {
   StashedDetails,
   State,
   PageState,
-  ProposalType,
   CreateRicardianPageProps,
+  ProposalFormat,
 } from "../types";
 import { getCurrentUrl, getPage } from "../view/utils";
 import {
@@ -43,7 +43,7 @@ import { beforePageSetHook, setStateHook } from "./setStateHook";
       Account: { data: null, address: null, balance: null },
       popupState: PopupState.NONE,
       pageState: PageState.CreateRicardian,
-      proposalType: ProposalType.Rank,
+      uploadProposalProps: null,
       createRicardianPageProps: null,
       editor: createNewEditor(),
       domParser: new DOMParser(),
@@ -131,13 +131,13 @@ import { beforePageSetHook, setStateHook } from "./setStateHook";
 
       stateContainer.pageState = value;
     },
-    [EventType.setProposalType]: (value: ProposalType) => {
-      stateContainer.proposalType = value;
-    },
     [EventType.setCreateRicardianPageProps]: (
       value: CreateRicardianPageProps
     ) => {
       stateContainer.createRicardianPageProps = value;
+    },
+    [EventType.saveToStateUploadProposalProps]: (value: ProposalFormat) => {
+      stateContainer.uploadProposalProps = value;
     },
   };
 
