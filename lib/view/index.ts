@@ -73,6 +73,8 @@ import {
   renderProposalSummary,
   renderSidebar,
   setCreatePageProps,
+  proposalUpload,
+  render_createProposalPageContent,
 } from "./render";
 import { renderAcceptTools } from "./render";
 import { areYouSureButtons } from "../business/actions/areYouSureButtons";
@@ -112,13 +114,15 @@ import {
 import { verifyContractActions } from "../business/actions/verifyContractActions";
 import {
   catalogAction,
-  createProposalActions,
-  uploadProposalActions,
   walletSelectListener,
 } from "../business/actions/catalogActions";
 import { WinstonToAr } from "../wallet/arweave";
 import { menuActions } from "../business/actions/menuActions";
 import { reviewAndVotePageActions } from "../business/actions/reviewAndVote";
+import {
+  createProposalActions,
+  uploadProposalActions,
+} from "../business/actions/createProposalActions";
 
 const Render: Renderer = {
   [RenderType.menu]: (props: State) => {
@@ -364,8 +368,9 @@ const Render: Renderer = {
     handleDropdownClosing();
   },
   [RenderType.uploadProposal]: (props: RenderDispatchArgs) => {
-    renderUploadProposal();
-    uploadProposalActions(props);
+    const step = props.tmp.step;
+    renderUploadProposal(step);
+    uploadProposalActions(props, step);
   },
   [RenderType.proposalSummary]: (props: RenderDispatchArgs) => {
     const fee = WinstonToAr(props.tmp.transaction.reward);
@@ -377,6 +382,15 @@ const Render: Renderer = {
     if (props.tmp.pageProps !== null) {
       setCreatePageProps(props.tmp.pageProps);
     }
+  },
+  [RenderType.initializeProposalUpload]: (props: RenderDispatchArgs) => {
+    proposalUpload(props, props.tmp);
+  },
+  [RenderType.proposeNewRank]: (props: RenderDispatchArgs) => {
+    render_createProposalPageContent(RenderType.proposeNewRank);
+  },
+  [RenderType.proposeNewContract]: (props: RenderDispatchArgs) => {
+    render_createProposalPageContent(RenderType.proposeNewContract);
   },
 };
 
