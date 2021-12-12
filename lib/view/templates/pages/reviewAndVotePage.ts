@@ -1,11 +1,25 @@
 import { html } from "lit-html";
 import { getBlockie } from "../components/getBlockies";
-import { BackLogo, ThumbsDown, ThumbsUp, WebAsset } from "../components/logos";
+import {
+  AddLogo,
+  ThumbsDown,
+  ThumbsUp,
+  WebAsset,
+} from "../components/logos";
 import { getCategories } from "./catalogPage";
 
 export function ReviewAndVote() {
   return html`
-    <h2>Review and Vote</h2>
+    <h2>
+      Review and Vote
+      <button
+        id="create-proposal-button"
+        class="labelButton"
+        title="Propose a new smart contract"
+      >
+        ${AddLogo()}
+      </button>
+    </h2>
     <h5>New smart contract proposals</h5>
     <table class="light-shadow">
       <thead>
@@ -130,8 +144,5 @@ export function ReviewAndVote() {
         <td><button class="labelButton">${ThumbsDown()}</button></td>
       </tr>
     </table>
-    <div class="row">
-      <button class="labelButton" id="reviewBack">${BackLogo()}Back</button>
-    </div>
   `;
 }
