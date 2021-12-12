@@ -78,6 +78,9 @@ export enum RenderType {
   uploadProposal = "uploadProposal",
   proposalSummary = "proposalSummary",
   initializeCreateRicardian = "initializeCreateRicardian",
+  initializeProposalUpload = "initializeProposalUpload",
+  proposeNewRank = "proposeNewRank",
+  proposeNewContract = "proposeNewContract",
 }
 
 // TODO refactor to RenderDispatchArgs for specifying the dispatch arguments
@@ -144,6 +147,9 @@ export type Renderer = {
   [RenderType.uploadProposal]: RenderFunction;
   [RenderType.proposalSummary]: RenderFunction;
   [RenderType.initializeCreateRicardian]: RenderFunction;
+  [RenderType.initializeProposalUpload]: RenderFunction;
+  [RenderType.proposeNewRank]: RenderFunction;
+  [RenderType.proposeNewContract]: RenderFunction;
 };
 
 export enum VerificationState {
@@ -169,8 +175,8 @@ export enum EventType {
   setIpfsCID = "setIpfsCID",
   setEditFinished = "setEditFinished",
   setPageState = "setPageState",
-  setProposalType = "setProposalType",
   setCreateRicardianPageProps = "setCreateRicardianPageProps",
+  saveToStateUploadProposalProps = "saveToStateUploadProposalProps",
 }
 
 export enum StateProperties {
@@ -191,6 +197,7 @@ export enum StateProperties {
   editor = "editor",
   pageState = "pageState",
   proposalType = "proposalType",
+  uploadProposalProps = "uploadProposalProps",
 }
 
 export enum ContractTypes {
@@ -263,6 +270,9 @@ export enum PopupState {
   Permapin,
   PermapinSummary, //Same as upload summary...
   UploadProposal,
+  UploadProposalStep2,
+  UploadProposalStep3,
+  UploadProposalStep4,
 }
 
 export enum PageState {
@@ -285,7 +295,7 @@ export type State = {
   popupState: PopupState;
   pageState: PageState;
   createRicardianPageProps: CreateRicardianPageProps;
-  proposalType: ProposalType;
+  uploadProposalProps: ProposalFormat;
   stashedPage: string;
   stashedDetails: StashedDetails;
   selectedWallet: SelectedWallet;
@@ -432,20 +442,13 @@ export type ProposalFormat = {
   name: string;
   description: string;
   artifact: string;
-  terms: string;
+  terms: string | File;
   git: string;
   commit: string;
-  premium: boolean;
-  price: number;
   network: string;
   category: string;
   simpleterms: boolean;
 };
-
-export enum ProposalType {
-  Rank,
-  NewSmartContract,
-}
 
 export type RankProposal = {
   repository: string;
