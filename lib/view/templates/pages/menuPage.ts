@@ -5,6 +5,7 @@ import {
   GradingLogo,
   HandShakeLogo,
   TokenLogo,
+  VoteLogo,
 } from "../components/logos";
 
 export const MenuPage = (blockieData: string) => html`
@@ -24,7 +25,7 @@ export const MenuPage = (blockieData: string) => html`
 
   <div class="text-align-center">
     <button
-      class="lightGreenish-shadow  labelButton"
+      class="lightSlateGray-shadow  labelButton"
       id="smart-contract-catalog-button"
       title="Smart contract catalog"
     >
@@ -35,7 +36,7 @@ export const MenuPage = (blockieData: string) => html`
   <div class="text-align-center">
     <button
       title="Staking an Profit-Sharing"
-      class="labelButton lightGreenish-shadow"
+      class="lightSlateGray-shadow  labelButton"
       id="staking-button"
     >
       ${TokenLogo()}
@@ -45,10 +46,19 @@ export const MenuPage = (blockieData: string) => html`
   <div class="text-align-center">
     <button
       title="Verify an acceptable contract"
-      class="labelButton"
+      class="lightSlateGray-shadow  labelButton"
       id="verify-contract-button"
     >
       ${GradingLogo()}
+    </button>
+  </div>
+  <div class="text-align-center">
+    <button
+      title="Review and Vote"
+      class="lightSlateGray-shadow  labelButton"
+      id="review-and-vote-button"
+    >
+      ${VoteLogo()}
     </button>
   </div>
 `;
