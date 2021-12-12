@@ -3,9 +3,9 @@ import { PageState, State } from "../../types";
 import { getById } from "../../view/utils";
 
 export function reviewAndVotePageActions(props: State) {
-  const backButton = getById("reviewBack");
-
-  backButton.onclick = function () {
-    dispatch_setPage(PageState.Catalog);
+  const createProposalButton = getById("create-proposal-button");
+  createProposalButton.onclick = function () {
+    dispatch_setPage(PageState.Proposals);
   };
+
 }
