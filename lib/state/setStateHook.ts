@@ -28,7 +28,6 @@ import {
   ContractTypes,
   PageState,
   PopupState,
-  ProposalType,
   SetHookArgs,
   State,
   StateProperties,
@@ -121,7 +120,16 @@ export const setStateHook = {
         dispatch_permapinPopup(clone, clone.ipfsCID);
         break;
       case PopupState.UploadProposal:
-        dispatch_uploadProposal(clone);
+        dispatch_uploadProposal(clone, PopupState.UploadProposal);
+        break;
+      case PopupState.UploadProposalStep2:
+        dispatch_uploadProposal(clone, PopupState.UploadProposalStep2);
+        break;
+      case PopupState.UploadProposalStep3:
+        dispatch_uploadProposal(clone, PopupState.UploadProposalStep3);
+        break;
+      case PopupState.UploadProposalStep4:
+        dispatch_uploadProposal(clone, PopupState.UploadProposalStep4);
         break;
       default:
         break;
@@ -158,10 +166,9 @@ export const setStateHook = {
   [StateProperties.proposalType]: (args: SetHookArgs) => {
     const clone = cloneState(args.obj);
     dispatch_renderCreateProposalPage(clone);
-    if (args.value === ProposalType.NewSmartContract) {
-      dispatch_permawebselectActions(clone);
-    }
+    dispatch_permawebselectActions(clone);
   },
+  [StateProperties.uploadProposalProps]: (args: SetHookArgs) => {},
 };
 
 function cloneState(state: State) {
