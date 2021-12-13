@@ -85,6 +85,16 @@ function convertToHTML(file: File, editor: any) {
   });
 }
 
+export function convertToHTMLFromArrayBuffer(
+  arrayBuffer,
+  getTerms: CallableFunction
+) {
+  mammoth
+    .convertToHtml({ arrayBuffer: arrayBuffer })
+    .then((result) => getTerms(result.value))
+    .done();
+}
+
 function readFileInputEventAsArrayBuffer(file, callback) {
   var reader = new FileReader();
 
