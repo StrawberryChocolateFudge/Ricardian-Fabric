@@ -17,7 +17,10 @@ import {
 } from "../../dispatch/stateChange";
 import { decryptWallet } from "../../crypto";
 import { createProposalTransaction } from "../../wallet/arweave";
-import { onDocProposalFileDropped } from "./onDocFileDropped";
+import {
+  convertToHTMLFromArrayBuffer,
+  onDocProposalFileDropped,
+} from "./onDocFileDropped";
 
 export async function createProposalActions(props: State) {
   if (!web3Injected()) {
@@ -124,7 +127,7 @@ export function uploadProposalActions(props: State, step: PopupState) {
 
   const termsEl = getById("docx-input") as HTMLInputElement;
   const gitEl = getById("smartcontract-repo") as HTMLInputElement;
-  const commitEl = getById("smartcontract-commit") as HTMLInputElement;
+  const frontEndEl = getById("smartcontract-frontend") as HTMLInputElement;
   const termsAcceptedEl = getById("accepted-terms") as HTMLInputElement;
 
   const networkEl = getById("selected-network") as HTMLSelectElement;
@@ -144,28 +147,32 @@ export function uploadProposalActions(props: State, step: PopupState) {
       artifactEl,
       termsEl,
       gitEl,
-      commitEl,
+      frontEndEl,
       networkEl,
       categoryEl,
       implementsSimpleTerms,
     });
   }
 
+  if (props.Account.address === null) {
+    dispatch_renderError("You need to add an arweave account.");
+  }
+
   backbutton.onclick = function () {
+    dispatch_setUploadProposalProps({
+      name: nameEl.value,
+      description: descriptionEl.value,
+      artifact: artifactEl.value,
+      terms: termsEl.files[0],
+      git: gitEl.value,
+      frontEnd: frontEndEl.value,
+      network: networkEl.value,
+      category: categoryEl.value,
+      simpleterms: implementsSimpleTerms.checked,
+    });
     switch (step) {
       case PopupState.UploadProposal:
         dispatch_setPopupState(PopupState.NONE);
-        dispatch_setUploadProposalProps({
-          name: nameEl.value,
-          description: descriptionEl.value,
-          artifact: artifactEl.value,
-          terms: termsEl.files[0],
-          git: gitEl.value,
-          commit: commitEl.value,
-          network: networkEl.value,
-          category: categoryEl.value,
-          simpleterms: implementsSimpleTerms.checked,
-        });
         break;
       case PopupState.UploadProposalStep2:
         dispatch_setPopupState(PopupState.UploadProposal);
@@ -182,6 +189,17 @@ export function uploadProposalActions(props: State, step: PopupState) {
   };
 
   createContractProposal.onclick = async function () {
+    dispatch_setUploadProposalProps({
+      name: nameEl.value,
+      description: descriptionEl.value,
+      artifact: artifactEl.value,
+      terms: termsEl.files[0],
+      git: gitEl.value,
+      frontEnd: frontEndEl.value,
+      network: networkEl.value,
+      category: categoryEl.value,
+      simpleterms: implementsSimpleTerms.checked,
+    });
     switch (step) {
       case PopupState.UploadProposal:
         if (nameEl.value === "") {
@@ -221,10 +239,6 @@ export function uploadProposalActions(props: State, step: PopupState) {
           return;
         }
 
-        if (commitEl.value === "") {
-          dispatch_renderError("Commit id is empty");
-          return;
-        }
         dispatch_setPopupState(PopupState.UploadProposalStep3);
         break;
       case PopupState.UploadProposalStep3:
@@ -260,11 +274,12 @@ export function uploadProposalActions(props: State, step: PopupState) {
             artifact: JSON.parse(artifactEl.value),
             terms: data,
             git: gitEl.value,
-            commit: commitEl.value,
+            frontEnd: frontEndEl.value,
             network: networkEl.value,
             category: categoryEl.value,
             simpleterms: implementsSimpleTerms.checked,
           };
+
           if (props.Account.data === null) {
             dispatch_renderError("Missing arweave account.");
             return;
@@ -289,12 +304,29 @@ export function uploadProposalActions(props: State, step: PopupState) {
             implementsSimpleTerms.checked
           );
 
-          console.log(proposalTransaction);
-          dispatch_renderProposalSummary(proposalTransaction, props);
+          const getTerms = (terms: string) => {
+            dispatch_renderProposalSummary(
+              proposalTransaction,
+              props,
+              proposal,
+              terms
+            );
+          };
+
+          convertToHTMLFromArrayBuffer(proposal.terms, getTerms);
         });
         break;
       default:
         break;
     }
+  };
+}
+
+export function uploadProposalSummaryActions(transaction: any, props: State) {
+  const backButton = getById("post-proposal-back");
+  const postButton = getById("post-proposal");
+
+  backButton.onclick = function () {
+    dispatch_setPopupState(PopupState.UploadProposalStep4);
   };
 }
