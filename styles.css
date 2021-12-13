@@ -249,6 +249,14 @@ hr {
   width: 100%;
 }
 
+.width-30Percent {
+  width: 30%;
+}
+
+.width-70Percent {
+  width: 70%;
+}
+
 .red {
   color: red;
 }
@@ -312,7 +320,6 @@ hr {
   background: white;
   max-width: 800px;
   margin: 0 auto;
-  margin-top: 30px;
   box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
   border-radius: 10px;
   overflow: auto;
@@ -891,4 +898,8 @@ hr {
 
 .text-align-center {
   text-align: center;
+}
+
+.display-block {
+  display: block;
 }
