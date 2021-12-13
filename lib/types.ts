@@ -444,7 +444,7 @@ export type ProposalFormat = {
   artifact: string;
   terms: string | File;
   git: string;
-  commit: string;
+  frontEnd: string;
   network: string;
   category: string;
   simpleterms: boolean;
