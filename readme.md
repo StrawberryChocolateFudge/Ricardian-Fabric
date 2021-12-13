@@ -17,9 +17,9 @@ Run the front end
 #### version blockie
 
 Because the version blockie is the arweave transaction ID
-add this to the development URL to render it after localhost:1234/
+add use the development url
 
-"arweave.net/whateverIDIMakeUp"
+"localhost:1234/arweave.net/whateverID"
 
 ## Deployment
 
