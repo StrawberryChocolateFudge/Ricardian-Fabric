@@ -2,6 +2,7 @@ import {
   CreateRicardianPageProps,
   DeploySC,
   PopupState,
+  ProposalFormat,
   RenderType,
   State,
   VerificationState,
@@ -286,10 +287,22 @@ export function dispatch_renderUploadSummary(
   });
 }
 
-export function dispatch_renderProposalSummary(transaction: any, props: State) {
+export function dispatch_renderProposalSummary(
+  transaction: any,
+  props: State,
+  proposal: ProposalFormat,
+  terms: string
+) {
   dispatch(Events.render, {
     type: RenderType.proposalSummary,
-    props: { ...props, tmp: { transaction } },
+    props: {
+      ...props,
+      tmp: {
+        transaction,
+        proposal,
+        terms,
+      },
+    },
   });
 }
 
@@ -463,7 +476,7 @@ export function dispatch_initializeProposalUpload(
     artifactEl: HTMLInputElement;
     termsEl: HTMLInputElement;
     gitEl: HTMLInputElement;
-    commitEl: HTMLInputElement;
+    frontEndEl: HTMLInputElement;
     networkEl: HTMLSelectElement;
     categoryEl: HTMLSelectElement;
     implementsSimpleTerms: HTMLInputElement;
