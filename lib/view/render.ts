@@ -6,6 +6,7 @@ import {
   DeploySC,
   PageState,
   PopupState,
+  ProposalFormat,
   RenderType,
   SelectedWallet,
   State,
@@ -821,10 +822,17 @@ export function renderUploadProposal(step: PopupState) {
   }
 }
 
-export function renderProposalSummary(fee: string, id: string) {
+export function renderProposalSummary(
+  fee: string,
+  id: string,
+  terms: string,
+  proposal: ProposalFormat
+) {
   const layout = getById("overlay-layout");
 
-  render(UploadProposalSummary(fee, id), layout);
+  render(UploadProposalSummary(fee, id, proposal), layout);
+  const termsContent = getById("termsContent");
+  termsContent.innerHTML = terms;
 }
 
 export function setBlockedCountries(blockedCountries: BlockCountry[]) {
@@ -888,7 +896,7 @@ export function proposalUpload(
     artifactEl: HTMLInputElement;
     termsEl: HTMLInputElement;
     gitEl: HTMLInputElement;
-    commitEl: HTMLInputElement;
+    frontEndEl: HTMLInputElement;
     networkEl: HTMLSelectElement;
     categoryEl: HTMLSelectElement;
     implementsSimpleTerms: HTMLInputElement;
@@ -900,7 +908,7 @@ export function proposalUpload(
     artifactEl,
     termsEl,
     gitEl,
-    commitEl,
+    frontEndEl,
     networkEl,
     categoryEl,
     implementsSimpleTerms,
@@ -911,11 +919,8 @@ export function proposalUpload(
   nameEl.value = proposalProps.name;
   descriptionEl.value = proposalProps.description;
   artifactEl.value = proposalProps.artifact;
-  if (proposalProps.terms != undefined) {
-    updatePromptSuccessDOCX(proposalProps.terms as File);
-  }
   gitEl.value = proposalProps.git;
-  commitEl.value = proposalProps.commit;
+  frontEndEl.value = proposalProps.frontEnd;
   networkEl.value = proposalProps.network;
   categoryEl.value = proposalProps.category;
   implementsSimpleTerms.checked = proposalProps.simpleterms;
