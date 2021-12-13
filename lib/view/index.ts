@@ -122,6 +122,7 @@ import { reviewAndVotePageActions } from "../business/actions/reviewAndVote";
 import {
   createProposalActions,
   uploadProposalActions,
+  uploadProposalSummaryActions,
 } from "../business/actions/createProposalActions";
 
 const Render: Renderer = {
@@ -375,8 +376,8 @@ const Render: Renderer = {
   [RenderType.proposalSummary]: (props: RenderDispatchArgs) => {
     const fee = WinstonToAr(props.tmp.transaction.reward);
     const id = props.tmp.transaction.id;
-    renderProposalSummary(fee, id);
-    //TODO: actions
+    renderProposalSummary(fee, id, props.tmp.terms, props.tmp.proposal);
+    uploadProposalSummaryActions(props.tmp.transaction, props);
   },
   [RenderType.initializeCreateRicardian]: (props: RenderDispatchArgs) => {
     if (props.tmp.pageProps !== null) {
