@@ -66,10 +66,7 @@ import {
 import { ReviewAndVote } from "./templates/pages/reviewAndVotePage";
 import { SideBar } from "./templates/components/sideBar";
 import { createProposalPage } from "./templates/pages/createProposalPage";
-import {
-  proposeContractRemoval,
-  proposeNewSmartContract,
-} from "../wallet/catalogDAO/contractCalls";
+import ScreenSizeDetector from "screen-size-detector";
 
 export function renderMenuPage(props: State) {
   const menuItems = getById("menuItems");
@@ -542,6 +539,16 @@ export function handleDropdownClosing() {
 
   const page = getById("page");
   page.onclick = function (ev: Event) {
+    const detectScreen = new ScreenSizeDetector();
+    if (detectScreen.width < 1000) {
+      // If the screen is smaller than 1000 pixels, I close the menu on page click
+      const sidebar = getById("sidebar");
+      if (!sidebar.classList.contains("collapsed")) {
+        sidebar.classList.add("collapsed");
+      }
+    }
+
+    console.log("page clicked");
     if (!ev.composedPath().includes(networkDropdown)) {
       networktoggle.checked = false;
     }
