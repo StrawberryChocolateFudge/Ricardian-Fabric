@@ -1,6 +1,6 @@
 import Arweave from "arweave";
 import { readContract, selectWeightedPstHolder } from "smartweave";
-import { Options, Status } from "../types";
+import { Options, ProposalFormat, Status } from "../types";
 // import TestWeave from "testweave-sdk";
 
 export const ARWAEVECONFIG = {
@@ -53,7 +53,7 @@ export async function createFileTransaction(
 }
 
 export async function createProposalTransaction(
-  data: any,
+  proposal: ProposalFormat,
   version: string,
   key: any,
   name: string,
@@ -61,8 +61,13 @@ export async function createProposalTransaction(
   chainid: string,
   simpleTerms: boolean
 ) {
+  const preparedProposal = {
+    ...proposal,
+    terms: encodeProposalTerms(proposal.terms as ArrayBuffer),
+  };
+  
   const transaction = await arweave.createTransaction(
-    { data: JSON.stringify(data) },
+    { data: JSON.stringify(preparedProposal) },
     key
   );
   transaction.addTag("Contract-Type", "Proposal");
@@ -160,4 +165,8 @@ export async function getWeighedPSTHolder() {
   const contractState = await readContract(arweave, PSTContract);
   const holder = selectWeightedPstHolder(contractState.balances);
   return holder;
+}
+
+export function encodeProposalTerms(buff: ArrayBuffer): Array<number> {
+  return Array.from(new Uint8Array(buff));
 }
