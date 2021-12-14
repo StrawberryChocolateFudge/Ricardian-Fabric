@@ -37,10 +37,6 @@ export function smartContractProductPage(
           <label>Name:</label>
           <small>${proposal.name}</small>
         </div>
-        <div class="text-align-center column">
-          <label>Description:</label>
-          <small>${proposal.description}</small>
-        </div>
         <hr />
 
         <div class="text-align-center column">
@@ -59,6 +55,7 @@ export function smartContractProductPage(
               >
             </div>`
           : null}
+        <hr />
         ${preview
           ? null
           : html` <div class="text-align-center">
