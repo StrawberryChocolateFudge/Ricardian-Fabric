@@ -4,19 +4,23 @@ import {
   dispatch_initializeProposalUpload,
   dispatch_proposeNewRank,
   dispatch_proposeNewContract,
+  dispatch_hideElement,
+  dispatch_renderUploadStatus,
+  dispatch_renderLoadingIndicator,
+  dispatch_removeLoadingIndicator,
 } from "../../dispatch/render";
 import { PopupState, ProposalFormat, State, Status } from "../../types";
 import { getAddress, requestAccounts, web3Injected } from "../../wallet/web3";
 import MetaMaskOnboarding from "@metamask/onboarding";
 import { getCatalogDAOContract } from "../../wallet/catalogDAO/contractCalls";
 import { OptionsBuilder } from "../utils";
-import { getById, readFile } from "../../view/utils";
+import { copyStringToClipboard, getById, readFile } from "../../view/utils";
 import {
   dispatch_setPopupState,
   dispatch_setUploadProposalProps,
 } from "../../dispatch/stateChange";
 import { decryptWallet } from "../../crypto";
-import { createProposalTransaction } from "../../wallet/arweave";
+import { createProposalTransaction, uploadData } from "../../wallet/arweave";
 import {
   convertToHTMLFromArrayBuffer,
   onDocProposalFileDropped,
@@ -120,9 +124,6 @@ export function uploadProposalActions(props: State, step: PopupState) {
   const createContractProposal = getById("create-contract-proposal");
 
   const nameEl = getById("smartcontract-name") as HTMLInputElement;
-  const descriptionEl = getById(
-    "smartcontract-description"
-  ) as HTMLInputElement;
   const artifactEl = getById("smartcontract-artifact") as HTMLInputElement;
 
   const termsEl = getById("docx-input") as HTMLInputElement;
@@ -143,7 +144,6 @@ export function uploadProposalActions(props: State, step: PopupState) {
   if (props.uploadProposalProps !== null) {
     dispatch_initializeProposalUpload(props, {
       nameEl,
-      descriptionEl,
       artifactEl,
       termsEl,
       gitEl,
@@ -161,7 +161,6 @@ export function uploadProposalActions(props: State, step: PopupState) {
   backbutton.onclick = function () {
     dispatch_setUploadProposalProps({
       name: nameEl.value,
-      description: descriptionEl.value,
       artifact: artifactEl.value,
       terms: termsEl.files[0],
       git: gitEl.value,
@@ -191,7 +190,6 @@ export function uploadProposalActions(props: State, step: PopupState) {
   createContractProposal.onclick = async function () {
     dispatch_setUploadProposalProps({
       name: nameEl.value,
-      description: descriptionEl.value,
       artifact: artifactEl.value,
       terms: termsEl.files[0],
       git: gitEl.value,
@@ -204,10 +202,6 @@ export function uploadProposalActions(props: State, step: PopupState) {
       case PopupState.UploadProposal:
         if (nameEl.value === "") {
           dispatch_renderError("You must specify the name.");
-          return;
-        }
-        if (descriptionEl.value === "") {
-          dispatch_renderError("You must add a short description.");
           return;
         }
         dispatch_setPopupState(PopupState.UploadProposalStep2);
@@ -270,7 +264,6 @@ export function uploadProposalActions(props: State, step: PopupState) {
         readFile(file, async (data) => {
           const proposal: ProposalFormat = {
             name: nameEl.value,
-            description: descriptionEl.value,
             artifact: JSON.parse(artifactEl.value),
             terms: data,
             git: gitEl.value,
@@ -325,8 +318,43 @@ export function uploadProposalActions(props: State, step: PopupState) {
 export function uploadProposalSummaryActions(transaction: any, props: State) {
   const backButton = getById("post-proposal-back");
   const postButton = getById("post-proposal");
+  const copyButton = getById("copy-proposal-address");
+
+  copyButton.onclick = function () {
+    const txIdEl = getById("transactionid");
+    copyStringToClipboard(txIdEl.dataset.id);
+  };
 
   backButton.onclick = function () {
     dispatch_setPopupState(PopupState.UploadProposalStep4);
+  };
+
+  postButton.onclick = async function () {
+    dispatch_hideElement(backButton, true);
+    dispatch_hideElement(postButton, true);
+    dispatch_renderLoadingIndicator("upload-proposal-display");
+    try {
+      const res = await uploadData(transaction, (uploader) => {
+        dispatch_renderUploadStatus(
+          props,
+          `${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`
+        );
+      });
+      if (res.status === Status.Failure) {
+        dispatch_renderError(res.error);
+        dispatch_hideElement(backButton, false);
+        dispatch_hideElement(postButton, false);
+      }
+      dispatch_removeLoadingIndicator("upload-proposal-display");
+      dispatch_hideElement(backButton, false);
+      backButton.onclick = function () {
+        dispatch_setPopupState(PopupState.NONE);
+      };
+    } catch (err) {
+      dispatch_renderError(err.message);
+      dispatch_hideElement(backButton, false);
+      dispatch_hideElement(postButton, false);
+      dispatch_removeLoadingIndicator("upload-proposal-display");
+    }
   };
 }
