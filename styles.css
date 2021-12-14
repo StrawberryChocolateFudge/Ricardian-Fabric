@@ -222,6 +222,7 @@ hr {
 }
 
 #page {
+  padding-top: 30px;
   margin: 0 auto;
   display: flex;
   max-width: 800px;
