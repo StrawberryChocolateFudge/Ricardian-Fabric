@@ -2,7 +2,7 @@ import { html } from "lit-html";
 import { ProposalFormat } from "../../../types";
 import { ProposalDocXDropper } from "../components/docxDropper";
 import { helperTooltips } from "../components/helperTooltips";
-import { BackLogo } from "../components/logos";
+import { BackLogo, CopyLogo } from "../components/logos";
 import { smartContractProductPage } from "../components/smartContractProductPage";
 import { getCategories } from "../pages/catalogPage";
 import { getNetworkSelect } from "../pages/createProposalPage";
@@ -22,13 +22,24 @@ export const UploadProposalSummary = (
     ${smartContractProductPage(id, proposal, true)}
     <div class="row">
       <label>Transaction id:</label>
-      <small>${id}</small>
+      <small id="transactionid" data-id="${id}"">${id}</small>
+    </div>
+    <div>
+      <button
+        class="labelButton"
+        id="copy-proposal-address"
+        title="Copy transaction"
+      >
+        ${CopyLogo()}
+      </button>
     </div>
     <div class="row">
       <label>Fee:</label>
       <small>${fee}</small>
     </div>
+    <hr />
     <div id="upload-proposal-display"></div>
+    <small id="upload-status"></small>
     <div class="row">
       <button class="labelButton" id="post-proposal-back">
         ${BackLogo()}Back
@@ -67,20 +78,6 @@ export const UploadProposalStep1 = () => html` <div
       </td>
       <td>${helperTooltips("The name of the smart contract")}</td>
     </tr>
-    <tr>
-      <td>
-        <label for="smartcontract-description">Short Description:</label>
-      </td>
-      <td>
-        <input id="smartcontract-description" type="text" />
-      </td>
-      <td>
-        ${helperTooltips(
-          "A short description to show in the proposal and the catalog."
-        )}
-      </td>
-    </tr>
-
     <tr>
       <td>
         <label for="Network-options">Network:</label>
@@ -194,10 +191,6 @@ export function UploadProposalStep4() {
       </tr>
     </table>
   </div>`;
-}
-
-export function uploadProposalStep5() {
-  // A preview of the smart contract page in the catalog
 }
 
 export function UploadProposalButtons(label: string) {
