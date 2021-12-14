@@ -35,6 +35,7 @@
     "mammoth": "^1.4.18",
     "medium-editor": "^5.23.3",
     "multiformats": "^9.4.9",
+    "screen-size-detector": "^1.0.4",
     "smartweave": "^0.4.41",
     "solc": "^0.8.10",
     "static-kdtree": "^1.0.2",
