@@ -892,7 +892,6 @@ export function proposalUpload(
   props: State,
   elements: {
     nameEl: HTMLInputElement;
-    descriptionEl: HTMLInputElement;
     artifactEl: HTMLInputElement;
     termsEl: HTMLInputElement;
     gitEl: HTMLInputElement;
@@ -904,7 +903,6 @@ export function proposalUpload(
 ) {
   const {
     nameEl,
-    descriptionEl,
     artifactEl,
     termsEl,
     gitEl,
@@ -917,7 +915,6 @@ export function proposalUpload(
   const proposalProps = props.uploadProposalProps;
 
   nameEl.value = proposalProps.name;
-  descriptionEl.value = proposalProps.description;
   artifactEl.value = proposalProps.artifact;
   gitEl.value = proposalProps.git;
   frontEndEl.value = proposalProps.frontEnd;
