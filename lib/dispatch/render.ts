@@ -472,7 +472,6 @@ export function dispatch_initializeProposalUpload(
   props: State,
   tmp: {
     nameEl: HTMLInputElement;
-    descriptionEl: HTMLInputElement;
     artifactEl: HTMLInputElement;
     termsEl: HTMLInputElement;
     gitEl: HTMLInputElement;
