@@ -440,9 +440,8 @@ window.ethereum = window.ethereum || {};
 
 export type ProposalFormat = {
   name: string;
-  description: string;
   artifact: string;
-  terms: string | File;
+  terms: string | File | ArrayBuffer;
   git: string;
   frontEnd: string;
   network: string;
