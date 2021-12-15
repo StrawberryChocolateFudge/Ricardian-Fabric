@@ -487,16 +487,30 @@ export function dispatch_initializeProposalUpload(
   });
 }
 
-export function dispatch_proposeNewRank() {
+export function dispatch_proposeNewRank(hasOpenProposal: boolean) {
   dispatch(Events.render, {
     type: RenderType.proposeNewRank,
-    props: {},
+    props: { tmp: { hasOpenProposal } },
   });
 }
 
 export function dispatch_proposeNewContract() {
   dispatch(Events.render, {
     type: RenderType.proposeNewContract,
+    props: {},
+  });
+}
+
+export function dispatch_manageProposals(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.manageProposals,
+    props,
+  });
+}
+
+export function dispatch_dismissSidebar() {
+  dispatch(Events.render, {
+    type: RenderType.dismissSidebar,
     props: {},
   });
 }
