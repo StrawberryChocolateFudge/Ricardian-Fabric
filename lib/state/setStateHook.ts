@@ -2,7 +2,9 @@ import { saveCreatePageData } from "../business/actions/createButtonClick";
 import {
   dispatch_attachDateClickListener,
   dispatch_catalogPage,
+  dispatch_dismissSidebar,
   dispatch_hidePopup,
+  dispatch_manageProposals,
   dispatch_permapinPopup,
   dispatch_permawebselectActions,
   dispatch_renderAcceptButton,
@@ -136,6 +138,7 @@ export const setStateHook = {
     }
   },
   [StateProperties.pageState]: (args: SetHookArgs) => {
+    dispatch_dismissSidebar();
     const clone = cloneState(args.obj);
     switch (args.value) {
       case PageState.Menu:
@@ -158,6 +161,9 @@ export const setStateHook = {
         dispatch_renderReviewAndVotePage(clone);
         break;
       case PageState.Staking:
+        break;
+      case PageState.ManageProposals:
+        dispatch_manageProposals(clone);
         break;
       default:
         break;
