@@ -81,6 +81,8 @@ export enum RenderType {
   initializeProposalUpload = "initializeProposalUpload",
   proposeNewRank = "proposeNewRank",
   proposeNewContract = "proposeNewContract",
+  manageProposals = "manageProposals",
+  dismissSidebar = "dismissSidebar",
 }
 
 // TODO refactor to RenderDispatchArgs for specifying the dispatch arguments
@@ -150,6 +152,8 @@ export type Renderer = {
   [RenderType.initializeProposalUpload]: RenderFunction;
   [RenderType.proposeNewRank]: RenderFunction;
   [RenderType.proposeNewContract]: RenderFunction;
+  [RenderType.manageProposals]: RenderFunction;
+  [RenderType.dismissSidebar]: RenderFunction;
 };
 
 export enum VerificationState {
@@ -283,6 +287,7 @@ export enum PageState {
   Catalog,
   Proposals,
   ReviewAndVote,
+  ManageProposals,
 }
 
 export type State = {
