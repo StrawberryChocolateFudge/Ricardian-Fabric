@@ -19,7 +19,7 @@ import {
   Status,
 } from "../types";
 
-import { getById, getTermsAccepted } from "../view/utils";
+import { getTermsAccepted } from "../view/utils";
 import {
   getAcceptablePageFromVDOM,
   getFulfilledPagefromVDOM,
@@ -39,7 +39,7 @@ export async function OptionsBuilder(
     data: null,
   };
   try {
-    options.data = method();
+    options.data = await method();
   } catch (err) {
     options.error = err.message;
     options.status = Status.Failure;
