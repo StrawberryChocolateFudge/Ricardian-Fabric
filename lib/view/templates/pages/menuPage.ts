@@ -27,7 +27,7 @@ export const MenuPage = (blockieData: string) => html`
     <button
       class="lightSlateGray-shadow  labelButton"
       id="smart-contract-catalog-button"
-      title="Smart contract catalog"
+      title="Catalogue"
     >
       ${catalogLogo()}
     </button>
