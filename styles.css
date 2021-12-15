@@ -865,6 +865,9 @@ hr {
 #proposeNewRank {
   display: none;
 }
+#proposalPending {
+  display: none;
+}
 
 .height500 {
   height: 500px;
