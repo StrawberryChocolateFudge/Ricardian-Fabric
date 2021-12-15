@@ -75,6 +75,9 @@ import {
   setCreatePageProps,
   proposalUpload,
   render_createProposalPageContent,
+  renderManageProposals,
+  collapseSidebar,
+  openSidebarIfScreenIsBig,
 } from "./render";
 import { renderAcceptTools } from "./render";
 import { areYouSureButtons } from "../business/actions/areYouSureButtons";
@@ -124,11 +127,13 @@ import {
   uploadProposalActions,
   uploadProposalSummaryActions,
 } from "../business/actions/createProposalActions";
+import { myProposalsActions } from "../business/actions/myProposalsActions";
 
 const Render: Renderer = {
   [RenderType.menu]: (props: State) => {
     renderMenuPage(props);
     menuActions(props);
+    openSidebarIfScreenIsBig();
   },
   [RenderType.create]: (props: State) => {
     renderCreatePage();
@@ -388,10 +393,21 @@ const Render: Renderer = {
     proposalUpload(props, props.tmp);
   },
   [RenderType.proposeNewRank]: (props: RenderDispatchArgs) => {
-    render_createProposalPageContent(RenderType.proposeNewRank);
+    const hasOpenRankProposal = props.tmp.hasOpenProposal;
+    render_createProposalPageContent(
+      RenderType.proposeNewRank,
+      hasOpenRankProposal
+    );
   },
   [RenderType.proposeNewContract]: (props: RenderDispatchArgs) => {
-    render_createProposalPageContent(RenderType.proposeNewContract);
+    render_createProposalPageContent(RenderType.proposeNewContract, false);
+  },
+  [RenderType.manageProposals]: (props: RenderDispatchArgs) => {
+    renderManageProposals();
+    myProposalsActions();
+  },
+  [RenderType.dismissSidebar]: (props: RenderDispatchArgs) => {
+    collapseSidebar();
   },
 };
 
