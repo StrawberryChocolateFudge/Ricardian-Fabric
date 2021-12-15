@@ -1,6 +1,7 @@
 import { html } from "lit-html";
 import { getChains } from "../../../wallet/web3";
 import { helperTooltips } from "../components/helperTooltips";
+import { ChevronRightBlack } from "../components/logos";
 
 export function createProposalPage() {
   return html`
@@ -9,10 +10,18 @@ export function createProposalPage() {
       <div id="permaweb-dropdown">Permaweb</div>
     </div>
     <h4 id="rankHeader"></h4>
-
+    <div id="loading-display" class="text-align-center"></div>
     <div id="proposeNewContract">${proposeNewContract()}</div>
     <div id="proposeNewRank">${proposeGetRank()}</div>
+    <div id="proposalPending">${proposalPending()}</div>
   `;
+}
+
+function proposalPending() {
+  return html` <small
+    >You need to close your last proposal before you can create a new
+    one!</small
+  >`;
 }
 
 function proposeGetRank() {
@@ -31,7 +40,9 @@ function proposeGetRank() {
 
       <input id="github-url" type="url" />
 
-      <button id="create-rank-proposal" class="labelButton">Submit</button>
+      <button id="create-rank-proposal" class="labelButton">
+        ${ChevronRightBlack()}
+      </button>
 
       ${helperTooltips(
         "A github link to your repositiory containing code to show off."
