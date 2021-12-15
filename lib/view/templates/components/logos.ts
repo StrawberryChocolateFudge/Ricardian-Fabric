@@ -291,11 +291,6 @@ export const arweaveLogo = () => html` <style>
   </svg>`;
 
 export const accountLogo = () => html` <style>
-    .accountLogo {
-      margin-right: 10px;
-      vertical-align: middle;
-      display: inline-block;
-    }
   </style>
   <svg
     class="accountLogo"
@@ -320,15 +315,8 @@ export const accountLogo = () => html` <style>
     </g>
   </svg>`;
 
-export const uploadLogo = () => html` <style>
-    .uploadLogo {
-      margin-right: 10px;
-      vertical-align: middle;
-      display: inline-block;
-    }
-  </style>
+export const uploadLogo = () => html` <style></style>
   <svg
-    class="uploadLogo"
     xmlns="http://www.w3.org/2000/svg"
     height="24px"
     viewBox="0 0 24 24"
@@ -339,15 +327,8 @@ export const uploadLogo = () => html` <style>
     <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z" />
   </svg>`;
 
-export const pinLogo = () => html` <style>
-    .pinLogo {
-      margin-right: 10px;
-      vertical-align: middle;
-      display: inline-block;
-    }
-  </style>
+export const pinLogo = () => html`
   <svg
-    class="pinLogo"
     xmlns="http://www.w3.org/2000/svg"
     enable-background="new 0 0 24 24"
     height="24px"
@@ -761,4 +742,39 @@ export const AddLogo = () =>
   >
     <path d="M0 0h24v24H0z" fill="none" />
     <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+  </svg>`;
+
+export const ChevronRightBlack = () =>
+  html`<svg
+    xmlns="http://www.w3.org/2000/svg"
+    height="24px"
+    viewBox="0 0 24 24"
+    width="24px"
+    fill="#000000"
+  >
+    <path d="M0 0h24v24H0z" fill="none" />
+    <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+  </svg>`;
+
+export const ManageAccountLogo = () =>
+  html`<svg
+    xmlns="http://www.w3.org/2000/svg"
+    enable-background="new 0 0 24 24"
+    height="24px"
+    viewBox="0 0 24 24"
+    width="24px"
+    fill="#000000"
+  >
+    <g><path d="M0,0h24v24H0V0z" fill="none" /></g>
+    <g>
+      <g>
+        <circle cx="10" cy="8" r="4" />
+        <path
+          d="M10.67,13.02C10.45,13.01,10.23,13,10,13c-2.42,0-4.68,0.67-6.61,1.82C2.51,15.34,2,16.32,2,17.35V20h9.26 C10.47,18.87,10,17.49,10,16C10,14.93,10.25,13.93,10.67,13.02z"
+        />
+        <path
+          d="M20.75,16c0-0.22-0.03-0.42-0.06-0.63l1.14-1.01l-1-1.73l-1.45,0.49c-0.32-0.27-0.68-0.48-1.08-0.63L18,11h-2l-0.3,1.49 c-0.4,0.15-0.76,0.36-1.08,0.63l-1.45-0.49l-1,1.73l1.14,1.01c-0.03,0.21-0.06,0.41-0.06,0.63s0.03,0.42,0.06,0.63l-1.14,1.01 l1,1.73l1.45-0.49c0.32,0.27,0.68,0.48,1.08,0.63L16,21h2l0.3-1.49c0.4-0.15,0.76-0.36,1.08-0.63l1.45,0.49l1-1.73l-1.14-1.01 C20.72,16.42,20.75,16.22,20.75,16z M17,18c-1.1,0-2-0.9-2-2s0.9-2,2-2s2,0.9,2,2S18.1,18,17,18z"
+        />
+      </g>
+    </g>
   </svg>`;
