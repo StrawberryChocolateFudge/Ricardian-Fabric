@@ -1,5 +1,5 @@
 import { html } from "lit-html";
-import { Menu, MenuOpen, ViewSidebar } from "./logos";
+import { Menu, MenuOpen } from "./logos";
 
 export function SideBar() {
   return html` <div id="sidebar" class="collapsed">
