@@ -1,14 +1,13 @@
 import { dispatch_setPage } from "../../dispatch/stateChange";
 import { PageState, State } from "../../types";
 import { getById } from "../../view/utils";
-import {
-  getAddress,
-  requestAccounts,
-  switchToHarmony,
-  web3Injected,
-} from "../../wallet/web3";
+import { getAddress, requestAccounts, web3Injected } from "../../wallet/web3";
 import MetaMaskOnboarding from "@metamask/onboarding";
-import { getCatalogDAOContract } from "../../wallet/catalogDAO/contractCalls";
+import {
+  getCatalogDAOContract,
+  getRankProposalIndex,
+} from "../../wallet/catalogDAO/contractCalls";
+import { dispatch_renderError } from "../../dispatch/render";
 
 export async function reviewAndVotePageActions(props: State) {
   if (!web3Injected()) {
@@ -21,17 +20,21 @@ export async function reviewAndVotePageActions(props: State) {
   await requestAccounts();
   // IT MUST BE HARMONY NETWORK!
   // If it's not, prompt to switch to harmony
-  await switchToHarmony(0, "Testnet");
-  
+  // Should show a popup prompting to switch to harmony network!
+  //await switchToHarmony(0, "Testnet");
+
   const myAddress = await getAddress();
   const catalogDAO = await getCatalogDAOContract();
+
+  const rankProposalIndex = await getRankProposalIndex(catalogDAO, myAddress);
 
   const createProposalButton = getById("create-proposal-button");
   createProposalButton.onclick = function () {
     dispatch_setPage(PageState.Proposals);
   };
-}
 
-function dispatch_renderError(arg0: string) {
-  throw new Error("Function not implemented.");
+  const myProposalsButton = getById("my-proposals-button");
+  myProposalsButton.onclick = function () {
+    dispatch_setPage(PageState.ManageProposals);
+  };
 }
