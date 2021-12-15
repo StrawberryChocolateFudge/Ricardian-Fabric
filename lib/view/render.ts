@@ -67,6 +67,7 @@ import { ReviewAndVote } from "./templates/pages/reviewAndVotePage";
 import { SideBar } from "./templates/components/sideBar";
 import { createProposalPage } from "./templates/pages/createProposalPage";
 import ScreenSizeDetector from "screen-size-detector";
+import { ManageProposals } from "./templates/pages/manageProposals";
 
 export function renderMenuPage(props: State) {
   const menuItems = getById("menuItems");
@@ -93,7 +94,6 @@ export function renderSidebar(props: State) {
   const sidebar = getById("sidebar");
 
   toggleOpen.disabled = false;
-  sidebar.classList.toggle("collapsed");
   toggle.onclick = function () {
     sidebar.classList.toggle("collapsed");
   };
@@ -539,16 +539,7 @@ export function handleDropdownClosing() {
 
   const page = getById("page");
   page.onclick = function (ev: Event) {
-    const detectScreen = new ScreenSizeDetector();
-    if (detectScreen.width < 1000) {
-      // If the screen is smaller than 1000 pixels, I close the menu on page click
-      const sidebar = getById("sidebar");
-      if (!sidebar.classList.contains("collapsed")) {
-        sidebar.classList.add("collapsed");
-      }
-    }
-
-    console.log("page clicked");
+    collapseSidebarIfScreenIsSmall();
     if (!ev.composedPath().includes(networkDropdown)) {
       networktoggle.checked = false;
     }
@@ -565,6 +556,36 @@ export function handleDropdownClosing() {
       catalogToggle.checked = false;
     }
   };
+}
+
+export function collapseSidebarIfScreenIsSmall() {
+  const detectScreen = new ScreenSizeDetector();
+  if (detectScreen.width < 1000) {
+    // If the screen is smaller than 1000 pixels, I close the menu on page click
+    collapseSidebar();
+  }
+}
+
+export function openSidebarIfScreenIsBig() {
+  const detectScreen = new ScreenSizeDetector();
+  if (detectScreen.width > 1000) {
+    // If the screen is smaller than 1000 pixels, I close the menu on page click
+    openSidebar();
+  }
+}
+
+export function openSidebar() {
+  const sidebar = getById("sidebar");
+  if (sidebar.classList.contains("collapsed")) {
+    sidebar.classList.remove("collapsed");
+  }
+}
+
+export function collapseSidebar() {
+  const sidebar = getById("sidebar");
+  if (!sidebar.classList.contains("collapsed")) {
+    sidebar.classList.add("collapsed");
+  }
 }
 
 export function renderSanctionsDropdown() {
@@ -773,6 +794,11 @@ export function renderReviewAndVotePage(props: State) {
   render(ReviewAndVote(), page);
 }
 
+export function renderManageProposals() {
+  const page = getById("page");
+  render(ManageProposals(), page);
+}
+
 export function renderAccordionOpener() {
   const acc = document.getElementsByClassName("accordion");
 
@@ -930,17 +956,36 @@ export function proposalUpload(
   implementsSimpleTerms.checked = proposalProps.simpleterms;
 }
 
-export function render_createProposalPageContent(renderType: RenderType) {
+export function render_createProposalPageContent(
+  renderType: RenderType,
+  lastProposalOpen: boolean
+) {
   const proposeContract = getById("proposeNewContract");
   const proposeNewRank = getById("proposeNewRank");
+  const proposalPending = getById("proposalPending");
+
   switch (renderType) {
     case RenderType.proposeNewRank:
-      proposeNewRank.style.display = "block";
-      proposeContract.style.display = "none";
+      if (lastProposalOpen) {
+        proposeNewRank.style.display = "none";
+        proposeContract.style.display = "none";
+        proposalPending.style.display = "block";
+      } else {
+        proposeNewRank.style.display = "block";
+        proposeContract.style.display = "none";
+        proposalPending.style.display = "none";
+      }
       break;
     case RenderType.proposeNewContract:
-      proposeNewRank.style.display = "none";
-      proposeContract.style.display = "block";
+      if (lastProposalOpen) {
+        proposeNewRank.style.display = "none";
+        proposeContract.style.display = "none";
+        proposalPending.style.display = "block";
+      } else {
+        proposeNewRank.style.display = "none";
+        proposeContract.style.display = "block";
+        proposalPending.style.display = "none";
+      }
       break;
     default:
       break;
