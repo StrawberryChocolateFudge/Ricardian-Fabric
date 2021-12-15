@@ -2,6 +2,7 @@ import { html } from "lit-html";
 import { getBlockie } from "../components/getBlockies";
 import {
   AddLogo,
+  ManageAccountLogo,
   ThumbsDown,
   ThumbsUp,
   WebAsset,
@@ -18,6 +19,9 @@ export function ReviewAndVote() {
         title="Propose a new smart contract"
       >
         ${AddLogo()}
+      </button>
+      <button id="my-proposals-button" class="labelButton" title="My proposals">
+        ${ManageAccountLogo()}
       </button>
     </h2>
     <h5>New smart contract proposals</h5>
