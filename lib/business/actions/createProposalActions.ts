@@ -9,10 +9,23 @@ import {
   dispatch_renderLoadingIndicator,
   dispatch_removeLoadingIndicator,
 } from "../../dispatch/render";
-import { PopupState, ProposalFormat, State, Status } from "../../types";
+import {
+  MyProposals,
+  PopupState,
+  ProposalFormat,
+  RankProposal,
+  State,
+  Status,
+} from "../../types";
 import { getAddress, requestAccounts, web3Injected } from "../../wallet/web3";
 import MetaMaskOnboarding from "@metamask/onboarding";
-import { getCatalogDAOContract } from "../../wallet/catalogDAO/contractCalls";
+import {
+  getCatalogDAOContract,
+  getMyProposals,
+  getRank,
+  getRankProposalsByIndex,
+  proposeNewRank,
+} from "../../wallet/catalogDAO/contractCalls";
 import { OptionsBuilder } from "../utils";
 import { copyStringToClipboard, getById, readFile } from "../../view/utils";
 import {
@@ -37,51 +50,71 @@ export async function createProposalActions(props: State) {
   //TODO: CHECK NETWORK CONNECTION!!
   // IT MUST BE HARMONY NETWORK!
   // If it's not, prompt to switch to harmony
-
+  dispatch_renderLoadingIndicator("loading-display");
   await requestAccounts();
 
   const myAddress = await getAddress();
   const catalogDAO = await getCatalogDAOContract();
 
-  //   const rankOptions = await OptionsBuilder(() =>
-  //     getRank(catalogDAO, myAddress)
-  //   );
+  //TODO: While the rank is loading, show a loading indicator
+  //TODO: handle the errors on the page with loading indicator
+  const rankOptions = await OptionsBuilder(() =>
+    getRank(catalogDAO, myAddress, myAddress)
+  );
 
-  //   if (rankOptions.status === Status.Failure) {
-  //     dispatch_renderError("Failed to fetch the Rank!");
-  //     return;
-  //   }
+  if (rankOptions.status === Status.Failure) {
+    dispatch_renderError("Failed to fetch the Rank!");
+    dispatch_removeLoadingIndicator("loading-display");
+    return;
+  }
 
-  // const createRankButton = getById("get-rank-tab-button");
+  const myProposalOptions = await OptionsBuilder(() =>
+    getMyProposals(catalogDAO, myAddress)
+  );
 
-  // createRankButton.onclick = function () {
-  //   dispatch_setProposalType(ProposalType.Rank);
-  // };
+  if (myProposalOptions.status === Status.Failure) {
+    dispatch_renderError(myProposalOptions.error);
+    dispatch_removeLoadingIndicator("loading-display");
+    return;
+  }
 
-  // const createProposalButton = getById("propose-new-contract-tab-button");
+  const myProposals = myProposalOptions.data as MyProposals;
+  const myRankProposals = myProposals.rank;
+  //TODO: Check if the last RankProposal is still pending!
+  const myLastRankProposalOptions = await OptionsBuilder(() =>
+    getRankProposalsByIndex(catalogDAO, myRankProposals.slice(-1)[0], myAddress)
+  );
+  if (myLastRankProposalOptions.status === Status.Failure) {
+    dispatch_renderError(myLastRankProposalOptions.error);
+    dispatch_removeLoadingIndicator("loading-display");
+  }
 
-  // createProposalButton.onclick = function () {
-  //   dispatch_setProposalType(ProposalType.NewSmartContract);
-  // };
+  const myLastRankProposal = myLastRankProposalOptions.data as RankProposal;
+  console.log(myLastRankProposal);
 
-  // TODO: get the rank from the smart contract
-  let rank = 0;
-  if (rank === 0) {
-    dispatch_proposeNewRank();
+  if (!myLastRankProposal.closed) {
+    dispatch_renderError("Your last rank proposal is still open.");
+  }
+
+  let rank = rankOptions.data;
+  //If the rank is zero and there is no pending Rank proposal
+
+  dispatch_removeLoadingIndicator("loading-display");
+  if (rank === "0") {
+    dispatch_proposeNewRank(!myLastRankProposal.closed);
   } else {
     dispatch_proposeNewContract();
   }
-  //While the rank is loading, show a loading indicator
+
   //Then render either the proposalTXId input.. or the GithubURL, maybe I just render the labels
 
-  // if (props.proposalType === ProposalType.Rank) {
   const githubRepoUrl = getById("github-url") as HTMLInputElement;
   const rankheader = getById("rankHeader") as HTMLHeadingElement;
   const submitRankProposal = getById("create-rank-proposal");
 
   rankheader.textContent = `Your rank is ${rank}`;
 
-  submitRankProposal.onclick = function () {
+  submitRankProposal.onclick = async function () {
     if (githubRepoUrl.value === "") {
       dispatch_renderError("Empty input");
       return;
@@ -91,8 +124,22 @@ export async function createProposalActions(props: State) {
       dispatch_renderError("Invalid url");
       return;
     }
+
+    const onError = (error, receipt) => {
+      dispatch_renderError(error.message);
+    };
+    const onReceipt = (receipt) => {
+      console.log(receipt);
+    };
+
+    await proposeNewRank(
+      catalogDAO,
+      githubRepoUrl.value,
+      myAddress,
+      onError,
+      onReceipt
+    );
   };
-  // }
 
   // if (props.proposalType === ProposalType.NewSmartContract) {
   const contractProposalSubmit = getById("proposal-submit-button");
