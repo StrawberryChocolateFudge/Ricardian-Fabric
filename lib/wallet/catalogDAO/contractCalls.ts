@@ -8,13 +8,10 @@ import {
   RankProposal,
   RemovalProposal,
   SmartContractProposal,
-  Status,
 } from "../../types";
 import BN from "bn.js";
-const CATALOGDAOADDRESS = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"; // On local hardhat testnet
+const CATALOGDAOADDRESS = "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853"; // On local hardhat testnet
 import { Options } from "../../types";
-
-
 
 export async function getCatalogDAOContract() {
   const web3 = new Web3(window.ethereum);
@@ -158,90 +155,117 @@ export async function closeRemovalProposal(
 
 export async function getRank(
   catalogDAO: Contract,
-  address: string
+  address: string,
+  from: string
 ): Promise<number> {
-  return await catalogDAO.methods.getRank(address).call();
+  return await catalogDAO.methods.getRank(address).call({ from });
 }
 
-export async function getRankProposalIndex(catalogDAO: Contract): Promise<BN> {
-  return await catalogDAO.methods.getRankProposalIndex().call();
+export async function getRankProposalIndex(
+  catalogDAO: Contract,
+  from: string
+): Promise<BN> {
+  return await catalogDAO.methods.getRankProposalIndex().call({ from });
 }
 
 export async function getRankProposalsByIndex(
   catalogDAO,
-  index: BN
+  index: BN,
+  from: string
 ): Promise<RankProposal> {
-  return await catalogDAO.methods.getRankProposalsByIndex(index).call();
+  return await catalogDAO.methods.getRankProposalsByIndex(index).call({ from });
 }
 
 export async function votedAlreadyOnRank(
   catalogDAO: Contract,
   rankIndex: BN,
-  _voter: string
+  _voter: string,
+  from: string
 ): Promise<boolean> {
-  return await catalogDAO.methods.votedAlreadyOnRank(rankIndex, _voter).call();
+  return await catalogDAO.methods
+    .votedAlreadyOnRank(rankIndex, _voter)
+    .call({ from });
 }
 
 export async function getMyProposals(
-  catalogDAO: Contract
+  catalogDAO: Contract,
+  from: string
 ): Promise<MyProposals> {
-  return await catalogDAO.methods.getMyProposals();
+  return await catalogDAO.methods.getMyProposals().call({ from });
 }
 
 export async function getSmartContractProposalIndex(
-  catalogDAO: Contract
+  catalogDAO: Contract,
+  from: string
 ): Promise<BN> {
-  return await catalogDAO.methods.getSmartContractProposalIndex().call();
+  return await catalogDAO.methods
+    .getSmartContractProposalIndex()
+    .call({ from });
 }
 export async function getSmartContractProposalsBYIndex(
   catalogDAO: Contract,
-  index: BN
+  index: BN,
+  from: string
 ): Promise<SmartContractProposal> {
   return await catalogDAO.methods
     .getSmartContractProposalsByIndex(index)
-    .call();
+    .call({ from });
 }
 
 export async function votedAlreadyOnSmartContract(
   catalogDAO: Contract,
   sCIndex: BN,
-  _voter: string
+  _voter: string,
+  from: string
 ) {
   return await catalogDAO.methods
     .votedAlreadyOnSmartContract(sCIndex, _voter)
-    .call();
+    .call({ from });
 }
 
 export async function getAcceptedSmartContractIndex(
-  catalogDAO: Contract
+  catalogDAO: Contract,
+  from: string
 ): Promise<BN> {
-  return await catalogDAO.methods.getAcceptedSmartContractIndex().call();
+  return await catalogDAO.methods
+    .getAcceptedSmartContractIndex()
+    .call({ from });
 }
 
 export async function getAcceptedSCProposalsByIndex(
   catalogDAO: Contract,
-  sCIndex: BN
+  sCIndex: BN,
+  from: string
 ): Promise<AcceptedSmartContractProposal> {
-  return await catalogDAO.methods.getAcceptedSCProposalsByIndex(sCIndex).call();
+  return await catalogDAO.methods
+    .getAcceptedSCProposalsByIndex(sCIndex)
+    .call({ from });
 }
 
 export async function votedAlreadyOnRemoval(
   catalogDAO: Contract,
   removalIndex: BN,
-  voter: string
+  voter: string,
+  from: string
 ): Promise<boolean> {
-  return await catalogDAO.methods.votedAlreadyOnRemoval(removalIndex, voter);
+  return await catalogDAO.methods
+    .votedAlreadyOnRemoval(removalIndex, voter)
+    .call({ from });
 }
 
 export async function getRemovalProposalIndex(
-  catalogDAO: Contract
+  catalogDAO: Contract,
+  from: string
 ): Promise<BN> {
-  return await catalogDAO.methods.getRemovalProposalIndex().call();
+  return await catalogDAO.methods.getRemovalProposalIndex().call({ from });
 }
 
 export async function getRemovalProposalByIndex(
   catalogDAO: Contract,
-  index: BN
+  index: BN,
+  from: string
 ): Promise<RemovalProposal> {
-  return await catalogDAO.methods.getRemovalProposalByIndex(index).call();
+  return await catalogDAO.methods
+    .getRemovalProposalByIndex(index)
+    .call({ from });
 }
