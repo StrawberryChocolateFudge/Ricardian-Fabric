@@ -1,6 +1,7 @@
 import BN from "bn.js";
 
 export enum Chains {
+  HardHat = "31337",
   Ropsten = "3",
   bscTestnet = "97",
   polygonTestnet = "80001",
@@ -83,6 +84,9 @@ export enum RenderType {
   proposeNewContract = "proposeNewContract",
   manageProposals = "manageProposals",
   dismissSidebar = "dismissSidebar",
+  renderWrongNetworkPopup = "renderWrongNetworkPopup",
+  renderMyProposals = "renderMyProposals",
+  renderDAOTerms = "renderDAOTerms",
 }
 
 // TODO refactor to RenderDispatchArgs for specifying the dispatch arguments
@@ -154,6 +158,9 @@ export type Renderer = {
   [RenderType.proposeNewContract]: RenderFunction;
   [RenderType.manageProposals]: RenderFunction;
   [RenderType.dismissSidebar]: RenderFunction;
+  [RenderType.renderWrongNetworkPopup]: RenderFunction;
+  [RenderType.renderMyProposals]: RenderFunction;
+  [RenderType.renderDAOTerms]: RenderFunction;
 };
 
 export enum VerificationState {
@@ -277,6 +284,8 @@ export enum PopupState {
   UploadProposalStep2,
   UploadProposalStep3,
   UploadProposalStep4,
+  WrongNetwork,
+  signDaoTerms,
 }
 
 export enum PageState {
@@ -495,4 +504,18 @@ export type RemovalProposal = {
   approvals: BN;
   rejections: BN;
   closed: boolean;
+};
+
+export type PaginatedProposals = {
+  rank: PaginatedProposal;
+  smartContract: PaginatedProposal;
+  accepted: PaginatedProposal;
+  removal: PaginatedProposal;
+  removedFromMe: PaginatedProposal;
+};
+
+export type PaginatedProposal = {
+  proposals: BN[];
+  currentPage: number;
+  totalContent: number;
 };
