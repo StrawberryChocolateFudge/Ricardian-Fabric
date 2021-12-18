@@ -8,27 +8,38 @@ import {
   dispatch_renderUploadStatus,
   dispatch_renderLoadingIndicator,
   dispatch_removeLoadingIndicator,
+  dispatch_renderDAOTermsURL,
 } from "../../dispatch/render";
 import {
   MyProposals,
+  PageState,
   PopupState,
   ProposalFormat,
   RankProposal,
   State,
   Status,
 } from "../../types";
-import { getAddress, requestAccounts, web3Injected } from "../../wallet/web3";
+import {
+  checkNetwork,
+  getAddress,
+  requestAccounts,
+  web3Injected,
+} from "../../wallet/web3";
 import MetaMaskOnboarding from "@metamask/onboarding";
 import {
-  getCatalogDAOContract,
+  acceptedTerms,
+  getCatalogDAOContractWithRPC,
+  getCatalogDAOContractWithWallet,
   getMyProposals,
   getRank,
   getRankProposalsByIndex,
+  getTerms,
   proposeNewRank,
 } from "../../wallet/catalogDAO/contractCalls";
 import { OptionsBuilder } from "../utils";
 import { copyStringToClipboard, getById, readFile } from "../../view/utils";
 import {
+  dispatch_setPage,
   dispatch_setPopupState,
   dispatch_setUploadProposalProps,
 } from "../../dispatch/stateChange";
@@ -47,17 +58,41 @@ export async function createProposalActions(props: State) {
     return;
   }
 
-  //TODO: CHECK NETWORK CONNECTION!!
-  // IT MUST BE HARMONY NETWORK!
-  // If it's not, prompt to switch to harmony
   dispatch_renderLoadingIndicator("loading-display");
   await requestAccounts();
 
-  const myAddress = await getAddress();
-  const catalogDAO = await getCatalogDAOContract();
+  const correctNetwork = await checkNetwork();
 
-  //TODO: While the rank is loading, show a loading indicator
-  //TODO: handle the errors on the page with loading indicator
+  if (!correctNetwork) {
+    //TODO: Dispatch a popup and prompt the user to switch to harmony
+    dispatch_renderError("You need to switch to Harmony network!");
+    dispatch_setPopupState(PopupState.WrongNetwork);
+    return;
+  }
+
+  const myAddress = await getAddress();
+  const catalogDAO = await getCatalogDAOContractWithWallet();
+
+  // Check if the address accepted the terms!
+  const acceptedOptions = await OptionsBuilder(() =>
+    acceptedTerms(catalogDAO, myAddress)
+  );
+
+  if (acceptedOptions.status === Status.Failure) {
+    dispatch_renderError("Failed to call the smart contract");
+    dispatch_removeLoadingIndicator("loading-display");
+    return;
+  }
+
+  if (acceptedOptions.data === false) {
+    // If I didn't accept the catalogDAO terms, yet.
+    // I fetch the URL and dispatch a popup showing it, with a refresh button.
+    dispatch_renderError("You need to accept the DAO terms.");
+    dispatch_removeLoadingIndicator("loading-display");
+    dispatch_setPopupState(PopupState.signDaoTerms);
+    return;
+  }
+
   const rankOptions = await OptionsBuilder(() =>
     getRank(catalogDAO, myAddress, myAddress)
   );
@@ -80,20 +115,29 @@ export async function createProposalActions(props: State) {
 
   const myProposals = myProposalOptions.data as MyProposals;
   const myRankProposals = myProposals.rank;
-  //TODO: Check if the last RankProposal is still pending!
-  const myLastRankProposalOptions = await OptionsBuilder(() =>
-    getRankProposalsByIndex(catalogDAO, myRankProposals.slice(-1)[0], myAddress)
-  );
-  if (myLastRankProposalOptions.status === Status.Failure) {
-    dispatch_renderError(myLastRankProposalOptions.error);
-    dispatch_removeLoadingIndicator("loading-display");
-  }
 
-  const myLastRankProposal = myLastRankProposalOptions.data as RankProposal;
-  console.log(myLastRankProposal);
+  //Check if the last RankProposal is still pending!
 
-  if (!myLastRankProposal.closed) {
-    dispatch_renderError("Your last rank proposal is still open.");
+  let myLastRankProposal;
+  if (myRankProposals.length !== 0) {
+    const myLastRankProposalOptions = await OptionsBuilder(() =>
+      getRankProposalsByIndex(
+        catalogDAO,
+        myRankProposals.slice(-1)[0],
+        myAddress
+      )
+    );
+
+    if (myLastRankProposalOptions.status === Status.Failure) {
+      dispatch_renderError(myLastRankProposalOptions.error);
+      dispatch_removeLoadingIndicator("loading-display");
+    }
+
+    myLastRankProposal = myLastRankProposalOptions.data as RankProposal;
+
+    if (!myLastRankProposal.closed) {
+      dispatch_renderError("Your last rank proposal is still open.");
+    }
   }
 
   let rank = rankOptions.data;
@@ -101,7 +145,11 @@ export async function createProposalActions(props: State) {
 
   dispatch_removeLoadingIndicator("loading-display");
   if (rank === "0") {
-    dispatch_proposeNewRank(!myLastRankProposal.closed);
+    if (myRankProposals.length === 0) {
+      dispatch_proposeNewRank(false);
+    } else {
+      dispatch_proposeNewRank(!myLastRankProposal.closed);
+    }
   } else {
     dispatch_proposeNewContract();
   }
@@ -129,7 +177,7 @@ export async function createProposalActions(props: State) {
       dispatch_renderError(error.message);
     };
     const onReceipt = (receipt) => {
-      console.log(receipt);
+      dispatch_setPage(PageState.Proposals);
     };
 
     await proposeNewRank(
@@ -403,5 +451,26 @@ export function uploadProposalSummaryActions(transaction: any, props: State) {
       dispatch_hideElement(postButton, false);
       dispatch_removeLoadingIndicator("upload-proposal-display");
     }
+  };
+}
+
+export async function DAOTermsInit(props: State) {
+  const catalogDAO = await getCatalogDAOContractWithRPC();
+
+  const URLOptions = await OptionsBuilder(async () => getTerms(catalogDAO));
+
+  if (URLOptions.status === Status.Failure) {
+    dispatch_renderError(URLOptions.error);
+    return;
+  }
+  dispatch_renderDAOTermsURL(props, URLOptions.data);
+}
+
+export async function DAOTermsActions(props: State) {
+  const refreshButton = getById("refresh-button");
+
+  refreshButton.onclick = function () {
+    dispatch_setPage(PageState.Proposals);
+    dispatch_setPopupState(PopupState.NONE);
   };
 }
