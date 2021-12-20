@@ -2,6 +2,7 @@ import { saveCreatePageData } from "../business/actions/createButtonClick";
 import {
   dispatch_attachDateClickListener,
   dispatch_catalogPage,
+  dispatch_DAOTermsPopup,
   dispatch_dismissSidebar,
   dispatch_hidePopup,
   dispatch_manageProposals,
@@ -20,6 +21,7 @@ import {
   dispatch_renderTransferPage,
   dispatch_renderUploadFilePopup,
   dispatch_renderVerifyContract,
+  dispatch_renderWrongNetworkPopup,
   dispatch_showAccountPopup,
   dispatch_sideBar,
   dispatch_switch_Accounts,
@@ -34,6 +36,7 @@ import {
   State,
   StateProperties,
 } from "../types";
+import ScreenSizeDetector from "screen-size-detector";
 
 export const setStateHook = {
   [StateProperties.init]: (args: SetHookArgs) => {
@@ -133,12 +136,24 @@ export const setStateHook = {
       case PopupState.UploadProposalStep4:
         dispatch_uploadProposal(clone, PopupState.UploadProposalStep4);
         break;
+      case PopupState.WrongNetwork:
+        dispatch_renderWrongNetworkPopup(clone);
+        break;
+      case PopupState.signDaoTerms:
+        dispatch_DAOTermsPopup(clone);
       default:
         break;
     }
   },
   [StateProperties.pageState]: (args: SetHookArgs) => {
-    dispatch_dismissSidebar();
+    const detectScreen = new ScreenSizeDetector();
+    if (detectScreen.width < 1000) {
+      dispatch_dismissSidebar();
+    }
+
+    // Based on the selected page, change the shadow of the  menu button
+    // dispatch_
+
     const clone = cloneState(args.obj);
     switch (args.value) {
       case PageState.Menu:
