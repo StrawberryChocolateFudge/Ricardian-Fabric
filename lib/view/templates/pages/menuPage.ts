@@ -35,16 +35,6 @@ export const MenuPage = (blockieData: string) => html`
 
   <div class="text-align-center">
     <button
-      title="Staking an Profit-Sharing"
-      class="lightSlateGray-shadow  labelButton"
-      id="staking-button"
-    >
-      ${TokenLogo()}
-    </button>
-  </div>
-
-  <div class="text-align-center">
-    <button
       title="Verify an acceptable contract"
       class="lightSlateGray-shadow  labelButton"
       id="verify-contract-button"
