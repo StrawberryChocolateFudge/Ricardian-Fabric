@@ -1,6 +1,7 @@
 import {
   CreateRicardianPageProps,
   DeploySC,
+  MyProposals,
   PopupState,
   ProposalFormat,
   RenderType,
@@ -512,5 +513,36 @@ export function dispatch_dismissSidebar() {
   dispatch(Events.render, {
     type: RenderType.dismissSidebar,
     props: {},
+  });
+}
+
+export function dispatch_renderWrongNetworkPopup(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.renderWrongNetworkPopup,
+    props,
+  });
+}
+
+export function dispatch_renderMyProposals(
+  props: State,
+  myProposals: MyProposals
+) {
+  dispatch(Events.render, {
+    type: RenderType.renderMyProposals,
+    props: { tmp: { myProposals } },
+  });
+}
+
+export function dispatch_DAOTermsPopup(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.renderDAOTerms,
+    props: { ...props, tmp: { url: null } },
+  });
+}
+
+export function dispatch_renderDAOTermsURL(props, url: String) {
+  dispatch(Events.render, {
+    type: RenderType.renderDAOTerms,
+    props: { ...props, tmp: { url } },
   });
 }
