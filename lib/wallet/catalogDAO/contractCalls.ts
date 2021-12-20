@@ -10,11 +10,16 @@ import {
   SmartContractProposal,
 } from "../../types";
 import BN from "bn.js";
-const CATALOGDAOADDRESS = "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853"; // On local hardhat testnet
-import { Options } from "../../types";
+const CATALOGDAOADDRESS = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"; // On local hardhat testnet
+const HARMONYRPCURL = "http://127.0.0.1:8545/";
 
-export async function getCatalogDAOContract() {
+export async function getCatalogDAOContractWithWallet() {
   const web3 = new Web3(window.ethereum);
+  return await new web3.eth.Contract(getCatalogDAOAbi(), CATALOGDAOADDRESS);
+}
+
+export async function getCatalogDAOContractWithRPC() {
+  const web3 = new Web3(HARMONYRPCURL);
   return await new web3.eth.Contract(getCatalogDAOAbi(), CATALOGDAOADDRESS);
 }
 
@@ -194,6 +199,76 @@ export async function getMyProposals(
   return await catalogDAO.methods.getMyProposals().call({ from });
 }
 
+export async function getMyRankProposalsPaginated(
+  catalogDAO: Contract,
+  from: string,
+  first: BN,
+  second: BN,
+  third: BN,
+  fourth: BN,
+  fifth: BN
+): Promise<RankProposal[]> {
+  return await catalogDAO.methods
+    .getMyRankProposalsPaginated(first, second, third, fourth, fifth)
+    .call({ from });
+}
+
+export async function getMySmartContractProposalsPaginated(
+  catalogDAO: Contract,
+  from: string,
+  first: BN,
+  second: BN,
+  third: BN,
+  fourth: BN,
+  fifth: BN
+): Promise<RankProposal[]> {
+  return await catalogDAO.methods
+    .getMySmartContractProposalsPaginated(first, second, third, fourth, fifth)
+    .call({ from });
+}
+
+export async function getAcceptedSmartContractProposalsPaginated(
+  catalogDAO: Contract,
+  from: string,
+  first: BN,
+  second: BN,
+  third: BN,
+  fourth: BN,
+  fifth: BN
+): Promise<RankProposal[]> {
+  return await catalogDAO.methods
+    .getAcceptedSmartContractProposalsPaginated(
+      first,
+      second,
+      third,
+      fourth,
+      fifth
+    )
+    .call({ from });
+}
+
+export async function getRemovalProposalsPaginated(
+  catalogDAO: Contract,
+  from: string,
+  first: BN,
+  second: BN,
+  third: BN,
+  fourth: BN,
+  fifth: BN
+): Promise<
+  [
+    data1: RankProposal,
+    data2: RankProposal,
+    data3: RankProposal,
+    data4: RankProposal,
+    data5: RankProposal
+  ]
+> {
+  return await catalogDAO.methods
+    .getRemovalProposalsPaginated(first, second, third, fourth, fifth)
+    .call({ from });
+}
+
 export async function getSmartContractProposalIndex(
   catalogDAO: Contract,
   from: string
@@ -268,4 +343,15 @@ export async function getRemovalProposalByIndex(
   return await catalogDAO.methods
     .getRemovalProposalByIndex(index)
     .call({ from });
+}
+
+export async function getTerms(catalogDAO: Contract): Promise<string> {
+  return await catalogDAO.methods.getTerms().call();
+}
+
+export async function acceptedTerms(
+  catalogDAO,
+  _address: string
+): Promise<boolean> {
+  return await catalogDAO.methods.acceptedTerms(_address).call();
 }
