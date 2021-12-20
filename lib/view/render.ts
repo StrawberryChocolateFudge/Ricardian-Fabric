@@ -4,6 +4,7 @@ import {
   ContractTypes,
   CreateRicardianPageProps,
   DeploySC,
+  MyProposals,
   PageState,
   PopupState,
   ProposalFormat,
@@ -67,7 +68,13 @@ import { ReviewAndVote } from "./templates/pages/reviewAndVotePage";
 import { SideBar } from "./templates/components/sideBar";
 import { createProposalPage } from "./templates/pages/createProposalPage";
 import ScreenSizeDetector from "screen-size-detector";
-import { ManageProposals } from "./templates/pages/manageProposals";
+import {
+  ManageProposals,
+  MyProposalsContent,
+} from "./templates/pages/manageProposals";
+import { WrongNetworkPopup } from "./templates/popups/WrongNetworkPopup";
+import { DAOTermsActions } from "../business/actions/createProposalActions";
+import { DaoTermsPopup } from "./templates/popups/DaoTermsPopup";
 
 export function renderMenuPage(props: State) {
   const menuItems = getById("menuItems");
@@ -720,6 +727,12 @@ export function renderTransferPage(balance: string) {
   render(TransferPage(balance), layout);
 }
 
+export function render_wrongNetworkPopup() {
+  setBannerDisplayBlock();
+  const layout = getById("overlay-layout");
+  render(WrongNetworkPopup(), layout);
+}
+
 export function renderTransferSummaryPage(arg: {
   mainTransaction: any;
   amountToSend: string;
@@ -797,6 +810,11 @@ export function renderReviewAndVotePage(props: State) {
 export function renderManageProposals() {
   const page = getById("page");
   render(ManageProposals(), page);
+}
+
+export function renderMyProposalsContent(myProposals: MyProposals) {
+  const myProposalsContainer = getById("my-proposals-container");
+  render(MyProposalsContent(myProposals), myProposalsContainer);
 }
 
 export function renderAccordionOpener() {
@@ -990,4 +1008,16 @@ export function render_createProposalPageContent(
     default:
       break;
   }
+}
+
+export function renderDAOTermsPopup() {
+  const layout = getById("overlay-layout");
+  layout.style.maxHeight = "100%";
+  render(DaoTermsPopup(null), layout);
+}
+
+export function renderDAOTermsURL(url: string) {
+  setBannerDisplayBlock();
+  const layout = getById("overlay-layout");
+  render(DaoTermsPopup(url), layout);
 }
