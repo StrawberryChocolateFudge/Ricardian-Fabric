@@ -14,7 +14,7 @@ import {
 } from "../types";
 import { getSimpleTermsAbi } from "./abi/SimpleTerms";
 
-//TODO: Calculate the gas for all the transactions
+const CATALOGCHAIN = Chains.HardHat;
 
 export async function requestAccounts() {
   await window.ethereum.request({ method: "eth_requestAccounts" });
@@ -491,4 +491,13 @@ export function prepareType(type: string, value: string) {
       return value;
       break;
   }
+}
+
+export async function checkNetwork(): Promise<boolean> {
+  const chainId: string = await window.ethereum.request({
+    method: "eth_chainId",
+  });
+
+  // Comparing to hardhat now, later HARMONY
+  return Number(chainId) === Number(CATALOGCHAIN);
 }
