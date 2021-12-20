@@ -78,6 +78,9 @@ import {
   renderManageProposals,
   collapseSidebar,
   openSidebarIfScreenIsBig,
+  render_wrongNetworkPopup,
+  renderMyProposalsContent,
+  renderDAOTermsURL,
 } from "./render";
 import { renderAcceptTools } from "./render";
 import { areYouSureButtons } from "../business/actions/areYouSureButtons";
@@ -124,10 +127,13 @@ import { menuActions } from "../business/actions/menuActions";
 import { reviewAndVotePageActions } from "../business/actions/reviewAndVote";
 import {
   createProposalActions,
+  DAOTermsActions,
+  DAOTermsInit,
   uploadProposalActions,
   uploadProposalSummaryActions,
 } from "../business/actions/createProposalActions";
 import { myProposalsActions } from "../business/actions/myProposalsActions";
+import { wrongNetworkActions } from "../business/actions/WrongNetworkActions";
 
 const Render: Renderer = {
   [RenderType.menu]: (props: State) => {
@@ -404,10 +410,25 @@ const Render: Renderer = {
   },
   [RenderType.manageProposals]: (props: RenderDispatchArgs) => {
     renderManageProposals();
-    myProposalsActions();
+    myProposalsActions(props);
   },
   [RenderType.dismissSidebar]: (props: RenderDispatchArgs) => {
     collapseSidebar();
+  },
+  [RenderType.renderWrongNetworkPopup]: (props: RenderDispatchArgs) => {
+    render_wrongNetworkPopup();
+    wrongNetworkActions(props);
+  },
+  [RenderType.renderMyProposals]: (props: RenderDispatchArgs) => {
+    renderMyProposalsContent(props.tmp.myProposal);
+  },
+  [RenderType.renderDAOTerms]: (props: RenderDispatchArgs) => {
+    if (props.tmp.url === null) {
+      DAOTermsInit(props);
+    } else {
+      renderDAOTermsURL(props.tmp.url);
+      DAOTermsActions(props);
+    }
   },
 };
 
