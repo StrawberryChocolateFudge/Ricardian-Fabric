@@ -49,6 +49,11 @@ export async function getAddress(): Promise<string> {
   return accounts[0];
 }
 
+export async function getBlockNumber() {
+  const web3 = new Web3(window.ethereum);
+  return await web3.eth.getBlockNumber();
+}
+
 export async function getNetwork(): Promise<number> {
   const hex = window.ethereum.chainId;
   return Number(hex);
