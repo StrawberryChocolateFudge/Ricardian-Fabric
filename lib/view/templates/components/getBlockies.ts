@@ -6,6 +6,6 @@ export const getBlockie = (data: string, width: string, className: string) => {
     src="${makeBlockie(data)}"
     width="${width}"
     class="${className}"
+    title="${data}"
   />`;
 };
-
