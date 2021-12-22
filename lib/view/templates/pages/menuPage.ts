@@ -44,7 +44,7 @@ export const MenuPage = (blockieData: string) => html`
   </div>
   <div class="text-align-center">
     <button
-      title="Review and Vote"
+      title="DAO"
       class="lightSlateGray-shadow  labelButton"
       id="review-and-vote-button"
     >
