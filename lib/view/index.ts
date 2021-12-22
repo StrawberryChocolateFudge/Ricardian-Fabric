@@ -81,6 +81,7 @@ import {
   render_wrongNetworkPopup,
   renderMyProposalsContent,
   renderDAOTermsURL,
+  renderRankProposalTable,
 } from "./render";
 import { renderAcceptTools } from "./render";
 import { areYouSureButtons } from "../business/actions/areYouSureButtons";
@@ -124,7 +125,10 @@ import {
 } from "../business/actions/catalogActions";
 import { WinstonToAr } from "../wallet/arweave";
 import { menuActions } from "../business/actions/menuActions";
-import { reviewAndVotePageActions } from "../business/actions/reviewAndVote";
+import {
+  rankProposalTableActions,
+  reviewAndVotePageActions,
+} from "../business/actions/reviewAndVote";
 import {
   createProposalActions,
   DAOTermsActions,
@@ -132,7 +136,10 @@ import {
   uploadProposalActions,
   uploadProposalSummaryActions,
 } from "../business/actions/createProposalActions";
-import { myProposalsActions } from "../business/actions/myProposalsActions";
+import {
+  myProposalsActions,
+  myProposalsTableActions,
+} from "../business/actions/myProposalsActions";
 import { wrongNetworkActions } from "../business/actions/WrongNetworkActions";
 
 const Render: Renderer = {
@@ -412,6 +419,14 @@ const Render: Renderer = {
     renderManageProposals();
     myProposalsActions(props);
   },
+  [RenderType.renderMyProposals]: (props: RenderDispatchArgs) => {
+    renderMyProposalsContent(
+      props.tmp.paginatedProposals,
+      props.tmp.fetchedProposals,
+      props.tmp.blockNumber
+    );
+    myProposalsTableActions();
+  },
   [RenderType.dismissSidebar]: (props: RenderDispatchArgs) => {
     collapseSidebar();
   },
@@ -419,9 +434,7 @@ const Render: Renderer = {
     render_wrongNetworkPopup();
     wrongNetworkActions(props);
   },
-  [RenderType.renderMyProposals]: (props: RenderDispatchArgs) => {
-    renderMyProposalsContent(props.tmp.myProposal);
-  },
+
   [RenderType.renderDAOTerms]: (props: RenderDispatchArgs) => {
     if (props.tmp.url === null) {
       DAOTermsInit(props);
@@ -429,6 +442,15 @@ const Render: Renderer = {
       renderDAOTermsURL(props.tmp.url);
       DAOTermsActions(props);
     }
+  },
+  [RenderType.renderReviewRankProposals]: (props: RenderDispatchArgs) => {
+    renderRankProposalTable(
+      props.tmp.blockNumber,
+      props.tmp.rankPage[0],
+      props.tmp.rankPage[1],
+      props.tmp.rankPage[2]
+    );
+    rankProposalTableActions();
   },
 };
 
