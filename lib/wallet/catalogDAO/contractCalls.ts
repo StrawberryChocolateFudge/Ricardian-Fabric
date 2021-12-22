@@ -9,9 +9,9 @@ import {
   RemovalProposal,
   SmartContractProposal,
 } from "../../types";
-import BN from "bn.js";
 const CATALOGDAOADDRESS = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"; // On local hardhat testnet
 const HARMONYRPCURL = "http://127.0.0.1:8545/";
+export const VOTINGPERIODBLOCKS = 302400; //The blocks passing in the voting period.
 
 export async function getCatalogDAOContractWithWallet() {
   const web3 = new Web3(window.ethereum);
@@ -41,7 +41,7 @@ export async function proposeNewRank(
 
 export async function voteOnNewRank(
   catalogDAO: Contract,
-  rankIndex: BN,
+  rankIndex: string,
   accepted: boolean,
   from: string,
   onError: any,
@@ -56,7 +56,7 @@ export async function voteOnNewRank(
 
 export async function closeRankProposal(
   catalogDAO: Contract,
-  rankIndex: BN,
+  rankIndex: string,
   from: string,
   onError: any,
   onReceipt: any
@@ -84,7 +84,7 @@ export async function proposeNewSmartContract(
 
 export async function voteOnNewSmartContract(
   catalogDAO: Contract,
-  sCIndex: BN,
+  sCIndex: string,
   accepted: boolean,
   from: string,
   onError: any,
@@ -99,7 +99,7 @@ export async function voteOnNewSmartContract(
 
 export async function closeSmartContractProposal(
   catalogDAO: Contract,
-  sCIndex: BN,
+  sCIndex: string,
   from: string,
   onError: any,
   onReceipt: any
@@ -114,7 +114,7 @@ export async function closeSmartContractProposal(
 export async function proposeContractRemoval(
   catalogDAO: Contract,
   discussionUrl: string,
-  acceptedSCIndex: BN,
+  acceptedSCIndex: string,
   malicious: boolean,
   from: string,
   onError: any,
@@ -129,7 +129,7 @@ export async function proposeContractRemoval(
 
 export async function voteOnRemoval(
   catalogDAO: Contract,
-  removalIndex: BN,
+  removalIndex: string,
   accepted: boolean,
   from: string,
   onError: any,
@@ -144,7 +144,7 @@ export async function voteOnRemoval(
 
 export async function closeRemovalProposal(
   catalogDAO: Contract,
-  removalIndex: BN,
+  removalIndex: string,
   from: string,
   onError: any,
   onReceipt: any
@@ -169,13 +169,13 @@ export async function getRank(
 export async function getRankProposalIndex(
   catalogDAO: Contract,
   from: string
-): Promise<BN> {
+): Promise<string> {
   return await catalogDAO.methods.getRankProposalIndex().call({ from });
 }
 
 export async function getRankProposalsByIndex(
   catalogDAO,
-  index: BN,
+  index: string,
   from: string
 ): Promise<RankProposal> {
   return await catalogDAO.methods.getRankProposalsByIndex(index).call({ from });
@@ -183,7 +183,7 @@ export async function getRankProposalsByIndex(
 
 export async function votedAlreadyOnRank(
   catalogDAO: Contract,
-  rankIndex: BN,
+  rankIndex: string,
   _voter: string,
   from: string
 ): Promise<boolean> {
@@ -202,11 +202,11 @@ export async function getMyProposals(
 export async function getMyRankProposalsPaginated(
   catalogDAO: Contract,
   from: string,
-  first: BN,
-  second: BN,
-  third: BN,
-  fourth: BN,
-  fifth: BN
+  first: string,
+  second: string,
+  third: string,
+  fourth: string,
+  fifth: string
 ): Promise<RankProposal[]> {
   return await catalogDAO.methods
     .getMyRankProposalsPaginated(first, second, third, fourth, fifth)
@@ -216,12 +216,12 @@ export async function getMyRankProposalsPaginated(
 export async function getMySmartContractProposalsPaginated(
   catalogDAO: Contract,
   from: string,
-  first: BN,
-  second: BN,
-  third: BN,
-  fourth: BN,
-  fifth: BN
-): Promise<RankProposal[]> {
+  first: string,
+  second: string,
+  third: string,
+  fourth: string,
+  fifth: string
+): Promise<SmartContractProposal[]> {
   return await catalogDAO.methods
     .getMySmartContractProposalsPaginated(first, second, third, fourth, fifth)
     .call({ from });
@@ -230,12 +230,12 @@ export async function getMySmartContractProposalsPaginated(
 export async function getAcceptedSmartContractProposalsPaginated(
   catalogDAO: Contract,
   from: string,
-  first: BN,
-  second: BN,
-  third: BN,
-  fourth: BN,
-  fifth: BN
-): Promise<RankProposal[]> {
+  first: string,
+  second: string,
+  third: string,
+  fourth: string,
+  fifth: string
+): Promise<AcceptedSmartContractProposal[]> {
   return await catalogDAO.methods
     .getAcceptedSmartContractProposalsPaginated(
       first,
@@ -250,20 +250,12 @@ export async function getAcceptedSmartContractProposalsPaginated(
 export async function getRemovalProposalsPaginated(
   catalogDAO: Contract,
   from: string,
-  first: BN,
-  second: BN,
-  third: BN,
-  fourth: BN,
-  fifth: BN
-): Promise<
-  [
-    data1: RankProposal,
-    data2: RankProposal,
-    data3: RankProposal,
-    data4: RankProposal,
-    data5: RankProposal
-  ]
-> {
+  first: string,
+  second: string,
+  third: string,
+  fourth: string,
+  fifth: string
+): Promise<RemovalProposal[]> {
   return await catalogDAO.methods
     .getRemovalProposalsPaginated(first, second, third, fourth, fifth)
     .call({ from });
@@ -272,14 +264,14 @@ export async function getRemovalProposalsPaginated(
 export async function getSmartContractProposalIndex(
   catalogDAO: Contract,
   from: string
-): Promise<BN> {
+): Promise<string> {
   return await catalogDAO.methods
     .getSmartContractProposalIndex()
     .call({ from });
 }
 export async function getSmartContractProposalsBYIndex(
   catalogDAO: Contract,
-  index: BN,
+  index: string,
   from: string
 ): Promise<SmartContractProposal> {
   return await catalogDAO.methods
@@ -289,7 +281,7 @@ export async function getSmartContractProposalsBYIndex(
 
 export async function votedAlreadyOnSmartContract(
   catalogDAO: Contract,
-  sCIndex: BN,
+  sCIndex: string,
   _voter: string,
   from: string
 ) {
@@ -301,7 +293,7 @@ export async function votedAlreadyOnSmartContract(
 export async function getAcceptedSmartContractIndex(
   catalogDAO: Contract,
   from: string
-): Promise<BN> {
+): Promise<string> {
   return await catalogDAO.methods
     .getAcceptedSmartContractIndex()
     .call({ from });
@@ -309,7 +301,7 @@ export async function getAcceptedSmartContractIndex(
 
 export async function getAcceptedSCProposalsByIndex(
   catalogDAO: Contract,
-  sCIndex: BN,
+  sCIndex: string,
   from: string
 ): Promise<AcceptedSmartContractProposal> {
   return await catalogDAO.methods
@@ -319,7 +311,7 @@ export async function getAcceptedSCProposalsByIndex(
 
 export async function votedAlreadyOnRemoval(
   catalogDAO: Contract,
-  removalIndex: BN,
+  removalIndex: string,
   voter: string,
   from: string
 ): Promise<boolean> {
@@ -331,13 +323,13 @@ export async function votedAlreadyOnRemoval(
 export async function getRemovalProposalIndex(
   catalogDAO: Contract,
   from: string
-): Promise<BN> {
+): Promise<string> {
   return await catalogDAO.methods.getRemovalProposalIndex().call({ from });
 }
 
 export async function getRemovalProposalByIndex(
   catalogDAO: Contract,
-  index: BN,
+  index: string,
   from: string
 ): Promise<RemovalProposal> {
   return await catalogDAO.methods
