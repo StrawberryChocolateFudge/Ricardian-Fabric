@@ -4,10 +4,13 @@ import {
   ContractTypes,
   CreateRicardianPageProps,
   DeploySC,
-  MyProposals,
+  FetchedProposals,
   PageState,
+  PaginatedProposal,
+  PaginatedProposals,
   PopupState,
   ProposalFormat,
+  RankProposal,
   RenderType,
   SelectedWallet,
   State,
@@ -64,7 +67,10 @@ import {
   UploadProposalPopup,
   UploadProposalSummary,
 } from "./templates/popups/uploadProposalPopup";
-import { ReviewAndVote } from "./templates/pages/reviewAndVotePage";
+import {
+  RankProposalTable,
+  ReviewAndVote,
+} from "./templates/pages/reviewAndVotePage";
 import { SideBar } from "./templates/components/sideBar";
 import { createProposalPage } from "./templates/pages/createProposalPage";
 import ScreenSizeDetector from "screen-size-detector";
@@ -812,9 +818,16 @@ export function renderManageProposals() {
   render(ManageProposals(), page);
 }
 
-export function renderMyProposalsContent(myProposals: MyProposals) {
+export function renderMyProposalsContent(
+  paginatedProposals: PaginatedProposals,
+  fetchedProposals: FetchedProposals,
+  blockNumber: number
+) {
   const myProposalsContainer = getById("my-proposals-container");
-  render(MyProposalsContent(myProposals), myProposalsContainer);
+  render(
+    MyProposalsContent(paginatedProposals, fetchedProposals, blockNumber),
+    myProposalsContainer
+  );
 }
 
 export function renderAccordionOpener() {
@@ -1020,4 +1033,24 @@ export function renderDAOTermsURL(url: string) {
   setBannerDisplayBlock();
   const layout = getById("overlay-layout");
   render(DaoTermsPopup(url), layout);
+}
+
+export function renderRankProposalTable(
+  blockNumber: number,
+  ranks: RankProposal[],
+  indexes: string[],
+  paging: PaginatedProposal
+) {
+  const el = getById("rank-proposal-table");
+  console.log(paging);
+  render(
+    RankProposalTable(
+      ranks,
+      indexes,
+      blockNumber,
+      paging.totalPages,
+      paging.currentPage
+    ),
+    el
+  );
 }
