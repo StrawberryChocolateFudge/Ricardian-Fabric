@@ -1,4 +1,5 @@
 import { html } from "lit-html";
+import { BackLogo } from "../components/logos";
 
 export function DaoTermsPopup(url: string) {
   return html`<h4>You need to sign the proposal creation terms.</h4>
@@ -9,7 +10,10 @@ export function DaoTermsPopup(url: string) {
         : html`<a href="${url}" target="_blank" rel="noopener">Here</a>`}
     </div>
     <hr />
-    <div>
+    <div class="row">
+      <button class="labelButton" id="dao-terms-back">
+        ${BackLogo()} Back
+      </button>
       <button class="labelButton" id="refresh-button">Refresh page</button>
     </div>
     <hr />

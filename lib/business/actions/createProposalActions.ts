@@ -468,9 +468,14 @@ export async function DAOTermsInit(props: State) {
 
 export async function DAOTermsActions(props: State) {
   const refreshButton = getById("refresh-button");
-
+  const back = getById("dao-terms-back");
   refreshButton.onclick = function () {
     dispatch_setPage(PageState.Proposals);
+    dispatch_setPopupState(PopupState.NONE);
+  };
+
+  back.onclick = function () {
+    dispatch_setPage(PageState.ReviewAndVote);
     dispatch_setPopupState(PopupState.NONE);
   };
 }
