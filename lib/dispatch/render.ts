@@ -1,9 +1,12 @@
 import {
   CreateRicardianPageProps,
   DeploySC,
-  MyProposals,
+  FetchedProposals,
+  PaginatedProposal,
+  PaginatedProposals,
   PopupState,
   ProposalFormat,
+  RankProposal,
   RenderType,
   State,
   VerificationState,
@@ -525,11 +528,16 @@ export function dispatch_renderWrongNetworkPopup(props: State) {
 
 export function dispatch_renderMyProposals(
   props: State,
-  myProposals: MyProposals
+  paginatedProposals: PaginatedProposals,
+  fetchedProposals: FetchedProposals,
+  blockNumber: number
 ) {
   dispatch(Events.render, {
     type: RenderType.renderMyProposals,
-    props: { tmp: { myProposals } },
+    props: {
+      ...props,
+      tmp: { paginatedProposals, fetchedProposals, blockNumber },
+    },
   });
 }
 
@@ -544,5 +552,16 @@ export function dispatch_renderDAOTermsURL(props, url: String) {
   dispatch(Events.render, {
     type: RenderType.renderDAOTerms,
     props: { ...props, tmp: { url } },
+  });
+}
+
+export function dispatch_renderReviewRankProposals(
+  props: State,
+  blockNumber: number,
+  rankPage: [RankProposal[], string[], PaginatedProposal]
+) {
+  dispatch(Events.render, {
+    type: RenderType.renderReviewRankProposals,
+    props: { ...props, tmp: { rankPage, blockNumber } },
   });
 }
