@@ -86,6 +86,10 @@ export enum RenderType {
   dismissSidebar = "dismissSidebar",
   renderWrongNetworkPopup = "renderWrongNetworkPopup",
   renderMyProposals = "renderMyProposals",
+  renderReviewRankProposals = "renderReviewRankProposals",
+  renderReviewSmartContractProposals = "renderReviewSmartContractProposals",
+  renderReviewAcceptedProposals = "renderReviewAcceptedProposals",
+  renderReviewRemovalProposals = "renderReviewRemovalProposals",
   renderDAOTerms = "renderDAOTerms",
 }
 
@@ -161,6 +165,7 @@ export type Renderer = {
   [RenderType.renderWrongNetworkPopup]: RenderFunction;
   [RenderType.renderMyProposals]: RenderFunction;
   [RenderType.renderDAOTerms]: RenderFunction;
+  [RenderType.renderReviewRankProposals]: RenderFunction;
 };
 
 export enum VerificationState {
@@ -466,26 +471,26 @@ export type ProposalFormat = {
 export type RankProposal = {
   repository: string;
   creator: string;
-  createdBlock: BN;
-  approvals: BN;
-  rejections: BN;
+  createdBlock: string;
+  approvals: string;
+  rejections: string;
   closed: boolean;
 };
 
 export type MyProposals = {
-  rank: BN[];
-  smartContract: BN[];
-  acceptedSCProposals: BN[];
-  removedFromMe: BN[];
-  removal: BN[];
+  rank: string[];
+  smartContract: string[];
+  acceptedSCProposals: string[];
+  removedFromMe: string[];
+  removal: string[];
 };
 
 export type SmartContractProposal = {
   arweaveTxId: string;
   creator: string;
-  createdBlock: BN;
-  approvals: BN;
-  rejections: BN;
+  createdBlock: string;
+  approvals: string;
+  rejections: string;
   closed: boolean;
 };
 
@@ -499,10 +504,10 @@ export type RemovalProposal = {
   discussionUrl: string;
   creator: string;
   malicious: boolean;
-  acceptedIndex: BN; // The index from acceptedSCProposals
-  createdBlock: BN;
-  approvals: BN;
-  rejections: BN;
+  acceptedIndex: string; // The index from acceptedSCProposals
+  createdBlock: string;
+  approvals: string;
+  rejections: string;
   closed: boolean;
 };
 
@@ -515,7 +520,19 @@ export type PaginatedProposals = {
 };
 
 export type PaginatedProposal = {
-  proposals: BN[];
+  proposals: string[];
   currentPage: number;
+  totalPages: number;
   totalContent: number;
+};
+
+export type FetchedProposals = {
+  rankIndexes: string[];
+  rank: RankProposal[];
+  smartContractIndexes: string[];
+  smartContract: SmartContractProposal[];
+  acceptedIndexes: string[];
+  accepted: AcceptedSmartContractProposal[];
+  removalIndexes: string[];
+  removal: RemovalProposal[];
 };
