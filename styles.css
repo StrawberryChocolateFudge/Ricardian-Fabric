@@ -476,7 +476,6 @@ hr {
   cursor: pointer;
   background-color: #f2f2f2;
   color: black;
-  box-shadow: rgb(211, 211, 146) 0px 5px 15px !important;
 }
 
 #verify-contract-button:hover {
