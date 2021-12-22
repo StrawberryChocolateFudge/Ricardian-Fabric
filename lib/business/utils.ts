@@ -13,12 +13,15 @@ import {
   AcceptablePageProps,
   BlockCountry,
   FulfilledPageProps,
+  MyProposals,
   Options,
+  PaginatedProposal,
+  PaginatedProposals,
   PopupState,
   State,
   Status,
 } from "../types";
-
+import { Contract } from "web3-eth-contract";
 import { getTermsAccepted } from "../view/utils";
 import {
   getAcceptablePageFromVDOM,
@@ -29,6 +32,79 @@ import {
   dispatch_setPopupState,
   dispatch_setPosition,
 } from "../dispatch/stateChange";
+
+import Decimal from "decimal.js";
+
+export async function getProposals<Type>(
+  catalogDAO: Contract,
+  myAddress: string,
+  toFetch: string[],
+  getPaginated: CallableFunction
+): Promise<Type> {
+  const proposals = await OptionsBuilder(() =>
+    getPaginated(
+      catalogDAO,
+      myAddress,
+      toFetch[0],
+      toFetch[1],
+      toFetch[2],
+      toFetch[3],
+      toFetch[4]
+    )
+  );
+  if (proposals.status === Status.Failure) {
+    dispatch_renderError(proposals.error);
+    return;
+  }
+
+  return proposals.data;
+}
+
+export async function getPaginatedByIndexSTART<Type>(
+  catalogDAO: Contract,
+  myAddress: string,
+  getLastIndex: CallableFunction,
+  getPaginated: CallableFunction
+): Promise<[Type, string[], PaginatedProposal]> {
+  const indexOptions = await OptionsBuilder(() =>
+    getLastIndex(catalogDAO, myAddress)
+  );
+
+  if (indexOptions.status === Status.Failure) {
+    dispatch_renderError(indexOptions.error);
+    return;
+  }
+
+  const pagination: PaginatedProposal = {
+    proposals: generateProposalIndexes(indexOptions.data),
+    currentPage: 1,
+    totalPages: getTotalPages(indexOptions.data),
+    totalContent: parseInt(indexOptions.data),
+  };
+
+  const startPage = startPaginatingAProposal(pagination.proposals);
+  console.log(startPage);
+  const toFetch = proposalsToFetch(startPage);
+  console.log("tofetch");
+  console.log(toFetch);
+  const proposals = await getProposals<Type>(
+    catalogDAO,
+    myAddress,
+    toFetch,
+    getPaginated
+  );
+
+  return [proposals, toFetch, pagination];
+}
+
+function generateProposalIndexes(lastIndex: string) {
+  const intIndex = parseInt(lastIndex);
+  const indexes = [];
+  for (let i = intIndex; i > 0; i--) {
+    indexes.push(i.toString());
+  }
+  return indexes;
+}
 
 export async function OptionsBuilder(
   method: CallableFunction
@@ -45,6 +121,94 @@ export async function OptionsBuilder(
     options.status = Status.Failure;
   }
   return options;
+}
+
+export const getTotalPages = (length) => {
+  if (length === 0) {
+    return 1;
+  }
+  const divided = new Decimal(length).dividedBy(5);
+  const split = divided.toString().split(".");
+
+  if (split[0] === 0) {
+    return 1;
+  }
+
+  if (split[1] === undefined) {
+    return parseInt(split[0]);
+  }
+
+  return parseInt(split[0]) + 1;
+};
+
+// I need to get a proposal at random index and tell what page it's on.
+
+export const proposalsToFetch = (data: PaginatedProposal) => {
+  let proposals = [];
+  for (let i = 0; i < data.totalContent; i++) {
+    if (getTotalPages(i) === data.currentPage) {
+      proposals.push(data.proposals[i].toString());
+    }
+  }
+  if (proposals.length < 5) {
+    //If I have less then 5 things on a page, I pad it with zeroes
+    for (let i = proposals.length; i < 5; i++) {
+      proposals.push("0");
+    }
+  }
+
+  return proposals;
+};
+
+export function startPaginatingMyProposals(
+  myProposals: MyProposals
+): PaginatedProposals {
+  return {
+    rank: {
+      proposals: myProposals.rank,
+      currentPage: 1,
+      totalPages: getTotalPages(myProposals.rank.length),
+      totalContent: myProposals.rank.length,
+    },
+    smartContract: {
+      proposals: myProposals.smartContract,
+      currentPage: 1,
+      totalPages: getTotalPages(myProposals.smartContract.length),
+      totalContent: myProposals.smartContract.length,
+    },
+    accepted: {
+      proposals: myProposals.acceptedSCProposals,
+      currentPage: 1,
+      totalPages: getTotalPages(myProposals.acceptedSCProposals.length),
+      totalContent: myProposals.acceptedSCProposals.length,
+    },
+    removal: {
+      proposals: myProposals.removal,
+      currentPage: 1,
+      totalPages: getTotalPages(myProposals.removal.length),
+      totalContent: myProposals.removal.length,
+    },
+    removedFromMe: {
+      proposals: myProposals.removedFromMe,
+      currentPage: 1,
+      totalPages: getTotalPages(myProposals.removedFromMe.length),
+      totalContent: myProposals.removedFromMe.length,
+    },
+  };
+}
+
+export function startPaginatingAProposal(
+  proposals: Array<string>
+): PaginatedProposal {
+  console.log("proposals");
+  console.log(proposals);
+
+  return {
+    proposals,
+    currentPage: 1,
+    totalPages: getTotalPages(proposals.length),
+    totalContent: proposals.length,
+  };
 }
 
 export async function getAcceptablePage(args: {
@@ -208,13 +372,11 @@ export async function getCountryCode(
 
 export function getLocation(props: State, acceptButton: HTMLElement) {
   dispatch_disableButton(props);
-  dispatch_renderLoadingIndicator("transaction-display");
   dispatch_hideElement(acceptButton, true);
   // Ask for permission and access the Geolocation API.
   if ("geolocation" in navigator) {
     navigator.geolocation.getCurrentPosition(
       async function (position) {
-        dispatch_removeLoadingIndicator("transaction-display");
         dispatch_hideElement(acceptButton, false);
 
         dispatch_setPosition(position);
@@ -222,14 +384,12 @@ export function getLocation(props: State, acceptButton: HTMLElement) {
       function (err) {
         dispatch_enableButton(props);
         dispatch_renderError(err.message);
-        dispatch_removeLoadingIndicator("transaction-display");
         dispatch_hideElement(acceptButton, false);
       }
     );
   } else {
     dispatch_renderError("Can't get geolocation.");
     dispatch_enableButton(props);
-    dispatch_removeLoadingIndicator("transaction-display");
     dispatch_hideElement(acceptButton, false);
   }
 }
