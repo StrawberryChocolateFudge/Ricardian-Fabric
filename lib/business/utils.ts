@@ -60,7 +60,8 @@ export async function getProposals<Type>(
   return proposals.data;
 }
 
-export async function getPaginatedByIndexSTART<Type>(
+export async function getPaginatedByIndex<Type>(
+  pageIndex: number,
   catalogDAO: Contract,
   myAddress: string,
   getLastIndex: CallableFunction,
@@ -77,16 +78,17 @@ export async function getPaginatedByIndexSTART<Type>(
 
   const pagination: PaginatedProposal = {
     proposals: generateProposalIndexes(indexOptions.data),
-    currentPage: 1,
+    currentPage: pageIndex,
     totalPages: getTotalPages(indexOptions.data),
     totalContent: parseInt(indexOptions.data),
   };
 
-  const startPage = startPaginatingAProposal(pagination.proposals);
-  console.log(startPage);
+  const startPage = startPaginatingAProposal(
+    pagination.proposals,
+    pagination.currentPage
+  );
   const toFetch = proposalsToFetch(startPage);
-  console.log("tofetch");
-  console.log(toFetch);
+
   const proposals = await getProposals<Type>(
     catalogDAO,
     myAddress,
@@ -145,9 +147,12 @@ export const getTotalPages = (length) => {
 
 export const proposalsToFetch = (data: PaginatedProposal) => {
   let proposals = [];
+
   for (let i = 0; i < data.totalContent; i++) {
-    if (getTotalPages(i) === data.currentPage) {
-      proposals.push(data.proposals[i].toString());
+    if (proposals.length !== 5) {
+      if (getTotalPages(i + 1) === data.currentPage) {
+        proposals.push(data.proposals[i].toString());
+      }
     }
   }
   if (proposals.length < 5) {
@@ -160,52 +165,59 @@ export const proposalsToFetch = (data: PaginatedProposal) => {
   return proposals;
 };
 
-export function startPaginatingMyProposals(
-  myProposals: MyProposals
-): PaginatedProposals {
-  return {
-    rank: {
-      proposals: myProposals.rank,
-      currentPage: 1,
-      totalPages: getTotalPages(myProposals.rank.length),
-      totalContent: myProposals.rank.length,
-    },
-    smartContract: {
-      proposals: myProposals.smartContract,
-      currentPage: 1,
-      totalPages: getTotalPages(myProposals.smartContract.length),
-      totalContent: myProposals.smartContract.length,
-    },
-    accepted: {
-      proposals: myProposals.acceptedSCProposals,
-      currentPage: 1,
-      totalPages: getTotalPages(myProposals.acceptedSCProposals.length),
-      totalContent: myProposals.acceptedSCProposals.length,
-    },
-    removal: {
-      proposals: myProposals.removal,
-      currentPage: 1,
-      totalPages: getTotalPages(myProposals.removal.length),
-      totalContent: myProposals.removal.length,
-    },
-    removedFromMe: {
-      proposals: myProposals.removedFromMe,
-      currentPage: 1,
-      totalPages: getTotalPages(myProposals.removedFromMe.length),
-      totalContent: myProposals.removedFromMe.length,
-    },
-  };
+function reverseArray(arr: Array<any>) {
+  let newArr = arr.slice();
+  if (newArr.length > 1) {
+    return newArr.reverse();
+  } else {
+    return newArr;
+  }
 }
 
-export function startPaginatingAProposal(
-  proposals: Array<string>
-): PaginatedProposal {
-  console.log("proposals");
-  console.log(proposals);
+// export function startPaginatingMyProposals(
+//   myProposals: MyProposals
+// ): PaginatedProposals {
+//   return {
+//     rank: {
+//       proposals: reverseArray(myProposals.rank),
+//       currentPage: 1,
+//       totalPages: getTotalPages(myProposals.rank.length),
+//       totalContent: myProposals.rank.length,
+//     },
+//     smartContract: {
+//       proposals: myProposals.smartContract,
+//       currentPage: 1,
+//       totalPages: getTotalPages(myProposals.smartContract.length),
+//       totalContent: myProposals.smartContract.length,
+//     },
+//     accepted: {
+//       proposals: myProposals.acceptedSCProposals,
+//       currentPage: 1,
+//       totalPages: getTotalPages(myProposals.acceptedSCProposals.length),
+//       totalContent: myProposals.acceptedSCProposals.length,
+//     },
+//     removal: {
+//       proposals: myProposals.removal,
+//       currentPage: 1,
+//       totalPages: getTotalPages(myProposals.removal.length),
+//       totalContent: myProposals.removal.length,
+//     },
+//     removedFromMe: {
+//       proposals: myProposals.removedFromMe,
+//       currentPage: 1,
+//       totalPages: getTotalPages(myProposals.removedFromMe.length),
+//       totalContent: myProposals.removedFromMe.length,
+//     },
+//   };
+// }
 
+export function startPaginatingAProposal(
+  proposals: Array<string>,
+  currentPage: number
+): PaginatedProposal {
   return {
     proposals,
-    currentPage: 1,
+    currentPage: currentPage,
     totalPages: getTotalPages(proposals.length),
     totalContent: proposals.length,
   };
