@@ -525,7 +525,7 @@ export function dispatch_renderWrongNetworkPopup(props: State) {
     props,
   });
 }
-
+// TODO :refactor this to 4 separate renders
 export function dispatch_renderMyProposals(
   props: State,
   paginatedProposals: PaginatedProposals,
@@ -537,6 +537,20 @@ export function dispatch_renderMyProposals(
     props: {
       ...props,
       tmp: { paginatedProposals, fetchedProposals, blockNumber },
+    },
+  });
+}
+
+export function dispatch_renderMyRankProposals(
+  props: State,
+  blockNumber: number,
+  rankPage: [RankProposal[], string[], PaginatedProposal]
+) {
+  dispatch(Events.render, {
+    type: RenderType.renderMyRankProposals,
+    props: {
+      ...props,
+      tmp: { blockNumber, rankPage },
     },
   });
 }
