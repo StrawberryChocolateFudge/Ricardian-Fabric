@@ -2,15 +2,7 @@ import {
   dispatch_setPage,
   dispatch_setPopupState,
 } from "../../dispatch/stateChange";
-import {
-  AcceptedSmartContractProposal,
-  PageState,
-  PopupState,
-  RankProposal,
-  RemovalProposal,
-  SmartContractProposal,
-  State,
-} from "../../types";
+import { PageState, PopupState, RankProposal, State } from "../../types";
 import { getById } from "../../view/utils";
 import {
   checkNetwork,
@@ -27,16 +19,10 @@ import {
 import {
   getCatalogDAOContractWithWallet,
   getRankProposalIndex,
-  getSmartContractProposalIndex,
-  getAcceptedSmartContractIndex,
-  getRemovalProposalIndex,
   getMyRankProposalsPaginated,
-  getMySmartContractProposalsPaginated,
-  getAcceptedSmartContractProposalsPaginated,
-  getRemovalProposalsPaginated,
   voteOnNewRank,
 } from "../../wallet/catalogDAO/contractCalls";
-import { getPaginatedByIndexSTART } from "../utils";
+import { getPaginatedByIndex } from "../utils";
 
 export async function reviewAndVotePageActions(props: State) {
   const createProposalButton = getById("create-proposal-button");
@@ -69,7 +55,8 @@ export async function reviewAndVotePageActions(props: State) {
   const catalogDAO = await getCatalogDAOContractWithWallet();
   const blockNumber = await getBlockNumber();
 
-  const rankPage = await getPaginatedByIndexSTART<RankProposal[]>(
+  const rankPage = await getPaginatedByIndex<RankProposal[]>(
+    1,
     catalogDAO,
     myAddress,
     getRankProposalIndex,
@@ -78,32 +65,38 @@ export async function reviewAndVotePageActions(props: State) {
 
   dispatch_renderReviewRankProposals(props, blockNumber, rankPage);
 
-  const smartContractPage = await getPaginatedByIndexSTART<
-    SmartContractProposal[]
-  >(
-    catalogDAO,
-    myAddress,
-    getSmartContractProposalIndex,
-    getMySmartContractProposalsPaginated
-  );
+  // const smartContractPage = await getPaginatedByIndexSTART<
+  //   SmartContractProposal[]
+  // >(
+  //   catalogDAO,
+  //   myAddress,
+  //   getSmartContractProposalIndex,
+  //   getMySmartContractProposalsPaginated
+  // );
 
-  const acceptedSmartContractPage =
-    await getPaginatedByIndexSTART<AcceptedSmartContractProposal>(
-      catalogDAO,
-      myAddress,
-      getAcceptedSmartContractIndex,
-      getAcceptedSmartContractProposalsPaginated
-    );
+  // const acceptedSmartContractPage =
+  //   await getPaginatedByIndexSTART<AcceptedSmartContractProposal>(
+  //     catalogDAO,
+  //     myAddress,
+  //     getAcceptedSmartContractIndex,
+  //     getAcceptedSmartContractProposalsPaginated
+  //   );
 
-  const removalPage = await getPaginatedByIndexSTART<RemovalProposal>(
-    catalogDAO,
-    myAddress,
-    getRemovalProposalIndex,
-    getRemovalProposalsPaginated
-  );
+  // const removalPage = await getPaginatedByIndexSTART<RemovalProposal>(
+  //   catalogDAO,
+  //   myAddress,
+  //   getRemovalProposalIndex,
+  //   getRemovalProposalsPaginated
+  // );
 }
 
-export async function rankProposalTableActions() {
+export async function rankProposalTableActions(props: State) {
+  const paginationButtons = document.getElementsByClassName(
+    "rankPagePaginationButton"
+  );
+  const pageLeftButton = getById("rank-page-left");
+  const pageRightButton = getById("rank-page-right");
+
   const approveButtons = document.getElementsByClassName(
     "rankProposalApproveButton"
   );
@@ -139,6 +132,17 @@ export async function rankProposalTableActions() {
       onError,
       onReceipt
     );
+  // starts with _ because an import can shadow it
+  const _getProposals = async (index: number) =>
+    await getPaginatedByIndex<RankProposal[]>(
+      index,
+      catalogDAO,
+      myAddress,
+      getRankProposalIndex,
+      getMyRankProposalsPaginated
+    );
+
+  // Add the onclick for the Rank approve buttons
 
   for (let i = 0; i < approveButtons.length; i++) {
     const approveButton = approveButtons[i] as HTMLButtonElement;
@@ -152,4 +156,40 @@ export async function rankProposalTableActions() {
       vote(false, index);
     };
   }
+
+  // add the onclick for the rank pagination buttons
+  for (let i = 0; i < paginationButtons.length; i++) {
+    const paginationButton = paginationButtons[i] as HTMLButtonElement;
+    paginationButton.onclick = async function () {
+      const pageIndex = parseInt(paginationButton.dataset.rankpage);
+      const rankPage = await _getProposals(pageIndex);
+      const blockNumber = await getBlockNumber();
+
+      dispatch_renderReviewRankProposals(props, blockNumber, rankPage);
+    };
+  }
+
+  pageLeftButton.onclick = async function () {
+    const index = parseInt(pageLeftButton.dataset.rankpage);
+
+    if (index > 1) {
+      const rankPage = await _getProposals(index - 1);
+
+      const blockNumber = await getBlockNumber();
+
+      dispatch_renderReviewRankProposals(props, blockNumber, rankPage);
+    }
+  };
+  pageRightButton.onclick = async function () {
+    const index = parseInt(pageRightButton.dataset.rankpage);
+    const total = parseInt(pageRightButton.dataset.totalpages);
+
+    if (index < total) {
+      const rankPage = await _getProposals(index + 1);
+
+      const blockNumber = await getBlockNumber();
+
+      dispatch_renderReviewRankProposals(props, blockNumber, rankPage);
+    }
+  };
 }
