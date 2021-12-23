@@ -1,5 +1,6 @@
 import { html } from "lit-html";
 import { RankProposal, RemovalProposal } from "../../../types";
+import { VOTINGPERIODBLOCKS } from "../../../wallet/catalogDAO/contractCalls";
 import { getBlockie } from "../components/getBlockies";
 import {
   AddLogo,
@@ -8,7 +9,11 @@ import {
   ThumbsUp,
   WebAsset,
 } from "../components/logos";
-import { getRankPagingButtons, GetStatus } from "./manageProposals";
+import {
+  getRankPagingButtons,
+  GetStatus,
+  getStatusCondition,
+} from "./manageProposals";
 
 export function ReviewAndVote() {
   return html`
@@ -42,7 +47,6 @@ export function RankProposalTable(
       rankProposalTRs.push({ rank: ranks[i], index: rankIndexes[i] });
     }
   }
-  console.log(rankProposalTRs);
 
   return html`
     <hr />
@@ -55,12 +59,19 @@ export function RankProposalTable(
         <td><label>Approve</label></td>
         <td><label>Reject</label></td>
         <td><label>Status</label></td>
+        <td><label>Block</label></td>
       </tr>
       ${rankProposalTRs.map((r) =>
         rankProposalTR(r.rank, r.index, blockNumber)
       )}
     </table>
-    <div>${getRankPagingButtons(totalPages, currentPage)}</div>
+    <div>
+      ${getRankPagingButtons(
+        totalPages,
+        currentPage,
+        "rankPagePaginationButton"
+      )}
+    </div>
   `;
 }
 
@@ -69,6 +80,22 @@ function rankProposalTR(
   index: string,
   blockNumer: number
 ) {
+  const finished = getStatusCondition(blockNumer, rankProposal.createdBlock);
+  let approvalCSS = "";
+  let rejectionCSS = "";
+  const approvals = parseInt(rankProposal.approvals);
+  const rejections = parseInt(rankProposal.rejections);
+
+  if (finished) {
+    if (approvals < 10) {
+      // If the approvals are less than 10, its rejected;
+      rejectionCSS = "background-lightcoral";
+    } else if (rejections > approvals) {
+      rejectionCSS = "background-lightcoral";
+    } else if (approvals > rejections) {
+      approvalCSS = "background-lightgreen";
+    }
+  }
   return html`<tr>
       <td><hr /></td>
       <td><hr /></td>
@@ -90,28 +117,50 @@ function rankProposalTR(
       </td>
       <td>
         <button
-          class="labelButton rankProposalApproveButton"
+          class="labelButton rankProposalApproveButton ${approvalCSS}"
           data-index="${index}"
+          title="${rankProposal.approvals}"
+          ?disabled=${finished}
         >
           ${ThumbsUp()}
         </button>
-        ${rankProposal.approvals}
       </td>
       <td>
         <button
-          class="labelButton rankProposalRejectButton"
+          class="labelButton rankProposalRejectButton ${rejectionCSS}"
           data-index="${index}"
+          title="${rankProposal.rejections}"
+          ?disabled=${finished}
         >
           ${ThumbsDown()}
         </button>
-        <span>${rankProposal.rejections}</span>
       </td>
       <td>
         ${rankProposal.closed
           ? "Closed"
           : GetStatus(blockNumer, rankProposal.createdBlock)}
       </td>
+      <td>
+        <div
+          title="${getExpiresElementTitle(
+            rankProposal.createdBlock,
+            blockNumer
+          )}"
+        >
+          ${rankProposal.createdBlock}
+        </div>
+      </td>
     </tr>`;
+}
+
+function getExpiresElementTitle(createdBlock: string, blockNumber: number) {
+  if (!getStatusCondition(blockNumber, createdBlock)) {
+    return `Expires in ${
+      parseInt(createdBlock) + VOTINGPERIODBLOCKS - blockNumber
+    } blocks.`;
+  } else {
+    return "Expired";
+  }
 }
 
 export function SmartContractProposalsTable() {
