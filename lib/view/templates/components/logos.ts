@@ -290,8 +290,7 @@ export const arweaveLogo = () => html` <style>
     />
   </svg>`;
 
-export const accountLogo = () => html` <style>
-  </style>
+export const accountLogo = () => html` <style></style>
   <svg
     class="accountLogo"
     xmlns="http://www.w3.org/2000/svg"
@@ -327,25 +326,24 @@ export const uploadLogo = () => html` <style></style>
     <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z" />
   </svg>`;
 
-export const pinLogo = () => html`
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    enable-background="new 0 0 24 24"
-    height="24px"
-    viewBox="0 0 24 24"
-    width="24px"
-    fill="#000000"
-  >
-    <g>
-      <rect fill="none" height="24" width="24" />
-    </g>
-    <g>
-      <path
-        d="M16,9V4l1,0c0.55,0,1-0.45,1-1v0c0-0.55-0.45-1-1-1H7C6.45,2,6,2.45,6,3v0 c0,0.55,0.45,1,1,1l1,0v5c0,1.66-1.34,3-3,3h0v2h5.97v7l1,1l1-1v-7H19v-2h0C17.34,12,16,10.66,16,9z"
-        fill-rule="evenodd"
-      />
-    </g>
-  </svg>`;
+export const pinLogo = () => html` <svg
+  xmlns="http://www.w3.org/2000/svg"
+  enable-background="new 0 0 24 24"
+  height="24px"
+  viewBox="0 0 24 24"
+  width="24px"
+  fill="#000000"
+>
+  <g>
+    <rect fill="none" height="24" width="24" />
+  </g>
+  <g>
+    <path
+      d="M16,9V4l1,0c0.55,0,1-0.45,1-1v0c0-0.55-0.45-1-1-1H7C6.45,2,6,2.45,6,3v0 c0,0.55,0.45,1,1,1l1,0v5c0,1.66-1.34,3-3,3h0v2h5.97v7l1,1l1-1v-7H19v-2h0C17.34,12,16,10.66,16,9z"
+      fill-rule="evenodd"
+    />
+  </g>
+</svg>`;
 
 export const pinLogoWhite = () => html` <svg
   xmlns="http://www.w3.org/2000/svg"
@@ -754,6 +752,18 @@ export const ChevronRightBlack = () =>
   >
     <path d="M0 0h24v24H0z" fill="none" />
     <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+  </svg>`;
+
+export const ChevronLeftBlack = () =>
+  html`<svg
+    xmlns="http://www.w3.org/2000/svg"
+    height="24px"
+    viewBox="0 0 24 24"
+    width="24px"
+    fill="#000000"
+  >
+    <path d="M0 0h24v24H0z" fill="none" />
+    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
   </svg>`;
 
 export const ManageAccountLogo = () =>
