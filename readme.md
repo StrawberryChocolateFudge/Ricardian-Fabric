@@ -14,13 +14,6 @@ Run the front end
 
 `yarn run dev`
 
-#### version blockie
-
-Because the version blockie is the arweave transaction ID
-add use the development url
-
-"localhost:1234/arweave.net/whateverID"
-
 ## Deployment
 
 `yarn build`
