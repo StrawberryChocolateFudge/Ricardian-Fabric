@@ -86,6 +86,7 @@ export enum RenderType {
   dismissSidebar = "dismissSidebar",
   renderWrongNetworkPopup = "renderWrongNetworkPopup",
   renderMyProposals = "renderMyProposals",
+  renderMyRankProposals = "renderMyRankProposals",
   renderReviewRankProposals = "renderReviewRankProposals",
   renderReviewSmartContractProposals = "renderReviewSmartContractProposals",
   renderReviewAcceptedProposals = "renderReviewAcceptedProposals",
@@ -164,6 +165,7 @@ export type Renderer = {
   [RenderType.dismissSidebar]: RenderFunction;
   [RenderType.renderWrongNetworkPopup]: RenderFunction;
   [RenderType.renderMyProposals]: RenderFunction;
+  [RenderType.renderMyRankProposals]: RenderFunction;
   [RenderType.renderDAOTerms]: RenderFunction;
   [RenderType.renderReviewRankProposals]: RenderFunction;
 };
