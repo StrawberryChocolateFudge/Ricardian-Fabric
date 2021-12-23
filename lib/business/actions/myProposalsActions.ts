@@ -3,6 +3,7 @@ import {
   dispatch_renderError,
   dispatch_renderLoadingIndicator,
   dispatch_renderMyProposals,
+  dispatch_renderMyRankProposals,
 } from "../../dispatch/render";
 import {
   checkNetwork,
@@ -20,6 +21,7 @@ import {
   AcceptedSmartContractProposal,
   MyProposals,
   PageState,
+  PaginatedProposal,
   PopupState,
   RankProposal,
   RemovalProposal,
@@ -29,18 +31,18 @@ import {
 } from "../../types";
 import {
   closeRankProposal,
-  getAcceptedSmartContractProposalsPaginated,
   getCatalogDAOContractWithWallet,
   getMyProposals,
   getMyRankProposalsPaginated,
-  getMySmartContractProposalsPaginated,
 } from "../../wallet/catalogDAO/contractCalls";
 import {
   getProposals,
   OptionsBuilder,
   proposalsToFetch,
-  startPaginatingMyProposals,
+  startPaginatingAProposal,
 } from "../utils";
+import { getById } from "../../view/utils";
+import { Contract } from "web3-eth-contract";
 
 export async function myProposalsActions(props: State) {
   if (!web3Injected()) {
@@ -50,7 +52,8 @@ export async function myProposalsActions(props: State) {
     return;
   }
 
-  dispatch_renderLoadingIndicator("my-proposals-container");
+  // TODO: dispatch loading indicator to the other tables too!
+  dispatch_renderLoadingIndicator("my-rank-proposals-container");
   await requestAccounts();
 
   const correctNetwork = await checkNetwork();
@@ -71,14 +74,71 @@ export async function myProposalsActions(props: State) {
 
   if (myProposalOptions.status === Status.Failure) {
     dispatch_renderError(myProposalOptions.error);
-    dispatch_removeLoadingIndicator("my-proposals-container");
+    dispatch_removeLoadingIndicator("my-rank-proposals-container");
     return;
   }
 
   const myProposals = myProposalOptions.data as MyProposals;
-  const paginatedProposalData = startPaginatingMyProposals(myProposals);
+  const paginatedRank = startPaginatingAProposal(
+    myProposals.rank.slice().reverse(),
+    1
+  );
+  await rankFetcher(paginatedRank, catalogDAO, myAddress, props, blockNumber);
+  // const smartCProposalsToFetch = proposalsToFetch(
+  //   paginatedProposalData.smartContract
+  // );
 
-  const rankProposalsToFetch = proposalsToFetch(paginatedProposalData.rank);
+  // const smartCProposals = await getProposals<SmartContractProposal[]>(
+  //   catalogDAO,
+  //   myAddress,
+  //   smartCProposalsToFetch,
+  //   getMySmartContractProposalsPaginated
+  // );
+
+  // const acceptedToFetch = proposalsToFetch(paginatedProposalData.accepted);
+
+  // const acceptedProposals = await getProposals<AcceptedSmartContractProposal[]>(
+  //   catalogDAO,
+  //   myAddress,
+  //   acceptedToFetch,
+  //   getAcceptedSmartContractProposalsPaginated
+  // );
+
+  // const removalToFetch = proposalsToFetch(paginatedProposalData.removal);
+
+  // const removalProposals = await getProposals<RemovalProposal[]>(
+  //   catalogDAO,
+  //   myAddress,
+  //   removalToFetch,
+  //   getAcceptedSmartContractProposalsPaginated
+  // );
+
+  // dispatch_removeLoadingIndicator("my-proposals-container");
+  // dispatch_renderMyProposals(
+  //   props,
+  //   paginatedProposalData,
+  //   {
+  //     rankIndexes: rankProposalsToFetch,
+  //     rank: rankProposals,
+  //     smartContractIndexes: smartCProposalsToFetch,
+  //     smartContract: smartCProposals,
+  //     acceptedIndexes: acceptedToFetch,
+  //     accepted: acceptedProposals,
+  //     removalIndexes: removalToFetch,
+  //     removal: removalProposals,
+  //   },
+  //   blockNumber
+  // );
+}
+
+export async function rankFetcher(
+  paginatedRank: PaginatedProposal,
+  catalogDAO: Contract,
+  myAddress: string,
+  props: State,
+  blockNumber: number
+) {
+  const rankProposalsToFetch: string[] = proposalsToFetch(paginatedRank);
 
   const rankProposals = await getProposals<RankProposal[]>(
     catalogDAO,
@@ -86,58 +146,28 @@ export async function myProposalsActions(props: State) {
     rankProposalsToFetch,
     getMyRankProposalsPaginated
   );
-
-  const smartCProposalsToFetch = proposalsToFetch(
-    paginatedProposalData.smartContract
-  );
-
-  const smartCProposals = await getProposals<SmartContractProposal[]>(
-    catalogDAO,
-    myAddress,
-    smartCProposalsToFetch,
-    getMySmartContractProposalsPaginated
-  );
-
-  const acceptedToFetch = proposalsToFetch(paginatedProposalData.accepted);
-
-  const acceptedProposals = await getProposals<AcceptedSmartContractProposal[]>(
-    catalogDAO,
-    myAddress,
-    acceptedToFetch,
-    getAcceptedSmartContractProposalsPaginated
-  );
-
-  const removalToFetch = proposalsToFetch(paginatedProposalData.removal);
-
-  const removalProposals = await getProposals<RemovalProposal[]>(
-    catalogDAO,
-    myAddress,
-    removalToFetch,
-    getAcceptedSmartContractProposalsPaginated
-  );
-
-  dispatch_removeLoadingIndicator("my-proposals-container");
-  dispatch_renderMyProposals(
-    props,
-    paginatedProposalData,
-    {
-      rankIndexes: rankProposalsToFetch,
-      rank: rankProposals,
-      smartContractIndexes: smartCProposalsToFetch,
-      smartContract: smartCProposals,
-      acceptedIndexes: acceptedToFetch,
-      accepted: acceptedProposals,
-      removalIndexes: removalToFetch,
-      removal: removalProposals,
-    },
-    blockNumber
-  );
+  dispatch_renderMyRankProposals(props, blockNumber, [
+    rankProposals,
+    rankProposalsToFetch,
+    paginatedRank,
+  ]);
 }
 
-export async function myProposalsTableActions() {
+// export async function myProposalsTableActions() {}
+
+export async function myRankProposalsTableActions(
+  props: State,
+  rankProposalIndexes: string[]
+) {
   const closeRankButtons = document.getElementsByClassName(
     "rankProposalButtonId"
   );
+  const paginationButtons = document.getElementsByClassName(
+    "myRankPaginationButton"
+  );
+  const pageLeftButton = getById("rank-page-left");
+  const pageRightButton = getById("rank-page-right");
+  const catalogDAO = await getCatalogDAOContractWithWallet();
 
   for (let i = 0; i < closeRankButtons.length; i++) {
     const button = closeRankButtons[i] as HTMLButtonElement;
@@ -146,7 +176,6 @@ export async function myProposalsTableActions() {
       const index = button.dataset.proposalindex;
 
       const myAddress = await getAddress();
-      const catalogDAO = await getCatalogDAOContractWithWallet();
       const onError = (error, receipt) => {
         if (error.message.includes("915")) {
           dispatch_renderError("The voting period is not over,yet.");
@@ -161,4 +190,69 @@ export async function myProposalsTableActions() {
       await closeRankProposal(catalogDAO, index, myAddress, onError, onReceipt);
     };
   }
+
+  // add the onclick for the rank pagination buttons
+  for (let i = 0; i < paginationButtons.length; i++) {
+    const paginationButton = paginationButtons[i] as HTMLButtonElement;
+    paginationButton.onclick = async function () {
+      const pageIndex = parseInt(paginationButton.dataset.rankpage);
+      const blockNumber = await getBlockNumber();
+      const paginatedRank = startPaginatingAProposal(
+        rankProposalIndexes,
+        pageIndex
+      );
+      const myAddress = await getAddress();
+
+      await rankFetcher(
+        paginatedRank,
+        catalogDAO,
+        myAddress,
+        props,
+        blockNumber
+      );
+    };
+  }
+
+  pageLeftButton.onclick = async function () {
+    const index = parseInt(pageLeftButton.dataset.rankpage);
+
+    if (index > 1) {
+      const blockNumber = await getBlockNumber();
+      const paginatedRank = startPaginatingAProposal(
+        rankProposalIndexes,
+        index - 1
+      );
+      const myAddress = await getAddress();
+
+      await rankFetcher(
+        paginatedRank,
+        catalogDAO,
+        myAddress,
+        props,
+        blockNumber
+      );
+    }
+  };
+
+  pageRightButton.onclick = async function () {
+    const index = parseInt(pageRightButton.dataset.rankpage);
+    const total = parseInt(pageRightButton.dataset.totalpages);
+
+    if (index < total) {
+      const blockNumber = await getBlockNumber();
+      const paginatedRank = startPaginatingAProposal(
+        rankProposalIndexes,
+        index + 1
+      );
+      const myAddress = await getAddress();
+
+      await rankFetcher(
+        paginatedRank,
+        catalogDAO,
+        myAddress,
+        props,
+        blockNumber
+      );
+    }
+  };
 }
