@@ -2,6 +2,8 @@ import {
   ContractTypes,
   DeploySC,
   Events,
+  PaginatedProposal,
+  RankProposal,
   RenderDispatchArgs,
   Renderer,
   RenderType,
@@ -82,6 +84,7 @@ import {
   renderMyProposalsContent,
   renderDAOTermsURL,
   renderRankProposalTable,
+  renderMyProposalsRankContent,
 } from "./render";
 import { renderAcceptTools } from "./render";
 import { areYouSureButtons } from "../business/actions/areYouSureButtons";
@@ -138,7 +141,7 @@ import {
 } from "../business/actions/createProposalActions";
 import {
   myProposalsActions,
-  myProposalsTableActions,
+  myRankProposalsTableActions,
 } from "../business/actions/myProposalsActions";
 import { wrongNetworkActions } from "../business/actions/WrongNetworkActions";
 
@@ -420,12 +423,26 @@ const Render: Renderer = {
     myProposalsActions(props);
   },
   [RenderType.renderMyProposals]: (props: RenderDispatchArgs) => {
-    renderMyProposalsContent(
-      props.tmp.paginatedProposals,
-      props.tmp.fetchedProposals,
-      props.tmp.blockNumber
+    // TODO: REMOVE, ITS BroROKEN UP
+    // renderMyProposalsContent(
+    //   props.tmp.paginatedProposals,
+    //   props.tmp.fetchedProposals,
+    //   props.tmp.blockNumber
+    // );
+    // myProposalsTableActions();
+  },
+  [RenderType.renderMyRankProposals]: (props: RenderDispatchArgs) => {
+    const rankPage: [RankProposal[], string[], PaginatedProposal] =
+      props.tmp.rankPage;
+    const blockNr = props.tmp.blockNumber;
+    renderMyProposalsRankContent(
+      rankPage[0],
+      rankPage[1],
+      blockNr,
+      rankPage[2].totalPages,
+      rankPage[2].currentPage
     );
-    myProposalsTableActions();
+    myRankProposalsTableActions(props, rankPage[2].proposals);
   },
   [RenderType.dismissSidebar]: (props: RenderDispatchArgs) => {
     collapseSidebar();
@@ -450,7 +467,7 @@ const Render: Renderer = {
       props.tmp.rankPage[1],
       props.tmp.rankPage[2]
     );
-    rankProposalTableActions();
+    rankProposalTableActions(props);
   },
 };
 
