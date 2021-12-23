@@ -376,6 +376,21 @@ hr {
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
+.background-lightgrey {
+  background: lightgrey;
+}
+
+.background-lightcoral {
+  background: lightcoral;
+}
+.background-lightgreen {
+  background: lightgreen;
+}
+
+.background-ccc {
+  background: #ccc;
+}
+
 .labelButton {
   border-radius: 25px;
   border: none;
@@ -548,6 +563,10 @@ hr {
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.cursor-notallowed {
+  cursor: not-allowed;
 }
 
 .terms-button-label {
