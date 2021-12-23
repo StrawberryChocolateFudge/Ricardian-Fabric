@@ -77,6 +77,7 @@ import ScreenSizeDetector from "screen-size-detector";
 import {
   ManageProposals,
   MyProposalsContent,
+  MyRankProposalTable,
 } from "./templates/pages/manageProposals";
 import { WrongNetworkPopup } from "./templates/popups/WrongNetworkPopup";
 import { DAOTermsActions } from "../business/actions/createProposalActions";
@@ -86,9 +87,9 @@ export function renderMenuPage(props: State) {
   const menuItems = getById("menuItems");
   // Extracts the ID from the page to add to the blockie. If I use a query param in the future, I handle that already.
   // I don't expect to use any extra paths so only query string
-  const href = window.location.href;
-  const idFromPage = href.split("arweave.net/")[1]?.split("?")[0];
-  render(MenuPage(idFromPage), menuItems);
+  const scriptEl = getById("main-script") as HTMLScriptElement;
+  // const idFromPage = href.split("arweave.net/")[1]?.split("?")[0];
+  render(MenuPage(scriptEl.src), menuItems);
 
   //I need to set the background of page
   const page = getById("page");
@@ -827,6 +828,26 @@ export function renderMyProposalsContent(
   render(
     MyProposalsContent(paginatedProposals, fetchedProposals, blockNumber),
     myProposalsContainer
+  );
+}
+
+export function renderMyProposalsRankContent(
+  ranks: RankProposal[],
+  rankIndexes: string[],
+  blockNumber: number,
+  totalPages: number,
+  currentPage: number
+) {
+  const el = getById("my-rank-proposals-container");
+  render(
+    MyRankProposalTable(
+      ranks,
+      rankIndexes,
+      blockNumber,
+      totalPages,
+      currentPage
+    ),
+    el
   );
 }
 
