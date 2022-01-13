@@ -9,9 +9,9 @@ import {
   RemovalProposal,
   SmartContractProposal,
 } from "../../types";
-const CATALOGDAOADDRESS = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"; // On local hardhat testnet
+const CATALOGDAOADDRESS = "0xa513e6e4b8f2a923d98304ec87f64353c4d5c853"; // On local hardhat testnet
 const HARMONYRPCURL = "http://127.0.0.1:8545/";
-export const VOTINGPERIODBLOCKS = 302400; //The blocks passing in the voting period.
+export const VOTINGPERIODBLOCKS = 10; //The blocks passing in the voting period. 302400 on Harmony, 10 on Hardhat
 
 export async function getCatalogDAOContractWithWallet() {
   const web3 = new Web3(window.ethereum);
@@ -24,7 +24,6 @@ export async function getCatalogDAOContractWithRPC() {
 }
 
 // State setters
-
 export async function proposeNewRank(
   catalogDAO: Contract,
   repository: string,
@@ -71,12 +70,22 @@ export async function closeRankProposal(
 export async function proposeNewSmartContract(
   catalogDAO: Contract,
   _arweaveTxId: string,
+  _hasFrontEnd: boolean,
+  _hasFees: boolean,
+  isUpdate: boolean,
+  updateOf: boolean,
   from: string,
   onError: any,
   onReceipt: any
 ) {
   await catalogDAO.methods
-    .proposeNewSmartContract(_arweaveTxId)
+    .proposeNewSmartContract(
+      _arweaveTxId,
+      _hasFrontEnd,
+      _hasFees,
+      isUpdate,
+      updateOf
+    )
     .send({ from })
     .on("error", onError)
     .on("receipt", onReceipt);
@@ -86,12 +95,13 @@ export async function voteOnNewSmartContract(
   catalogDAO: Contract,
   sCIndex: string,
   accepted: boolean,
+  suspicious: boolean,
   from: string,
   onError: any,
   onReceipt: any
 ) {
   await catalogDAO.methods
-    .voteOnNewSmartContract(sCIndex, accepted)
+    .voteOnNewSmartContract(sCIndex, accepted, suspicious)
     .send({ from })
     .on("error", onError)
     .on("receipt", onReceipt);
@@ -156,7 +166,36 @@ export async function closeRemovalProposal(
     .on("receipt", onReceipt);
 }
 
+export async function expressOpinion(
+  catalogDAO: Contract,
+  _index_: string,
+  likedIt: boolean,
+  from: string,
+  onError: any,
+  onReceipt: any
+) {
+  await catalogDAO.methods
+    .expressOpinion(_index_, likedIt)
+    .send({ from })
+    .on("error", onError)
+    .on("receipt", onReceipt);
+}
+
 // View functions
+
+export async function getAllAccepted(
+  catalogDAO: Contract,
+  from: string
+): Promise<number> {
+  return await catalogDAO.methods.getAllAccepted().call({ from });
+}
+
+export async function getAllRemoved(
+  catalogDAO: Contract,
+  from: string
+): Promise<number> {
+  return await catalogDAO.methods.getAllRemoved().call({ from });
+}
 
 export async function getRank(
   catalogDAO: Contract,
