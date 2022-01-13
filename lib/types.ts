@@ -538,3 +538,41 @@ export type FetchedProposals = {
   removalIndexes: string[];
   removal: RemovalProposal[];
 };
+
+export type Staker = {
+  isStaking: boolean;
+  stakeDate: string;
+  stakeAmount: string;
+};
+
+export type ProfitShare = {
+  to: string;
+  sharing: boolean;
+  index: string;
+};
+
+export type TokenProposal = {
+  creator: string;
+  name: string; // The name of the token
+  proposal: string; // The token that is proposed
+  discussionURL: string; // The link to the discussion about the proposal
+  approvals: string;
+  rejections: string;
+  created: string;
+  closed: boolean;
+};
+
+export type Token = {
+  name: string; // The name of the token
+  token: string;
+  likes: string; // Amount of addresses liking this
+  dislikes: string; // Amount of addresses disliking this
+};
+
+export type LockedTokens = {
+  owner: string; // the owner who locks and can redeem the tokens
+  created: string; // The block.number when the tokens were locked.
+  period: string; // The amount of blocks the RIC is locked for
+  lockedAmount: string; // How much RIC was locked,
+  released: boolean;
+};
