@@ -6,11 +6,15 @@ import { BackLogo } from "../components/logos";
 export const uploadFilePopup = () => html`
   <h2 class="center">Upload a File</h2>
   <hr />
-  <small>Upload a file to the permaweb. Pay only once, and it's stored forever and
-    served as a website.</small>
+  <small
+    >Upload a file to the permaweb. Pay only once, and it's stored forever and
+    served as a website.</small
+  >
   <hr />
-  <div id="file-dropzone" class="drop-zone">
-    <span id="drop-prompt" class="drop-zone__prompt">Drop File here or click to upload</span>
+  <div id="file-dropzone" class="drop-zone width-90Percent">
+    <span id="drop-prompt" class="drop-zone__prompt"
+      >Drop File here or click to upload</span
+    >
     <input type="file" name="file" id="file-input" class="drop-zone__input" />
   </div>
   <hr />
@@ -24,19 +28,43 @@ export const uploadFilePopup = () => html`
     <tbody>
       <tr>
         <td></td>
-        <td><button id="clearFileButton" class="backButton">Clear File</button></td>
+        <td>
+          <button id="clearFileButton" class="backButton">Clear File</button>
+        </td>
         <td>${helperTooltips("Click this to empty the file dropper.")}</td>
       </tr>
       <tr>
-        <td><label aria-labelledby="edit content type field" for="content-type-input">Content-Type:</label></td>
-        <td><input id="content-type-input" type="text" placeholder="" aria-label="edit content type field" /></td>
-        <td>${helperTooltips("Specify the content type. Importing will fill it out.")}</td>
+        <td>
+          <label
+            aria-labelledby="edit content type field"
+            for="content-type-input"
+            >Content-Type:</label
+          >
+        </td>
+        <td>
+          <input
+            id="content-type-input"
+            type="text"
+            placeholder=""
+            aria-label="edit content type field"
+          />
+        </td>
+        <td>
+          ${helperTooltips(
+            "Specify the content type. Importing will fill it out."
+          )}
+        </td>
       </tr>
       <tr>
         <td><label for="walletPassword">Password:</label></td>
         <td>
-          <input readonly onfocus="this.removeAttribute('readonly');" autocomplete="off" id="walletPassword"
-            type="password" />
+          <input
+            readonly
+            onfocus="this.removeAttribute('readonly');"
+            autocomplete="off"
+            id="walletPassword"
+            type="password"
+          />
         </td>
         <td>${helperTooltips("The password of the encrypted keyfile")}</td>
       </tr>
@@ -45,19 +73,31 @@ export const uploadFilePopup = () => html`
                                                       <td>
                                                         <input id="tipcheckbox" type="checkbox" checked />
                                                       </td>
-                                                      <td>${helperTooltips(`Support us by sending a tip. ${TIP} Ar`)}</td>
+                                                      <td>${helperTooltips(
+        `Support us by sending a tip. ${TIP} Ar`
+      )}</td>
                                                     </tr> -->
     </tbody>
   </table>
   <hr />
   <div class="center marginBottom-10">
-    <label aria-labelledby="I agree to the terms" class="terms-button-label" id="terms-button">I agree to the
-      terms</label>
-    <input aria-label="I agree to the terms checkbox" id="upload-terms-checkbox" type="checkbox" />
+    <label
+      aria-labelledby="I agree to the terms"
+      class="terms-button-label"
+      id="terms-button"
+      >I agree to the terms</label
+    >
+    <input
+      aria-label="I agree to the terms checkbox"
+      id="upload-terms-checkbox"
+      type="checkbox"
+    />
   </div>
   <div id="upload-loading-indicator"></div>
   <div class="wide-row">
-    <button class="marginRight-20 backButton" id="upload-cancel">${BackLogo()} Cancel</button>
+    <button class="marginRight-20 backButton" id="upload-cancel">
+      ${BackLogo()} Cancel
+    </button>
     <button class="marginLeft-20 NextButton" id="upload-proceed">Next</button>
   </div>
   <hr />
@@ -100,8 +140,10 @@ export const uploadFileSummary = (
     </tbody>
   </table>
   <hr />
-  <label for="uploadSummary-tx">Content will be available at this url after posting it to the
-    network:</label>
+  <label for="uploadSummary-tx"
+    >Content will be available at this url after posting it to the
+    network:</label
+  >
   <small id="uploadSummary-tx">https://arweave.net/${id}</small>
   <hr />
   <small id="upload-status"></small>
