@@ -1,5 +1,6 @@
 import { createRevGeocoder } from "../geocoding/index";
 import {
+  dispatch_ConnectYourWalletPage,
   dispatch_disableButton,
   dispatch_enableButton,
   dispatch_hideElement,
@@ -34,6 +35,11 @@ import {
 } from "../dispatch/stateChange";
 
 import Decimal from "decimal.js";
+import {
+  acceptedTerms,
+  getSignupContract,
+} from "../wallet/signup/contractCalls";
+import { getAddress } from "../wallet/web3";
 
 export async function getProposals<Type>(
   catalogDAO: Contract,
@@ -436,4 +442,28 @@ export function showBanner() {
   if (termsAccepted !== true) {
     dispatch_setPopupState(PopupState.Terms);
   }
+}
+
+export function registerEthereumProviderEvents(props) {
+  window.ethereum.removeAllListeners();
+  let initJustCalled = true;
+  window.ethereum.on("accountsChanged", async () => {
+    try {
+      const signUpContract = await getSignupContract();
+      const address = await getAddress();
+      const signedTerms = await acceptedTerms(signUpContract, address);
+
+      if (signedTerms === false) {
+        if (initJustCalled) {
+          initJustCalled = false;
+          dispatch_ConnectYourWalletPage(props);
+        }
+      }
+    } catch (err) {
+      if (initJustCalled) {
+        initJustCalled = false;
+        dispatch_ConnectYourWalletPage(props);
+      }
+    }
+  });
 }
