@@ -12,7 +12,6 @@ import {
 import {
   dispatch_stashPage,
   dispatch_stashDetails,
-  dispatch_setEditor,
   dispatch_setCreateRicardianState,
 } from "../../dispatch/stateChange";
 import {
