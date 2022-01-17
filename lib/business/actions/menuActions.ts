@@ -8,6 +8,11 @@ export function menuActions(props: State) {
   const createPage = getById("create-contract-button");
   const smartContractButton = getById("smart-contract-catalog-button");
   const reviewAndVoteButton = getById("review-and-vote-button");
+  const dashboardButton = getById("dashboard-button");
+
+  dashboardButton.onclick = function () {
+    dispatch_setPage(PageState.Dashboard);
+  };
 
   createPage.onclick = function () {
     dispatch_setPage(PageState.CreateRicardian);
