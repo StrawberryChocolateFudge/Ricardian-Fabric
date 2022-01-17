@@ -5,7 +5,7 @@ export const getBlockie = (data: string, width: string, className: string) => {
   return html`<img
     src="${makeBlockie(data)}"
     width="${width}"
-    class="${className}"
+    class="${className} clickToCopyBlocky"
     title="${data}"
   />`;
 };
