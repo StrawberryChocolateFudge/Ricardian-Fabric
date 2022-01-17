@@ -29,7 +29,9 @@ export async function getTotalLocked(
   ricVault: Contract,
   from: string
 ): Promise<string> {
-  return await ricVault.methods.getTotalLocked().call({ from });
+  const totalLocked = await ricVault.methods.getTotalLocked().call({ from });
+
+  return Web3.utils.fromWei(totalLocked);
 }
 
 export async function getLockIndex(

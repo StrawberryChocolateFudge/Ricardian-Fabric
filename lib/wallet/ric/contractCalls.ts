@@ -29,14 +29,16 @@ export async function balanceOf(
   address: string,
   from: string
 ): Promise<string> {
-  return ric.methods.balanceOf(address).call({ from });
+  const balance = ric.methods.balanceOf(address).call({ from });
+  return Web3.utils.fromWei(balance);
 }
 
 export async function totalSupply(
   ric: Contract,
   from: string
 ): Promise<string> {
-  return ric.methods.totalSupply().call({ from });
+  const totalSupply = await ric.methods.totalSupply().call({ from });
+  return Web3.utils.fromWei(totalSupply);
 }
 
 export async function allowance(

@@ -103,11 +103,15 @@ export async function getTotalStaked(
   return await daoStaking.methods.getTotalStaked().call({ from });
 }
 
-export async function getAvailableRewad(
+export async function getAvailableReward(
   daoStaking: Contract,
   from: string
 ): Promise<string> {
-  return await daoStaking.methods.getAvailableRewad().call({ from });
+  const availableReward = await daoStaking.methods
+    .getAvailableReward()
+    .call({ from });
+
+  return Web3.utils.fromWei(availableReward);
 }
 
 export async function getDetails(
