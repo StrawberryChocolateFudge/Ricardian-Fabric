@@ -1,4 +1,5 @@
 import BN from "bn.js";
+import { TemplateResult } from "lit-html";
 
 export enum Chains {
   HardHat = "31337",
@@ -19,6 +20,9 @@ export enum Events {
 }
 
 export enum RenderType {
+  connectYourWallet = "connectYourWallet",
+  renderDashboard = "renderDashboard",
+  splashPage = "spalshPage",
   menu = "menu",
   create = "create",
   sidebar = "sidebar",
@@ -92,6 +96,7 @@ export enum RenderType {
   renderReviewAcceptedProposals = "renderReviewAcceptedProposals",
   renderReviewRemovalProposals = "renderReviewRemovalProposals",
   renderDAOTerms = "renderDAOTerms",
+  renderLoadedValue = "renderLoadedValue",
 }
 
 // TODO refactor to RenderDispatchArgs for specifying the dispatch arguments
@@ -101,6 +106,8 @@ export type RenderDispatchArgs = State & { tmp: any };
 type RenderFunction = (props: any) => void;
 
 export type Renderer = {
+  [RenderType.connectYourWallet]: RenderFunction;
+  [RenderType.renderDashboard]: RenderFunction;
   [RenderType.menu]: RenderFunction;
   [RenderType.create]: RenderFunction;
   [RenderType.sidebar]: RenderFunction;
@@ -168,6 +175,7 @@ export type Renderer = {
   [RenderType.renderMyRankProposals]: RenderFunction;
   [RenderType.renderDAOTerms]: RenderFunction;
   [RenderType.renderReviewRankProposals]: RenderFunction;
+  [RenderType.renderLoadedValue]: RenderFunction;
 };
 
 export enum VerificationState {
@@ -297,6 +305,7 @@ export enum PopupState {
 
 export enum PageState {
   Menu,
+  Dashboard,
   CreateRicardian,
   VerifyContract,
   Staking,
@@ -575,4 +584,11 @@ export type LockedTokens = {
   period: string; // The amount of blocks the RIC is locked for
   lockedAmount: string; // How much RIC was locked,
   released: boolean;
+};
+
+export type DashboardUIElement = {
+  title: string;
+  id: string;
+  desc: string;
+  logo: TemplateResult;
 };
