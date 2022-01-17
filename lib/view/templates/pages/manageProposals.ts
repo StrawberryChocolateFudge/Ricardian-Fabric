@@ -12,7 +12,7 @@ import {
 } from "../components/logos";
 
 export function ManageProposals() {
-  return html`<h2>My Proposals</h2>
+  return html`<h2 class="fabric">My Proposals</h2>
 
     <div id="my-rank-proposals-container"></div> `;
 }
