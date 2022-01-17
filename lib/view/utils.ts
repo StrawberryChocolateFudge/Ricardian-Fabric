@@ -177,6 +177,9 @@ export function getSecret(): string {
 export function redirect(url: string) {
   window.location.replace(url);
 }
+export function newTab(url: string) {
+  window.open(url, "_blank");
+}
 
 export function copyStringToClipboard(str: string) {
   // Create new element
