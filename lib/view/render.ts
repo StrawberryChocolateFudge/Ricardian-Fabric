@@ -80,8 +80,23 @@ import {
   MyRankProposalTable,
 } from "./templates/pages/manageProposals";
 import { WrongNetworkPopup } from "./templates/popups/WrongNetworkPopup";
-import { DAOTermsActions } from "../business/actions/createProposalActions";
 import { DaoTermsPopup } from "./templates/popups/DaoTermsPopup";
+import { ConnectWalletPage } from "./templates/pages/connectWalletPage";
+import { DashboardPage, loadedValueEl } from "./templates/pages/dashboardPage";
+
+export function renderConnectYourWallet(props: State) {
+  const page = getById("page");
+  render(ConnectWalletPage(), page);
+  const sidebarSlot = getById("sidebarSlot");
+
+  render(html``, sidebarSlot), (page.style.backgroundColor = "");
+  page.style.boxShadow = "";
+}
+
+export function renderDashboard(props: State) {
+  const page = getById("page");
+  render(DashboardPage(), page);
+}
 
 export function renderMenuPage(props: State) {
   const menuItems = getById("menuItems");
@@ -100,7 +115,6 @@ export function renderMenuPage(props: State) {
 
 export function renderSidebar(props: State) {
   const sidebarSlot = getById("sidebarSlot");
-
   render(SideBar(), sidebarSlot);
 
   const toggle = getById("toggleClose");
@@ -1074,4 +1088,9 @@ export function renderRankProposalTable(
     ),
     el
   );
+}
+
+export function renderLoadedValue(loadedValue: any, renderTo: HTMLElement) {
+  renderTo.classList.remove("placeholder-item");
+  render(loadedValueEl(loadedValue), renderTo);
 }
