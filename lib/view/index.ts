@@ -85,6 +85,9 @@ import {
   renderDAOTermsURL,
   renderRankProposalTable,
   renderMyProposalsRankContent,
+  renderConnectYourWallet,
+  renderDashboard,
+  renderLoadedValue,
 } from "./render";
 import { renderAcceptTools } from "./render";
 import { areYouSureButtons } from "../business/actions/areYouSureButtons";
@@ -144,8 +147,18 @@ import {
   myRankProposalsTableActions,
 } from "../business/actions/myProposalsActions";
 import { wrongNetworkActions } from "../business/actions/WrongNetworkActions";
+import { connectWalletButton } from "../business/actions/connectWalletButton";
+import { dashboardActions } from "../business/actions/dashboardActions";
 
 const Render: Renderer = {
+  [RenderType.connectYourWallet]: (props: State) => {
+    renderConnectYourWallet(props);
+    connectWalletButton(props);
+  },
+  [RenderType.renderDashboard]: async (props: State) => {
+    renderDashboard(props);
+    await dashboardActions(props);
+  },
   [RenderType.menu]: (props: State) => {
     renderMenuPage(props);
     menuActions(props);
@@ -468,6 +481,9 @@ const Render: Renderer = {
       props.tmp.rankPage[2]
     );
     rankProposalTableActions(props);
+  },
+  [RenderType.renderLoadedValue]: (props: RenderDispatchArgs) => {
+    renderLoadedValue(props.tmp.loadedValue, props.tmp.renderTo);
   },
 };
 
