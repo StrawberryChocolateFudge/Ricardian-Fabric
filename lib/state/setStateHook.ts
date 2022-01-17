@@ -2,6 +2,7 @@ import { saveCreatePageData } from "../business/actions/createButtonClick";
 import {
   dispatch_attachDateClickListener,
   dispatch_catalogPage,
+  dispatch_ConnectYourWalletPage,
   dispatch_DAOTermsPopup,
   dispatch_dismissSidebar,
   dispatch_hidePopup,
@@ -14,6 +15,7 @@ import {
   dispatch_renderBalance,
   dispatch_renderCreate,
   dispatch_renderCreateProposalPage,
+  dispatch_renderDashboard,
   dispatch_renderDocXDropper,
   dispatch_renderMenu,
   dispatch_renderReviewAndVotePage,
@@ -43,10 +45,7 @@ export const setStateHook = {
     const currentPage = args.obj.contracttype;
     const clone = cloneState(args.obj);
     if (currentPage === ContractTypes.create) {
-      dispatch_sideBar(clone);
-      dispatch_renderMenu(clone);
-      dispatch_renderCreate(clone);
-      // showBanner();
+      dispatch_ConnectYourWalletPage(clone);
     } else if (currentPage === ContractTypes.acceptable) {
       dispatch_renderAcceptButton(clone);
       dispatch_permawebselectActions(clone);
@@ -156,7 +155,11 @@ export const setStateHook = {
 
     const clone = cloneState(args.obj);
     switch (args.value) {
+      case PageState.Dashboard:
+        dispatch_renderDashboard(clone);
+        break;
       case PageState.Menu:
+        dispatch_sideBar(clone);
         dispatch_renderMenu(clone);
         break;
       case PageState.CreateRicardian:
