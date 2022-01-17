@@ -14,6 +14,27 @@ import {
 import { dispatch } from "./dispatch";
 import { Events } from "../types";
 
+export function dispatch_splashPage(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.splashPage,
+    props,
+  });
+}
+
+export function dispatch_ConnectYourWalletPage(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.connectYourWallet,
+    props,
+  });
+}
+
+export function dispatch_renderDashboard(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.renderDashboard,
+    props,
+  });
+}
+
 export function dispatch_renderMenu(props: State) {
   dispatch(Events.render, {
     type: RenderType.menu,
@@ -577,5 +598,16 @@ export function dispatch_renderReviewRankProposals(
   dispatch(Events.render, {
     type: RenderType.renderReviewRankProposals,
     props: { ...props, tmp: { rankPage, blockNumber } },
+  });
+}
+
+export function dispatch_renderLoadedValue(
+  props: State,
+  loadedValue: any,
+  renderTo: HTMLElement
+) {
+  dispatch(Events.render, {
+    type: RenderType.renderLoadedValue,
+    props: { ...props, tmp: { loadedValue, renderTo } },
   });
 }
