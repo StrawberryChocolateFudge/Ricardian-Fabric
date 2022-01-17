@@ -1,9 +1,5 @@
 import { html } from "lit-html";
-import { ProposalType } from "../../../types";
-import { getChains } from "../../../wallet/web3";
 import { getBlockie } from "../components/getBlockies";
-import { helperTooltips } from "../components/helperTooltips";
-import { BackLogo } from "../components/logos";
 
 export function getCategories() {
   return html` <select id="select-category">
@@ -133,4 +129,3 @@ export function SmartContractCards(
       </div>
     </div>`;
 }
-
