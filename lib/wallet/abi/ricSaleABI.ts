@@ -153,5 +153,5 @@ const RicSale = `{
 }
 `;
 
-export const getRicSaleAbi = JSON.parse(RicSale).abi;
-export const getRicSaleBytecode = JSON.parse(RicSale).bytecode;
+export const getRicSaleAbi = () => JSON.parse(RicSale).abi;
+export const getRicSaleBytecode = () => JSON.parse(RicSale).bytecode;
