@@ -1,11 +1,11 @@
 import { html } from "lit-html";
 import { getBlockie } from "../components/getBlockies";
 import {
+  AgreementLogo,
   catalogLogo,
-  GradingLogo,
-  HandShakeLogo,
-  TokenLogo,
-  VoteLogo,
+  Dashboard2,
+  VerificationLogo,
+  VotingLogo,
 } from "../components/logos";
 
 export const MenuPage = (blockieData: string) => html`
@@ -16,10 +16,19 @@ export const MenuPage = (blockieData: string) => html`
   <div class="text-align-center">
     <button
       class="lightSlateGray-shadow  labelButton"
+      id="dashboard-button"
+      title="Dashboard"
+    >
+      ${Dashboard2()}
+    </button>
+  </div>
+  <div class="text-align-center">
+    <button
+      class="lightSlateGray-shadow  labelButton"
       id="create-contract-button"
       title="Create a Ricardian contract"
     >
-      ${HandShakeLogo()}
+      ${AgreementLogo()}
     </button>
   </div>
 
@@ -39,7 +48,7 @@ export const MenuPage = (blockieData: string) => html`
       class="lightSlateGray-shadow  labelButton"
       id="verify-contract-button"
     >
-      ${GradingLogo()}
+      ${VerificationLogo()}
     </button>
   </div>
   <div class="text-align-center">
@@ -48,7 +57,7 @@ export const MenuPage = (blockieData: string) => html`
       class="lightSlateGray-shadow  labelButton"
       id="review-and-vote-button"
     >
-      ${VoteLogo()}
+      ${VotingLogo()}
     </button>
   </div>
 `;
