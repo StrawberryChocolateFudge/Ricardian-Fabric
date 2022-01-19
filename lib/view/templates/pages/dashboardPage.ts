@@ -61,7 +61,7 @@ export const dashBoardElementsTitles: DashboardUIElement[] = [
     title: "Contributor Stake",
     id: "total-staking-amount",
     desc: "The amount of RIC securing the catalogue.",
-    logo: StakingLogo(),
+    logo: StakingLogo("50"),
   },
   {
     title: "ONE Fees",
@@ -84,14 +84,7 @@ export const DashboardPage = () => html`<h2>Dashboard</h2>
     )}
   </div>
   <hr />
-  <div class="center"><h3>Permaweb uploads</h3></div>
-  <table>
-    <tr>
-      <th>Link</th>
-      <th>Type</th>
-    </tr>
-    <tbody id="permapinnedContracts-display"></tbody>
-  </table> `;
+  <slot id="permapinned-data-slot"></slot> `;
 
 // The dashboard elements will have a loading indicator at the id, then the value.
 // It will side-effect like render it in an init function one by one as they fetch
@@ -117,3 +110,54 @@ export const dashEl = (
 `;
 
 export const loadedValueEl = (loadedValue) => html` <h4>${loadedValue}</h4>`;
+
+export const PermaPinnedData = (ipfsV2Url: string, nodes: any) => {
+  return html`
+    <div class="center"><h3>Latest pinned contracts</h3></div>
+    <div class="overflow-auto">
+      <table class="light-shadow center padding-20">
+        <thead>
+          <tr>
+            <th>Link</th>
+            <th></th>
+            <th>Issuer</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${nodes.map((node) => {
+            const [issuer, ipfsCID] = findTags(node.tags);
+            return html`<tr class="center">
+              <td>
+                <a
+                  href="https:/${ipfsCID}.${ipfsV2Url}"
+                  target="_blank"
+                  rel="noopener"
+                  >Contract</a
+                >
+              </td>
+              <td><hr /></td>
+              <td>${issuer}</td>
+            </tr>`;
+          })}
+        </tbody>
+      </table>
+      <hr />
+    </div>
+  `;
+};
+
+function findTags(
+  tags: Array<{ name: string; value: string }>
+): [string, string] {
+  let issuer = "";
+  let ipfsCID = "";
+  for (let i = 0; i < tags.length; i++) {
+    if (tags[i].name === "Issuer") {
+      issuer = tags[i].value;
+    }
+    if (tags[i].name === "IPFS-Add") {
+      ipfsCID = tags[i].value;
+    }
+  }
+  return [issuer, ipfsCID];
+}
