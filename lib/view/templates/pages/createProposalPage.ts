@@ -1,13 +1,38 @@
 import { html } from "lit-html";
 import { getChains } from "../../../wallet/web3";
 import { helperTooltips } from "../components/helperTooltips";
-import { ChevronRightBlack } from "../components/logos";
+import {
+  ChevronRightBlack,
+  SpendLogo,
+  StakingLogo,
+  TokenLogoIcon,
+} from "../components/logos";
 
 export function createProposalPage() {
   return html`
     <h2>Create a Proposal</h2>
     <div class="row">
       <div id="permaweb-dropdown">Permaweb</div>
+      <button
+        class="labelButton light-shadow"
+        id="stake-30-ric"
+        title="Stake 30 Ric to start contributing to the catalogue."
+        disabled
+      >
+        ${StakingLogo("30")} Stake
+      </button>
+      <button
+        class="labelButton light-shadow"
+        id="approve-stake-spend"
+        title="Approve 30 Ric to allow staking "
+        disabled
+      >
+        ${SpendLogo()} Approve
+      </button>
+      <hr />
+      <div class="labelButton center">
+        ${TokenLogoIcon()}<span id="ricBalance"></span> RIC
+      </div>
     </div>
     <h4 id="rankHeader"></h4>
     <div id="loading-display" class="text-align-center"></div>
@@ -28,8 +53,9 @@ function proposeGetRank() {
   return html`
     <small>You need to get Rank to propose a new smart contract.</small>
     <small
-      >To create a proposal, add your github repo link, to show off your skills,
-      with an open issue to comment on.</small
+      >To create a proposal, first you need to stake and approve spend, then add
+      your github repo link, to show off your skills, with an open issue to
+      comment on in the field below.</small
     >
     <hr />
 
@@ -40,7 +66,7 @@ function proposeGetRank() {
 
       <input id="github-url" type="url" />
 
-      <button id="create-rank-proposal" class="labelButton">
+      <button id="create-rank-proposal" class="labelButton" disabled>
         ${ChevronRightBlack()}
       </button>
 
