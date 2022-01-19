@@ -9,6 +9,8 @@ import {
   dispatch_renderLoadingIndicator,
   dispatch_removeLoadingIndicator,
   dispatch_renderDAOTermsURL,
+  dispatch_enableStakingButtons,
+  dispatch_renderCreateProposalPage,
 } from "../../dispatch/render";
 import {
   MyProposals,
@@ -49,6 +51,19 @@ import {
   convertToHTMLFromArrayBuffer,
   onDocProposalFileDropped,
 } from "./onDocFileDropped";
+import {
+  DAOSTAKINGADDRESS,
+  getDaoStakingContract,
+  isStaking,
+  stake,
+} from "../../wallet/daoStaking/contractCalls";
+import {
+  allowance,
+  approve,
+  balanceOf,
+  getRicContract,
+} from "../../wallet/ric/contractCalls";
+import Web3 from "web3";
 
 export async function createProposalActions(props: State) {
   if (!web3Injected()) {
@@ -64,7 +79,6 @@ export async function createProposalActions(props: State) {
   const correctNetwork = await checkNetwork();
 
   if (!correctNetwork) {
-    //TODO: Dispatch a popup and prompt the user to switch to harmony
     dispatch_renderError("You need to switch to Harmony network!");
     dispatch_setPopupState(PopupState.WrongNetwork);
     return;
@@ -155,6 +169,88 @@ export async function createProposalActions(props: State) {
   }
 
   //Then render either the proposalTXId input.. or the GithubURL, maybe I just render the labels
+  const stakingButton = getById("stake-30-ric");
+  const approveButton = getById("approve-stake-spend");
+
+  const daoStakingOptions = await OptionsBuilder(() => getDaoStakingContract());
+
+  if (daoStakingOptions.status === Status.Failure) {
+    dispatch_renderError(daoStakingOptions.error);
+    return;
+  }
+
+  const ricOptions = await OptionsBuilder(() => getRicContract());
+
+  if (ricOptions.status === Status.Failure) {
+    dispatch_renderError(ricOptions.error);
+    return;
+  }
+
+  const amIStakingOptions = await OptionsBuilder(() =>
+    isStaking(daoStakingOptions.data, myAddress, myAddress)
+  );
+
+  if (amIStakingOptions.status === Status.Failure) {
+    dispatch_renderError(amIStakingOptions.error);
+    return;
+  }
+
+  // // If I'm staking, disable the button
+  const myAllowanceOptions = await OptionsBuilder(() =>
+    allowance(ricOptions.data, myAddress, DAOSTAKINGADDRESS, myAddress)
+  );
+
+  if (myAllowanceOptions.status === Status.Failure) {
+    dispatch_renderError(myAllowanceOptions.error);
+    return;
+  }
+
+  const ricBalanceOptions = await OptionsBuilder(() =>
+    balanceOf(ricOptions.data, myAddress, myAddress)
+  );
+
+  if (ricBalanceOptions.status === Status.Failure) {
+    dispatch_renderError(ricBalanceOptions.error);
+    return;
+  }
+
+  const intAllowance = parseInt(myAllowanceOptions.data);
+  const enoughAllowance = intAllowance >= 30;
+
+  dispatch_enableStakingButtons(
+    props,
+    !amIStakingOptions.data && enoughAllowance,
+    enoughAllowance,
+    ricBalanceOptions.data,
+    amIStakingOptions.data
+  );
+
+  approveButton.onclick = async function () {
+    const onError = (err) => {
+      dispatch_renderError(err.message);
+    };
+    const onReceipt = (res) => {
+      dispatch_renderCreateProposalPage(props);
+    };
+    await approve(
+      ricOptions.data,
+      DAOSTAKINGADDRESS,
+      Web3.utils.toWei("30"),
+      myAddress,
+      onError,
+      onReceipt
+    );
+  };
+  stakingButton.onclick = async function () {
+    const onError = (err) => {
+      dispatch_renderError(err.message);
+    };
+    const onReceipt = (res) => {
+      dispatch_renderCreateProposalPage(props);
+    };
+
+    await stake(daoStakingOptions.data, myAddress, onError, onReceipt);
+  };
 
   const githubRepoUrl = getById("github-url") as HTMLInputElement;
   const rankheader = getById("rankHeader") as HTMLHeadingElement;
