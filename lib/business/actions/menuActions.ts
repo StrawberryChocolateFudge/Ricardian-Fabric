@@ -1,14 +1,23 @@
+import { dispatch_renderError } from "../../dispatch/render";
 import { dispatch_setPage } from "../../dispatch/stateChange";
-import { PageState, State } from "../../types";
+import { PageState, State, Status } from "../../types";
 import { getById } from "../../view/utils";
+import { getTerms } from "../../wallet/catalogDAO/contractCalls";
+import { getSignupContract } from "../../wallet/signup/contractCalls";
+import { OptionsBuilder } from "../utils";
 import { verifyContractPopupTrigger } from "./verifyContractActions";
 
-export function menuActions(props: State) {
+export async function menuActions(props: State) {
   verifyContractPopupTrigger(props);
   const createPage = getById("create-contract-button");
   const smartContractButton = getById("smart-contract-catalog-button");
   const reviewAndVoteButton = getById("review-and-vote-button");
   const dashboardButton = getById("dashboard-button");
+  const tokenSale = getById("tokensale-button");
+  const vaultButton = getById("vault-button");
+  const trailsButton = getById("trails-page-button");
+
+  const termsLink = getById("terms-link") as HTMLAnchorElement;
 
   dashboardButton.onclick = function () {
     dispatch_setPage(PageState.Dashboard);
@@ -25,4 +34,32 @@ export function menuActions(props: State) {
   reviewAndVoteButton.onclick = function () {
     dispatch_setPage(PageState.ReviewAndVote);
   };
+
+  tokenSale.onclick = function () {
+    dispatch_setPage(PageState.tokenSale);
+  };
+
+  vaultButton.onclick = function () {
+    dispatch_setPage(PageState.vault);
+  };
+
+  trailsButton.onclick = function () {
+    dispatch_setPage(PageState.trails);
+  };
+
+  const signUpContractOptions = await OptionsBuilder(() => getSignupContract());
+  if (signUpContractOptions.status === Status.Failure) {
+    dispatch_renderError(signUpContractOptions.error);
+    return;
+  }
+  const contractURLOptions = await OptionsBuilder(() =>
+    getTerms(signUpContractOptions.data)
+  );
+
+  if (contractURLOptions.status === Status.Failure) {
+    dispatch_renderError(contractURLOptions.error);
+    return;
+  }
+
+  termsLink.href = contractURLOptions.data;
 }
