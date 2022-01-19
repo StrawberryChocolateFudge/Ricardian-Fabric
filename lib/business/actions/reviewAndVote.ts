@@ -35,6 +35,18 @@ export async function reviewAndVotePageActions(props: State) {
     dispatch_setPage(PageState.ManageProposals);
   };
 
+  const pSTPageButton = getById("profit-sharing-button");
+
+  pSTPageButton.onclick = function () {
+    dispatch_setPage(PageState.profitSharing);
+  };
+
+  const feePageButton = getById("fee-proposals-button");
+
+  feePageButton.onclick = function () {
+    dispatch_setPage(PageState.feeProposals);
+  };
+
   if (!web3Injected()) {
     dispatch_renderError("Found no injected web3, install metamask");
     const onboarding = new MetaMaskOnboarding();
