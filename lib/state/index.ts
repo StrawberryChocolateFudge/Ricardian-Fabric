@@ -37,6 +37,7 @@ import { beforePageSetHook, setStateHook } from "./setStateHook";
       init: false,
       ipfs: {
         host: "ipfs.infura.io",
+        v2Url: "ipfs.infura-ipfs.io",
         port: 5001,
         protocol: "https",
       },
@@ -44,7 +45,18 @@ import { beforePageSetHook, setStateHook } from "./setStateHook";
       popupState: PopupState.NONE,
       pageState: PageState.CreateRicardian,
       uploadProposalProps: null,
-      createRicardianPageProps: null,
+      createRicardianPageProps: {
+        blockedCountries: [],
+        blockedAddresses: "",
+        expires: "",
+        redirectto: "",
+        smartContract: "",
+        erc20Add: false,
+        erc20Name: "",
+        erc20Symbol: "",
+        erc20Decimals: "",
+        erc20Address: "",
+      },
       editor: createNewEditor(),
       domParser: new DOMParser(),
       selectedDate: "",
@@ -92,6 +104,7 @@ import { beforePageSetHook, setStateHook } from "./setStateHook";
     [EventType.setIPFS]: (value: {}) => {
       stateContainer.ipfs = {
         host: "ipfs.infura.io",
+        v2Url: "ipfs.infura-ipfs.io",
         port: 5001,
         protocol: "https",
       };
