@@ -4,7 +4,9 @@ import { VOTINGPERIODBLOCKS } from "../../../wallet/catalogDAO/contractCalls";
 import { getBlockie } from "../components/getBlockies";
 import {
   AddLogo,
+  FeeProposalLogo,
   ManageAccountLogo,
+  ProfitSharingLogo,
   ThumbsDown,
   ThumbsUp,
   WebAsset,
@@ -28,6 +30,16 @@ export function ReviewAndVote() {
       </button>
       <button id="my-proposals-button" class="labelButton" title="My proposals">
         ${ManageAccountLogo()}
+      </button>
+      <button
+        id="fee-proposals-button"
+        class="labelButton"
+        title="Fee proposals"
+      >
+        ${FeeProposalLogo()}
+      </button>
+      <button id="profit-sharing-button" class="labelButton" title="Ar Sharing">
+        ${ProfitSharingLogo()}
       </button>
     </h2>
     <div id="rank-proposal-table"></div>
