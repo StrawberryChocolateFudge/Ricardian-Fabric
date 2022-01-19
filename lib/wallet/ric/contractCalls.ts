@@ -1,8 +1,16 @@
 import Web3 from "web3";
 import { Contract } from "web3-eth-contract";
+import { ERC20Params } from "../../types";
 import { getRicAbi } from "../abi/ricABI";
 
 const RICADDRESS = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
+
+export const RICPARAMS: ERC20Params = {
+  name: "RIC",
+  symbol: "RIC",
+  address: RICADDRESS,
+  decimals: 18,
+};
 
 export async function getRicContract(): Promise<Contract> {
   const web3 = new Web3(window.ethereum);
@@ -14,8 +22,8 @@ export async function approve(
   spender: string,
   amount: string,
   from: string,
-  onError: string,
-  onReceipt: string
+  onError: any,
+  onReceipt: any
 ) {
   await ric.methods
     .approve(spender, amount)
@@ -29,7 +37,7 @@ export async function balanceOf(
   address: string,
   from: string
 ): Promise<string> {
-  const balance = ric.methods.balanceOf(address).call({ from });
+  const balance = await ric.methods.balanceOf(address).call({ from });
   return Web3.utils.fromWei(balance);
 }
 
@@ -47,5 +55,7 @@ export async function allowance(
   spender: string,
   from: string
 ): Promise<string> {
-  return ric.methods.allowance(owner, spender).call({ from });
+  const allowance = await ric.methods.allowance(owner, spender).call({ from });
+
+  return Web3.utils.fromWei(allowance);
 }
