@@ -5,6 +5,7 @@ import {
   arweaveLogo,
   BallotLogo,
   pinLogo,
+  SaveLogo,
   uploadLogo,
 } from "../components/logos";
 
@@ -41,10 +42,15 @@ export const PermawebDropdown = (
     ${contractType === ContractTypes.create
       ? html`${page === PageState.CreateRicardian
           ? html`<li>
-              <button id="permapin-popup-button" class="dropdown-button">
-                <small>${pinLogo()} Permapin</small>
-              </button>
-            </li>`
+                <button id="permapin-popup-button" class="dropdown-button">
+                  <small>${pinLogo()} Permapin</small>
+                </button>
+              </li>
+              <li>
+                <button id="upload-currentpage-button" class="dropdown-button">
+                  <small>${SaveLogo()} Save page</small>
+                </button>
+              </li> `
           : html`
               <li>
                 <button class="dropdown-button" id="upload-proposal-button">
