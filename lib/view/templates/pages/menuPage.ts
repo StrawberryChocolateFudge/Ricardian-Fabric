@@ -4,6 +4,9 @@ import {
   AgreementLogo,
   catalogLogo,
   Dashboard2,
+  TokenSaleLogo,
+  TrailsLogo,
+  VaultLogo,
   VerificationLogo,
   VotingLogo,
 } from "../components/logos";
@@ -11,7 +14,9 @@ import {
 export const MenuPage = (blockieData: string) => html`
   <hr />
   <div class="text-align-center">${getBlockie(blockieData, "50px", "")}</div>
-
+  <div class="text-align-center">
+    <a id="terms-link" target="_blank" rel="noopener">Terms</a>
+  </div>
   <hr />
   <div class="text-align-center">
     <button
@@ -59,5 +64,32 @@ export const MenuPage = (blockieData: string) => html`
     >
       ${VotingLogo()}
     </button>
+    <div class="text-align-enter">
+      <button
+        title="Token Sale"
+        class="lightSlateGray-shadow labelButton"
+        id="tokensale-button"
+      >
+        ${TokenSaleLogo()}
+      </button>
+    </div>
+    <div class="text-align-center">
+      <button
+        title="Vault"
+        class="lightSlateGray-shadow labelButton"
+        id="vault-button"
+      >
+        ${VaultLogo()}
+      </button>
+    </div>
+    <div class="text-align-center">
+      <button
+        title="Trails"
+        class="lightSlateGray-shadow labelButton"
+        id="trails-page-button"
+      >
+        ${TrailsLogo()}
+      </button>
+    </div>
   </div>
 `;
