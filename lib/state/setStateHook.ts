@@ -5,10 +5,12 @@ import {
   dispatch_ConnectYourWalletPage,
   dispatch_DAOTermsPopup,
   dispatch_dismissSidebar,
+  dispatch_feeProposals,
   dispatch_hidePopup,
   dispatch_manageProposals,
   dispatch_permapinPopup,
   dispatch_permawebselectActions,
+  dispatch_PSTPage,
   dispatch_renderAcceptButton,
   dispatch_renderAddress,
   dispatch_renderAreYouSure,
@@ -19,7 +21,6 @@ import {
   dispatch_renderDocXDropper,
   dispatch_renderMenu,
   dispatch_renderReviewAndVotePage,
-  dispatch_renderTerms,
   dispatch_renderTransferPage,
   dispatch_renderUploadFilePopup,
   dispatch_renderVerifyContract,
@@ -27,7 +28,10 @@ import {
   dispatch_showAccountPopup,
   dispatch_sideBar,
   dispatch_switch_Accounts,
+  dispatch_tokenSale,
+  dispatch_trailsPage,
   dispatch_uploadProposal,
+  dispatch_vaultPage,
   dispatch_walletPopup,
 } from "../dispatch/render";
 import {
@@ -95,9 +99,6 @@ export const setStateHook = {
         break;
       case PopupState.ImportTemplate:
         dispatch_renderDocXDropper(clone);
-        break;
-      case PopupState.Terms:
-        dispatch_renderTerms();
         break;
       case PopupState.ShowAccount:
         dispatch_showAccountPopup(
@@ -182,6 +183,21 @@ export const setStateHook = {
         break;
       case PageState.ManageProposals:
         dispatch_manageProposals(clone);
+        break;
+      case PageState.feeProposals:
+        dispatch_feeProposals(clone);
+        break;
+      case PageState.profitSharing:
+        dispatch_PSTPage(clone);
+        break;
+      case PageState.tokenSale:
+        dispatch_tokenSale(clone);
+        break;
+      case PageState.vault:
+        dispatch_vaultPage(clone);
+        break;
+      case PageState.trails:
+        dispatch_trailsPage(clone);
         break;
       default:
         break;
