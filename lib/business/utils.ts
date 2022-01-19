@@ -437,13 +437,6 @@ export async function getFulfilledPage(props: FulfilledPageProps) {
   return page;
 }
 
-export function showBanner() {
-  const termsAccepted = getTermsAccepted();
-  if (termsAccepted !== true) {
-    dispatch_setPopupState(PopupState.Terms);
-  }
-}
-
 export function registerEthereumProviderEvents(props) {
   window.ethereum.removeAllListeners();
   let initJustCalled = true;
@@ -457,12 +450,14 @@ export function registerEthereumProviderEvents(props) {
         if (initJustCalled) {
           initJustCalled = false;
           dispatch_ConnectYourWalletPage(props);
+          dispatch_setPopupState(PopupState.NONE);
         }
       }
     } catch (err) {
       if (initJustCalled) {
         initJustCalled = false;
         dispatch_ConnectYourWalletPage(props);
+        dispatch_setPopupState(PopupState.NONE);
       }
     }
   });
