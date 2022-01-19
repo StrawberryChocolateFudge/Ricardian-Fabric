@@ -75,9 +75,11 @@ export async function getActualReward(
   hasFees: boolean,
   from: string
 ): Promise<string> {
-  return await daoStaking.methods
+  const actualReward = await daoStaking.methods
     .getActualReward(hasFrontend, hasFees)
     .call({ from });
+
+  return Web3.utils.fromWei(actualReward);
 }
 
 export async function isStaking(
@@ -100,7 +102,9 @@ export async function getTotalStaked(
   daoStaking: Contract,
   from: string
 ): Promise<string> {
-  return await daoStaking.methods.getTotalStaked().call({ from });
+  const totalStaked = await daoStaking.methods.getTotalStaked().call({ from });
+
+  return Web3.utils.fromWei(totalStaked);
 }
 
 export async function getAvailableReward(

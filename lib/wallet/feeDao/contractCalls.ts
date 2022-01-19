@@ -142,7 +142,11 @@ export async function calculateETHWithdraw(
   amount: string,
   from: string
 ): Promise<string> {
-  return await feeDao.methods.calculateETHWithdraw(amount).call({ from });
+  const withdraw = await feeDao.methods
+    .calculateETHWithdraw(amount)
+    .call({ from });
+
+  return Web3.utils.fromWei(withdraw);
 }
 
 export async function calculateWithdraw(
@@ -160,14 +164,16 @@ export async function getCurrentbalance(
   feeDao: Contract,
   from: string
 ): Promise<string> {
-  return await feeDao.methods.getCurrentBalance().call({ from });
+  const balance = await feeDao.methods.getCurrentBalance().call({ from });
+  return Web3.utils.fromWei(balance);
 }
 
 export async function getTotalBalance(
   feeDao: Contract,
   from: string
 ): Promise<string> {
-  return await feeDao.methods.getTotalBalance().call({ from });
+  const balance = await feeDao.methods.getTotalBalance().call({ from });
+  return Web3.utils.fromWei(balance);
 }
 
 export async function viewSpentBalanceOf(
@@ -175,5 +181,6 @@ export async function viewSpentBalanceOf(
   token: string,
   from: string
 ): Promise<string> {
-  return await feeDao.methods.viewSpentBalanceOf(token).call({ from });
+  const balance = await feeDao.methods.viewSpentBalanceOf(token).call({ from });
+  return Web3.utils.fromWei(balance);
 }
