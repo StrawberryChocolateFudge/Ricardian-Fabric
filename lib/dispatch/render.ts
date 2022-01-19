@@ -130,13 +130,6 @@ export function dispatch_attachDateClickListener(props: State) {
   });
 }
 
-export function dispatch_renderTerms() {
-  dispatch(Events.render, {
-    type: RenderType.renderTerms,
-    props: {},
-  });
-}
-
 export function dispatch_renderAreYouSure(props: State) {
   dispatch(Events.render, {
     type: RenderType.areYouSure,
@@ -609,5 +602,92 @@ export function dispatch_renderLoadedValue(
   dispatch(Events.render, {
     type: RenderType.renderLoadedValue,
     props: { ...props, tmp: { loadedValue, renderTo } },
+  });
+}
+
+export function dispatch_renderPermapinnedDashboardData(
+  props: State,
+  nodes: any
+) {
+  dispatch(Events.render, {
+    type: RenderType.pinnedDashboardData,
+    props: { ...props, tmp: { nodes } },
+  });
+}
+
+export function dispatch_enableStakingButtons(
+  props: State,
+  enableStakingButton: boolean,
+  enableAllowanceButton: boolean,
+  ricBalance: string,
+  isStaking: boolean
+) {
+  dispatch(Events.render, {
+    type: RenderType.stakingButtons,
+    props: {
+      ...props,
+      tmp: {
+        enableStakingButton,
+        enableAllowanceButton,
+        ricBalance,
+        isStaking,
+      },
+    },
+  });
+}
+
+export function dispatch_feeProposals(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.feeProposalsPage,
+    props,
+  });
+}
+export function dispatch_PSTPage(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.pstPage,
+    props,
+  });
+}
+export function dispatch_tokenSale(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.tokenSalePage,
+    props,
+  });
+}
+export function dispatch_vaultPage(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.vaultPage,
+    props,
+  });
+}
+
+export function dispatch_trailsPage(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.trailsPage,
+    props,
+  });
+}
+
+export function dispatch_tokenSalePageInit(
+  props: State,
+  ricLeft: string,
+  rate: string,
+  balance: string,
+  tokensSold: string,
+  purchasedAlready: boolean
+) {
+  dispatch(Events.render, {
+    type: RenderType.tokenSalePageInit,
+    props: {
+      ...props,
+      tmp: { ricLeft, rate, balance, tokensSold, purchasedAlready },
+    },
+  });
+}
+
+export function dispatch_renderSellAmount(props: State, rate: number) {
+  dispatch(Events.render, {
+    type: RenderType.renderSellAmount,
+    props: { ...props, tmp: { rate } },
   });
 }
