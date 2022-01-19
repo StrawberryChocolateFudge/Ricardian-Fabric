@@ -35,7 +35,6 @@ import {
   renderNetworkDropdown,
   renderSanctionsDropdown,
   renderSummary,
-  renderTerms,
   renderTooltips,
   renderTransaction,
   setDeployedSCAddressToDOM,
@@ -88,6 +87,15 @@ import {
   renderConnectYourWallet,
   renderDashboard,
   renderLoadedValue,
+  pinnedDashboardData,
+  enableStakingButtons,
+  renderFeeProposalsPage,
+  renderPSTPage,
+  renderTokenSalePage,
+  renderVaultPage,
+  renderTrailsPage,
+  tokenSaleInit,
+  renderSellAmount,
 } from "./render";
 import { renderAcceptTools } from "./render";
 import { areYouSureButtons } from "../business/actions/areYouSureButtons";
@@ -95,10 +103,6 @@ import {
   docxImportBackButton,
   onDocFileDropped,
 } from "../business/actions/onDocFileDropped";
-import {
-  attachTermsButtonListeners,
-  createPageAgreeTerms,
-} from "../business/actions/terms";
 import {
   deployAgainButtonActions,
   redirectAction,
@@ -149,6 +153,11 @@ import {
 import { wrongNetworkActions } from "../business/actions/WrongNetworkActions";
 import { connectWalletButton } from "../business/actions/connectWalletButton";
 import { dashboardActions } from "../business/actions/dashboardActions";
+import { feeProposalPageActions } from "../business/actions/feeProposalPageActions";
+import { pstPageActions } from "../business/actions/pstPageActions";
+import { tokenSalePageActions } from "../business/actions/tokenSalePageActions";
+import { vaultPageActions } from "../business/actions/vaultPageActions";
+import { trailsPageActions } from "../business/actions/trailsPageActions";
 
 const Render: Renderer = {
   [RenderType.connectYourWallet]: (props: State) => {
@@ -159,15 +168,14 @@ const Render: Renderer = {
     renderDashboard(props);
     await dashboardActions(props);
   },
-  [RenderType.menu]: (props: State) => {
+  [RenderType.menu]: async (props: State) => {
     renderMenuPage(props);
-    menuActions(props);
+    await menuActions(props);
     openSidebarIfScreenIsBig();
   },
   [RenderType.create]: (props: State) => {
     renderCreatePage();
     renderButtonSlotAlignment(true);
-    createPageAgreeTerms();
 
     // TODO: Check these, I will add web3 modal!
     renderSelectedWallet(props.selectedWallet);
@@ -227,10 +235,6 @@ const Render: Renderer = {
   },
   [RenderType.dateClickListener]: (props: State) => {
     attachExpiryClickAndListener(props);
-  },
-  [RenderType.renderTerms]: () => {
-    renderTerms();
-    attachTermsButtonListeners();
   },
   [RenderType.areYouSure]: (props: State) => {
     if (props.contracttype === ContractTypes.acceptable) {
@@ -484,6 +488,49 @@ const Render: Renderer = {
   },
   [RenderType.renderLoadedValue]: (props: RenderDispatchArgs) => {
     renderLoadedValue(props.tmp.loadedValue, props.tmp.renderTo);
+  },
+  [RenderType.pinnedDashboardData]: (props: RenderDispatchArgs) => {
+    pinnedDashboardData(props.ipfs.v2Url, props.tmp.nodes);
+  },
+  [RenderType.stakingButtons]: (props: RenderDispatchArgs) => {
+    enableStakingButtons(
+      props.tmp.enableStakingButton,
+      props.tmp.enableAllowanceButton,
+      props.tmp.ricBalance,
+      props.tmp.isStaking
+    );
+  },
+  [RenderType.feeProposalsPage]: (props: RenderDispatchArgs) => {
+    renderFeeProposalsPage(props);
+    feeProposalPageActions(props);
+  },
+  [RenderType.pstPage]: (props: RenderDispatchArgs) => {
+    renderPSTPage(props);
+    pstPageActions(props);
+  },
+  [RenderType.tokenSalePage]: async (props: RenderDispatchArgs) => {
+    renderTokenSalePage(props);
+    await tokenSalePageActions(props);
+  },
+  [RenderType.vaultPage]: (props: RenderDispatchArgs) => {
+    renderVaultPage(props);
+    vaultPageActions(props);
+  },
+  [RenderType.trailsPage]: (props: RenderDispatchArgs) => {
+    renderTrailsPage(props);
+    trailsPageActions(props);
+  },
+  [RenderType.tokenSalePageInit]: (props: RenderDispatchArgs) => {
+    tokenSaleInit(
+      props.tmp.ricLeft,
+      props.tmp.rate,
+      props.tmp.balance,
+      props.tmp.tokensSold,
+      props.tmp.purchasedAlready
+    );
+  },
+  [RenderType.renderSellAmount]: (props: RenderDispatchArgs) => {
+    renderSellAmount(props.tmp.rate);
   },
 };
 
