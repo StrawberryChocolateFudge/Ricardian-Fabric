@@ -29,7 +29,6 @@ import { redirectButton } from "./templates/components/redirectCounter";
 import { SanctionsDropdown } from "./templates/dropdowns/sanctionsDropdown";
 import { SCConstructorPopup } from "./templates/popups/SCContructorPopup";
 import { TemplateDropdown } from "./templates/dropdowns/templatedropdown";
-import { termsLayout } from "./templates/terms";
 import { transactionUrl, TxId } from "./templates/components/transaction";
 import {
   uploadFilePopup,
@@ -82,7 +81,16 @@ import {
 import { WrongNetworkPopup } from "./templates/popups/WrongNetworkPopup";
 import { DaoTermsPopup } from "./templates/popups/DaoTermsPopup";
 import { ConnectWalletPage } from "./templates/pages/connectWalletPage";
-import { DashboardPage, loadedValueEl } from "./templates/pages/dashboardPage";
+import {
+  DashboardPage,
+  loadedValueEl,
+  PermaPinnedData,
+} from "./templates/pages/dashboardPage";
+import { FeeDaoPage } from "./templates/pages/feeDaoPage";
+import { PSTPage } from "./templates/pages/pstPage";
+import { TokenSalePage } from "./templates/pages/tokenSalePage";
+import { VaultPage } from "./templates/pages/vaultPage";
+import { TrailsPage } from "./templates/pages/trailsPage";
 
 export function renderConnectYourWallet(props: State) {
   const page = getById("page");
@@ -139,6 +147,28 @@ export function renderCreatePage() {
 export function renderCatalogPage() {
   const page = getById("page");
   render(catalogPage(), page);
+}
+
+export function renderFeeProposalsPage(props: State) {
+  const page = getById("page");
+  render(FeeDaoPage(), page);
+}
+export function renderPSTPage(props: State) {
+  const page = getById("page");
+  render(PSTPage(), page);
+}
+export function renderTokenSalePage(props: State) {
+  const page = getById("page");
+  render(TokenSalePage(), page);
+}
+export function renderVaultPage(props: State) {
+  const page = getById("page");
+  render(VaultPage(), page);
+}
+
+export function renderTrailsPage(props: State) {
+  const page = getById("page");
+  render(TrailsPage(), page);
 }
 
 export function renderAcceptTools(props: State) {
@@ -224,13 +254,6 @@ export function disableButton(props: State) {
 
 export function renderCreateButton(disabled: boolean) {
   render(createButton(disabled), getById("button-slot"));
-}
-
-export function renderTerms() {
-  setBannerDisplayBlock();
-  const layout = getById("overlay-layout");
-  layout.style.maxHeight = "100%";
-  render(termsLayout(), layout);
 }
 
 export function renderSummary(props: State) {
@@ -344,14 +367,14 @@ export function disableCreateInputs() {
 
   editor.contentEditable = "false";
 
-  const smartContractCatalogButton = getById(
-    "smart-contract-catalog-button"
-  ) as HTMLButtonElement;
-  const stakingButton = getById("staking-button") as HTMLButtonElement;
-  const verifyButton = getById("verify-contract-button") as HTMLButtonElement;
-  smartContractCatalogButton.disabled = true;
-  stakingButton.disabled = true;
-  verifyButton.disabled = true;
+  // const smartContractCatalogButton = getById(
+  //   "smart-contract-catalog-button"
+  // ) as HTMLButtonElement;
+  // const stakingButton = getById("staking-button") as HTMLButtonElement;
+  // const verifyButton = getById("verify-contract-button") as HTMLButtonElement;
+  // smartContractCatalogButton.disabled = true;
+  // stakingButton.disabled = true;
+  // verifyButton.disabled = true;
 
   const expires = getById("expires-input") as HTMLInputElement;
   const never = getById("expires-reset") as HTMLInputElement;
@@ -433,14 +456,14 @@ export function enableCreateInputs() {
 
   editor.contentEditable = "true";
 
-  const smartContractCatalogButton = getById(
-    "smart-contract-catalog-button"
-  ) as HTMLButtonElement;
-  const stakingButton = getById("staking-button") as HTMLButtonElement;
-  const verifyButton = getById("verify-contract-button") as HTMLButtonElement;
-  smartContractCatalogButton.disabled = false;
-  stakingButton.disabled = false;
-  verifyButton.disabled = false;
+  // const smartContractCatalogButton = getById(
+  //   "smart-contract-catalog-button"
+  // ) as HTMLButtonElement;
+  // const stakingButton = getById("staking-button") as HTMLButtonElement;
+  // const verifyButton = getById("verify-contract-button") as HTMLButtonElement;
+  // smartContractCatalogButton.disabled = false;
+  // stakingButton.disabled = false;
+  // verifyButton.disabled = false;
 
   const expires = getById("expires-input") as HTMLInputElement;
   const never = getById("expires-reset") as HTMLInputElement;
@@ -973,15 +996,17 @@ export function setCreatePageProps(pageProps: CreateRicardianPageProps) {
   const erc20DecimalsEl = getById("erc20-decimals") as HTMLInputElement;
   const erc20AddressEl = getById("erc20-address") as HTMLInputElement;
 
-  blockkedAddressesEl.value = pageProps.blockedAddresses;
-  expiresEl.value = pageProps.expires;
-  redirecttoEl.value = pageProps.redirectto;
-  smartcontractEl.value = pageProps.smartContract;
-  erc20AddEl.checked = pageProps.erc20Add;
-  erc20NameEl.value = pageProps.erc20Name;
-  erc20SymbolEl.value = pageProps.erc20Symbol;
-  erc20DecimalsEl.value = pageProps.erc20Decimals;
-  erc20AddressEl.value = pageProps.erc20Address;
+  const define = (val) => (val === undefined ? "" : val);
+
+  blockkedAddressesEl.value = define(pageProps.blockedAddresses);
+  expiresEl.value = define(pageProps.expires);
+  redirecttoEl.value = define(pageProps.redirectto);
+  smartcontractEl.value = define(pageProps.smartContract);
+  erc20AddEl.checked = define(pageProps.erc20Add);
+  erc20NameEl.value = define(pageProps.erc20Name);
+  erc20SymbolEl.value = define(pageProps.erc20Symbol);
+  erc20DecimalsEl.value = define(pageProps.erc20Decimals);
+  erc20AddressEl.value = define(pageProps.erc20Address);
 
   // Need to wait for the page to render because the blocked countries are pretty deep down the DOM tree
   setTimeout(() => setBlockedCountries(pageProps.blockedCountries), 1000);
@@ -1093,4 +1118,85 @@ export function renderRankProposalTable(
 export function renderLoadedValue(loadedValue: any, renderTo: HTMLElement) {
   renderTo.classList.remove("placeholder-item");
   render(loadedValueEl(loadedValue), renderTo);
+}
+
+export function pinnedDashboardData(ipfsV2Url, nodes: any) {
+  const slot = getById("permapinned-data-slot");
+  render(PermaPinnedData(ipfsV2Url, nodes), slot);
+}
+
+export function enableStakingButtons(
+  stakingButtonDisabled: boolean,
+  approveButtonDisabled: boolean,
+  ricBalance: string,
+  isStaking: boolean
+) {
+  const stakingButtonEl = getById("stake-30-ric") as HTMLButtonElement;
+  const approveButtonEl = getById("approve-stake-spend") as HTMLButtonElement;
+  const ricBalanceEl = getById("ricBalance");
+  const rankProposalSubmit = getById(
+    "create-rank-proposal"
+  ) as HTMLButtonElement;
+  ricBalanceEl.textContent = ricBalance;
+
+  let stakingdisabled = !stakingButtonDisabled;
+
+  if (parseInt(ricBalance) < 30) {
+    stakingdisabled = true;
+  }
+  let approveDisabled = approveButtonDisabled;
+
+  if (isStaking) {
+    approveDisabled = true;
+  }
+
+  stakingButtonEl.disabled = stakingdisabled;
+  approveButtonEl.disabled = approveDisabled;
+
+  rankProposalSubmit.disabled = !isStaking;
+}
+
+export function tokenSaleInit(
+  ricLeft: string,
+  rate: string,
+  balance: string,
+  tokensSold: string,
+  purchasedAlready: boolean
+) {
+  const myBalanceEl = getById("ricBalance");
+  const ricLeftEl = getById("ric-left-for-sale-buy-page");
+  const rateEl = getById("ric-rate-buy-page");
+  const buyAmount = getById("buy-amount") as HTMLInputElement;
+  const buyButton = getById("buy-ric") as HTMLButtonElement;
+
+  ricLeftEl.classList.remove("placeholder-item");
+  rateEl.classList.remove("placeholder-item");
+
+  myBalanceEl.textContent = balance;
+  ricLeftEl.textContent = ricLeft + " RIC";
+  rateEl.textContent = rate + " RIC/ONE";
+
+  if (purchasedAlready) {
+    buyButton.disabled = true;
+  }
+
+  if (tokensSold === "40000000") {
+    ricLeftEl.textContent = "SALE FINISHED";
+    rateEl.textContent = "SALE FINISHED";
+    buyButton.disabled = true;
+    buyAmount.disabled = true;
+  }
+
+  buyAmount.value = "0";
+}
+
+export function renderSellAmount(amount: number) {
+  const sellEl = getById("sell-rate");
+  const buyButton = getById("buy-ric") as HTMLButtonElement;
+  if (amount > 100000) {
+    buyButton.disabled = true;
+  } else {
+    buyButton.disabled = false;
+  }
+  sellEl.textContent = amount.toFixed(2);
 }
