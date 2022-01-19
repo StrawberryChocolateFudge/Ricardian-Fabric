@@ -285,6 +285,12 @@ hr {
   justify-content: space-between;
 }
 
+.rowAround {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
 .column {
   display: flex;
   flex-direction: column;
@@ -984,6 +990,10 @@ hr {
 .marginTop-50 {
   margin-top: 50px;
 }
+
+.padding-20 {
+  padding: 20px;
+}
 .unselectable {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -1023,4 +1033,7 @@ hr {
 
 .darkBlueisBlack {
   color: #344767;
+}
+.overflow-auto {
+  overflow: auto;
 }
