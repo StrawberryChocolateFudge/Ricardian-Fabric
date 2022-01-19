@@ -230,11 +230,8 @@ export const CreatePage = () => html`
 
   <hr />
   <div class="center marginBottom-10">
-    <label
-      aria-labelledby="I agree to the terms, click on this label for a popup"
-      id="terms-checkbox-label"
-      class="labelButton terms-button-label"
-      >${Policylogo()} I agree to the terms</label
+    <label aria-labelledby="I agree to the terms" id="terms-checkbox-label"
+      >I agree to the terms and agreements</label
     >
     <input
       aria-label="I agree to the terms checkbox"
