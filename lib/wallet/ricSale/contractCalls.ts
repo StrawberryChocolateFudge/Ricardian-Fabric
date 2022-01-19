@@ -1,7 +1,6 @@
 import { Contract } from "web3-eth-contract";
 import Web3 from "web3";
 import { getRicSaleAbi } from "../abi/ricSaleABI";
-import { web3Injected } from "../web3";
 
 const RICSALEADDRESS = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0"; // On local hardhat testnet
 
@@ -61,4 +60,12 @@ export async function getCurrentRate(
   from: string
 ): Promise<string> {
   return await ricsale.methods.getCurrentRate(tokensSold).call({ from });
+}
+
+export async function purchasedAlready(
+  ricSale: Contract,
+  address: string,
+  from: string
+) {
+  return await ricSale.methods.purchasedAlready(address).call({ from });
 }
