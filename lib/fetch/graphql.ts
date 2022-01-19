@@ -27,8 +27,8 @@ export async function getOwnerFromTxId(txId: string): Promise<Options<string>> {
   return options;
 }
 
-export async function getUploadedContracts(): Promise<Options<string>> {
-  const options: Options<string> = {
+export async function getUploadedContracts(): Promise<Options<any>> {
+  const options: Options<any> = {
     status: Status.Success,
     error: "",
     data: "",
