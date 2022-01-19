@@ -81,12 +81,7 @@ export const uploadFilePopup = () => html`
   </table>
   <hr />
   <div class="center marginBottom-10">
-    <label
-      aria-labelledby="I agree to the terms"
-      class="terms-button-label"
-      id="terms-button"
-      >I agree to the terms</label
-    >
+    <label aria-labelledby="I agree to the terms">I agree to the terms</label>
     <input
       aria-label="I agree to the terms checkbox"
       id="upload-terms-checkbox"
