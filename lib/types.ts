@@ -38,7 +38,6 @@ export enum RenderType {
   disableButton = "disableButton",
   redirect = "redirect",
   dateClickListener = "dateClickListener",
-  renderTerms = "renderTerms",
   areYouSure = "areYouSure",
   noButtonPressed = "noButtonPressed",
   yesButtonPressed = "yesButtonPressed",
@@ -97,6 +96,15 @@ export enum RenderType {
   renderReviewRemovalProposals = "renderReviewRemovalProposals",
   renderDAOTerms = "renderDAOTerms",
   renderLoadedValue = "renderLoadedValue",
+  pinnedDashboardData = "pinnedDashboardData",
+  stakingButtons = "stakingButtons",
+  feeProposalsPage = "feeProposalsPage",
+  pstPage = "pstPage",
+  tokenSalePage = "tokenSalePage",
+  vaultPage = "vaultPage",
+  trailsPage = "trails",
+  tokenSalePageInit = "tokenSalePageInit",
+  renderSellAmount = "renderSellAmount",
 }
 
 // TODO refactor to RenderDispatchArgs for specifying the dispatch arguments
@@ -121,7 +129,6 @@ export type Renderer = {
   [RenderType.disableButton]: RenderFunction;
   [RenderType.redirect]: RenderFunction;
   [RenderType.dateClickListener]: RenderFunction;
-  [RenderType.renderTerms]: RenderFunction;
   [RenderType.areYouSure]: RenderFunction;
   [RenderType.noButtonPressed]: RenderFunction;
   [RenderType.yesButtonPressed]: RenderFunction;
@@ -176,6 +183,15 @@ export type Renderer = {
   [RenderType.renderDAOTerms]: RenderFunction;
   [RenderType.renderReviewRankProposals]: RenderFunction;
   [RenderType.renderLoadedValue]: RenderFunction;
+  [RenderType.pinnedDashboardData]: RenderFunction;
+  [RenderType.stakingButtons]: RenderFunction;
+  [RenderType.feeProposalsPage]: RenderFunction;
+  [RenderType.pstPage]: RenderFunction;
+  [RenderType.tokenSalePage]: RenderFunction;
+  [RenderType.vaultPage]: RenderFunction;
+  [RenderType.trailsPage]: RenderFunction;
+  [RenderType.tokenSalePageInit]: RenderFunction;
+  [RenderType.renderSellAmount]: RenderFunction;
 };
 
 export enum VerificationState {
@@ -264,6 +280,7 @@ export type StashedDetails = {
 
 export type IPFSParams = {
   host: string;
+  v2Url: string;
   port: number;
   protocol: string;
 };
@@ -284,7 +301,6 @@ export type Account = {
 };
 export enum PopupState {
   NONE,
-  Terms,
   ImportTemplate,
   ShowAccount,
   NewAccount,
@@ -313,6 +329,11 @@ export enum PageState {
   Proposals,
   ReviewAndVote,
   ManageProposals,
+  profitSharing,
+  feeProposals,
+  tokenSale,
+  vault,
+  trails,
 }
 
 export type State = {
