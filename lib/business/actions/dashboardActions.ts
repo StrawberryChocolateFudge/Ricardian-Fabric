@@ -34,7 +34,7 @@ import {
   getTotalLocked,
 } from "../../wallet/ricVault/contractCalls";
 import { getAddress } from "../../wallet/web3";
-import { OptionsBuilder } from "../utils";
+import { hasError, OptionsBuilder } from "../utils";
 
 export async function dashboardActions(props: State) {
   const ricTotalSupplyEl = getById("ric-total-supply");
@@ -50,16 +50,14 @@ export async function dashboardActions(props: State) {
 
   const addressOptions = await OptionsBuilder(() => getAddress());
 
-  if (addressOptions.status === Status.Failure) {
-    dispatch_renderError(addressOptions.error);
+  if (hasError(addressOptions)) {
     return;
   }
   const address = addressOptions.data;
 
   const ricOptions = await OptionsBuilder(() => getRicContract());
 
-  if (ricOptions.status === Status.Failure) {
-    dispatch_renderError(ricOptions.error);
+  if (hasError(ricOptions)) {
     return;
   }
 
@@ -67,8 +65,7 @@ export async function dashboardActions(props: State) {
     totalSupply(ricOptions.data, address)
   );
 
-  if (totalSupplyOptions.status === Status.Failure) {
-    dispatch_renderError(totalSupplyOptions.error);
+  if (hasError(totalSupplyOptions)) {
     return;
   }
 
@@ -77,27 +74,27 @@ export async function dashboardActions(props: State) {
   dispatch_renderLoadedValue(props, totalSupplyVal + " RIC", ricTotalSupplyEl);
 
   const ricsaleOptions = await OptionsBuilder(() => getRicSaleContract());
-  if (ricsaleOptions.status === Status.Failure) {
-    dispatch_renderError(ricsaleOptions.error);
+
+  if (hasError(ricsaleOptions)) {
     return;
   }
+
   const ricsale = ricsaleOptions.data;
   const ricLeftOptions = await OptionsBuilder(() =>
     remainingTokens(ricsale, address)
   );
-
-  if (ricLeftOptions.status === Status.Failure) {
-    dispatch_renderError(ricLeftOptions.error);
+  if (hasError(ricLeftOptions)) {
     return;
   }
+
   const ricLeft = ricLeftOptions.data;
   let tokensSoldOptions = await OptionsBuilder(() =>
     getTokensSold(ricsale, address)
   );
-  if (tokensSoldOptions.status === Status.Failure) {
-    dispatch_renderError(tokensSoldOptions.error);
+  if (hasError(tokensSoldOptions)) {
     return;
   }
+
   const tokensSold = tokensSoldOptions.data;
   // tokensSold = ricLeft; // uncomment to see the sale finished UI, redeclare tokensSold with let;
 
@@ -110,9 +107,7 @@ export async function dashboardActions(props: State) {
   const ricRateOptions = await OptionsBuilder(() =>
     getCurrentRate(ricsale, tokensSold, address)
   );
-
-  if (ricRateOptions.status === Status.Failure) {
-    dispatch_renderError(ricRateOptions.error);
+  if (hasError(ricRateOptions)) {
     return;
   }
 
@@ -125,9 +120,7 @@ export async function dashboardActions(props: State) {
   }
 
   const vaultOptions = await OptionsBuilder(() => getRicVaultContract());
-
-  if (vaultOptions.status === Status.Failure) {
-    dispatch_renderError(vaultOptions.error);
+  if (hasError(vaultOptions)) {
     return;
   }
   const vault = vaultOptions.data;
@@ -135,27 +128,23 @@ export async function dashboardActions(props: State) {
   const totalLockedOptions = await OptionsBuilder(() =>
     getTotalLocked(vault, address)
   );
-
-  if (totalLockedOptions.status === Status.Failure) {
-    dispatch_renderError(totalLockedOptions.error);
+  if (hasError(totalLockedOptions)) {
     return;
   }
+
   const totalLocked = totalLockedOptions.data;
 
   dispatch_renderLoadedValue(props, totalLocked + " RIC", ricLockedInVaultEl);
 
   const daoStakingOptions = await OptionsBuilder(() => getDaoStakingContract());
-  if (daoStakingOptions.status === Status.Failure) {
-    dispatch_renderError(daoStakingOptions.error);
+  if (hasError(daoStakingOptions)) {
     return;
   }
   const daoStaking = daoStakingOptions.data;
   const availableRewardOptions = await OptionsBuilder(() =>
     getAvailableReward(daoStaking, address)
   );
-
-  if (availableRewardOptions.status === Status.Failure) {
-    dispatch_renderError(availableRewardOptions.error);
+  if (hasError(availableRewardOptions)) {
     return;
   }
 
@@ -170,9 +159,7 @@ export async function dashboardActions(props: State) {
   const catalogDAOOptions = await OptionsBuilder(() =>
     getCatalogDAOContractWithWallet()
   );
-
-  if (catalogDAOOptions.status === Status.Failure) {
-    dispatch_renderError(catalogDAOOptions.error);
+  if (hasError(catalogDAOOptions)) {
     return;
   }
   const catalogDAO = catalogDAOOptions.data;
@@ -180,9 +167,7 @@ export async function dashboardActions(props: State) {
   const acceptedContractsOptions = await OptionsBuilder(() =>
     getAcceptedSmartContractIndex(catalogDAO, address)
   );
-
-  if (acceptedContractsOptions.status === Status.Failure) {
-    dispatch_renderError(acceptedContractsOptions.error);
+  if (hasError(acceptedContractsOptions)) {
     return;
   }
 
@@ -193,19 +178,16 @@ export async function dashboardActions(props: State) {
   const rankProposalsOptions = await OptionsBuilder(() =>
     getRankProposalIndex(catalogDAO, address)
   );
-
-  if (rankProposalsOptions.status === Status.Failure) {
-    dispatch_renderError(rankProposalsOptions.error);
+  if (hasError(rankProposalsOptions)) {
     return;
   }
+
   const rankProposals = rankProposalsOptions.data;
 
   const smartContractProposalsOptions = await OptionsBuilder(() =>
     getSmartContractProposalIndex(catalogDAO, address)
   );
-
-  if (smartContractProposalsOptions.status === Status.Failure) {
-    dispatch_renderError(smartContractProposalsOptions.error);
+  if (hasError(smartContractProposalsOptions)) {
     return;
   }
 
@@ -220,9 +202,7 @@ export async function dashboardActions(props: State) {
   const contributorStakeOptions = await OptionsBuilder(() =>
     getTotalStaked(daoStaking, address)
   );
-
-  if (contributorStakeOptions.status === Status.Failure) {
-    dispatch_renderError(contributorStakeOptions.error);
+  if (hasError(contributorStakeOptions)) {
     return;
   }
 
@@ -235,9 +215,7 @@ export async function dashboardActions(props: State) {
   );
 
   const feeDaoOptions = await OptionsBuilder(() => getFeeDaoContract());
-
-  if (feeDaoOptions.status === Status.Failure) {
-    dispatch_renderError(feeDaoOptions.error);
+  if (hasError(feeDaoOptions)) {
     return;
   }
 
@@ -246,9 +224,7 @@ export async function dashboardActions(props: State) {
   const feesOptions = await OptionsBuilder(() =>
     getTotalBalance(feeDao, address)
   );
-
-  if (feesOptions.status === Status.Failure) {
-    dispatch_renderError(feeDaoOptions.error);
+  if (hasError(feesOptions)) {
     return;
   }
 
@@ -257,9 +233,7 @@ export async function dashboardActions(props: State) {
   dispatch_renderLoadedValue(props, fees + " ONE", HarmonyFeesCollectedEl);
 
   const tokensOptions = await OptionsBuilder(() => getTokens(feeDao, address));
-
-  if (tokensOptions.status === Status.Failure) {
-    dispatch_renderError(tokensOptions.error);
+  if (hasError(tokensOptions)) {
     return;
   }
 

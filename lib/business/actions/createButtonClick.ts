@@ -1,4 +1,4 @@
-import { getAcceptablePage } from "../utils";
+import { getAcceptablePage, hasError } from "../utils";
 import { getHash } from "../../crypto";
 import {
   dispatch_disableButton,
@@ -133,9 +133,7 @@ export function renderCreateButtonClick(props: State, calledAt: RenderType) {
       }
     }
     const ERC20ParamsOptions = getERC20Params();
-
-    if (ERC20ParamsOptions.status === Status.Failure) {
-      dispatch_renderError(ERC20ParamsOptions.error);
+    if (hasError(ERC20ParamsOptions)) {
       return;
     }
 

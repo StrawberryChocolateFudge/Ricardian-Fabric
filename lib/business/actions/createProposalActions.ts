@@ -38,7 +38,7 @@ import {
   getTerms,
   proposeNewRank,
 } from "../../wallet/catalogDAO/contractCalls";
-import { OptionsBuilder } from "../utils";
+import { hasError, OptionsBuilder } from "../utils";
 import { copyStringToClipboard, getById, readFile } from "../../view/utils";
 import {
   dispatch_setPage,
@@ -174,15 +174,13 @@ export async function createProposalActions(props: State) {
 
   const daoStakingOptions = await OptionsBuilder(() => getDaoStakingContract());
 
-  if (daoStakingOptions.status === Status.Failure) {
-    dispatch_renderError(daoStakingOptions.error);
+  if (hasError(daoStakingOptions)) {
     return;
   }
 
   const ricOptions = await OptionsBuilder(() => getRicContract());
 
-  if (ricOptions.status === Status.Failure) {
-    dispatch_renderError(ricOptions.error);
+  if (hasError(ricOptions)) {
     return;
   }
 
@@ -190,8 +188,7 @@ export async function createProposalActions(props: State) {
     isStaking(daoStakingOptions.data, myAddress, myAddress)
   );
 
-  if (amIStakingOptions.status === Status.Failure) {
-    dispatch_renderError(amIStakingOptions.error);
+  if (hasError(amIStakingOptions)) {
     return;
   }
 
@@ -199,18 +196,13 @@ export async function createProposalActions(props: State) {
   const myAllowanceOptions = await OptionsBuilder(() =>
     allowance(ricOptions.data, myAddress, DAOSTAKINGADDRESS, myAddress)
   );
-
-  if (myAllowanceOptions.status === Status.Failure) {
-    dispatch_renderError(myAllowanceOptions.error);
+  if (hasError(myAllowanceOptions)) {
     return;
   }
-
   const ricBalanceOptions = await OptionsBuilder(() =>
     balanceOf(ricOptions.data, myAddress, myAddress)
   );
-
-  if (ricBalanceOptions.status === Status.Failure) {
-    dispatch_renderError(ricBalanceOptions.error);
+  if (hasError(ricBalanceOptions)) {
     return;
   }
 
@@ -406,9 +398,7 @@ export function uploadProposalActions(props: State, step: PopupState) {
         const artifactiOptions = await OptionsBuilder(() =>
           artifactValid(artifactEl.value)
         );
-
-        if (artifactiOptions.status === Status.Failure) {
-          dispatch_renderError(artifactiOptions.error);
+        if (hasError(artifactiOptions)) {
           return;
         }
 
@@ -555,8 +545,7 @@ export async function DAOTermsInit(props: State) {
 
   const URLOptions = await OptionsBuilder(async () => getTerms(catalogDAO));
 
-  if (URLOptions.status === Status.Failure) {
-    dispatch_renderError(URLOptions.error);
+  if (hasError(URLOptions)) {
     return;
   }
   dispatch_renderDAOTermsURL(props, URLOptions.data);
