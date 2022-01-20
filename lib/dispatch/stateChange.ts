@@ -118,3 +118,10 @@ export function dispatch_setUploadProposalProps(proposalProps: ProposalFormat) {
     value: proposalProps,
   });
 }
+
+export function dispatch_setBlockPollingInterval(intervalVal: NodeJS.Timer) {
+  dispatch(Events.stateChange, {
+    type: EventType.blockPollingInterval,
+    value: intervalVal,
+  });
+}
