@@ -2,6 +2,7 @@ import {
   CreateRicardianPageProps,
   DeploySC,
   FetchedProposals,
+  LockedTokens,
   PaginatedProposal,
   PaginatedProposals,
   PopupState,
@@ -672,7 +673,6 @@ export function dispatch_tokenSalePageInit(
   props: State,
   ricLeft: string,
   rate: string,
-  balance: string,
   tokensSold: string,
   purchasedAlready: boolean
 ) {
@@ -680,7 +680,7 @@ export function dispatch_tokenSalePageInit(
     type: RenderType.tokenSalePageInit,
     props: {
       ...props,
-      tmp: { ricLeft, rate, balance, tokensSold, purchasedAlready },
+      tmp: { ricLeft, rate, tokensSold, purchasedAlready },
     },
   });
 }
@@ -689,5 +689,51 @@ export function dispatch_renderSellAmount(props: State, rate: number) {
   dispatch(Events.render, {
     type: RenderType.renderSellAmount,
     props: { ...props, tmp: { rate } },
+  });
+}
+
+export function dispatch_renderVaultLockedTokens(
+  props: State,
+  lockedTokens: LockedTokens[],
+  blocks: number,
+  firstIndex: number,
+  lastIndex: number,
+  currentPage: number,
+  totalPages: number
+) {
+  dispatch(Events.render, {
+    type: RenderType.renderVaultLockedTokens,
+    props: {
+      ...props,
+      tmp: {
+        lockedTokens,
+        blocks,
+        firstIndex,
+        lastIndex,
+        currentPage,
+        totalPages,
+      },
+    },
+  });
+}
+
+export function dispatch_renderMyRicBalance(props: State, balance: string) {
+  dispatch(Events.render, {
+    type: RenderType.renderMyRicBalance,
+    props: { ...props, tmp: { balance } },
+  });
+}
+
+export function dispatch_renderCurrentBlock(block: number) {
+  dispatch(Events.render, {
+    type: RenderType.renderCurrentBlock,
+    props: { tmp: { block } },
+  });
+}
+
+export function dispatch_renderApprovedSpend(spend: string) {
+  dispatch(Events.render, {
+    type: RenderType.renderApprovedSpend,
+    props: { tmp: { spend } },
   });
 }
