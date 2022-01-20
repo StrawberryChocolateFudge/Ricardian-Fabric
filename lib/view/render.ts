@@ -5,6 +5,7 @@ import {
   CreateRicardianPageProps,
   DeploySC,
   FetchedProposals,
+  LockedTokens,
   PageState,
   PaginatedProposal,
   PaginatedProposals,
@@ -89,8 +90,13 @@ import {
 import { FeeDaoPage } from "./templates/pages/feeDaoPage";
 import { PSTPage } from "./templates/pages/pstPage";
 import { TokenSalePage } from "./templates/pages/tokenSalePage";
-import { VaultPage } from "./templates/pages/vaultPage";
+import {
+  LoadingVault,
+  VaultItems,
+  VaultPage,
+} from "./templates/pages/vaultPage";
 import { TrailsPage } from "./templates/pages/trailsPage";
+import { ToyBlocks } from "./templates/components/logos";
 
 export function renderConnectYourWallet(props: State) {
   const page = getById("page");
@@ -1159,11 +1165,9 @@ export function enableStakingButtons(
 export function tokenSaleInit(
   ricLeft: string,
   rate: string,
-  balance: string,
   tokensSold: string,
   purchasedAlready: boolean
 ) {
-  const myBalanceEl = getById("ricBalance");
   const ricLeftEl = getById("ric-left-for-sale-buy-page");
   const rateEl = getById("ric-rate-buy-page");
   const buyAmount = getById("buy-amount") as HTMLInputElement;
@@ -1171,8 +1175,6 @@ export function tokenSaleInit(
 
   ricLeftEl.classList.remove("placeholder-item");
   rateEl.classList.remove("placeholder-item");
-
-  myBalanceEl.textContent = balance;
   ricLeftEl.textContent = ricLeft + " RIC";
   rateEl.textContent = rate + " RIC/ONE";
 
@@ -1199,4 +1201,76 @@ export function renderSellAmount(amount: number) {
     buyButton.disabled = false;
   }
   sellEl.textContent = amount.toFixed(2);
+}
+
+export function renderMyRICBalance(balance: string) {
+  const myBalanceEl = getById("ricBalance");
+  myBalanceEl.classList.remove("placeholder-item");
+  myBalanceEl.textContent = balance;
+}
+export function renderCurrentBlock(block: number) {
+  const currentBlockEl = getById("current-block") as HTMLElement;
+  currentBlockEl.classList.remove("placeholder-item");
+  currentBlockEl.textContent = block.toString();
+
+  renderBlocksleft(parseInt(currentBlockEl.textContent));
+}
+
+function renderBlocksleft(currentBlock: number) {
+  // Find
+  const allBlocksLeft = document.getElementsByClassName("all-blocks-left");
+
+  for (let i = 0; i < allBlocksLeft.length; i++) {
+    const el = allBlocksLeft[i] as HTMLElement;
+    const current = currentBlock;
+    const created = parseInt(el.dataset.created);
+    const forperiod = parseInt(el.dataset.forperiod);
+    const released = el.dataset.released === "true" ? true : false;
+    const index = el.dataset.index;
+    if (!released) {
+      const blocksLeft = calculateBlocksLeft(current, created, forperiod);
+
+      if (blocksLeft < 0) {
+        render(html`Blocks left: ${ToyBlocks()} OPEN`, el);
+        const releaseButton = getById(
+          `vaultRelease_${index}`
+        ) as HTMLButtonElement;
+        releaseButton.disabled = false;
+      } else {
+        render(html`Blocks left: ${ToyBlocks()} ${blocksLeft}`, el);
+      }
+    }
+  }
+}
+
+function calculateBlocksLeft(
+  current: number,
+  created: number,
+  period: number
+): number {
+  return created + period - current;
+}
+
+export function renderVaultLockedTokens(
+  lockedTokens: LockedTokens[],
+  blocks: number,
+  firstIndex: number,
+  lastIndex: number,
+  currentPage: number,
+  totalPages: number
+) {
+  const vaultItemContainer = getById("vault-item-container");
+  vaultItemContainer.classList.remove("placeholder-item");
+  render(
+    VaultItems(lockedTokens, firstIndex, lastIndex, currentPage, totalPages),
+    vaultItemContainer
+  );
+  // I get the current block and I calculate how much time is left from the lock
+  renderBlocksleft(blocks);
+}
+
+export function renderApprovedSpend(spend: string) {
+  const spendEl = getById("spend");
+  spendEl.classList.remove("placeholder-item");
+  spendEl.textContent = spend;
 }
