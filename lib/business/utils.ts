@@ -8,12 +8,14 @@ import {
   dispatch_removeLoadingIndicator,
   dispatch_renderError,
   dispatch_renderLoadingIndicator,
+  dispatch_renderVaultLockedTokens,
 } from "../dispatch/render";
 import { fetchGeoCodingCSV } from "../fetch";
 import {
   AcceptablePageProps,
   BlockCountry,
   FulfilledPageProps,
+  LockedTokens,
   MyProposals,
   Options,
   PaginatedProposal,
@@ -40,16 +42,95 @@ import {
   getSignupContract,
 } from "../wallet/signup/contractCalls";
 import { getAddress } from "../wallet/web3";
+import {
+  getLockIndex,
+  getVaultContent,
+} from "../wallet/ricVault/contractCalls";
+
+export async function getVaultPaginatedFromIndex(
+  props: State,
+  currentPage: number,
+  vault: Contract,
+  myAddr: string,
+  block: number
+) {
+  const lockIndexOptions = await OptionsBuilder(() =>
+    getLockIndex(vault, myAddr, myAddr)
+  );
+
+  if (hasError(lockIndexOptions)) {
+    return;
+  }
+  const index = lockIndexOptions.data;
+
+  const totalPages = getTotalPages(index, 6);
+
+  let lockedTokens: LockedTokens[] = [];
+
+  const [firstIndex, lastIndex] = getFirstAndLastIndex(currentPage, index);
+
+  // this function is pushing into the locked tokens array, as it recurses!
+  async function delayedContentFetching(_firstIndex_, _lastIndex_) {
+    if (_firstIndex_ > _lastIndex_) {
+      return true;
+    }
+    const content = await getVaultContent(vault, myAddr, _firstIndex_, myAddr);
+    lockedTokens.push(content);
+    dispatch_renderVaultLockedTokens(
+      props,
+      lockedTokens,
+      block,
+      firstIndex,
+      _lastIndex_,
+      currentPage,
+      totalPages
+    );
+    _firstIndex_ += 1;
+    setTimeout(delayedContentFetching.bind({}, _firstIndex_, _lastIndex_), 100);
+  }
+
+  return await delayedContentFetching(firstIndex, lastIndex);
+}
+
+function getFirstAndLastIndex(
+  currentPage: number,
+  lastIndex: number
+): [firstIndexToFetch: number, lastIndexToFetch: number] {
+  let firstIndexToFetch = undefined;
+  let lastIndexToFetch = undefined;
+
+  // find the first index to fetch
+
+  for (let i = 1; i <= lastIndex; i++) {
+    if (getTotalPages(i, 6) === currentPage) {
+      if (firstIndexToFetch === undefined) {
+        firstIndexToFetch = i;
+      }
+    }
+  }
+
+  // Find the last index to fetch
+
+  for (let i = lastIndex; i >= firstIndexToFetch; i--) {
+    if (getTotalPages(i, 6) === currentPage) {
+      if (lastIndexToFetch === undefined) {
+        lastIndexToFetch = i;
+      }
+    }
+  }
+
+  return [firstIndexToFetch, lastIndexToFetch];
+}
 
 export async function getProposals<Type>(
-  catalogDAO: Contract,
+  contract: Contract,
   myAddress: string,
   toFetch: string[],
   getPaginated: CallableFunction
 ): Promise<Type> {
   const proposals = await OptionsBuilder(() =>
     getPaginated(
-      catalogDAO,
+      contract,
       myAddress,
       toFetch[0],
       toFetch[1],
@@ -58,8 +139,7 @@ export async function getProposals<Type>(
       toFetch[4]
     )
   );
-  if (proposals.status === Status.Failure) {
-    dispatch_renderError(proposals.error);
+  if (hasError(proposals)) {
     return;
   }
 
@@ -68,24 +148,23 @@ export async function getProposals<Type>(
 
 export async function getPaginatedByIndex<Type>(
   pageIndex: number,
-  catalogDAO: Contract,
+  contract: Contract,
   myAddress: string,
   getLastIndex: CallableFunction,
   getPaginated: CallableFunction
 ): Promise<[Type, string[], PaginatedProposal]> {
   const indexOptions = await OptionsBuilder(() =>
-    getLastIndex(catalogDAO, myAddress)
+    getLastIndex(contract, myAddress)
   );
 
-  if (indexOptions.status === Status.Failure) {
-    dispatch_renderError(indexOptions.error);
+  if (hasError(indexOptions)) {
     return;
   }
 
   const pagination: PaginatedProposal = {
     proposals: generateProposalIndexes(indexOptions.data),
     currentPage: pageIndex,
-    totalPages: getTotalPages(indexOptions.data),
+    totalPages: getTotalPages(indexOptions.data, 5),
     totalContent: parseInt(indexOptions.data),
   };
 
@@ -96,7 +175,7 @@ export async function getPaginatedByIndex<Type>(
   const toFetch = proposalsToFetch(startPage);
 
   const proposals = await getProposals<Type>(
-    catalogDAO,
+    contract,
     myAddress,
     toFetch,
     getPaginated
@@ -131,11 +210,11 @@ export async function OptionsBuilder(
   return options;
 }
 
-export const getTotalPages = (length) => {
+export const getTotalPages = (length, size) => {
   if (length === 0) {
     return 1;
   }
-  const divided = new Decimal(length).dividedBy(5);
+  const divided = new Decimal(length).dividedBy(size);
   const split = divided.toString().split(".");
 
   if (split[0] === 0) {
@@ -150,13 +229,12 @@ export const getTotalPages = (length) => {
 };
 
 // I need to get a proposal at random index and tell what page it's on.
-
 export const proposalsToFetch = (data: PaginatedProposal) => {
   let proposals = [];
 
   for (let i = 0; i < data.totalContent; i++) {
     if (proposals.length !== 5) {
-      if (getTotalPages(i + 1) === data.currentPage) {
+      if (getTotalPages(i + 1, 5) === data.currentPage) {
         proposals.push(data.proposals[i].toString());
       }
     }
@@ -224,7 +302,7 @@ export function startPaginatingAProposal(
   return {
     proposals,
     currentPage: currentPage,
-    totalPages: getTotalPages(proposals.length),
+    totalPages: getTotalPages(proposals.length, 5),
     totalContent: proposals.length,
   };
 }
@@ -461,4 +539,12 @@ export function registerEthereumProviderEvents(props) {
       }
     }
   });
+}
+
+export function hasError(options: Options<any>): boolean {
+  if (options.status === Status.Failure) {
+    dispatch_renderError(options.error);
+    return true;
+  }
+  return false;
 }
