@@ -238,6 +238,10 @@ hr {
   margin: 0 auto;
 }
 
+.width-50 {
+  width: 50px !important;
+}
+
 .width-100 {
   width: 100px;
 }
@@ -289,8 +293,14 @@ hr {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  flex-wrap: wrap;
 }
-
+.rowStart {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
 .column {
   display: flex;
   flex-direction: column;
