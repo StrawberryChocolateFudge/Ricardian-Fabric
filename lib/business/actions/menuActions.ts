@@ -1,10 +1,9 @@
-import { dispatch_renderError } from "../../dispatch/render";
 import { dispatch_setPage } from "../../dispatch/stateChange";
-import { PageState, State, Status } from "../../types";
+import { PageState, State } from "../../types";
 import { getById } from "../../view/utils";
 import { getTerms } from "../../wallet/catalogDAO/contractCalls";
 import { getSignupContract } from "../../wallet/signup/contractCalls";
-import { OptionsBuilder } from "../utils";
+import { hasError, OptionsBuilder } from "../utils";
 import { verifyContractPopupTrigger } from "./verifyContractActions";
 
 export async function menuActions(props: State) {
@@ -48,16 +47,14 @@ export async function menuActions(props: State) {
   };
 
   const signUpContractOptions = await OptionsBuilder(() => getSignupContract());
-  if (signUpContractOptions.status === Status.Failure) {
-    dispatch_renderError(signUpContractOptions.error);
+  if (hasError(signUpContractOptions)) {
     return;
   }
+
   const contractURLOptions = await OptionsBuilder(() =>
     getTerms(signUpContractOptions.data)
   );
-
-  if (contractURLOptions.status === Status.Failure) {
-    dispatch_renderError(contractURLOptions.error);
+  if (hasError(contractURLOptions)) {
     return;
   }
 
