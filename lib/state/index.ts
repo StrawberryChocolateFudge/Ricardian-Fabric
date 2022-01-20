@@ -82,6 +82,7 @@ import { beforePageSetHook, setStateHook } from "./setStateHook";
       isERC20: getIsERC20FromDataProp(pageEl),
       ipfsCID: "",
       editFinished: false,
+      blockPollTimer: undefined,
     };
 
     const stateHandler = {
@@ -151,6 +152,9 @@ import { beforePageSetHook, setStateHook } from "./setStateHook";
     },
     [EventType.saveToStateUploadProposalProps]: (value: ProposalFormat) => {
       stateContainer.uploadProposalProps = value;
+    },
+    [EventType.blockPollingInterval]: (value: NodeJS.Timer) => {
+      stateContainer.blockPollTimer = value;
     },
   };
 
