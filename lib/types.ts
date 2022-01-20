@@ -105,6 +105,10 @@ export enum RenderType {
   trailsPage = "trails",
   tokenSalePageInit = "tokenSalePageInit",
   renderSellAmount = "renderSellAmount",
+  renderVaultLockedTokens = "renderVaultLockedTokens",
+  renderMyRicBalance = "renderMyRicBalance",
+  renderCurrentBlock = "renderCurrentBlock",
+  renderApprovedSpend = "renderApprovedSpend",
 }
 
 // TODO refactor to RenderDispatchArgs for specifying the dispatch arguments
@@ -192,6 +196,10 @@ export type Renderer = {
   [RenderType.trailsPage]: RenderFunction;
   [RenderType.tokenSalePageInit]: RenderFunction;
   [RenderType.renderSellAmount]: RenderFunction;
+  [RenderType.renderVaultLockedTokens]: RenderFunction;
+  [RenderType.renderMyRicBalance]: RenderFunction;
+  [RenderType.renderCurrentBlock]: RenderFunction;
+  [RenderType.renderApprovedSpend]: RenderFunction;
 };
 
 export enum VerificationState {
@@ -219,6 +227,7 @@ export enum EventType {
   setPageState = "setPageState",
   setCreateRicardianPageProps = "setCreateRicardianPageProps",
   saveToStateUploadProposalProps = "saveToStateUploadProposalProps",
+  blockPollingInterval = "blockPollingInterval",
 }
 
 export enum StateProperties {
@@ -240,6 +249,7 @@ export enum StateProperties {
   pageState = "pageState",
   proposalType = "proposalType",
   uploadProposalProps = "uploadProposalProps",
+  blockPollTimer = "blockPollTimer",
 }
 
 export enum ContractTypes {
@@ -369,6 +379,7 @@ export type State = {
   isERC20: ERC20Params;
   ipfsCID: string;
   editFinished: boolean;
+  blockPollTimer: NodeJS.Timer;
 };
 
 export type SetHookArgs = {
