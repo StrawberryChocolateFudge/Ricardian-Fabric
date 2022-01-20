@@ -4,6 +4,7 @@ import {
   AgreementLogo,
   catalogLogo,
   Dashboard2,
+  RewardsPageIcon,
   TokenSaleLogo,
   TrailsLogo,
   VaultLogo,
@@ -75,20 +76,29 @@ export const MenuPage = (blockieData: string) => html`
     </div>
     <div class="text-align-center">
       <button
-        title="Vault"
-        class="lightSlateGray-shadow labelButton"
-        id="vault-button"
-      >
-        ${VaultLogo()}
-      </button>
-    </div>
-    <div class="text-align-center">
-      <button
         title="Trails"
         class="lightSlateGray-shadow labelButton"
         id="trails-page-button"
       >
         ${TrailsLogo()}
+      </button>
+    </div>
+    <div class="text-align-center">
+      <button
+        title="Fees"
+        class="lightSlateGray-shadow labelButton"
+        id="fees-button"
+      >
+        ${RewardsPageIcon()}
+      </button>
+    </div>
+    <div class="text-align-center">
+      <button
+        title="Vault"
+        class="lightSlateGray-shadow labelButton"
+        id="vault-button"
+      >
+        ${VaultLogo()}
       </button>
     </div>
   </div>
