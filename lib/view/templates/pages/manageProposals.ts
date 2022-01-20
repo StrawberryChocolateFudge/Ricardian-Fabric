@@ -10,6 +10,10 @@ import {
   ChevronRightBlack,
   WebAsset,
 } from "../components/logos";
+import {
+  getPageButtonEndPoint,
+  getPageButtonStartPoint,
+} from "../components/paginations";
 
 export function ManageProposals() {
   return html`<h2 class="fabric">My Proposals</h2>
@@ -71,39 +75,6 @@ export function MyRankProposalTable(
     </div>
   `;
 }
-
-const getPageButtonStartPoint = (totalPages: number, currentPage: number) => {
-  if (totalPages <= 3) {
-    return 1;
-  } else {
-    if (currentPage > 1) {
-      if (currentPage === totalPages) {
-        return currentPage - 2;
-      }
-      return currentPage - 1;
-    } else {
-      return 1;
-    }
-  }
-};
-
-const getPageButtonEndPoint = (totalPages: number, currentPage: number) => {
-  if (totalPages <= 3) {
-    return totalPages;
-  } else {
-    if (currentPage === 1) {
-      return 3;
-    } else {
-      if (currentPage + 1 < totalPages) {
-        return currentPage + 1;
-      } else if (currentPage + 2 < totalPages) {
-        return currentPage + 2;
-      } else {
-        return totalPages;
-      }
-    }
-  }
-};
 
 export function getRankPagingButtons(
   totalPages: number,
