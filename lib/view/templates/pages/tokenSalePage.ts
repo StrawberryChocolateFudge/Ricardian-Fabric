@@ -8,8 +8,7 @@ import {
 import { dashEl } from "./dashboardPage";
 
 export const TokenSalePage = () => html`<h3>Join the community</h3>
-
-  <div>Balance: ${TokenLogoIcon()}<span id="ricBalance"></span> RIC</div>
+  ${balanceDisplay()}
   <h6>
     You can buy 100.000 RIC per Rate. The price is incrementing from 0.01 ONE
     till 1 ONE per RIC.
@@ -29,7 +28,6 @@ export const TokenSalePage = () => html`<h3>Join the community</h3>
         RateLogo()
       )}
     </div>
-
     <div class="text-align-center width-200 center">
       <h5>
         For <input type="number" id="buy-amount" /> ONE, you get
@@ -40,3 +38,11 @@ export const TokenSalePage = () => html`<h3>Join the community</h3>
       </button>
     </div>
   </div> `;
+
+export const balanceDisplay = () => html`
+  <div>
+    Balance: ${TokenLogoIcon()}
+    <span id="ricBalance" class="placeholder-item"></span>
+    RIC
+  </div>
+`;
