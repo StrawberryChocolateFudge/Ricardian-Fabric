@@ -2,6 +2,7 @@ import Web3 from "web3";
 import Decimal from "decimal.js";
 import {
   dispatch_renderError,
+  dispatch_renderMyRicBalance,
   dispatch_renderSellAmount,
   dispatch_tokenSalePageInit,
 } from "../../dispatch/render";
@@ -22,7 +23,7 @@ import {
   remainingTokens,
 } from "../../wallet/ricSale/contractCalls";
 import { getAddress, watchAsset } from "../../wallet/web3";
-import { OptionsBuilder } from "../utils";
+import { hasError, OptionsBuilder } from "../utils";
 
 export async function tokenSalePageActions(props: State) {
   const buyButton = getById("buy-ric");
@@ -30,80 +31,71 @@ export async function tokenSalePageActions(props: State) {
 
   const addressOptions = await OptionsBuilder(() => getAddress());
 
-  if (addressOptions.status === Status.Failure) {
-    dispatch_renderError(addressOptions.error);
+  if (hasError(addressOptions)) {
     return;
   }
   const address = addressOptions.data;
 
   const ricOptions = await OptionsBuilder(() => getRicContract());
-
-  if (ricOptions.status === Status.Failure) {
-    dispatch_renderError(ricOptions.error);
+  if (hasError(ricOptions)) {
     return;
   }
   const ricsaleOptions = await OptionsBuilder(() => getRicSaleContract());
-  if (ricsaleOptions.status === Status.Failure) {
-    dispatch_renderError(ricsaleOptions.error);
+
+  if (hasError(ricsaleOptions)) {
     return;
   }
   const ricsale = ricsaleOptions.data;
   const ricLeftOptions = await OptionsBuilder(() =>
     remainingTokens(ricsale, address)
   );
-
-  if (ricLeftOptions.status === Status.Failure) {
-    dispatch_renderError(ricLeftOptions.error);
+  if (hasError(ricLeftOptions)) {
     return;
   }
+
   const ricLeft = ricLeftOptions.data;
 
   const ricBalanceOptions = await OptionsBuilder(() =>
     balanceOf(ricOptions.data, address, address)
   );
-
-  if (ricBalanceOptions.status === Status.Failure) {
-    dispatch_renderError(ricBalanceOptions.error);
+  if (hasError(ricBalanceOptions)) {
     return;
   }
   let tokensSoldOptions = await OptionsBuilder(() =>
     getTokensSold(ricsale, address)
   );
-  if (tokensSoldOptions.status === Status.Failure) {
-    dispatch_renderError(tokensSoldOptions.error);
+
+  if (hasError(tokensSoldOptions)) {
     return;
   }
+
   const tokensSold = tokensSoldOptions.data;
   const ricRateOptions = await OptionsBuilder(() =>
     getCurrentRate(ricsale, tokensSold, address)
   );
-
-  if (ricRateOptions.status === Status.Failure) {
-    dispatch_renderError(ricRateOptions.error);
+  if (hasError(ricRateOptions)) {
     return;
   }
+
   const purchasedAlreadyOptions = await OptionsBuilder(() =>
     purchasedAlready(ricsale, address, address)
   );
-
-  if (purchasedAlreadyOptions.status === Status.Failure) {
-    dispatch_renderError(purchasedAlreadyOptions.error);
+  if (hasError(purchasedAlreadyOptions)) {
     return;
   }
+
   const rate = ricRateOptions.data;
   const balance = ricBalanceOptions.data;
+  dispatch_renderMyRicBalance(props, balance);
   dispatch_tokenSalePageInit(
     props,
     ricLeft,
     rate,
-    balance,
     tokensSold,
     purchasedAlreadyOptions.data
   );
   const ricSaleOptions = await OptionsBuilder(() => getRicSaleContract());
-
-  if (ricSaleOptions.status === Status.Failure) {
-    dispatch_renderError(ricSaleOptions.error);
+  if (hasError(ricSaleOptions)) {
     return;
   }
 
@@ -113,8 +105,13 @@ export async function tokenSalePageActions(props: State) {
     }
     const sellAmountDec = new Decimal(rate).times(amount); //.mul(amount);
     const sellAmount: number = sellAmountDec.toNumber();
+    if (sellAmount < 0) {
+      dispatch_renderError("Invalid amount entered");
+      return;
+    }
     if (sellAmount > 100000) {
       dispatch_renderError("Max buy amount exceeded");
+      return;
     }
     dispatch_renderSellAmount(props, sellAmount);
   }
@@ -139,6 +136,9 @@ export async function tokenSalePageActions(props: State) {
 
     // If max price is not exceeded
     const getAmount = amountEl.value;
+    if (parseFloat(getAmount) < 0) {
+      dispatch_renderError("Invalid amount entered");
+    }
     try {
       const weiAmount = Web3.utils.toWei(getAmount);
       buyTokens(ricSaleOptions.data, weiAmount, address, onError, onReceipt);
