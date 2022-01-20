@@ -151,6 +151,13 @@ export const setStateHook = {
       dispatch_dismissSidebar();
     }
 
+    if (
+      args.value !== PageState.vault &&
+      args.obj.blockPollTimer !== undefined
+    ) {
+      clearInterval(args.obj.blockPollTimer);
+    }
+
     // Based on the selected page, change the shadow of the  menu button
     // dispatch_
 
@@ -209,6 +216,7 @@ export const setStateHook = {
     dispatch_permawebselectActions(clone);
   },
   [StateProperties.uploadProposalProps]: (args: SetHookArgs) => {},
+  [StateProperties.blockPollTimer]: (args: SetHookArgs) => {},
 };
 
 function cloneState(state: State) {
