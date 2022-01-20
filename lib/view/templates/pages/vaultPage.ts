@@ -22,7 +22,6 @@ export const VaultPage = () => html`<h3>Vault</h3>
     while claiming Fees will go here.
   </h6>
   <hr />
-  <!-- <h3></h3> -->
   <div class="text-align-center center">
     <table class="width-200 box">
       <tr>
@@ -99,7 +98,7 @@ export const VaultItems = (
   return html`<hr />
     <div class="rowStart overflow-auto">
       ${lockedTokens.map((token) =>
-        VaultItem(token, indexes[lockedTokens.indexOf(token)])
+        VaultItem(token, indexes[lockedTokens.indexOf(token)], currentPage)
       )}
     </div>
     <hr />
@@ -110,7 +109,8 @@ export const VaultItems = (
 
 export const VaultItem = (
   lockedToken: LockedTokens,
-  index: number
+  index: number,
+  currentpage: number
 ) => html` <div class="box padding-20 marginBottom-10">
   <div
     data-forperiod="${lockedToken.period}"
@@ -128,7 +128,8 @@ export const VaultItem = (
       ? html`<p>Relased</p>`
       : html`<button
           disabled
-          data-lockindex="${index + 1}"
+          data-lockindex="${index}"
+          data-currentpage=${currentpage}
           class="labelButton vaultReleaseButtons"
           id="vaultRelease_${index}"
         >

@@ -547,7 +547,7 @@ const Render: Renderer = {
       props.tmp.currentPage,
       props.tmp.totalPages
     );
-    lockedTokensActions();
+    lockedTokensActions(props);
   },
   [RenderType.renderMyRicBalance]: (props: RenderDispatchArgs) => {
     renderMyRICBalance(props.tmp.balance);

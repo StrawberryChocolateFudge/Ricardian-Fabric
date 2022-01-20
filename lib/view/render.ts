@@ -1229,16 +1229,19 @@ function renderBlocksleft(currentBlock: number) {
     const index = el.dataset.index;
     if (!released) {
       const blocksLeft = calculateBlocksLeft(current, created, forperiod);
-
+      const releaseButton = getById(
+        `vaultRelease_${index}`
+      ) as HTMLButtonElement;
       if (blocksLeft < 0) {
         render(html`Blocks left: ${ToyBlocks()} OPEN`, el);
-        const releaseButton = getById(
-          `vaultRelease_${index}`
-        ) as HTMLButtonElement;
+
         releaseButton.disabled = false;
       } else {
         render(html`Blocks left: ${ToyBlocks()} ${blocksLeft}`, el);
+        releaseButton.disabled = true;
       }
+    } else {
+      render(html``, el);
     }
   }
 }

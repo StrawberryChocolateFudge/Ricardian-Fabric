@@ -226,13 +226,13 @@ export async function pollBlocks() {
   dispatch_setBlockPollingInterval(intervalVal);
 }
 
-export function lockedTokensActions() {
+export function lockedTokensActions(props: State) {
   const releaseButtons = document.getElementsByClassName("vaultReleaseButtons");
 
   for (let index = 0; index < releaseButtons.length; index++) {
     const element = releaseButtons[index] as HTMLElement;
     const lockindex = element.dataset.lockindex;
-
+    const currentPage = parseInt(element.dataset.currentpage);
     element.onclick = async function () {
       const addressOptions = await OptionsBuilder(() => getAddress());
 
@@ -251,8 +251,27 @@ export function lockedTokensActions() {
       const onError = (error) => {
         dispatch_renderError(error.message);
       };
-      const onReceipt = () => {
-        dispatch_setPage(PageState.vault);
+      const onReceipt = async () => {
+        // dispatch_setPage(PageState.vault);
+        const blockNumber = await getBlockNumber();
+        await getVaultPaginatedFromIndex(
+          props,
+          currentPage,
+          vault,
+          addr,
+          blockNumber
+        );
+        const ricOptions = await OptionsBuilder(() => getRicContract());
+        if (hasError(ricOptions)) {
+          return;
+        }
+        const ricBalanceOptions = await OptionsBuilder(() =>
+          balanceOf(ricOptions.data, addr, addr)
+        );
+        if (hasError(ricBalanceOptions)) {
+          return;
+        }
+        dispatch_renderMyRicBalance(props, ricBalanceOptions.data);
       };
 
       await release(vault, lockindex, addr, onError, onReceipt);
