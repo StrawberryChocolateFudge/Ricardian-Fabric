@@ -96,6 +96,10 @@ import {
   renderTrailsPage,
   tokenSaleInit,
   renderSellAmount,
+  renderVaultLockedTokens,
+  renderMyRICBalance,
+  renderCurrentBlock,
+  renderApprovedSpend,
 } from "./render";
 import { renderAcceptTools } from "./render";
 import { areYouSureButtons } from "../business/actions/areYouSureButtons";
@@ -156,7 +160,10 @@ import { dashboardActions } from "../business/actions/dashboardActions";
 import { feeProposalPageActions } from "../business/actions/feeProposalPageActions";
 import { pstPageActions } from "../business/actions/pstPageActions";
 import { tokenSalePageActions } from "../business/actions/tokenSalePageActions";
-import { vaultPageActions } from "../business/actions/vaultPageActions";
+import {
+  lockedTokensActions,
+  vaultPageActions,
+} from "../business/actions/vaultPageActions";
 import { trailsPageActions } from "../business/actions/trailsPageActions";
 
 const Render: Renderer = {
@@ -512,9 +519,9 @@ const Render: Renderer = {
     renderTokenSalePage(props);
     await tokenSalePageActions(props);
   },
-  [RenderType.vaultPage]: (props: RenderDispatchArgs) => {
+  [RenderType.vaultPage]: async (props: RenderDispatchArgs) => {
     renderVaultPage(props);
-    vaultPageActions(props);
+    await vaultPageActions(props);
   },
   [RenderType.trailsPage]: (props: RenderDispatchArgs) => {
     renderTrailsPage(props);
@@ -524,13 +531,32 @@ const Render: Renderer = {
     tokenSaleInit(
       props.tmp.ricLeft,
       props.tmp.rate,
-      props.tmp.balance,
       props.tmp.tokensSold,
       props.tmp.purchasedAlready
     );
   },
   [RenderType.renderSellAmount]: (props: RenderDispatchArgs) => {
     renderSellAmount(props.tmp.rate);
+  },
+  [RenderType.renderVaultLockedTokens]: (props: RenderDispatchArgs) => {
+    renderVaultLockedTokens(
+      props.tmp.lockedTokens,
+      props.tmp.blocks,
+      props.tmp.firstIndex,
+      props.tmp.lastIndex,
+      props.tmp.currentPage,
+      props.tmp.totalPages
+    );
+    lockedTokensActions();
+  },
+  [RenderType.renderMyRicBalance]: (props: RenderDispatchArgs) => {
+    renderMyRICBalance(props.tmp.balance);
+  },
+  [RenderType.renderCurrentBlock]: (props: RenderDispatchArgs) => {
+    renderCurrentBlock(props.tmp.block);
+  },
+  [RenderType.renderApprovedSpend]: (props: RenderDispatchArgs) => {
+    renderApprovedSpend(props.tmp.spend);
   },
 };
 
