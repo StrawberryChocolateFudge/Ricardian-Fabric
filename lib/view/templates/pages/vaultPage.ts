@@ -171,7 +171,18 @@ export function getVaultPagingButtons(
     return null;
   }
 
-  return html`<button
+  return html`
+    <button
+      id="vault-first-page"
+      data-vaultpage="${currentPage}"
+      data-totalpages="${totalPages}"
+      class="labelButton ${currentPage === 1
+        ? "background-ccc cursor-notallowed"
+        : nothing}"
+    >
+      First page
+    </button>
+    <button
       id="vault-page-left"
       data-vaultpage="${currentPage}"
       data-totalpages="${totalPages}"
@@ -189,7 +200,18 @@ export function getVaultPagingButtons(
         : nothing}"
     >
       ${ChevronRightBlack()}
-    </button>`;
+    </button>
+    <button
+      id="vault-last-page"
+      data-vaultpage="${currentPage}"
+      data-totalpages="${totalPages}"
+      class="labelButton ${currentPage === totalPages
+        ? "background-ccc cursor-notallowed"
+        : nothing}"
+    >
+      Last page
+    </button>
+  `;
 }
 
 export const LoadingVault = () => html` <hr />

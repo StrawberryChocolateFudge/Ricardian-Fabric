@@ -182,7 +182,8 @@ export async function vaultPageActions(props: State) {
 
   const pageLeftButton = getById("vault-page-left");
   const pageRightButton = getById("vault-page-right");
-
+  const lastPageButton = getById("vault-last-page");
+  const firstPageButton = getById("vault-first-page");
   pageLeftButton.onclick = async function () {
     const index = parseInt(pageLeftButton.dataset.vaultpage);
     if (index > 1) {
@@ -209,6 +210,24 @@ export async function vaultPageActions(props: State) {
         addr,
         blockNumber
       );
+    }
+  };
+
+  lastPageButton.onclick = async function () {
+    const total = parseInt(lastPageButton.dataset.totalpages);
+    const index = parseInt(lastPageButton.dataset.vaultpage);
+
+    if (index < total) {
+      const blockNumber = await getBlockNumber();
+      await getVaultPaginatedFromIndex(props, total, vault, addr, blockNumber);
+    }
+  };
+
+  firstPageButton.onclick = async function () {
+    const index = parseInt(firstPageButton.dataset.vaultpage);
+    if (index > 1) {
+      const blockNumber = await getBlockNumber();
+      await getVaultPaginatedFromIndex(props, 1, vault, addr, blockNumber);
     }
   };
 }
