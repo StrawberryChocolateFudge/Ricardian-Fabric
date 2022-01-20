@@ -18,14 +18,11 @@ import {
   dispatch_setPopupState,
 } from "../../dispatch/stateChange";
 import {
-  AcceptedSmartContractProposal,
   MyProposals,
   PageState,
   PaginatedProposal,
   PopupState,
   RankProposal,
-  RemovalProposal,
-  SmartContractProposal,
   State,
   Status,
 } from "../../types";
@@ -152,8 +149,6 @@ export async function rankFetcher(
     paginatedRank,
   ]);
 }
-
-// export async function myProposalsTableActions() {}
 
 export async function myRankProposalsTableActions(
   props: State,
