@@ -217,3 +217,7 @@ export function getVaultPagingButtons(
 export const LoadingVault = () => html` <hr />
   <h3 class="center">Loading Vault</h3>
   <hr />`;
+
+export const EmptyVault = () => html` <hr />
+  <h3 class="center">No vault history</h3>
+  <hr />`;
