@@ -91,12 +91,14 @@ import { FeeDaoPage } from "./templates/pages/feeDaoPage";
 import { PSTPage } from "./templates/pages/pstPage";
 import { TokenSalePage } from "./templates/pages/tokenSalePage";
 import {
+  EmptyVault,
   LoadingVault,
   VaultItems,
   VaultPage,
 } from "./templates/pages/vaultPage";
 import { TrailsPage } from "./templates/pages/trailsPage";
 import { ToyBlocks } from "./templates/components/logos";
+import { CollectRewardsPage } from "./templates/pages/collectRewardsPage";
 
 export function renderConnectYourWallet(props: State) {
   const page = getById("page");
@@ -110,6 +112,10 @@ export function renderConnectYourWallet(props: State) {
 export function renderDashboard(props: State) {
   const page = getById("page");
   render(DashboardPage(), page);
+}
+export function renderCollectRewardsPage(props: State) {
+  const page = getById("page");
+  render(CollectRewardsPage(), page);
 }
 
 export function renderMenuPage(props: State) {
@@ -1095,12 +1101,6 @@ export function renderDAOTermsPopup() {
   render(DaoTermsPopup(null), layout);
 }
 
-export function renderDAOTermsURL(url: string) {
-  setBannerDisplayBlock();
-  const layout = getById("overlay-layout");
-  render(DaoTermsPopup(url), layout);
-}
-
 export function renderRankProposalTable(
   blockNumber: number,
   ranks: RankProposal[],
@@ -1276,4 +1276,48 @@ export function renderApprovedSpend(spend: string) {
   const spendEl = getById("spend");
   spendEl.classList.remove("placeholder-item");
   spendEl.textContent = spend;
+}
+
+export function renderPSArweaveAddress(address: string) {
+  const addrEl = getById("currentPSTAddress");
+  if (address === "") {
+    addrEl.textContent = "NOT ADDED";
+  } else {
+    addrEl.textContent = address;
+  }
+}
+
+export function renderVaultHistoryEmpty() {
+  const vaultItemContainer = getById("vault-item-container");
+  vaultItemContainer.classList.remove("placeholder-item");
+  vaultItemContainer.classList.add("text-align-center");
+  render(EmptyVault(), vaultItemContainer);
+}
+
+export function renderTrailsTabs(tab: "search" | "create") {
+  const createTabButton = getById("create-trail-tab");
+  const searchTabButton = getById("search-trail-tab");
+  const searchContainer = getById("search-container");
+  const createContainer = getById("create-container");
+  switch (tab) {
+    case "search":
+      createTabButton.classList.add("light-shadow");
+      searchTabButton.classList.remove("light-shadow");
+      searchContainer.classList.remove("display-none");
+      searchContainer.classList.add("display-block");
+      if (!createContainer.classList.contains("display-none")) {
+        createContainer.classList.add("display-none");
+      }
+      break;
+    case "create":
+      searchTabButton.classList.add("light-shadow");
+      createTabButton.classList.remove("light-shadow");
+      createContainer.classList.remove("display-none");
+      createContainer.classList.add("display-block");
+      if (!searchContainer.classList.contains("display-none")) {
+        searchContainer.classList.add("display-none");
+      }
+
+      break;
+  }
 }
