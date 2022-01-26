@@ -94,7 +94,6 @@ export enum RenderType {
   renderReviewSmartContractProposals = "renderReviewSmartContractProposals",
   renderReviewAcceptedProposals = "renderReviewAcceptedProposals",
   renderReviewRemovalProposals = "renderReviewRemovalProposals",
-  renderDAOTerms = "renderDAOTerms",
   renderLoadedValue = "renderLoadedValue",
   pinnedDashboardData = "pinnedDashboardData",
   stakingButtons = "stakingButtons",
@@ -109,6 +108,10 @@ export enum RenderType {
   renderMyRicBalance = "renderMyRicBalance",
   renderCurrentBlock = "renderCurrentBlock",
   renderApprovedSpend = "renderApprovedSpend",
+  collectRewardsPage = "collectRewardsPage",
+  PSArweaveAddress = "PSArweaveAddress",
+  vaultHistoryEmpty = "vaultHistoryEmpty",
+  trailsTabs = "trailsTabs",
 }
 
 // TODO refactor to RenderDispatchArgs for specifying the dispatch arguments
@@ -184,7 +187,6 @@ export type Renderer = {
   [RenderType.renderWrongNetworkPopup]: RenderFunction;
   [RenderType.renderMyProposals]: RenderFunction;
   [RenderType.renderMyRankProposals]: RenderFunction;
-  [RenderType.renderDAOTerms]: RenderFunction;
   [RenderType.renderReviewRankProposals]: RenderFunction;
   [RenderType.renderLoadedValue]: RenderFunction;
   [RenderType.pinnedDashboardData]: RenderFunction;
@@ -200,6 +202,10 @@ export type Renderer = {
   [RenderType.renderMyRicBalance]: RenderFunction;
   [RenderType.renderCurrentBlock]: RenderFunction;
   [RenderType.renderApprovedSpend]: RenderFunction;
+  [RenderType.collectRewardsPage]: RenderFunction;
+  [RenderType.PSArweaveAddress]: RenderFunction;
+  [RenderType.vaultHistoryEmpty]: RenderFunction;
+  [RenderType.trailsTabs]: RenderFunction;
 };
 
 export enum VerificationState {
@@ -326,7 +332,6 @@ export enum PopupState {
   UploadProposalStep3,
   UploadProposalStep4,
   WrongNetwork,
-  signDaoTerms,
 }
 
 export enum PageState {
@@ -344,6 +349,7 @@ export enum PageState {
   tokenSale,
   vault,
   trails,
+  rewards,
 }
 
 export type State = {
@@ -623,4 +629,11 @@ export type DashboardUIElement = {
   id: string;
   desc: string;
   logo: TemplateResult;
+};
+
+export type TrailDetails = {
+  creator: string;
+  contentIndex: string;
+  initialized: boolean;
+  access: number;
 };
