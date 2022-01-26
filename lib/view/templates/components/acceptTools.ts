@@ -1,4 +1,4 @@
-import { html } from "lit-html";
+import { html, nothing } from "lit-html";
 import { State } from "../../../types";
 import { didExpire } from "../../utils";
 
@@ -21,7 +21,7 @@ export const acceptTools = (props: State) => {
         border: none;
         cursor: pointer;
       }
-      #accept-button:hover{
+      #accept-button:hover {
         transform: scale(1.01);
       }
     </style>
@@ -49,9 +49,9 @@ export const acceptTools = (props: State) => {
 export const AcceptButton = (positionNeeded: boolean) => {
   const labelEl = positionNeeded
     ? html`<div class="accept-button-label">
-  This contract is not available in all countries.
-</div>`
-    : "";
+        This contract is not available in all countries.
+      </div>`
+    : nothing;
   const buttonText = positionNeeded ? "Add location" : "Accept";
   return html`
     <style>

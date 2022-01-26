@@ -1,7 +1,11 @@
-import { Options, StateProperties, Status } from "../types";
+import { Options, Status } from "../types";
 
 export async function fetchGeoCodingCSV(): Promise<Options<string>> {
-  const result: Options<string> = { status: Status.Success, error: "", data: "" };
+  const result: Options<string> = {
+    status: Status.Success,
+    error: "",
+    data: "",
+  };
   try {
     const response = await fetch(
       "https://arweave.net/Wl0lmZU2A1D60EqMePwX77PpFpTEIMUdKGSBM-uGlto",
@@ -15,8 +19,14 @@ export async function fetchGeoCodingCSV(): Promise<Options<string>> {
   return result;
 }
 
-export async function fetchAcceptableContract(url: string): Promise<Options<string>> {
-  const result: Options<string> = { status: Status.Success, error: "", data: "" }
+export async function fetchAcceptableContract(
+  url: string
+): Promise<Options<string>> {
+  const result: Options<string> = {
+    status: Status.Success,
+    error: "",
+    data: "",
+  };
 
   try {
     const response = await fetch(url, { method: "get" });

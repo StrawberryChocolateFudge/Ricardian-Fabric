@@ -3,7 +3,7 @@ import { RankProposal, RemovalProposal } from "../../../types";
 import { VOTINGPERIODBLOCKS } from "../../../wallet/catalogDAO/contractCalls";
 import { getBlockie } from "../components/getBlockies";
 import {
-  AddLogo,
+  AddDocumentImage,
   FeeProposalLogo,
   ManageAccountLogo,
   ProfitSharingLogo,
@@ -26,7 +26,7 @@ export function ReviewAndVote() {
         class="labelButton"
         title="Propose a new smart contract"
       >
-        ${AddLogo()}
+        ${AddDocumentImage()}
       </button>
       <button id="my-proposals-button" class="labelButton" title="My proposals">
         ${ManageAccountLogo()}
