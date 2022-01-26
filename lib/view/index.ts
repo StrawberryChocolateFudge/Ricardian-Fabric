@@ -80,8 +80,6 @@ import {
   collapseSidebar,
   openSidebarIfScreenIsBig,
   render_wrongNetworkPopup,
-  renderMyProposalsContent,
-  renderDAOTermsURL,
   renderRankProposalTable,
   renderMyProposalsRankContent,
   renderConnectYourWallet,
@@ -100,6 +98,10 @@ import {
   renderMyRICBalance,
   renderCurrentBlock,
   renderApprovedSpend,
+  renderCollectRewardsPage,
+  renderPSArweaveAddress,
+  renderVaultHistoryEmpty,
+  renderTrailsTabs,
 } from "./render";
 import { renderAcceptTools } from "./render";
 import { areYouSureButtons } from "../business/actions/areYouSureButtons";
@@ -145,8 +147,6 @@ import {
 } from "../business/actions/reviewAndVote";
 import {
   createProposalActions,
-  DAOTermsActions,
-  DAOTermsInit,
   uploadProposalActions,
   uploadProposalSummaryActions,
 } from "../business/actions/createProposalActions";
@@ -475,15 +475,6 @@ const Render: Renderer = {
     render_wrongNetworkPopup();
     wrongNetworkActions(props);
   },
-
-  [RenderType.renderDAOTerms]: (props: RenderDispatchArgs) => {
-    if (props.tmp.url === null) {
-      DAOTermsInit(props);
-    } else {
-      renderDAOTermsURL(props.tmp.url);
-      DAOTermsActions(props);
-    }
-  },
   [RenderType.renderReviewRankProposals]: (props: RenderDispatchArgs) => {
     renderRankProposalTable(
       props.tmp.blockNumber,
@@ -523,9 +514,9 @@ const Render: Renderer = {
     renderVaultPage(props);
     await vaultPageActions(props);
   },
-  [RenderType.trailsPage]: (props: RenderDispatchArgs) => {
+  [RenderType.trailsPage]: async (props: RenderDispatchArgs) => {
     renderTrailsPage(props);
-    trailsPageActions(props);
+    await trailsPageActions(props);
   },
   [RenderType.tokenSalePageInit]: (props: RenderDispatchArgs) => {
     tokenSaleInit(
@@ -557,6 +548,18 @@ const Render: Renderer = {
   },
   [RenderType.renderApprovedSpend]: (props: RenderDispatchArgs) => {
     renderApprovedSpend(props.tmp.spend);
+  },
+  [RenderType.collectRewardsPage]: (props: RenderDispatchArgs) => {
+    renderCollectRewardsPage(props);
+  },
+  [RenderType.PSArweaveAddress]: (props: RenderDispatchArgs) => {
+    renderPSArweaveAddress(props.tmp.address);
+  },
+  [RenderType.vaultHistoryEmpty]: (props: RenderDispatchArgs) => {
+    renderVaultHistoryEmpty();
+  },
+  [RenderType.trailsTabs]: (props: RenderDispatchArgs) => {
+    renderTrailsTabs(props.tmp.tab);
   },
 };
 
