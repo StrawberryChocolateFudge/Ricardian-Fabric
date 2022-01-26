@@ -570,20 +570,6 @@ export function dispatch_renderMyRankProposals(
   });
 }
 
-export function dispatch_DAOTermsPopup(props: State) {
-  dispatch(Events.render, {
-    type: RenderType.renderDAOTerms,
-    props: { ...props, tmp: { url: null } },
-  });
-}
-
-export function dispatch_renderDAOTermsURL(props, url: String) {
-  dispatch(Events.render, {
-    type: RenderType.renderDAOTerms,
-    props: { ...props, tmp: { url } },
-  });
-}
-
 export function dispatch_renderReviewRankProposals(
   props: State,
   blockNumber: number,
@@ -735,5 +721,33 @@ export function dispatch_renderApprovedSpend(spend: string) {
   dispatch(Events.render, {
     type: RenderType.renderApprovedSpend,
     props: { tmp: { spend } },
+  });
+}
+
+export function dispatch_collectRewardPage(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.collectRewardsPage,
+    props,
+  });
+}
+
+export function dispatch_renderPSArweaveAddress(props: State, address: string) {
+  dispatch(Events.render, {
+    type: RenderType.PSArweaveAddress,
+    props: { ...props, tmp: { address } },
+  });
+}
+
+export function dispatch_vaultHistoryEmpty() {
+  dispatch(Events.render, {
+    type: RenderType.vaultHistoryEmpty,
+    props: {},
+  });
+}
+
+export function dispath_trailsTabs(props: State, tab: "create" | "search") {
+  dispatch(Events.render, {
+    type: RenderType.trailsTabs,
+    props: { ...props, tmp: { tab } },
   });
 }
