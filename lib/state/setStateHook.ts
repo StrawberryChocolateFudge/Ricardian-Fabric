@@ -2,8 +2,8 @@ import { saveCreatePageData } from "../business/actions/createButtonClick";
 import {
   dispatch_attachDateClickListener,
   dispatch_catalogPage,
+  dispatch_collectRewardPage,
   dispatch_ConnectYourWalletPage,
-  dispatch_DAOTermsPopup,
   dispatch_dismissSidebar,
   dispatch_feeProposals,
   dispatch_hidePopup,
@@ -139,8 +139,7 @@ export const setStateHook = {
       case PopupState.WrongNetwork:
         dispatch_renderWrongNetworkPopup(clone);
         break;
-      case PopupState.signDaoTerms:
-        dispatch_DAOTermsPopup(clone);
+
       default:
         break;
     }
@@ -205,6 +204,10 @@ export const setStateHook = {
         break;
       case PageState.trails:
         dispatch_trailsPage(clone);
+        dispatch_permawebselectActions(clone);
+        break;
+      case PageState.rewards:
+        dispatch_collectRewardPage(clone);
         break;
       default:
         break;
