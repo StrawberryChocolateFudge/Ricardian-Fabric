@@ -4,6 +4,7 @@ import {
   dispatch_renderCurrentBlock,
   dispatch_renderError,
   dispatch_renderMyRicBalance,
+  dispatch_vaultHistoryEmpty,
 } from "../../dispatch/render";
 import {
   dispatch_setBlockPollingInterval,
@@ -18,12 +19,12 @@ import {
   getRicContract,
 } from "../../wallet/ric/contractCalls";
 import {
+  getLockIndex,
   getRicVaultContract,
   lockFunds,
   release,
-  RICVAULTADDRESS,
 } from "../../wallet/ricVault/contractCalls";
-import { getAddress, getBlockNumber } from "../../wallet/web3";
+import { getAddress, getBlockNumber, RICVAULTADDRESS } from "../../wallet/web3";
 import { getVaultPaginatedFromIndex, hasError, OptionsBuilder } from "../utils";
 
 export async function vaultPageActions(props: State) {
@@ -65,10 +66,20 @@ export async function vaultPageActions(props: State) {
     return;
   }
   const vault = vaultOptions.data;
+  const lockIndexOptions = await OptionsBuilder(() =>
+    getLockIndex(vault, addr, addr)
+  );
 
-  await getVaultPaginatedFromIndex(props, 1, vault, addr, blockOptions.data);
+  if (hasError(lockIndexOptions)) {
+    return;
+  }
+  if (lockIndexOptions.data > 0) {
+    await getVaultPaginatedFromIndex(props, 1, vault, addr, blockOptions.data);
 
-  await pollBlocks();
+    await pollBlocks();
+  } else {
+    dispatch_vaultHistoryEmpty();
+  }
 
   lockButton.onclick = async function () {
     const amountEl = getById("lock-amount") as HTMLInputElement;
