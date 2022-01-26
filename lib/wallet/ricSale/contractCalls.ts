@@ -1,8 +1,7 @@
 import { Contract } from "web3-eth-contract";
 import Web3 from "web3";
 import { getRicSaleAbi } from "../abi/ricSaleABI";
-
-const RICSALEADDRESS = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0"; // On local hardhat testnet
+import { RICSALEADDRESS } from "../web3";
 
 export async function getRicSaleContract() {
   const web3 = new Web3(window.ethereum);

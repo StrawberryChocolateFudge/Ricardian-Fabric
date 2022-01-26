@@ -2,8 +2,7 @@ import { Contract } from "web3-eth-contract";
 import Web3 from "web3";
 import { getRicVaultAbi } from "../abi/ricVaultABI";
 import { LockedTokens } from "../../types";
-
-export const RICVAULTADDRESS = "0x610178dA211FEF7D417bC0e6FeD39F05609AD788";
+import { RICVAULTADDRESS } from "../web3";
 
 export async function getRicVaultContract() {
   const web3 = new Web3(window.ethereum);

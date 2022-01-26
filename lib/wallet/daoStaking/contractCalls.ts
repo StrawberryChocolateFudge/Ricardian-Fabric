@@ -2,8 +2,7 @@ import Web3 from "web3";
 import { getDaoStakingABI } from "../abi/daoStakingABI";
 import { Contract } from "web3-eth-contract";
 import { Staker } from "../../types";
-
-export const DAOSTAKINGADDRESS = "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9";
+import { DAOSTAKINGADDRESS } from "../web3";
 
 export async function getDaoStakingContract() {
   const web3 = new Web3(window.ethereum);

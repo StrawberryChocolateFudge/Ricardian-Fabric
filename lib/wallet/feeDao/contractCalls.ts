@@ -2,8 +2,7 @@ import Web3 from "web3";
 import { Contract } from "web3-eth-contract";
 import { Token, TokenProposal } from "../../types";
 import { getFeeDaoAbi } from "../abi/feeDaoABI";
-
-export const FEEDAOADDRESS = "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318";
+import { FEEDAOADDRESS } from "../web3";
 
 export async function getFeeDaoContract(): Promise<Contract> {
   const web3 = new Web3(window.ethereum);

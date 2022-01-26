@@ -9,7 +9,7 @@ import {
   RemovalProposal,
   SmartContractProposal,
 } from "../../types";
-const CATALOGDAOADDRESS = "0xa513e6e4b8f2a923d98304ec87f64353c4d5c853"; // On local hardhat testnet
+import { CATALOGDAOADDRESS } from "../web3";
 const HARMONYRPCURL = "http://127.0.0.1:8545/";
 export const VOTINGPERIODBLOCKS = 10; //The blocks passing in the voting period. 302400 on Harmony, 10 on Hardhat
 

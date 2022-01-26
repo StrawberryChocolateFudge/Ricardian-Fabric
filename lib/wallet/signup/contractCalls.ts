@@ -1,8 +1,7 @@
 import Web3 from "web3";
 import { getSimpleTermsAbi } from "../abi/SimpleTerms";
 import { Contract } from "web3-eth-contract";
-
-const SIGNUPADDRESS = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+import { SIGNUPADDRESS } from "../web3";
 
 export async function getSignupContract() {
   const web3 = new Web3(window.ethereum);

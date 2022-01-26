@@ -2,8 +2,7 @@ import Web3 from "web3";
 import { Contract } from "web3-eth-contract";
 import { ERC20Params } from "../../types";
 import { getRicAbi } from "../abi/ricABI";
-
-const RICADDRESS = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
+import { RICADDRESS } from "../web3";
 
 export const RICPARAMS: ERC20Params = {
   name: "RIC",
