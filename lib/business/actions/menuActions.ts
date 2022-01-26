@@ -15,6 +15,7 @@ export async function menuActions(props: State) {
   const tokenSale = getById("tokensale-button");
   const vaultButton = getById("vault-button");
   const trailsButton = getById("trails-page-button");
+  const rewardsButton = getById("rewards-button");
 
   const termsLink = getById("terms-link") as HTMLAnchorElement;
 
@@ -44,6 +45,10 @@ export async function menuActions(props: State) {
 
   trailsButton.onclick = function () {
     dispatch_setPage(PageState.trails);
+  };
+
+  rewardsButton.onclick = function () {
+    dispatch_setPage(PageState.rewards);
   };
 
   const signUpContractOptions = await OptionsBuilder(() => getSignupContract());
