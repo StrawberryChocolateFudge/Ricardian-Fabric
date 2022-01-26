@@ -8,7 +8,6 @@ import {
   dispatch_renderUploadStatus,
   dispatch_renderLoadingIndicator,
   dispatch_removeLoadingIndicator,
-  dispatch_renderDAOTermsURL,
   dispatch_enableStakingButtons,
   dispatch_renderCreateProposalPage,
 } from "../../dispatch/render";
@@ -22,12 +21,10 @@ import {
   Status,
 } from "../../types";
 import {
-  checkNetwork,
+  DAOSTAKINGADDRESS,
   getAddress,
   requestAccounts,
-  web3Injected,
 } from "../../wallet/web3";
-import MetaMaskOnboarding from "@metamask/onboarding";
 import {
   acceptedTerms,
   getCatalogDAOContractWithRPC,
@@ -52,7 +49,6 @@ import {
   onDocProposalFileDropped,
 } from "./onDocFileDropped";
 import {
-  DAOSTAKINGADDRESS,
   getDaoStakingContract,
   isStaking,
   stake,
@@ -66,46 +62,10 @@ import {
 import Web3 from "web3";
 
 export async function createProposalActions(props: State) {
-  if (!web3Injected()) {
-    dispatch_renderError("Found no injected web3, install metamask");
-    const onboarding = new MetaMaskOnboarding();
-    onboarding.startOnboarding();
-    return;
-  }
-
   dispatch_renderLoadingIndicator("loading-display");
   await requestAccounts();
-
-  const correctNetwork = await checkNetwork();
-
-  if (!correctNetwork) {
-    dispatch_renderError("You need to switch to Harmony network!");
-    dispatch_setPopupState(PopupState.WrongNetwork);
-    return;
-  }
-
   const myAddress = await getAddress();
   const catalogDAO = await getCatalogDAOContractWithWallet();
-
-  // Check if the address accepted the terms!
-  const acceptedOptions = await OptionsBuilder(() =>
-    acceptedTerms(catalogDAO, myAddress)
-  );
-
-  if (acceptedOptions.status === Status.Failure) {
-    dispatch_renderError("Failed to call the smart contract");
-    dispatch_removeLoadingIndicator("loading-display");
-    return;
-  }
-
-  if (acceptedOptions.data === false) {
-    // If I didn't accept the catalogDAO terms, yet.
-    // I fetch the URL and dispatch a popup showing it, with a refresh button.
-    dispatch_renderError("You need to accept the DAO terms.");
-    dispatch_removeLoadingIndicator("loading-display");
-    dispatch_setPopupState(PopupState.signDaoTerms);
-    return;
-  }
 
   const rankOptions = await OptionsBuilder(() =>
     getRank(catalogDAO, myAddress, myAddress)
@@ -537,30 +497,5 @@ export function uploadProposalSummaryActions(transaction: any, props: State) {
       dispatch_hideElement(postButton, false);
       dispatch_removeLoadingIndicator("upload-proposal-display");
     }
-  };
-}
-
-export async function DAOTermsInit(props: State) {
-  const catalogDAO = await getCatalogDAOContractWithRPC();
-
-  const URLOptions = await OptionsBuilder(async () => getTerms(catalogDAO));
-
-  if (hasError(URLOptions)) {
-    return;
-  }
-  dispatch_renderDAOTermsURL(props, URLOptions.data);
-}
-
-export async function DAOTermsActions(props: State) {
-  const refreshButton = getById("refresh-button");
-  const back = getById("dao-terms-back");
-  refreshButton.onclick = function () {
-    dispatch_setPage(PageState.Proposals);
-    dispatch_setPopupState(PopupState.NONE);
-  };
-
-  back.onclick = function () {
-    dispatch_setPage(PageState.ReviewAndVote);
-    dispatch_setPopupState(PopupState.NONE);
   };
 }
