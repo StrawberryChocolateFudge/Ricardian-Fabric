@@ -3,7 +3,7 @@ import {
   dispatch_setPopupState,
 } from "../../dispatch/stateChange";
 import { PageState, PopupState, RankProposal, State } from "../../types";
-import { getById } from "../../view/utils";
+import { getById, newTab } from "../../view/utils";
 import {
   checkNetwork,
   getAddress,
@@ -21,13 +21,43 @@ import {
   getRankProposalIndex,
   getMyRankProposalsPaginated,
   voteOnNewRank,
+  acceptedTerms,
+  getTerms,
 } from "../../wallet/catalogDAO/contractCalls";
-import { getPaginatedByIndex } from "../utils";
+import { getPaginatedByIndex, hasError, OptionsBuilder } from "../utils";
+import {
+  getDaoStakingContract,
+  isStaking,
+} from "../../wallet/daoStaking/contractCalls";
 
 export async function reviewAndVotePageActions(props: State) {
   const createProposalButton = getById("create-proposal-button");
-  createProposalButton.onclick = function () {
-    dispatch_setPage(PageState.Proposals);
+  createProposalButton.onclick = async function () {
+    const catalogDAOOptions = await OptionsBuilder(() =>
+      getCatalogDAOContractWithWallet()
+    );
+
+    if (hasError(catalogDAOOptions)) {
+      return;
+    }
+    const acceptedOptions = await OptionsBuilder(() =>
+      acceptedTerms(catalogDAO, myAddress)
+    );
+    if (hasError(acceptedOptions)) {
+      return;
+    }
+
+    if (acceptedOptions.data === false) {
+      dispatch_renderError("You need to accept the DAO terms.");
+      const URLOptions = await OptionsBuilder(async () => getTerms(catalogDAO));
+
+      if (hasError(URLOptions)) {
+        return;
+      }
+      newTab(URLOptions.data);
+    } else {
+      dispatch_setPage(PageState.Proposals);
+    }
   };
 
   const myProposalsButton = getById("my-proposals-button");
@@ -37,8 +67,36 @@ export async function reviewAndVotePageActions(props: State) {
 
   const pSTPageButton = getById("profit-sharing-button");
 
-  pSTPageButton.onclick = function () {
-    dispatch_setPage(PageState.profitSharing);
+  pSTPageButton.onclick = async function () {
+    const addressOptions = await OptionsBuilder(() => getAddress());
+    if (hasError(addressOptions)) {
+      return;
+    }
+    // Check if the user is staking..
+    const daoStakingOptions = await OptionsBuilder(() =>
+      getDaoStakingContract()
+    );
+
+    if (hasError(daoStakingOptions)) {
+      return;
+    }
+    const isStakingOptions = await OptionsBuilder(() =>
+      isStaking(
+        daoStakingOptions.data,
+        addressOptions.data,
+        addressOptions.data
+      )
+    );
+
+    if (hasError(isStakingOptions)) {
+      return;
+    }
+
+    if (isStakingOptions.data === true) {
+      dispatch_setPage(PageState.profitSharing);
+    } else {
+      dispatch_renderError("You need to be staking to access Ar sharing");
+    }
   };
 
   const feePageButton = getById("fee-proposals-button");
