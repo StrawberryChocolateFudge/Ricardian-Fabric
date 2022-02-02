@@ -1,7 +1,7 @@
 import { html } from "lit-html";
 import { TIP, WinstonToAr } from "../../../wallet/arweave";
 import { helperTooltips } from "../components/helperTooltips";
-import { BackLogo, pinLogoWhite } from "../components/logos";
+import { BackLogo, CopyLogo, pinLogoWhite } from "../components/logos";
 
 export const PermapinPopup = () => html`
   <style>
@@ -14,6 +14,10 @@ export const PermapinPopup = () => html`
     >You can permapin the IPFS content on Arweave to store it forever.</small
   >
   <small>Only content created with Ricardian Fabric is allowed.</small>
+  <hr />
+  <div>
+    <button id="permapin-account-button" class="labelButton">Account</button>
+  </div>
   <table>
     <thead>
       <tr>
@@ -100,6 +104,15 @@ export const PermapinSummaryPage = (arg: {
       </tbody>
     </table>
     <div id="transaction-loading"></div>
+    <hr />
+    <button
+      id="copy-transaction"
+      data-txid="${arg.permapinTx.tx.id}"
+      class="text-align-center labelButton"
+      labelButton
+    >
+      ${CopyLogo()}
+    </button>
     <div class="wide-row">
       <button class="backButton" id="permapinPost-back">
         ${BackLogo()} Back
