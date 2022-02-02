@@ -1,8 +1,10 @@
 import {
+  ArweaveDataPage,
   ContractTypes,
   DeploySC,
   Events,
   PaginatedProposal,
+  PopupState,
   RankProposal,
   RenderDispatchArgs,
   Renderer,
@@ -102,6 +104,12 @@ import {
   renderPSArweaveAddress,
   renderVaultHistoryEmpty,
   renderTrailsTabs,
+  renderTrailDetails,
+  renderAddCommentPopup,
+  disableButtonElement,
+  renderArweaveSummaryTx,
+  renderTrailDataPage,
+  navigateToQueryString,
 } from "./render";
 import { renderAcceptTools } from "./render";
 import { areYouSureButtons } from "../business/actions/areYouSureButtons";
@@ -130,6 +138,7 @@ import {
   switchAccountsActions,
   transferPageActions,
   transferSummaryPageActions,
+  uploadCommentActions,
   uploadFileListener,
   uploadSummaryActions,
   walletCreateActions,
@@ -164,7 +173,12 @@ import {
   lockedTokensActions,
   vaultPageActions,
 } from "../business/actions/vaultPageActions";
-import { trailsPageActions } from "../business/actions/trailsPageActions";
+import {
+  fetchAllTrailDetails,
+  searchButtonClicked,
+  trailDetailsActions,
+  trailsPageActions,
+} from "../business/actions/trailsPageActions";
 
 const Render: Renderer = {
   [RenderType.connectYourWallet]: (props: State) => {
@@ -330,7 +344,7 @@ const Render: Renderer = {
   }) => {
     const fee = WinstonToAr(props.transaction.reward);
     renderUploadSummary(props.file, fee, props.transaction.id);
-    uploadSummaryActions(props.transaction, props.data, props.props);
+    uploadSummaryActions(props.transaction, props.props, PopupState.UploadFile);
   },
   [RenderType.uploadStatus]: (props: RenderDispatchArgs) => {
     renderUploadStatus(props.tmp.progress);
@@ -558,8 +572,55 @@ const Render: Renderer = {
   [RenderType.vaultHistoryEmpty]: (props: RenderDispatchArgs) => {
     renderVaultHistoryEmpty();
   },
-  [RenderType.trailsTabs]: (props: RenderDispatchArgs) => {
+  [RenderType.trailsTabs]: async (props: RenderDispatchArgs) => {
     renderTrailsTabs(props.tmp.tab);
+    await searchButtonClicked(props, props.tmp.trails, props.tmp.addr);
+  },
+  [RenderType.trailsDetails]: async (props: RenderDispatchArgs) => {
+    const creatorCalls = props.tmp.trailDetails.creator === props.tmp.caller;
+    renderTrailDetails(
+      props.tmp.name,
+      props.tmp.trailDetails.access,
+      creatorCalls,
+      props.tmp.trailDetails.contentIndex
+    );
+
+    await fetchAllTrailDetails(
+      props,
+      props.tmp.name,
+      props.tmp.trails,
+      props.tmp.trailDetails,
+      props.tmp.caller,
+      creatorCalls
+    );
+  },
+  [RenderType.addCommentPopup]: (props: RenderDispatchArgs) => {
+    renderAddCommentPopup();
+    uploadCommentActions(props);
+  },
+  [RenderType.disableButtonElement]: (props: RenderDispatchArgs) => {
+    disableButtonElement(props.tmp.el, props.tmp.disabled);
+  },
+  [RenderType.arweaveTxSummary]: (props: RenderDispatchArgs) => {
+    const fee = WinstonToAr(props.tmp.transaction.reward);
+    renderArweaveSummaryTx(fee, props.tmp.transaction.id);
+    uploadSummaryActions(props.tmp.transaction, props, PopupState.AddComment);
+  },
+  [RenderType.trailDataPage]: (props: RenderDispatchArgs) => {
+    renderTrailDataPage(props.tmp.dataPage, props.tmp.creatorCalls);
+    trailDetailsActions(
+      props,
+      props.tmp.trails,
+      props.tmp.trailId,
+      props.tmp.creatorCalls,
+      props.tmp.caller,
+      props.tmp.trailDetails,
+      props.tmp.dataPage
+    );
+  },
+  [RenderType.navigateToQueryString]: (props: RenderDispatchArgs) => {
+    console.log(props.tmp);
+    navigateToQueryString(props.tmp.queryStrings, props.tmp.value);
   },
 };
 

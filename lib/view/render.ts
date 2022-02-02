@@ -1,5 +1,6 @@
 import { html, render } from "lit-html";
 import {
+  ArweaveDataPage,
   BlockCountry,
   ContractTypes,
   CreateRicardianPageProps,
@@ -11,6 +12,7 @@ import {
   PaginatedProposals,
   PopupState,
   ProposalFormat,
+  QueryStrings,
   RankProposal,
   RenderType,
   SelectedWallet,
@@ -96,9 +98,18 @@ import {
   VaultItems,
   VaultPage,
 } from "./templates/pages/vaultPage";
-import { TrailsPage } from "./templates/pages/trailsPage";
+import {
+  FindTrail,
+  FoundTrail,
+  TrailData,
+  TrailsPage,
+} from "./templates/pages/trailsPage";
 import { ToyBlocks } from "./templates/components/logos";
 import { CollectRewardsPage } from "./templates/pages/collectRewardsPage";
+import {
+  AddCommentTrail,
+  UploadArweaveTxSummary,
+} from "./templates/popups/addComment";
 
 export function renderConnectYourWallet(props: State) {
   const page = getById("page");
@@ -1299,25 +1310,111 @@ export function renderTrailsTabs(tab: "search" | "create") {
   const searchTabButton = getById("search-trail-tab");
   const searchContainer = getById("search-container");
   const createContainer = getById("create-container");
-  switch (tab) {
-    case "search":
-      createTabButton.classList.add("light-shadow");
-      searchTabButton.classList.remove("light-shadow");
-      searchContainer.classList.remove("display-none");
-      searchContainer.classList.add("display-block");
-      if (!createContainer.classList.contains("display-none")) {
-        createContainer.classList.add("display-none");
-      }
-      break;
-    case "create":
-      searchTabButton.classList.add("light-shadow");
-      createTabButton.classList.remove("light-shadow");
-      createContainer.classList.remove("display-none");
-      createContainer.classList.add("display-block");
-      if (!searchContainer.classList.contains("display-none")) {
-        searchContainer.classList.add("display-none");
-      }
 
-      break;
+  if (tab === "search") {
+    searchContainer.classList.remove("display-none");
+
+    createTabButton.classList.add("light-shadow");
+    searchContainer.style.width = "";
+
+    searchTabButton.classList.remove("light-shadow");
+    searchContainer.classList.add("display-block");
+    if (!createContainer.classList.contains("display-none")) {
+      createContainer.classList.add("display-none");
+    }
+    render(FindTrail(), searchContainer);
+  } else {
+    searchTabButton.classList.add("light-shadow");
+    createTabButton.classList.remove("light-shadow");
+    createContainer.classList.remove("display-none");
+    createContainer.classList.add("display-block");
+    if (!searchContainer.classList.contains("display-none")) {
+      searchContainer.classList.add("display-none");
+    }
   }
+}
+
+export function renderTrailDetails(
+  name: string,
+  access: string,
+  creatorCalls: boolean,
+  lastIndex: string
+) {
+  const searchTabButton = getById("search-trail-tab");
+  searchTabButton.classList.add("light-shadow");
+
+  const searchContainer = getById("search-container");
+  searchContainer.style.width = "100%";
+  render(FoundTrail(name, access, creatorCalls), searchContainer);
+  const trailContentDisplay = getById("trail-content-display");
+
+  if (lastIndex === "0" && access === "private") {
+    trailContentDisplay.classList.remove("placeholder-item");
+    trailContentDisplay.classList.add("center");
+    trailContentDisplay.textContent = "Trail is empty";
+  }
+}
+
+export function renderAddCommentPopup() {
+  setBannerDisplayBlock();
+  const layout = getById("overlay-layout");
+  render(AddCommentTrail(), layout);
+}
+
+export function disableButtonElement(el: HTMLButtonElement, disabled: boolean) {
+  el.disabled = disabled;
+}
+
+export function renderArweaveSummaryTx(fee: string, id: string) {
+  const layout = getById("overlay-layout");
+
+  render(UploadArweaveTxSummary(fee, id), layout);
+}
+
+export function renderTrailDataPage(
+  dataPage: ArweaveDataPage,
+  creatorCalls: boolean
+) {
+  const contentDisplay = getById("trail-content-display");
+
+  if (contentDisplay.classList.contains("placeholder-item")) {
+    contentDisplay.classList.remove("placeholder-item");
+  } else {
+    const trailListEl = getById("trailUl");
+    trailListEl.classList.add("display-none");
+
+    contentDisplay.classList.add("placeholder-item");
+    setTimeout(() => {
+      contentDisplay.classList.remove("placeholder-item");
+      trailListEl.classList.remove("display-none");
+    }, 1000);
+  }
+  render(TrailData(dataPage, creatorCalls), contentDisplay);
+}
+
+export function navigateToQueryString(
+  queryStrings: QueryStrings,
+  value: string
+) {
+  setTimeout(() => {
+    switch (queryStrings) {
+      case QueryStrings.trail:
+        const trailIdEl = getById("trail-id") as HTMLInputElement;
+
+        trailIdEl.classList.add("display-none");
+        trailIdEl.value = value;
+        const find = getById("trail-find");
+        find.click();
+        break;
+      case QueryStrings.verify:
+        const verifyInput = getById(
+          "acceptable-contract-url"
+        ) as HTMLInputElement;
+        const verifyButton = getById("verify-proceed");
+        verifyInput.value = value;
+        verifyButton.click();
+      default:
+        break;
+    }
+  }, 500);
 }
