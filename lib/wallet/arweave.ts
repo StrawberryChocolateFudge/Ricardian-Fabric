@@ -1,7 +1,6 @@
 import Arweave from "arweave";
 import { readContract, selectWeightedPstHolder } from "smartweave";
 import { Options, ProposalFormat, Status } from "../types";
-// import TestWeave from "testweave-sdk";
 
 export const ARWAEVECONFIG = {
   host: "arweave.net",
@@ -14,21 +13,11 @@ export const ARWAEVECONFIG = {
 
 const arweave = Arweave.init(ARWAEVECONFIG);
 
-// init TestWeave on the top of arweave
-// export let testWeave;
-// (async function () {
-//   //@ts-ignore
-//   testWeave = await TestWeave.init(arweave);
-//   // → 🎉
-// })();
-
 // The address that deploys the javascript dependency.
 // stored for verification purposes
 export const dependencyDeployer = [
   "Ygcqww4Hq2mjMzqhWFnCTMsQ9VFEr4ytVWbYDbXCpDw",
 ];
-
-const PSTContract = "ligtZZ4M3Gy3BUi2qz4B6yXQiOcjJ_wU55QYhXFw7Ow";
 
 export const TIP = "0.01";
 
@@ -65,7 +54,7 @@ export async function createProposalTransaction(
     ...proposal,
     terms: encodeProposalTerms(proposal.terms as ArrayBuffer),
   };
-  
+
   const transaction = await arweave.createTransaction(
     { data: JSON.stringify(preparedProposal) },
     key
@@ -160,6 +149,35 @@ export async function getTransferTransaction(
   return transaction;
 }
 
+export async function getTrailTransaction(
+  trailName: string,
+  key: any,
+  version: string,
+  comment: string,
+  linkedTransaction: string
+) {
+  const trailData = JSON.stringify({
+    comment,
+    linkedTransaction,
+    created: new Date().toLocaleString(),
+  });
+  const transaction = await arweave.createTransaction(
+    {
+      data: trailData,
+    },
+    key
+  );
+
+  transaction.addTag("Contract-Type", "Trail");
+  transaction.addTag("Trail-Name", trailName);
+  transaction.addTag("App-Version", version);
+  transaction.addTag("App-Name", "Ricardian Fabric");
+  transaction.addTag("Content-Type", "application/json");
+
+  await arweave.transactions.sign(transaction, key);
+  return transaction;
+}
+
 export async function getWeighedPSTHolder() {
   //@ts-ignore
   const contractState = await readContract(arweave, PSTContract);
@@ -169,4 +187,8 @@ export async function getWeighedPSTHolder() {
 
 export function encodeProposalTerms(buff: ArrayBuffer): Array<number> {
   return Array.from(new Uint8Array(buff));
+}
+
+export async function getTransaction(id: string) {
+  return await arweave.transactions.get(id);
 }
