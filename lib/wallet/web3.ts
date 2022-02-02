@@ -269,9 +269,6 @@ export function getChains() {
   return [
     { name: "All", id: "ALL" },
     { name: ChainName.Harmony, id: Chains.harmonyTestnetShard0 },
-    { name: ChainName.Ropsten, id: Chains.Ropsten },
-    { name: ChainName.BSC, id: Chains.bscTestnet },
-    { name: ChainName.Polygon, id: Chains.polygonTestnet },
   ];
 }
 
