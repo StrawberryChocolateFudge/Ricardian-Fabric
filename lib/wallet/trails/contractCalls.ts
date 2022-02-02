@@ -40,21 +40,6 @@ export async function add(
     .on("receipt", onReceipt);
 }
 
-export async function remove(
-  trails: Contract,
-  trailId: string,
-  contentIndex: string,
-  from: string,
-  onError: any,
-  onReceipt: any
-) {
-  await trails.methods
-    .remove(trailId, contentIndex)
-    .send({ from })
-    .on("error", onError)
-    .on("receipt", onReceipt);
-}
-
 export async function blacklist(
   trails: Contract,
   trailId: string,
@@ -64,7 +49,7 @@ export async function blacklist(
   onReceipt: any
 ) {
   await trails.methods
-    .add(trailId, data)
+    .blackList(trailId, data)
     .send({ from })
     .on("error", onError)
     .on("receipt", onReceipt);
@@ -89,25 +74,7 @@ export async function getTrailDetails(
 export async function getTrailContent(
   trail: Contract,
   trailId: string,
-  contentIndex: string,
   from: string
-): Promise<string> {
-  return await trail.methods
-    .getTrailContent(trailId, contentIndex)
-    .call({ from });
-}
-
-export async function getTrailPaginated(
-  trail: Contract,
-  trailId: string,
-  first: string,
-  second: string,
-  third: string,
-  fourth: string,
-  fifth: string,
-  from: string
-) {
-  return await trail.methods
-    .getTrailPaginated(trailId, first, second, third, fourth, fifth)
-    .call({ from });
+): Promise<string[]> {
+  return await trail.methods.getTrailContent(trailId).call({ from });
 }
