@@ -14,6 +14,14 @@ export enum ChainName {
   BSC = "BSC",
   Polygon = "Polygon",
 }
+
+export enum QueryStrings {
+  verify = "verify", // acceptable contract to verify
+  pin = "pin", // Ipfs content to pin
+  trail = "trail", // Trail to find
+  item = "item", // Catalog Item
+}
+
 export enum Events {
   render = "render",
   stateChange = "stateChange",
@@ -112,6 +120,12 @@ export enum RenderType {
   PSArweaveAddress = "PSArweaveAddress",
   vaultHistoryEmpty = "vaultHistoryEmpty",
   trailsTabs = "trailsTabs",
+  trailsDetails = "trailsDetails",
+  addCommentPopup = "addCommentPopup",
+  disableButtonElement = "disableButtonElement",
+  arweaveTxSummary = "arweaveTxSummary",
+  trailDataPage = "trailDataPage",
+  navigateToQueryString = "navigateToQueryString",
 }
 
 // TODO refactor to RenderDispatchArgs for specifying the dispatch arguments
@@ -206,6 +220,12 @@ export type Renderer = {
   [RenderType.PSArweaveAddress]: RenderFunction;
   [RenderType.vaultHistoryEmpty]: RenderFunction;
   [RenderType.trailsTabs]: RenderFunction;
+  [RenderType.trailsDetails]: RenderFunction;
+  [RenderType.addCommentPopup]: RenderFunction;
+  [RenderType.disableButtonElement]: RenderFunction;
+  [RenderType.arweaveTxSummary]: RenderFunction;
+  [RenderType.trailDataPage]: RenderFunction;
+  [RenderType.navigateToQueryString]: RenderFunction;
 };
 
 export enum VerificationState {
@@ -249,6 +269,7 @@ export enum StateProperties {
   selectedWallet = "selectedWallet",
   Account = "Account",
   popupState = "popupState",
+  previousPopupState = "previousPopupState",
   ipfsCID = "ipfsCID",
   editFinished = "editFinished",
   editor = "editor",
@@ -262,6 +283,10 @@ export enum ContractTypes {
   create = "create",
   acceptable = "acceptable",
   fulfilled = "fulfilled",
+  fileUpload = "File upload",
+  proposal = "Proposal",
+  transfer = "Transfer",
+  trail = "Trail",
 }
 
 export enum BlockCountry {
@@ -332,6 +357,8 @@ export enum PopupState {
   UploadProposalStep3,
   UploadProposalStep4,
   WrongNetwork,
+  SavePage,
+  AddComment,
 }
 
 export enum PageState {
@@ -360,6 +387,7 @@ export type State = {
   domParser: DOMParser;
   selectedDate: Date | string;
   popupState: PopupState;
+  previousPopupState: PopupState;
   pageState: PageState;
   createRicardianPageProps: CreateRicardianPageProps;
   uploadProposalProps: ProposalFormat;
@@ -633,7 +661,36 @@ export type DashboardUIElement = {
 
 export type TrailDetails = {
   creator: string;
-  contentIndex: string;
   initialized: boolean;
-  access: number;
+  access: string;
 };
+
+export type TrailData = {
+  comment: string;
+  linkedTransaction: string;
+  created: string;
+};
+
+export type ArweaveTags = {
+  name: string;
+  value: string;
+};
+
+export type ArweaveNode = {
+  id: string;
+  tags: Array<ArweaveTags>;
+};
+
+export type ArweaveDataPage = {
+  totalPages: number;
+  totalTxIds: Array<string>;
+  currentPage: number;
+  currentContent: ArweaveDataDisplayContent[];
+};
+
+export type ArweaveDataDisplayContent = {
+  hadError: boolean;
+  txId: string;
+  metadisplay: string; // metadata to displya;
+  linkedContractType: string;
+} & TrailData;
