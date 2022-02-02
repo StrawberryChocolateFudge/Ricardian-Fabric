@@ -43,6 +43,7 @@ import { beforePageSetHook, setStateHook } from "./setStateHook";
       },
       Account: { data: null, address: null, balance: null },
       popupState: PopupState.NONE,
+      previousPopupState: PopupState.NONE,
       pageState: PageState.CreateRicardian,
       uploadProposalProps: null,
       createRicardianPageProps: {
@@ -132,6 +133,18 @@ import { beforePageSetHook, setStateHook } from "./setStateHook";
       stateContainer.Account = value;
     },
     [EventType.setPopupState]: (value: PopupState) => {
+      if (
+        stateContainer.popupState === PopupState.Permapin &&
+        value === PopupState.ShowAccount
+      ) {
+        stateContainer.previousPopupState = PopupState.Permapin;
+      } else if (
+        stateContainer.popupState === PopupState.Permapin &&
+        value === PopupState.NONE
+      ) {
+        stateContainer.previousPopupState = value;
+      }
+
       stateContainer.popupState = value;
     },
     [EventType.setIpfsCID]: (value: string) => {
