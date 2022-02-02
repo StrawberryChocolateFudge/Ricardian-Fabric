@@ -1,7 +1,7 @@
 import { html } from "lit-html";
 import { TIP } from "../../../wallet/arweave";
 import { helperTooltips } from "../components/helperTooltips";
-import { BackLogo } from "../components/logos";
+import { BackLogo, CopyLogo } from "../components/logos";
 
 export const uploadFilePopup = () => html`
   <h2 class="center">Upload a File</h2>
@@ -103,53 +103,67 @@ export const uploadFileSummary = (
   contentType: string,
   fee: string,
   id: string
-) => html`
-  <h2 class="center">Upload Summary</h2>
-  <hr />
-  <table>
-    <thead>
-      <tr>
-        <th></th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><label>File Name:</label></td>
-        <td>
-          <div>${name}</div>
-        </td>
-      </tr>
-      <tr>
-        <td><label>Content-Type:</label></td>
-        <td>
-          <div>${contentType}</div>
-        </td>
-      </tr>
-      <tr>
-        <td><label>Upload Fee:</label></td>
-        <td>
-          <div>${fee} Ar</div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <hr />
-  <label for="uploadSummary-tx"
-    >Content will be available at this url after posting it to the
-    network:</label
-  >
-  <small id="uploadSummary-tx">https://arweave.net/${id}</small>
-  <hr />
-  <small id="upload-status"></small>
-  <hr />
-  <div class="button-row">
-    <button class="marginRight-20 backButton" id="uploadSummary-cancel">
-      ${BackLogo()} Cancel
+) => {
+  const url = `https://arweave.net/${id}`;
+  return html`
+    <h2 class="center">Upload Summary</h2>
+    <hr />
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><label>File Name:</label></td>
+          <td>
+            <div>${name}</div>
+          </td>
+        </tr>
+        <tr>
+          <td><label>Content-Type:</label></td>
+          <td>
+            <div>${contentType}</div>
+          </td>
+        </tr>
+        <tr>
+          <td><label>Upload Fee:</label></td>
+          <td>
+            <div>${fee} Ar</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <label for="uploadSummary-tx"
+      >Content will be available at this url after posting it to the
+      network:</label
+    >
+    <small id="uploadSummary-tx"
+      ><a href="${url}" target="_blank" rel="noopener">${url}</a></small
+    >
+    <hr />
+    <button
+      id="copy-transaction"
+      data-txid="${id}"
+      class="text-align-center labelButton"
+      labelButton
+    >
+      ${CopyLogo()}
     </button>
-    <button class="marginLeft-20 NextButton" id="uploadSummary-proceed">
-      Post
-    </button>
-  </div>
-  <hr />
-`;
+    <hr />
+    <small id="upload-status"></small>
+    <hr />
+    <div class="button-row">
+      <button class="marginRight-20 backButton" id="uploadSummary-cancel">
+        ${BackLogo()} Cancel
+      </button>
+      <button class="marginLeft-20 NextButton" id="uploadSummary-proceed">
+        Post
+      </button>
+    </div>
+    <hr />
+  `;
+};
