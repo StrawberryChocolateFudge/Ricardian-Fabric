@@ -1,4 +1,5 @@
 import {
+  ArweaveDataPage,
   CreateRicardianPageProps,
   DeploySC,
   FetchedProposals,
@@ -7,13 +8,16 @@ import {
   PaginatedProposals,
   PopupState,
   ProposalFormat,
+  QueryStrings,
   RankProposal,
   RenderType,
   State,
+  TrailDetails,
   VerificationState,
 } from "../types";
 import { dispatch } from "./dispatch";
 import { Events } from "../types";
+import { Contract } from "web3-eth-contract";
 
 export function dispatch_splashPage(props: State) {
   dispatch(Events.render, {
@@ -107,6 +111,16 @@ export function dispatch_disableButton(props: State) {
   dispatch(Events.render, {
     type: RenderType.disableButton,
     props,
+  });
+}
+
+export function dispatch_disableButtonElement(
+  el: HTMLButtonElement,
+  disabled: boolean
+) {
+  dispatch(Events.render, {
+    type: RenderType.disableButtonElement,
+    props: { tmp: { el, disabled } },
   });
 }
 
@@ -745,9 +759,72 @@ export function dispatch_vaultHistoryEmpty() {
   });
 }
 
-export function dispath_trailsTabs(props: State, tab: "create" | "search") {
+export function dispath_trailsTabs(
+  props: State,
+  tab: "create" | "search",
+  trails: Contract,
+  addr: string
+) {
   dispatch(Events.render, {
     type: RenderType.trailsTabs,
-    props: { ...props, tmp: { tab } },
+    props: { ...props, tmp: { tab, trails, addr } },
+  });
+}
+
+export function dispatch_trailsDetails(
+  props: State,
+  name: string,
+  caller: string,
+  trails: Contract,
+  trailDetails: TrailDetails
+) {
+  dispatch(Events.render, {
+    type: RenderType.trailsDetails,
+    props: {
+      ...props,
+      tmp: { name, caller, trails, trailDetails },
+    },
+  });
+}
+
+export function dispatch_addCommentPopup(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.addCommentPopup,
+    props: { ...props },
+  });
+}
+
+export function dispatch_renderArweaveTxSummary(
+  transaction: any,
+  props: State
+) {
+  dispatch(Events.render, {
+    type: RenderType.arweaveTxSummary,
+    props: { ...props, tmp: { transaction } },
+  });
+}
+
+export function dispatch_renderTrailDataPage(
+  props: State,
+  dataPage: ArweaveDataPage,
+  creatorCalls: boolean,
+  caller: string,
+  trails: Contract,
+  trailId: string,
+  trailDetails: TrailDetails
+) {
+  dispatch(Events.render, {
+    type: RenderType.trailDataPage,
+    props: {
+      ...props,
+      tmp: { dataPage, creatorCalls, caller, trails, trailId, trailDetails },
+    },
+  });
+}
+
+export function dispatch_navigateTo(queryStrings: QueryStrings, value: string) {
+  dispatch(Events.render, {
+    type: RenderType.navigateToQueryString,
+    props: { tmp: { value, queryStrings } },
   });
 }
