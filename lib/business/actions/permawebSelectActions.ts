@@ -1,5 +1,6 @@
 import {
   dispatch_addNewAccountPopup,
+  dispatch_disableButtonElement,
   dispatch_discardFile,
   dispatch_emptyWalletDropper,
   dispatch_hideElement,
@@ -8,6 +9,7 @@ import {
   dispatch_promptSuccess,
   dispatch_removeError,
   dispatch_removeLoadingIndicator,
+  dispatch_renderArweaveTxSummary,
   dispatch_renderError,
   dispatch_renderLoadingIndicator,
   dispatch_renderPermapinSummaryPage,
@@ -23,12 +25,14 @@ import {
   RenderDispatchArgs,
   State,
   Status,
+  TrailDetails,
   WalletDropperType,
 } from "../../types";
 import {
   ArToWinston,
   createFileTransaction,
   createWallet,
+  getTrailTransaction,
   getTransferTransaction,
   getWalletAddress,
   getWalletBalance,
@@ -37,6 +41,7 @@ import {
 } from "../../wallet/arweave";
 import {
   copyAddressToClipboard,
+  copyStringToClipboard,
   getById,
   readFile,
   readWalletFile,
@@ -48,6 +53,12 @@ import {
   dispatch_setNewAccount,
   dispatch_setPopupState,
 } from "../../dispatch/stateChange";
+import { hasError, OptionsBuilder } from "../utils";
+import {
+  getTrailDetails,
+  getTrailsContract,
+} from "../../wallet/trails/contractCalls";
+import { getAddress } from "../../wallet/web3";
 
 export function permawebSelectActions(props: State) {
   const permawebCheckboxToggle = getById(
@@ -63,6 +74,12 @@ export function permawebSelectActions(props: State) {
   const permapin = getById("permapin-popup-button");
   const Account = getById("Account-popup-button");
   const uploadProposal = getById("upload-proposal-button");
+  const comment = getById("upload-comment");
+
+  comment.onclick = function () {
+    dispatch_setPopupState(PopupState.AddComment);
+    permawebCheckboxToggle.checked = false;
+  };
 
   uploadProposal.onclick = function () {
     dispatch_setPopupState(PopupState.UploadProposal);
@@ -95,17 +112,12 @@ export function uploadFileListener(props: State) {
   onFileDropped();
   const backbutton = getById("upload-cancel") as HTMLButtonElement;
   const uploadButton = getById("upload-proceed") as HTMLButtonElement;
-  const termsLabel = getById("terms-button");
   const passwordEl = getById("walletPassword") as HTMLInputElement;
   const contentTypeEl = getById("content-type-input") as HTMLInputElement;
   const clearFileButton = getById("clearFileButton") as HTMLButtonElement;
 
   clearFileButton.onclick = function () {
     dispatch_discardFile(props);
-  };
-
-  termsLabel.onclick = function () {
-    dispatch_setPopupState(PopupState.Terms);
   };
 
   backbutton.onclick = function () {
@@ -209,14 +221,20 @@ export function onFileDropped() {
 
 export function uploadSummaryActions(
   transaction: any,
-  data: any,
-  props: State
+  props: State,
+  redirectTo: PopupState
 ) {
   const back = getById("uploadSummary-cancel");
   const proceed = getById("uploadSummary-proceed");
   const transactiondisplay = getById("uploadSummary-tx");
+  const copyButton = getById("copy-transaction");
+  copyButton.onclick = function () {
+    const txId = copyButton.dataset.txid;
+    copyStringToClipboard(txId);
+  };
+
   back.onclick = function () {
-    dispatch_setPopupState(PopupState.UploadFile);
+    dispatch_setPopupState(redirectTo);
   };
 
   proceed.onclick = async function () {
@@ -247,11 +265,11 @@ export function permapinPopupActions(props: any) {
   const back = getById("permapin-back");
   const proceed = getById("permapin-proceed");
   const CIDEl = getById("CID-input-permapin") as HTMLInputElement;
-  const termsLabel = getById("terms-button");
   const passwordEl = getById("walletPassword") as HTMLInputElement;
+  const accountBttn = getById("permapin-account-button");
 
-  termsLabel.onclick = function () {
-    dispatch_setPopupState(PopupState.Terms);
+  accountBttn.onclick = async function () {
+    dispatch_setPopupState(PopupState.ShowAccount);
   };
 
   if (props?.ipfsHash !== undefined) {
@@ -294,7 +312,6 @@ export function permapinPopupActions(props: any) {
 
     const ipfsHash = CIDEl.value;
     const result = await addHash(ipfsHash, props.ipfs, decryptOptions.data);
-
     if (result.status === Status.Failure) {
       const err = result as HashWithIds;
       dispatch_renderError(err.message);
@@ -505,7 +522,11 @@ export function showAccountActions(props: State) {
     dispatch_setPopupState(PopupState.TransferAr);
   };
   cancelButton.onclick = function () {
-    dispatch_setPopupState(PopupState.NONE);
+    if (props.previousPopupState === PopupState.Permapin) {
+      dispatch_setPopupState(PopupState.Permapin);
+    } else {
+      dispatch_setPopupState(PopupState.NONE);
+    }
   };
 
   proceedButton.onclick = function () {
@@ -574,11 +595,6 @@ export function switchAccountsActions(props: State) {
 export async function transferPageActions(props: State) {
   const backbutton = getById("transferPage-cancel");
   const sendbutton = getById("transferPage-proceed");
-  const termsButton = getById("terms-button");
-
-  termsButton.onclick = function () {
-    dispatch_setPopupState(PopupState.Terms);
-  };
 
   backbutton.onclick = async function () {
     await goToShowAccountPage(props);
@@ -737,6 +753,11 @@ export function permapinSummaryActions(arg: {
   const back = getById("permapinPost-back");
   const next = getById("permapinPost-proceed");
 
+  const copyButton = getById("copy-transaction");
+  copyButton.onclick = function () {
+    const txId = copyButton.dataset.txid;
+    copyStringToClipboard(txId);
+  };
   back.onclick = function () {
     dispatch_setPopupState(PopupState.Permapin);
   };
@@ -766,5 +787,147 @@ export function permapinSummaryActions(arg: {
       dispatch_hideElement(next, false);
       return;
     }
+  };
+}
+
+export function uploadCommentActions(props: State) {
+  const backEl = getById("comment-cancel") as HTMLButtonElement;
+  const proceedEl = getById("comment-proceed") as HTMLButtonElement;
+  const trailNameEl = getById("trail-name") as HTMLInputElement;
+  const passwordEl = getById("wallet-password") as HTMLInputElement;
+  const termsCheckbox = getById("terms-checkbox") as HTMLInputElement;
+  const linkedTransactionEl = getById(
+    "linkedTransaction-input"
+  ) as HTMLInputElement;
+  const commentEl = getById("comment-input") as HTMLInputElement;
+  if (props.Account.data === null) {
+    dispatch_renderError("You must add an arweave key first!");
+  }
+  //TODO: fill out the trail name automaticly If somebody searched for the trail!
+
+  dispatch_disableButtonElement(proceedEl, false);
+  dispatch_disableButtonElement(backEl, false);
+  backEl.onclick = function () {
+    dispatch_setPopupState(PopupState.NONE);
+  };
+
+  proceedEl.onclick = async function () {
+    if (props.Account.data === null) {
+      dispatch_renderError("You must add an arweave key first!");
+      return;
+    }
+    if (trailNameEl.value === "") {
+      dispatch_renderError("Trail id is missing");
+      dispatch_disableButtonElement(proceedEl, false);
+      dispatch_disableButtonElement(backEl, false);
+
+      return;
+    }
+    const trailId = trailNameEl.value;
+    if (commentEl.value === "") {
+      dispatch_renderError("You must add a comment");
+      return;
+    }
+    const comment = commentEl.value;
+
+    if (termsCheckbox.checked === false) {
+      dispatch_renderError("You need to accept the terms.");
+      return;
+    }
+    const password = passwordEl.value;
+
+    if (password.length < 8) {
+      dispatch_renderError("Missing password.");
+      return;
+    }
+    const myAddressOptions = await OptionsBuilder(() => getAddress());
+
+    dispatch_disableButtonElement(proceedEl, true);
+    dispatch_disableButtonElement(backEl, true);
+
+    if (hasError(myAddressOptions)) {
+      dispatch_disableButtonElement(proceedEl, false);
+      dispatch_disableButtonElement(backEl, false);
+
+      return;
+    }
+    const addr = myAddressOptions.data;
+    const trailsContractOptions = await OptionsBuilder(() =>
+      getTrailsContract()
+    );
+    const trails = trailsContractOptions.data;
+
+    if (hasError(trailsContractOptions)) {
+      dispatch_disableButtonElement(proceedEl, false);
+      dispatch_disableButtonElement(backEl, false);
+
+      return;
+    }
+
+    const checkIfExistsOptions = await OptionsBuilder(() =>
+      getTrailDetails(trails, trailId, addr)
+    );
+
+    if (hasError(checkIfExistsOptions)) {
+      dispatch_disableButtonElement(proceedEl, false);
+      dispatch_disableButtonElement(backEl, false);
+
+      return;
+    }
+    const trailDetails: TrailDetails = checkIfExistsOptions.data;
+
+    if (!trailDetails.initialized) {
+      dispatch_renderError("That trail doesn't exist");
+      dispatch_disableButtonElement(proceedEl, false);
+      dispatch_disableButtonElement(backEl, false);
+
+      return;
+    }
+
+    if (trailDetails.access === "0") {
+      //If it's private, I check if the uploading address is the same as the creator
+      if (addr !== trailDetails.creator) {
+        dispatch_renderError(
+          "This is a private trail, your comments will never be displayed."
+        );
+        dispatch_disableButtonElement(proceedEl, false);
+        dispatch_disableButtonElement(backEl, false);
+
+        return;
+      }
+    }
+    if (linkedTransactionEl.value.length !== 0) {
+      if (linkedTransactionEl.value.length !== 43) {
+        dispatch_renderError("Invalid linked transaction!");
+        dispatch_disableButtonElement(proceedEl, false);
+        dispatch_disableButtonElement(backEl, false);
+        return;
+      }
+    }
+
+    const linkedtransaction = linkedTransactionEl.value;
+
+    if (props.Account.data?.byteLength === undefined) {
+      dispatch_renderError("Invalid account data");
+      dispatch_disableButtonElement(proceedEl, false);
+      dispatch_disableButtonElement(backEl, false);
+      return;
+    }
+    const decryptOptions = await decryptWallet(props.Account.data, password);
+    if (hasError(decryptOptions)) {
+      dispatch_disableButtonElement(proceedEl, false);
+      dispatch_disableButtonElement(backEl, false);
+      return;
+    }
+
+    const commentTransaction = await getTrailTransaction(
+      trailId,
+      decryptOptions.data,
+      props.version,
+      comment,
+      linkedtransaction
+    );
+
+    dispatch_renderArweaveTxSummary(commentTransaction, props);
   };
 }
