@@ -1,4 +1,4 @@
-import { Options, Status } from "../types";
+import { Options, Status, TrailData } from "../types";
 
 export async function fetchGeoCodingCSV(): Promise<Options<string>> {
   const result: Options<string> = {
@@ -36,4 +36,10 @@ export async function fetchAcceptableContract(
     result.error = error.message;
   }
   return result;
+}
+// Used with the OptionsBuilder
+export async function fetchTransactionBy(id): Promise<TrailData> {
+  const response = await fetch(`https://arweave.net/${id}`, { method: "get" });
+  const result = await response.json();
+  return result as TrailData;
 }
