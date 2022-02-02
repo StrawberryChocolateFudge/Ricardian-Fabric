@@ -1,12 +1,10 @@
 import { html } from "lit-html";
 import {
-  BackLogo,
   ContentPasteLogo,
   ContractConfigurationLogo,
   Erc20Logo,
   importLogo,
   neverLogo,
-  Policylogo,
 } from "../components/logos";
 
 export const CreatePage = () => html`
