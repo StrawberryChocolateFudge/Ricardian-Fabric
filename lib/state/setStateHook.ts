@@ -1,5 +1,6 @@
 import { saveCreatePageData } from "../business/actions/createButtonClick";
 import {
+  dispatch_addCommentPopup,
   dispatch_attachDateClickListener,
   dispatch_catalogPage,
   dispatch_collectRewardPage,
@@ -139,11 +140,14 @@ export const setStateHook = {
       case PopupState.WrongNetwork:
         dispatch_renderWrongNetworkPopup(clone);
         break;
-
+      case PopupState.AddComment:
+        dispatch_addCommentPopup(clone);
+        break;
       default:
         break;
     }
   },
+  [StateProperties.previousPopupState]: (args: SetHookArgs) => {},
   [StateProperties.pageState]: (args: SetHookArgs) => {
     const detectScreen = new ScreenSizeDetector();
     if (detectScreen.width < 1000) {
