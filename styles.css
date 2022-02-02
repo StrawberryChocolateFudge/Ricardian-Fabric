@@ -264,6 +264,13 @@ hr {
 .width-90Percent {
   width: 90%;
 }
+.width-100Percent {
+  width: 100%;
+}
+
+.height-100Percent {
+  height: 100%;
+}
 
 .red {
   color: red;
@@ -355,10 +362,11 @@ hr {
   overflow: hidden;
 }
 
-.row {
-  margin-top: 10px;
+.row-spaceBetween {
   display: flex;
   flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
 }
 
 .wide-row {
@@ -426,6 +434,9 @@ hr {
 }
 .labelButton:hover {
   background-color: #ccc;
+}
+.labelButton:active {
+  background-color: rgb(239, 239, 239);
 }
 
 #network-dropdown {
@@ -963,6 +974,10 @@ hr {
   display: block;
 }
 
+.display-none {
+  display: none;
+}
+
 .placeholder-item {
   box-shadow: 0 4px 10px 0 rgba(33, 33, 33, 0.15);
   border-radius: 4px;
@@ -1046,4 +1061,19 @@ hr {
 }
 .overflow-auto {
   overflow: auto;
+}
+
+.trailList {
+  padding: 25px;
+  list-style: none;
+}
+.trailListElement {
+  margin: 25px;
+  padding-left: 5px;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+
+.border-none {
+  border: none;
 }
