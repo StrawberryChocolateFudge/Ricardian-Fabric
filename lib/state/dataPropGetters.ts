@@ -2,6 +2,7 @@ import {
   BlockCountry,
   ContractTypes,
   ERC20Params,
+  IPFSParams,
   SelectedWallet,
 } from "../types";
 
@@ -89,4 +90,12 @@ export function getSelectedWalletFromDataProp(
   page: HTMLElement
 ): SelectedWallet {
   return page.dataset.selectedwallet as SelectedWallet;
+}
+
+export function getCreatorAppLinkFromDataProp(page: HTMLElement): string {
+  return page.dataset.creatorapplink;
+}
+
+export function getIPFSConfig(page: HTMLElement): IPFSParams {
+  return JSON.parse(page.dataset.ipfs) as IPFSParams;
 }
