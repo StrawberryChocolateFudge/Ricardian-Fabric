@@ -1,13 +1,15 @@
-import { html } from "lit-html";
+import { html, nothing } from "lit-html";
 import { AcceptablePageProps } from "../../../types";
 import {
   createdDateTemplate,
   expiryTemplate,
   issuerTemplate,
   networkTemplate,
+  TrailTemplate,
 } from "../components/components";
 import { mainDep } from "../components/dependencies";
 import { loadingIndicator } from "../components/loadingIndicator";
+import { verifyLogo } from "../components/logos";
 
 export const acceptablePageLayout = (props: AcceptablePageProps) => html`
   <style>
@@ -374,6 +376,10 @@ export const acceptablePageLayout = (props: AcceptablePageProps) => html`
     .text-align-center {
       text-align: center;
     }
+
+    .cursor-pointer {
+      cursor: pointer;
+    }
   </style>
   <body>
     ${acceptablePage(props)} ${mainDep(props.mainDep.src)}
@@ -394,10 +400,13 @@ const acceptablePage = (props: AcceptablePageProps) => html`
     data-issuersignature="${props.issuerSignature}"
     data-smartcontract="${props.smartContract}"
     data-erc20="${props.ERC20}"
+    data-creatorapplink="${props.creatorAppLink}"
+    data-relatedtrail="${props.relatedtrail}"
+    data-ipfs="${JSON.stringify(props.ipfsParams)}"
     id="page"
   >
     <div class="row">
-      <div id="permaweb-dropdown"></div>
+      <div class="cursor-pointer" id="verifyContract">${verifyLogo()}</div>
     </div>
     <div id="contract-display"></div>
     <table id="display-table">
@@ -407,6 +416,9 @@ const acceptablePage = (props: AcceptablePageProps) => html`
       </tr>
       ${createdDateTemplate(props.createdDate)} ${expiryTemplate(props.expires)}
       ${networkTemplate(props.network, false)} ${issuerTemplate(props.issuer)}
+      ${props.relatedtrail !== ""
+        ? TrailTemplate(props.creatorAppLink, props.relatedtrail)
+        : nothing}
     </table>
     <hr />
     <div class="center red" id="error-display"></div>
