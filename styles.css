@@ -272,6 +272,14 @@ hr {
   height: 100%;
 }
 
+.maxHeight-100px {
+  max-height: 100px;
+}
+
+.listStyleType-disclosureClosed {
+  list-style-type: disclosure-closed;
+}
+
 .red {
   color: red;
 }
@@ -418,6 +426,11 @@ hr {
 }
 .background-lightgreen {
   background: lightgreen;
+}
+
+.card-shadow {
+  box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px,
+    rgb(60 64 67 / 15%) 0px 1px 3px 1px;
 }
 
 .background-ccc {
