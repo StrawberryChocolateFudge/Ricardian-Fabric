@@ -828,3 +828,10 @@ export function dispatch_navigateTo(queryStrings: QueryStrings, value: string) {
     props: { tmp: { value, queryStrings } },
   });
 }
+
+export function dispatch_ipfsConfig(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.renderIpfsConfig,
+    props,
+  });
+}
