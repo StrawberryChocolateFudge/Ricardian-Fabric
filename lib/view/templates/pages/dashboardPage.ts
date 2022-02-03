@@ -8,10 +8,12 @@ import {
   contractFeesLogo,
   CryptoVaultLogo,
   GoldBarsLogo,
+  IPFSLogo,
   RateLogo,
   Rewardhand,
   StakingLogo,
   TokenPileLogo,
+  VerificationLogo,
 } from "../components/logos";
 
 export const dashBoardElementsTitles: DashboardUIElement[] = [
@@ -77,15 +79,31 @@ export const dashBoardElementsTitles: DashboardUIElement[] = [
   },
 ];
 
-export const DashboardPage = () => html`<h2>Dashboard</h2>
+export const DashboardPage = () => html`<h3>Dashboard</h3>
   <div class="dashboard-layout">
     ${dashBoardElementsTitles.map((elmnts) =>
       dashEl(elmnts.title, elmnts.id, elmnts.desc, elmnts.logo)
     )}
   </div>
   <hr />
-  <slot id="permapinned-data-slot"></slot> `;
 
+  <div class="row">
+    <button
+      title="Verify an acceptable contract"
+      class="labelButton"
+      id="verify-contract-button"
+    >
+      ${VerificationLogo()}
+    </button>
+    <button
+      title="Configure IPFS"
+      class="labelButton"
+      id="configure-ipfs-button"
+    >
+      ${IPFSLogo()}
+    </button>
+  </div>
+  <slot id="permapinned-data-slot"></slot> `;
 // The dashboard elements will have a loading indicator at the id, then the value.
 // It will side-effect like render it in an init function one by one as they fetch
 export const dashEl = (
@@ -114,33 +132,23 @@ export const loadedValueEl = (loadedValue) => html` <h4>${loadedValue}</h4>`;
 export const PermaPinnedData = (ipfsV2Url: string, nodes: any) => {
   return html`
     <div class="center"><h3>Latest pinned contracts</h3></div>
-    <div class="overflow-auto">
-      <table class="light-shadow center padding-20">
-        <thead>
-          <tr>
-            <th>Link</th>
-            <th></th>
-            <th>Issuer</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${nodes.map((node) => {
-            const [issuer, ipfsCID] = findTags(node.tags);
-            return html`<tr class="center">
-              <td>
-                <a
-                  href="https:/${ipfsCID}.${ipfsV2Url}"
-                  target="_blank"
-                  rel="noopener"
-                  >Contract</a
-                >
-              </td>
-              <td><hr /></td>
-              <td>${issuer}</td>
-            </tr>`;
-          })}
-        </tbody>
-      </table>
+    <div class="overflow-auto card-shadow">
+      <ul class="maxHeight-100px listStyleType-disclosureClosed">
+        ${nodes.map((node) => {
+          const [issuer, ipfsCID] = findTags(node.tags);
+          return html`<li class="marginTop-50">
+            <div class="column">
+              <a
+                href="https:/${ipfsCID}.${ipfsV2Url}"
+                target="_blank"
+                rel="noopener"
+                >${ipfsCID}</a
+              >
+              <div><label>Issued by: ${issuer}</label></div>
+            </div>
+          </li>`;
+        })}
+      </ul>
       <hr />
     </div>
   `;
