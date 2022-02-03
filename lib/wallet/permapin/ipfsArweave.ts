@@ -10,7 +10,7 @@ import isIPFS from "is-ipfs";
 import { CID } from "multiformats";
 import Arweave from "arweave";
 import { ARWAEVECONFIG } from "../arweave";
-import { IPFS_CAT } from "../../ipfs/add";
+import { fetchFromIPFS } from "../../fetch";
 const IPFS_KEY = "IPFS-Add";
 
 //temporary so it doesnt conflict with different data structure
@@ -43,12 +43,11 @@ export async function addHash(
     return makeHashWithIds(h, "It's already permapined!", Status.AlreadyExists);
   }
 
-  const data = await IPFS_CAT(h, ipfsParams);
+  const data = await fetchFromIPFS(h, ipfsParams);
   const options = verifyAndGetTags(data);
   if (options.status === Status.Failure) {
     return makeHashWithIds(h, "Not Ricardian Fabric Contract", Status.Failure);
   }
-
   const tags = options.tags;
   let transaction = await arweave.createTransaction(
     {
