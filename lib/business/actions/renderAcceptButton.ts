@@ -18,12 +18,22 @@ import {
   signHash,
   web3Injected,
 } from "../../wallet/web3";
-import { getAcceptableContract, getById, getFromUrl } from "../../view/utils";
+import {
+  getAcceptableContract,
+  getById,
+  getFromUrl,
+  newTab,
+} from "../../view/utils";
 import MetaMaskOnboarding from "@metamask/onboarding";
 import { getHash } from "../../crypto";
 
 export function renderAcceptOnCLick(props: State) {
   const acceptButton = getById("accept-button") as HTMLInputElement;
+  const verifyButton = getById("verifyContract");
+  verifyButton.onclick = function () {
+    const url = props.creatorAppLink + "?verify=" + location.origin;
+    newTab(url);
+  };
 
   acceptButton.onclick = async function () {
     dispatch_removeError();
@@ -95,7 +105,7 @@ export function renderAcceptOnCLick(props: State) {
         smartContract: props.smartcontract,
         ERC20: JSON.stringify(props.isERC20),
         blockedAddresses: props.blockedAddresses,
-        blockedCountries: props.blockedCountries
+        blockedCountries: props.blockedCountries,
       });
 
       dispatch_stashDetails({
@@ -135,7 +145,7 @@ async function getRecomputedHash(props: State) {
   const issuer = props.issuer;
   const blockedCountries = props.blockedCountries;
   const blockedAddresses = props.blockedAddresses;
-  const network = props.network
+  const network = props.network;
   const smartContract = props.smartcontract;
   const ERC20 = JSON.stringify(props.isERC20);
   const recomputedHash = await getHash({
@@ -149,7 +159,7 @@ async function getRecomputedHash(props: State) {
     network,
     smartContract,
     blockedAddresses,
-    ERC20
+    ERC20,
   });
 
   return recomputedHash;
