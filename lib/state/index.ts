@@ -9,14 +9,17 @@ import {
   PageState,
   CreateRicardianPageProps,
   ProposalFormat,
+  IPFSParams,
 } from "../types";
 import { getCurrentUrl, getPage } from "../view/utils";
 import {
   getBlockCountriesFromDataProp,
   getBlockedAddressesFromDataProp,
   getCreatedDateFromDataProp,
+  getCreatorAppLinkFromDataProp,
   getCurrentPageDataProp,
   getExpiresFromDataProp,
+  getIPFSConfig,
   getIsERC20FromDataProp,
   getIssuerDataProp,
   getIssuerSignatureFromDataProp,
@@ -35,12 +38,7 @@ import { beforePageSetHook, setStateHook } from "./setStateHook";
     const pageEl = getPage();
     const state: State = {
       init: false,
-      ipfs: {
-        host: "ipfs.infura.io",
-        v2Url: "ipfs.infura-ipfs.io",
-        port: 5001,
-        protocol: "https",
-      },
+      ipfs: getIPFSConfig(pageEl),
       Account: { data: null, address: null, balance: null },
       popupState: PopupState.NONE,
       previousPopupState: PopupState.NONE,
@@ -84,6 +82,7 @@ import { beforePageSetHook, setStateHook } from "./setStateHook";
       ipfsCID: "",
       editFinished: false,
       blockPollTimer: undefined,
+      creatorAppLink: getCreatorAppLinkFromDataProp(pageEl),
     };
 
     const stateHandler = {
@@ -103,13 +102,8 @@ import { beforePageSetHook, setStateHook } from "./setStateHook";
     [EventType.init]: (value: {}) => {
       stateContainer.init = true;
     },
-    [EventType.setIPFS]: (value: {}) => {
-      stateContainer.ipfs = {
-        host: "ipfs.infura.io",
-        v2Url: "ipfs.infura-ipfs.io",
-        port: 5001,
-        protocol: "https",
-      };
+    [EventType.setIPFS]: (value: IPFSParams) => {
+      stateContainer.ipfs = value;
     },
     [EventType.setEditor]: (value: any) => {
       stateContainer.editor = value;
