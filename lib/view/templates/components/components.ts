@@ -10,63 +10,94 @@ export const getPriceTemplate = (
   if (price !== "NONE") {
     const formattedPrice = price === "NONE" ? "" : `${price} Ar`;
     return html`<tr>
-  <td>
-    <label aria-labelledby="price label">Price:</label>
-  </td>
-  <td>
-    <div aria-label="price">${formattedPrice}</div>
-  </td>
-</tr>
-<tr>
-  <td>
-    <label aria-labelledby="fee label">Fee:</label>
-  </td>
-  <td aria-label="fee">${fee} Ar</td>
-</tr>`;
+        <td>
+          <label aria-labelledby="price label">Price:</label>
+        </td>
+        <td>
+          <div aria-label="price">${formattedPrice}</div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label aria-labelledby="fee label">Fee:</label>
+        </td>
+        <td aria-label="fee">${fee} Ar</td>
+      </tr>`;
   }
 };
 
 export const createdDateTemplate = (date: string) => {
   return html`<tr>
-  <td aria-labelledby="created date label">
-    <label for="createdDate"><label for="createdDate">Created:</label></label>
-  </td>
-  <td id="createdDate" aria-label="created date"><small>${date}</small></td>
-</tr>`;
+    <td aria-labelledby="created date label">
+      <label for="createdDate"><label for="createdDate">Created:</label></label>
+    </td>
+    <td id="createdDate" aria-label="created date"><small>${date}</small></td>
+  </tr>`;
 };
 
 export const signedDateTemplate = (date: string) => {
   return html`<tr>
-  <td aria-labelledby="signed date label">
-    <label for="signed-date">Signed on:</label>
-  </td>
-  <td id="signed-date" aria-label="signed date"><small>${date}</small></td>
-</tr>`;
+    <td aria-labelledby="signed date label">
+      <label for="signed-date">Signed on:</label>
+    </td>
+    <td id="signed-date" aria-label="signed date"><small>${date}</small></td>
+  </tr>`;
 };
 
 export const issuerTemplate = (address: string) => {
   return html`
     <tr>
       <td aria-labelledby="issuer label">
-        <label for="issuer-address"><label for="issuer-address">Issuer:</label></label>
+        <label for="issuer-address"
+          ><label for="issuer-address">Issuer:</label></label
+        >
       </td>
-      <td id="issuer-address" aria-label="address">${getBlockie(address, "20px","")}<small>${address}</small></td>
+      <td id="issuer-address" aria-label="address">
+        ${getBlockie(address, "20px", "")}<small>${address}</small>
+      </td>
       <td></td>
     </tr>
   `;
 };
 
+export const TrailTemplate = (creatorAppLink: string, relatedTrail: string) => {
+  const url = creatorAppLink + "?trail=" + relatedTrail;
+  return html` <tr>
+    <td aria-labelledby="Trail">
+      <label for="Trail">Trail:</label>
+    </td>
+    <td>
+      <a href="${url}" rel="noopener" target="_blank">${relatedTrail}</a>
+    </td>
+    <td></td>
+  </tr>`;
+};
+
 export const networkTemplate = (network: string, isFulfilled: boolean) => {
   const chains = {
-    [Chains.Ropsten]: getChainButton(Chains.Ropsten, "Ropsten", "Testnet", "", isFulfilled),
-    [Chains.bscTestnet]: getChainButton(Chains.bscTestnet, "BSC", "Testnet", "", isFulfilled),
-    [Chains.polygonTestnet]: getChainButton(Chains.polygonTestnet,
+    [Chains.Ropsten]: getChainButton(
+      Chains.Ropsten,
+      "Ropsten",
+      "Testnet",
+      "",
+      isFulfilled
+    ),
+    [Chains.bscTestnet]: getChainButton(
+      Chains.bscTestnet,
+      "BSC",
+      "Testnet",
+      "",
+      isFulfilled
+    ),
+    [Chains.polygonTestnet]: getChainButton(
+      Chains.polygonTestnet,
       "Polygon",
       "Testnet",
       "",
       isFulfilled
     ),
-    [Chains.harmonyTestnetShard0]: getChainButton(Chains.harmonyTestnetShard0,
+    [Chains.harmonyTestnetShard0]: getChainButton(
+      Chains.harmonyTestnetShard0,
       "Harmony",
       "Testnet",
       "Shard 0",
@@ -77,14 +108,14 @@ export const networkTemplate = (network: string, isFulfilled: boolean) => {
   const networkEl = chains[network];
 
   return html`<tr>
-  <td aria-labelledby="Network Id label">
-    <label for="network-id">Network:</label>
-  </td>
-  <td id="network-id" aria-label="network id">
-    <small>${networkEl === undefined ? network : networkEl}</small>
-  </td>
-  <td></td>
-</tr>`;
+    <td aria-labelledby="Network Id label">
+      <label for="network-id">Network:</label>
+    </td>
+    <td id="network-id" aria-label="network id">
+      <small>${networkEl === undefined ? network : networkEl}</small>
+    </td>
+    <td></td>
+  </tr>`;
 };
 
 export function getChainButton(
@@ -97,8 +128,9 @@ export function getChainButton(
   if (disabled) {
     return html`${getChainLogo(chains)} ${chainName} ${net} ${shard}`;
   } else {
-    return html`<button class="network-button" id="addChainButton">${getChainLogo(chains)} <small>${chainName} ${net} ${shard}</small>
-</button>`;
+    return html`<button class="network-button" id="addChainButton">
+      ${getChainLogo(chains)} <small>${chainName} ${net} ${shard}</small>
+    </button>`;
   }
 }
 
@@ -120,19 +152,19 @@ export function getChainLogo(chain: Chains) {
 export const onlySignerTemplate = (onlySigner: string) => {
   if (onlySigner !== "NONE") {
     return html`<tr>
-  <td aria-labelledby="only signer label">Only Signer:</td>
-  <td aria-label="only signer address">${onlySigner}</td>
-  <td></td>
-</tr>`;
+      <td aria-labelledby="only signer label">Only Signer:</td>
+      <td aria-label="only signer address">${onlySigner}</td>
+      <td></td>
+    </tr>`;
   }
 };
 
 export const hashTemplate = (hash: string) => {
   return html`<tr>
-  <td aria-labelledby="Hash label">Hash</td>
-  <td aria-label="Hash">${hash}</td>
-  <td></td>
-</tr>`;
+    <td aria-labelledby="Hash label">Hash</td>
+    <td aria-label="Hash">${hash}</td>
+    <td></td>
+  </tr>`;
 };
 
 export const expiryTemplate = (date: string) => html`<tr>
@@ -147,7 +179,9 @@ export const getParticipantFromTemplate = (participant: string) => html`<tr>
   <td aria-labelledby="participant label">
     <label for="participant">Participant:</label>
   </td>
-  <td id="participant" aria-label="participant">${getBlockie(participant, "20px","")}<small>${participant}</small></td>
+  <td id="participant" aria-label="participant">
+    ${getBlockie(participant, "20px", "")}<small>${participant}</small>
+  </td>
   <td></td>
 </tr>`;
 
@@ -157,7 +191,9 @@ export const parentUrl = (url: string) => html`
       <label for="parent-url">Parent:</label>
     </td>
     <td id="parent-url">
-      <a aria-label="accepted at url ${url}" href="${url}"><small>${url}</small></a>
+      <a aria-label="accepted at url ${url}" href="${url}"
+        ><small>${url}</small></a
+      >
     </td>
     <td></td>
   </tr>
