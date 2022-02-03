@@ -3,8 +3,9 @@ import {
   dispatch_renderLoadedValue,
   dispatch_renderPermapinnedDashboardData,
 } from "../../dispatch/render";
+import { dispatch_setPage } from "../../dispatch/stateChange";
 import { getUploadedContracts } from "../../fetch/graphql";
-import { State, Status } from "../../types";
+import { PageState, State, Status } from "../../types";
 import { getById } from "../../view/utils";
 import {
   getAcceptedSmartContractIndex,
@@ -35,8 +36,11 @@ import {
 } from "../../wallet/ricVault/contractCalls";
 import { getAddress } from "../../wallet/web3";
 import { hasError, OptionsBuilder } from "../utils";
+import { verifyContractPageTrigger } from "./verifyContractActions";
 
 export async function dashboardActions(props: State) {
+  verifyContractPageTrigger(props);
+  const ipfsButton = getById("configure-ipfs-button");
   const ricTotalSupplyEl = getById("ric-total-supply");
   const ricLeftEl = getById("ric-left-for-sale");
   const ricSaleRateEl = getById("ric-sale-rate");
@@ -47,6 +51,10 @@ export async function dashboardActions(props: State) {
   const contributorStakeEl = getById("total-staking-amount");
   const HarmonyFeesCollectedEl = getById("fees-collected-amount");
   const tokenFeesCollectedEl = getById("token-fees-collected-amount");
+
+  ipfsButton.onclick = async function () {
+    dispatch_setPage(PageState.ipfsConfig);
+  };
 
   const addressOptions = await OptionsBuilder(() => getAddress());
 
