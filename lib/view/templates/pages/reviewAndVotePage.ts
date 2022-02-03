@@ -19,29 +19,25 @@ import {
 
 export function ReviewAndVote() {
   return html`
-    <h2>
-      DAO
-      <button
-        id="create-proposal-button"
-        class="labelButton"
-        title="Propose a new smart contract"
-      >
-        ${AddDocumentImage()}
-      </button>
-      <button id="my-proposals-button" class="labelButton" title="My proposals">
-        ${ManageAccountLogo()}
-      </button>
-      <button
-        id="fee-proposals-button"
-        class="labelButton"
-        title="Fee proposals"
-      >
-        ${FeeProposalLogo()}
-      </button>
-      <button id="profit-sharing-button" class="labelButton" title="Ar Sharing">
-        ${ProfitSharingLogo()}
-      </button>
-    </h2>
+    <h3>DAO</h3>
+
+    <button
+      id="create-proposal-button"
+      class="labelButton"
+      title="Propose a new smart contract"
+    >
+      ${AddDocumentImage()}
+    </button>
+    <button id="my-proposals-button" class="labelButton" title="My proposals">
+      ${ManageAccountLogo()}
+    </button>
+    <button id="fee-proposals-button" class="labelButton" title="Fee proposals">
+      ${FeeProposalLogo()}
+    </button>
+    <button id="profit-sharing-button" class="labelButton" title="Ar Sharing">
+      ${ProfitSharingLogo()}
+    </button>
+
     <div id="rank-proposal-table"></div>
   `;
 }
