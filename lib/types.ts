@@ -126,6 +126,7 @@ export enum RenderType {
   arweaveTxSummary = "arweaveTxSummary",
   trailDataPage = "trailDataPage",
   navigateToQueryString = "navigateToQueryString",
+  renderIpfsConfig = "renderIpfsConfig",
 }
 
 // TODO refactor to RenderDispatchArgs for specifying the dispatch arguments
@@ -226,6 +227,7 @@ export type Renderer = {
   [RenderType.arweaveTxSummary]: RenderFunction;
   [RenderType.trailDataPage]: RenderFunction;
   [RenderType.navigateToQueryString]: RenderFunction;
+  [RenderType.renderIpfsConfig]: RenderFunction;
 };
 
 export enum VerificationState {
@@ -377,6 +379,7 @@ export enum PageState {
   vault,
   trails,
   rewards,
+  ipfsConfig,
 }
 
 export type State = {
@@ -414,6 +417,7 @@ export type State = {
   ipfsCID: string;
   editFinished: boolean;
   blockPollTimer: NodeJS.Timer;
+  creatorAppLink: string;
 };
 
 export type SetHookArgs = {
@@ -454,6 +458,9 @@ export type AcceptablePageProps = {
   issuerSignature: string;
   smartContract: string;
   ERC20: string;
+  creatorAppLink: string;
+  relatedtrail: string;
+  ipfsParams: IPFSParams;
 };
 
 export type FulfilledPageProps = {
