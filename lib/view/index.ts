@@ -110,6 +110,7 @@ import {
   renderArweaveSummaryTx,
   renderTrailDataPage,
   navigateToQueryString,
+  renderIpfsConfigPage,
 } from "./render";
 import { renderAcceptTools } from "./render";
 import { areYouSureButtons } from "../business/actions/areYouSureButtons";
@@ -179,6 +180,7 @@ import {
   trailDetailsActions,
   trailsPageActions,
 } from "../business/actions/trailsPageActions";
+import { ipfsConfigActions } from "../business/actions/ipfsConfigActions";
 
 const Render: Renderer = {
   [RenderType.connectYourWallet]: (props: State) => {
@@ -619,8 +621,11 @@ const Render: Renderer = {
     );
   },
   [RenderType.navigateToQueryString]: (props: RenderDispatchArgs) => {
-    console.log(props.tmp);
     navigateToQueryString(props.tmp.queryStrings, props.tmp.value);
+  },
+  [RenderType.renderIpfsConfig]: (props: RenderDispatchArgs) => {
+    renderIpfsConfigPage(props);
+    ipfsConfigActions(props);
   },
 };
 
