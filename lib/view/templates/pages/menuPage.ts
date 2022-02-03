@@ -8,7 +8,6 @@ import {
   TokenSaleLogo,
   TrailsLogo,
   VaultLogo,
-  VerificationLogo,
   VotingLogo,
 } from "../components/logos";
 
@@ -47,14 +46,13 @@ export const MenuPage = (blockieData: string) => html`
       ${catalogLogo()}
     </button>
   </div>
-
   <div class="text-align-center">
     <button
-      title="Verify an acceptable contract"
-      class="lightSlateGray-shadow  labelButton"
-      id="verify-contract-button"
+      title="Trails"
+      class="lightSlateGray-shadow labelButton"
+      id="trails-page-button"
     >
-      ${VerificationLogo()}
+      ${TrailsLogo()}
     </button>
   </div>
   <div class="text-align-center">
@@ -72,15 +70,6 @@ export const MenuPage = (blockieData: string) => html`
         id="tokensale-button"
       >
         ${TokenSaleLogo()}
-      </button>
-    </div>
-    <div class="text-align-center">
-      <button
-        title="Trails"
-        class="lightSlateGray-shadow labelButton"
-        id="trails-page-button"
-      >
-        ${TrailsLogo()}
       </button>
     </div>
     <div class="text-align-center">
