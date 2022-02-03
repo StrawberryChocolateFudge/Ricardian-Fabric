@@ -1,8 +1,8 @@
-import { html } from "lit-html";
-import { ContractTypes, State } from "../../../types";
-import { EditAgainLogo } from "./logos";
+import { html, nothing } from "lit-html";
+import { ContractTypes } from "../../../types";
+import { EditAgainLogo, pinLogo } from "./logos";
 
-export const transactionUrl = (props: State, url: string) => {
+export const transactionUrl = (props: any, url: string) => {
   return html`
     <style>
       .transaction-layout {
@@ -63,7 +63,16 @@ export const transactionUrl = (props: State, url: string) => {
                 Permapin to Arweave!
               </button>
             `
-          : null}
+          : nothing}
+        ${props.contracttype === ContractTypes.acceptable
+          ? html`<a
+              target="_blank"
+              rel="noopener"
+              href="${props.creatorAppLink + "?pin=" + props.ipfsHash}"
+              title="Permapin the content on arweave"
+              >${pinLogo()}</a
+            >`
+          : nothing}
         ${props.contracttype === ContractTypes.create
           ? html`
               <hr />
@@ -71,7 +80,7 @@ export const transactionUrl = (props: State, url: string) => {
                 ${EditAgainLogo()}Edit page again
               </button>
             `
-          : null}
+          : nothing}
       </div>
       <hr />
     </div>
