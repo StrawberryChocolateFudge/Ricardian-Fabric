@@ -76,7 +76,7 @@ function getDropdowns(contractType: ContractTypes, page: PageState) {
             </li>
             <li>
               <button class="dropdown-button" id="upload-comment">
-                <small>${CommentLogo()}Add Comment</small>
+                <small>${CommentLogo()} Add Comment</small>
               </button>
             </li>`;
         default:
