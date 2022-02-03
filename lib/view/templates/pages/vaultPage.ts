@@ -96,7 +96,7 @@ export const VaultItems = (
   }
 
   return html`<hr />
-    <div class="rowStart overflow-auto">
+    <div class="rowAround text-align-center">
       ${lockedTokens.map((token) =>
         VaultItem(token, indexes[lockedTokens.indexOf(token)], currentPage)
       )}
