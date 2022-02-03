@@ -10,7 +10,7 @@ import {
   SmartContractProposal,
 } from "../../types";
 import { CATALOGDAOADDRESS } from "../web3";
-const HARMONYRPCURL = "http://127.0.0.1:8545/";
+export const HARMONYRPCURL = "http://127.0.0.1:8545/";
 export const VOTINGPERIODBLOCKS = 10; //The blocks passing in the voting period. 302400 on Harmony, 10 on Hardhat
 
 export async function getCatalogDAOContractWithWallet() {
