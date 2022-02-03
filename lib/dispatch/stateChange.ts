@@ -9,6 +9,7 @@ import {
   PageState,
   CreateRicardianPageProps,
   ProposalFormat,
+  IPFSParams,
 } from "../types";
 import { dispatch } from "./dispatch";
 
@@ -19,10 +20,10 @@ export function dispatch_setInit() {
   });
 }
 
-export function dispatch_setIPFS() {
+export function dispatch_setIPFS(ipfsParams: IPFSParams) {
   dispatch(Events.stateChange, {
     type: EventType.setIPFS,
-    value: {},
+    value: ipfsParams,
   });
 }
 
