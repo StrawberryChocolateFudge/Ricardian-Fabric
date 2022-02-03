@@ -92,12 +92,7 @@ import {
 import { FeeDaoPage } from "./templates/pages/feeDaoPage";
 import { PSTPage } from "./templates/pages/pstPage";
 import { TokenSalePage } from "./templates/pages/tokenSalePage";
-import {
-  EmptyVault,
-  LoadingVault,
-  VaultItems,
-  VaultPage,
-} from "./templates/pages/vaultPage";
+import { EmptyVault, VaultItems, VaultPage } from "./templates/pages/vaultPage";
 import {
   FindTrail,
   FoundTrail,
@@ -110,6 +105,7 @@ import {
   AddCommentTrail,
   UploadArweaveTxSummary,
 } from "./templates/popups/addComment";
+import { IpfsConfigPage } from "./templates/pages/ipfsConfigPage";
 
 export function renderConnectYourWallet(props: State) {
   const page = getById("page");
@@ -192,6 +188,11 @@ export function renderVaultPage(props: State) {
 export function renderTrailsPage(props: State) {
   const page = getById("page");
   render(TrailsPage(), page);
+}
+
+export function renderIpfsConfigPage(props: State) {
+  const page = getById("page");
+  render(IpfsConfigPage(props), page);
 }
 
 export function renderAcceptTools(props: State) {
@@ -327,6 +328,7 @@ export function renderTooltips() {
   const expires = getById("expires-tooltip");
   const redirectto = getById("redirectto-tooltip");
   const Scontract = getById("smartcontract-tooltip");
+  const trailTooltip = getById("trail-tooltip");
   const customNetwork = getById("customnetwork-tooltip");
   const erc20Tooltip = getById("erc20-tooltip");
   const adderc20Tooltip = getById("add-erc20-checkbox-tooltip");
@@ -334,6 +336,9 @@ export function renderTooltips() {
   const erc20SymbolTooltip = getById("erc20-symbol-tooltip");
   const erc20DecimalTooltip = getById("erc20-decimal-tooltip");
   const erc20Address = getById("erc20-address-tooltip");
+
+  render(helperTooltips("Add a trail to this contract."), trailTooltip);
+
   render(
     helperTooltips(
       "Ricardian Fabric uses Geolocation to block access from sanctioned countries."
@@ -390,15 +395,6 @@ export function disableCreateInputs() {
 
   editor.contentEditable = "false";
 
-  // const smartContractCatalogButton = getById(
-  //   "smart-contract-catalog-button"
-  // ) as HTMLButtonElement;
-  // const stakingButton = getById("staking-button") as HTMLButtonElement;
-  // const verifyButton = getById("verify-contract-button") as HTMLButtonElement;
-  // smartContractCatalogButton.disabled = true;
-  // stakingButton.disabled = true;
-  // verifyButton.disabled = true;
-
   const expires = getById("expires-input") as HTMLInputElement;
   const never = getById("expires-reset") as HTMLInputElement;
   const redirectto = getById("redirectto-input") as HTMLInputElement;
@@ -407,6 +403,7 @@ export function disableCreateInputs() {
 
   const docxDropper = getById("import-docx-trigger") as HTMLInputElement;
   const smartContract = getById("smartcontract-input") as HTMLInputElement;
+  const trail = getById("trail-input") as HTMLInputElement;
   const sanctions = getById("sanctions_checkbox_toggle") as HTMLInputElement;
   const sanctionsLabel = getById("sanctions_checkbox_label");
 
@@ -461,6 +458,7 @@ export function disableCreateInputs() {
   docxDropper.style.cursor = "not-allowed";
   disable(docxDropper);
   disable(smartContract);
+  disable(trail);
 }
 export function enableCreateInputs() {
   enum Cursor {
@@ -496,6 +494,7 @@ export function enableCreateInputs() {
 
   const docxDropper = getById("import-docx-trigger") as HTMLInputElement;
   const smartContract = getById("smartcontract-input") as HTMLInputElement;
+  const trail = getById("trail-input") as HTMLInputElement;
   const sanctions = getById("sanctions_checkbox_toggle") as HTMLInputElement;
   const sanctionsLabel = getById("sanctions_checkbox_label");
 
@@ -557,6 +556,7 @@ export function enableCreateInputs() {
 
   enable(docxDropper, Cursor.pointer);
   enable(smartContract, Cursor.auto);
+  enable(trail, Cursor.auto);
 }
 
 export function renderButtonSlotAlignment(center: boolean) {
@@ -1380,13 +1380,21 @@ export function renderTrailDataPage(
   if (contentDisplay.classList.contains("placeholder-item")) {
     contentDisplay.classList.remove("placeholder-item");
   } else {
-    const trailListEl = getById("trailUl");
-    trailListEl.classList.add("display-none");
+    const trailListElements =
+      document.getElementsByClassName("trailListElement");
 
+    for (let i = 0; i < trailListElements.length; i++) {
+      const el = trailListElements[i];
+      el.classList.add("display-none");
+    }
     contentDisplay.classList.add("placeholder-item");
     setTimeout(() => {
       contentDisplay.classList.remove("placeholder-item");
-      trailListEl.classList.remove("display-none");
+
+      for (let i = 0; i < trailListElements.length; i++) {
+        const el = trailListElements[i];
+        el.classList.remove("display-none");
+      }
     }, 1000);
   }
   render(TrailData(dataPage, creatorCalls), contentDisplay);
@@ -1400,7 +1408,6 @@ export function navigateToQueryString(
     switch (queryStrings) {
       case QueryStrings.trail:
         const trailIdEl = getById("trail-id") as HTMLInputElement;
-
         trailIdEl.classList.add("display-none");
         trailIdEl.value = value;
         const find = getById("trail-find");
