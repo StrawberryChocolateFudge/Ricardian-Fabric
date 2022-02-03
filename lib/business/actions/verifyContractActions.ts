@@ -18,7 +18,7 @@ import { dependencyDeployer } from "../../wallet/arweave";
 import { getOwnerFromTxId } from "../../fetch/graphql";
 import { dispatch_setPage } from "../../dispatch/stateChange";
 
-export function verifyContractPopupTrigger(props: State) {
+export function verifyContractPageTrigger(props: State) {
   const verify = getById("verify-contract-button");
   verify.onclick = function () {
     dispatch_setPage(PageState.VerifyContract);
