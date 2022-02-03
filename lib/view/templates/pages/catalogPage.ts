@@ -43,10 +43,7 @@ function getSmartContracts() {
 }
 
 export function catalogPage() {
-  return html` <style></style>
-    <div class="logo-container">
-    <div class="Fabric">Catalogue of Smart Contracts</div>
-  </div>
+  return html`<h3>Catalogue of smart contracts</h3>
     <small>
      Select a smart contract for your specific use case.
     </small>

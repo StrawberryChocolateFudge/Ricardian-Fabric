@@ -8,10 +8,7 @@ import {
 } from "../components/logos";
 
 export const CreatePage = () => html`
-  <hr />
-  <div class="logo-container">
-    <div class="Fabric">Create a Ricardian Contract</div>
-  </div>
+  <h3>Create a Ricardian Contract</h3>
   <div class="row">
     <div id="network-dropdown"></div>
     <div id="permaweb-dropdown"></div>
@@ -128,7 +125,26 @@ export const CreatePage = () => html`
           <span id="smartcontract-tooltip"></span>
         </td>
       </tr>
+      <tr>
+        <td>
+          <label aria-labelledby="The related trail's name">Trail:</label>
+        </td>
+        <td>
+          <input
+            aria-label="Related trail"
+            name="trail"
+            id="trail-input"
+            type="text"
+            placeholder="..."
+            class="cursor-text"
+          />
+        </td>
+        <td>
+          <span id="trail-tooltip"></span>
+        </td>
+      </tr>
     </table>
+    <hr />
   </div>
 
   <hr />

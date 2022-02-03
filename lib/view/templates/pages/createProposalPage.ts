@@ -10,7 +10,7 @@ import {
 
 export function createProposalPage() {
   return html`
-    <h2>Create a Proposal</h2>
+    <h3>Create a Proposal</h3>
     <div class="row">
       <div id="permaweb-dropdown">Permaweb</div>
       <button
