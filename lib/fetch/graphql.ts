@@ -36,6 +36,8 @@ export async function getUploadedContracts(): Promise<Options<any>> {
 
   const query = `query {
     transactions(
+      first: 1000,
+      sort: HEIGHT_DESC,
         tags: {
             name: "App-Name",
             values: ["Ricardian Fabric"]
