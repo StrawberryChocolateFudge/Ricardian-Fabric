@@ -8,6 +8,7 @@ import {
   dispatch_dismissSidebar,
   dispatch_feeProposals,
   dispatch_hidePopup,
+  dispatch_ipfsConfig,
   dispatch_manageProposals,
   dispatch_permapinPopup,
   dispatch_permawebselectActions,
@@ -53,7 +54,6 @@ export const setStateHook = {
       dispatch_ConnectYourWalletPage(clone);
     } else if (currentPage === ContractTypes.acceptable) {
       dispatch_renderAcceptButton(clone);
-      dispatch_permawebselectActions(clone);
     }
   },
   [StateProperties.ipfs]: (args: SetHookArgs) => {},
@@ -212,6 +212,9 @@ export const setStateHook = {
         break;
       case PageState.rewards:
         dispatch_collectRewardPage(clone);
+        break;
+      case PageState.ipfsConfig:
+        dispatch_ipfsConfig(clone);
         break;
       default:
         break;
