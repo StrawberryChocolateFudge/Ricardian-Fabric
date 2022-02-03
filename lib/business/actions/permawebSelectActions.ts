@@ -52,6 +52,7 @@ import { downloadBlob } from "../../view/render";
 import {
   dispatch_setNewAccount,
   dispatch_setPopupState,
+  dispatch_stashIpfsCID,
 } from "../../dispatch/stateChange";
 import { hasError, OptionsBuilder } from "../utils";
 import {
@@ -349,7 +350,8 @@ export function permawebTransactionAction(props: State, hash: string) {
 
   const permapinButton = getById("permapin-deployed-button");
   permapinButton.onclick = function () {
-    dispatch_permapinPopup(props, hash);
+    dispatch_stashIpfsCID(hash);
+    dispatch_setPopupState(PopupState.Permapin);
   };
 }
 
