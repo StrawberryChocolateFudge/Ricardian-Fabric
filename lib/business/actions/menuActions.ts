@@ -4,10 +4,8 @@ import { getById } from "../../view/utils";
 import { getTerms } from "../../wallet/catalogDAO/contractCalls";
 import { getSignupContract } from "../../wallet/signup/contractCalls";
 import { hasError, OptionsBuilder } from "../utils";
-import { verifyContractPopupTrigger } from "./verifyContractActions";
 
 export async function menuActions(props: State) {
-  verifyContractPopupTrigger(props);
   const createPage = getById("create-contract-button");
   const smartContractButton = getById("smart-contract-catalog-button");
   const reviewAndVoteButton = getById("review-and-vote-button");
