@@ -1,4 +1,4 @@
-import { getAcceptablePage, hasError } from "../utils";
+import { getAcceptablePage, hasError, OptionsBuilder } from "../utils";
 import { getHash } from "../../crypto";
 import {
   dispatch_disableButton,
@@ -44,6 +44,10 @@ import {
   getEditorElementInnerHTML,
 } from "../../view/utils";
 import MetaMaskOnboarding from "@metamask/onboarding";
+import {
+  getTrailDetails,
+  getTrailsContractWithRPC,
+} from "../../wallet/trails/contractCalls";
 
 export function renderCreateButtonClick(props: State, calledAt: RenderType) {
   if (calledAt === RenderType.create) {
@@ -125,6 +129,30 @@ export function renderCreateButtonClick(props: State, calledAt: RenderType) {
     const issuer = await getAddress();
     const smartContract = getSmartContract();
 
+    const trailEl = getById("trail-input") as HTMLInputElement;
+
+    if (trailEl.value !== "") {
+      // check if the trail exists
+      const TrailsContractOptions = await OptionsBuilder(() =>
+        getTrailsContractWithRPC()
+      );
+
+      if (hasError(TrailsContractOptions)) {
+        return;
+      }
+
+      const detailsOptions = await OptionsBuilder(() =>
+        getTrailDetails(TrailsContractOptions.data, trailEl.value, issuer)
+      );
+      if (hasError(detailsOptions)) {
+        return;
+      }
+      if (!detailsOptions.data.initialized) {
+        dispatch_renderError("Invalid Trail name.");
+        return;
+      }
+    }
+
     if (smartContract !== "NONE") {
       const canUse = await canUseContract(smartContract, issuer);
       if (!canUse) {
@@ -171,6 +199,9 @@ export function renderCreateButtonClick(props: State, calledAt: RenderType) {
           issuerSignature,
           smartContract,
           ERC20,
+          creatorAppLink: location.origin,
+          relatedtrail: trailEl.value,
+          ipfsParams: props.ipfs,
         },
       });
 
