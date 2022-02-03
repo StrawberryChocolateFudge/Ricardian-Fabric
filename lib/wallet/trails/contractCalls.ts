@@ -3,6 +3,12 @@ import Web3 from "web3";
 import { TrailsABI } from "../abi/TrailsABI";
 import { TRAILSADDRESS } from "../web3";
 import { TrailDetails } from "../../types";
+import { HARMONYRPCURL } from "../catalogDAO/contractCalls";
+
+export async function getTrailsContractWithRPC() {
+  const web3 = new Web3(HARMONYRPCURL);
+  return await new web3.eth.Contract(TrailsABI(), TRAILSADDRESS);
+}
 
 export async function getTrailsContract() {
   const web3 = new Web3(window.ethereum);
