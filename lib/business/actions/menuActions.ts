@@ -15,8 +15,6 @@ export async function menuActions(props: State) {
   const trailsButton = getById("trails-page-button");
   const rewardsButton = getById("rewards-button");
 
-  const termsLink = getById("terms-link") as HTMLAnchorElement;
-
   dashboardButton.onclick = function () {
     dispatch_setPage(PageState.Dashboard);
   };
@@ -48,18 +46,4 @@ export async function menuActions(props: State) {
   rewardsButton.onclick = function () {
     dispatch_setPage(PageState.rewards);
   };
-
-  const signUpContractOptions = await OptionsBuilder(() => getSignupContract());
-  if (hasError(signUpContractOptions)) {
-    return;
-  }
-
-  const contractURLOptions = await OptionsBuilder(() =>
-    getTerms(signUpContractOptions.data)
-  );
-  if (hasError(contractURLOptions)) {
-    return;
-  }
-
-  termsLink.href = contractURLOptions.data;
 }
