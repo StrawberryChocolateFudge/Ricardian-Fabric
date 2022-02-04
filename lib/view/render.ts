@@ -1,7 +1,6 @@
 import { html, render } from "lit-html";
 import {
   ArweaveDataPage,
-  BlockCountry,
   ContractTypes,
   CreateRicardianPageProps,
   DeploySC,
@@ -106,6 +105,7 @@ import {
   UploadArweaveTxSummary,
 } from "./templates/popups/addComment";
 import { IpfsConfigPage } from "./templates/pages/ipfsConfigPage";
+import { BlockCountry } from "../business/countryBlock";
 
 export function renderConnectYourWallet(props: State) {
   const page = getById("page");
@@ -127,11 +127,7 @@ export function renderCollectRewardsPage(props: State) {
 
 export function renderMenuPage(props: State) {
   const menuItems = getById("menuItems");
-  // Extracts the ID from the page to add to the blockie. If I use a query param in the future, I handle that already.
-  // I don't expect to use any extra paths so only query string
-  const scriptEl = getById("main-script") as HTMLScriptElement;
-  // const idFromPage = href.split("arweave.net/")[1]?.split("?")[0];
-  render(MenuPage(scriptEl.src), menuItems);
+  render(MenuPage(), menuItems);
 
   //I need to set the background of page
   const page = getById("page");
@@ -535,6 +531,7 @@ export function enableCreateInputs() {
   enable(sanctions, Cursor.pointer);
 
   sanctionsLabel.style.cursor = "pointer";
+  sanctionsLabel.style.backgroundColor = "";
 
   enable(catalogToggle, Cursor.pointer);
 
@@ -984,7 +981,6 @@ export function setBlockedCountries(blockedCountries: BlockCountry[]) {
   const ofec = getById("ofec_checkbox") as HTMLInputElement;
   const eu = getById("eu-checkbox") as HTMLInputElement;
   const un = getById("un-checkbox") as HTMLInputElement;
-  const usa = getById("usa-checkbox") as HTMLInputElement;
   if (blockedCountries.includes(BlockCountry.OFEC)) {
     ofec.checked = true;
   } else {
@@ -1001,10 +997,18 @@ export function setBlockedCountries(blockedCountries: BlockCountry[]) {
   } else {
     un.checked = false;
   }
-  if (blockedCountries.includes(BlockCountry.BLOCKUSA)) {
-    usa.checked = true;
-  } else {
-    usa.checked = false;
+
+  const countryCodeBoxes = document.getElementsByClassName(
+    "countryCodeCheckboxes"
+  );
+
+  for (let i = 0; i < countryCodeBoxes.length; i++) {
+    const countryCodeBoxEl = countryCodeBoxes[i] as HTMLInputElement;
+    const countrycode = countryCodeBoxEl.dataset.countrycode;
+    const castedCountries = blockedCountries as string[];
+    if (castedCountries.includes(countrycode)) {
+      countryCodeBoxEl.checked = true;
+    }
   }
 }
 
@@ -1013,6 +1017,7 @@ export function setCreatePageProps(pageProps: CreateRicardianPageProps) {
   const expiresEl = getById("expires-input") as HTMLInputElement;
   const redirecttoEl = getById("redirectto-input") as HTMLInputElement;
   const smartcontractEl = getById("smartcontract-input") as HTMLInputElement;
+  const trailEl = getById("trail-input") as HTMLInputElement;
   const erc20AddEl = getById("add-erc20-checkbox") as HTMLInputElement;
   const erc20NameEl = getById("erc20-name") as HTMLInputElement;
   const erc20SymbolEl = getById("erc20-symbol") as HTMLInputElement;
@@ -1030,7 +1035,7 @@ export function setCreatePageProps(pageProps: CreateRicardianPageProps) {
   erc20SymbolEl.value = define(pageProps.erc20Symbol);
   erc20DecimalsEl.value = define(pageProps.erc20Decimals);
   erc20AddressEl.value = define(pageProps.erc20Address);
-
+  trailEl.value = define(pageProps.trail);
   // Need to wait for the page to render because the blocked countries are pretty deep down the DOM tree
   setTimeout(() => setBlockedCountries(pageProps.blockedCountries), 1000);
 }
