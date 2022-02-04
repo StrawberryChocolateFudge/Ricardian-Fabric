@@ -1,5 +1,5 @@
-import BN from "bn.js";
 import { TemplateResult } from "lit-html";
+import { BlockCountry } from "./business/countryBlock";
 
 export enum Chains {
   HardHat = "31337",
@@ -291,14 +291,6 @@ export enum ContractTypes {
   trail = "Trail",
 }
 
-export enum BlockCountry {
-  OFEC = "OFEC",
-  EU = "EU",
-  UN = "UN",
-  BLOCKUSA = "BLOCKUSA",
-  BLOCKNY = "BLOCKNY",
-}
-
 export enum DeploySC {
   HRC20 = "HRC20",
   PST = "PST",
@@ -441,6 +433,7 @@ export type CreateRicardianPageProps = {
   erc20Symbol: string;
   erc20Decimals: string;
   erc20Address: string;
+  trail: string;
 };
 
 export type AcceptablePageProps = {
