@@ -15,7 +15,6 @@ import {
   dispatch_setCreateRicardianState,
 } from "../../dispatch/stateChange";
 import {
-  BlockCountry,
   CreateRicardianPageProps,
   RenderType,
   State,
@@ -48,6 +47,7 @@ import {
   getTrailDetails,
   getTrailsContractWithRPC,
 } from "../../wallet/trails/contractCalls";
+import { BlockCountry } from "../countryBlock";
 
 export function renderCreateButtonClick(props: State, calledAt: RenderType) {
   if (calledAt === RenderType.create) {
@@ -242,7 +242,7 @@ export function saveCreatePageData() {
   const expiresEl = getById("expires-input") as HTMLInputElement;
   const redirecttoEl = getById("redirectto-input") as HTMLInputElement;
   const smartcontractEl = getById("smartcontract-input") as HTMLInputElement;
-
+  const trailEl = getById("trail-input") as HTMLInputElement;
   const erc20AddEl = getById("add-erc20-checkbox") as HTMLInputElement;
   const erc20NameEl = getById("erc20-name") as HTMLInputElement;
   const erc20SymbolEl = getById("erc20-symbol") as HTMLInputElement;
@@ -260,6 +260,7 @@ export function saveCreatePageData() {
     erc20Decimals: erc20DecimalsEl.value,
     erc20Address: erc20AddressEl.value,
     erc20Symbol: erc20SymbolEl.value,
+    trail: trailEl.value,
   };
 
   dispatch_setCreateRicardianState(ricardianPageProps);
