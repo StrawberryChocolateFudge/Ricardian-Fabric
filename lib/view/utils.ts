@@ -1,4 +1,5 @@
-import { BlockCountry, ERC20Params, Options, Status } from "../types";
+import { BlockCountry } from "../business/countryBlock";
+import { ERC20Params, Options, Status } from "../types";
 
 export function getById(id: string): HTMLElement {
   const el = document.getElementById(id);
@@ -81,8 +82,6 @@ export function getBlockedCountries() {
   const ofec = getById("ofec_checkbox") as HTMLInputElement;
   const eu = getById("eu-checkbox") as HTMLInputElement;
   const un = getById("un-checkbox") as HTMLInputElement;
-  const usa = getById("usa-checkbox") as HTMLInputElement;
-  const ny = getById("newyork-checkbox") as HTMLInputElement;
 
   if (ofec.checked) {
     blockedCountries.push(BlockCountry.OFEC);
@@ -93,11 +92,19 @@ export function getBlockedCountries() {
   if (un.checked) {
     blockedCountries.push(BlockCountry.UN);
   }
-  if (usa.checked) {
-    blockedCountries.push(BlockCountry.BLOCKUSA);
-  }
-  if (ny.checked) {
-    blockedCountries.push(BlockCountry.BLOCKNY);
+
+  const countryCodeBoxes = document.getElementsByClassName(
+    "countryCodeCheckboxes"
+  );
+
+  for (let i = 0; i < countryCodeBoxes.length; i++) {
+    const countryBoxEl = countryCodeBoxes[i] as HTMLInputElement;
+
+    if (countryBoxEl.checked) {
+      const countrycode = countryBoxEl.dataset.countrycode;
+
+      blockedCountries.push(countrycode);
+    }
   }
 
   return blockedCountries;
