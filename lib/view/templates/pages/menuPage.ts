@@ -11,12 +11,7 @@ import {
   VotingLogo,
 } from "../components/logos";
 
-export const MenuPage = (blockieData: string) => html`
-  <hr />
-  <div class="text-align-center">${getBlockie(blockieData, "50px", "")}</div>
-  <div class="text-align-center">
-    <a id="terms-link" target="_blank" rel="noopener">Terms</a>
-  </div>
+export const MenuPage = () => html`
   <hr />
   <div class="text-align-center">
     <button
