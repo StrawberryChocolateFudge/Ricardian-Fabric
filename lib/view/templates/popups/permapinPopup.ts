@@ -64,6 +64,7 @@ export const PermapinPopup = () => html`
     </tbody>
   </table>
   <hr />
+  <div id="permapin-loading-indicator"></div>
   <div class="wide-row">
     <button class="backButton" id="permapin-back">${BackLogo()} Back</button>
     <button class="NextButton" id="permapin-proceed">
