@@ -12,6 +12,7 @@ import {
   RateLogo,
   Rewardhand,
   StakingLogo,
+  TandCLogo,
   TokenPileLogo,
   VerificationLogo,
 } from "../components/logos";
@@ -102,6 +103,14 @@ export const DashboardPage = () => html`<h3>Dashboard</h3>
     >
       ${IPFSLogo()}
     </button>
+    <a
+      title="Terms and conditions"
+      class="labelButton"
+      id="terms-and-conditions-link"
+      target="_blank"
+      rel="noopener"
+      >${TandCLogo()}</a
+    >
   </div>
   <slot id="permapinned-data-slot"></slot> `;
 // The dashboard elements will have a loading indicator at the id, then the value.
