@@ -35,26 +35,23 @@ export async function getUploadedContracts(): Promise<Options<any>> {
   };
 
   const query = `query {
-    transactions(
-      first: 1000,
-      sort: HEIGHT_DESC,
-        tags: {
-            name: "App-Name",
-            values: ["Ricardian Fabric"]
+  transactions(
+    first: 1000
+    sort: HEIGHT_DESC
+    tags: { name: "App-Name", values: ["Ricardian Fabric"] }
+  ) {
+    edges {
+      node {
+        id
+        tags {
+          name
+          value
         }
-    ) {
-        edges {
-            node {
-                id
-                tags{
-                    name
-                    value
-                }
-            }
-
-        }
+      }
     }
-}`;
+  }
+}
+`;
 
   const result = await request(ARWEAVEAPI, query).catch((err) => {
     options.error = err.message;
@@ -72,25 +69,24 @@ export async function getPublicTrail(trailName: string): Promise<Options<any>> {
   };
   // the query will fetch maximum 1000 comments
   const query = `query {
-    transactions(
-      first: 1000,
-      sort: HEIGHT_DESC,
-        tags: [{
-            name: "App-Name",
-            values: ["Ricardian Fabric"]
-        },{name: "Trail-Name",values: ["${trailName}"]}]
-    ) {
-        edges {
-            node {
-                id
-                tags{
-                    name
-                    value
-                }
-            }
-
+  transactions(
+    first: 1000
+    sort: HEIGHT_DESC
+    tags: [
+      { name: "App-Name", values: ["Ricardian Fabric"] }
+      { name: "Trail-Name", values: ["${trailName}"] }
+    ]
+  ) {
+    edges {
+      node {
+        id
+        tags {
+          name
+          value
         }
+      }
     }
+  }
 }`;
 
   const result = await request(ARWEAVEAPI, query).catch((err) => {
@@ -121,6 +117,40 @@ export async function getTags(transaction: string): Promise<Options<any>> {
         }
     }
 }`;
+
+  const result = await request(ARWEAVEAPI, query).catch((err) => {
+    options.error = err.message;
+    options.status = Status.Failure;
+  });
+  options.data = result;
+  return options;
+}
+
+export async function getProfitSharingTransactionsOf(
+  recepient: string
+): Promise<Options<any>> {
+  const options: Options<any> = {
+    status: Status.Success,
+    error: "",
+    data: "",
+  };
+
+  const query = `query {
+  transactions(
+    recipients: ["${recepient}"]
+    tags: [
+      { name: "App-Name", values: ["Ricardian Fabric"] }
+      { name: "Contract-Type", values: ["PST"] }
+    ]
+  ) {
+    edges {
+      node {
+        id
+      }
+    }
+  }
+}
+`;
 
   const result = await request(ARWEAVEAPI, query).catch((err) => {
     options.error = err.message;
