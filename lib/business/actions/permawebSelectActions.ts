@@ -4,7 +4,6 @@ import {
   dispatch_discardFile,
   dispatch_emptyWalletDropper,
   dispatch_hideElement,
-  dispatch_permapinPopup,
   dispatch_promptError,
   dispatch_promptSuccess,
   dispatch_removeError,
@@ -264,7 +263,7 @@ export function uploadSummaryActions(
 
 export function permapinPopupActions(props: any) {
   const back = getById("permapin-back");
-  const proceed = getById("permapin-proceed");
+  const proceed = getById("permapin-proceed") as HTMLButtonElement;
   const CIDEl = getById("CID-input-permapin") as HTMLInputElement;
   const passwordEl = getById("walletPassword") as HTMLInputElement;
   const accountBttn = getById("permapin-account-button");
@@ -312,10 +311,17 @@ export function permapinPopupActions(props: any) {
     }
 
     const ipfsHash = CIDEl.value;
+
+    dispatch_disableButtonElement(proceed, true);
+    dispatch_renderLoadingIndicator("permapin-loading-indicator");
+
     const result = await addHash(ipfsHash, props.ipfs, decryptOptions.data);
+    dispatch_disableButtonElement(proceed, false);
+    dispatch_removeLoadingIndicator("permapin-loading-indicator");
     if (result.status === Status.Failure) {
       const err = result as HashWithIds;
       dispatch_renderError(err.message);
+
       return;
     }
     if (result.status === Status.AlreadyExists) {
