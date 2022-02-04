@@ -12,6 +12,7 @@ import {
   getCatalogDAOContractWithWallet,
   getRankProposalIndex,
   getSmartContractProposalIndex,
+  getTerms,
 } from "../../wallet/catalogDAO/contractCalls";
 import {
   getAvailableReward,
@@ -34,6 +35,7 @@ import {
   getRicVaultContract,
   getTotalLocked,
 } from "../../wallet/ricVault/contractCalls";
+import { getSignupContract } from "../../wallet/signup/contractCalls";
 import { getAddress } from "../../wallet/web3";
 import { hasError, OptionsBuilder } from "../utils";
 import { verifyContractPageTrigger } from "./verifyContractActions";
@@ -51,6 +53,22 @@ export async function dashboardActions(props: State) {
   const contributorStakeEl = getById("total-staking-amount");
   const HarmonyFeesCollectedEl = getById("fees-collected-amount");
   const tokenFeesCollectedEl = getById("token-fees-collected-amount");
+  const termsAndConditionsLink = getById(
+    "terms-and-conditions-link"
+  ) as HTMLAnchorElement;
+  const signUpContractOptions = await OptionsBuilder(() => getSignupContract());
+  if (hasError(signUpContractOptions)) {
+    return;
+  }
+
+  const contractURLOptions = await OptionsBuilder(() =>
+    getTerms(signUpContractOptions.data)
+  );
+  if (hasError(contractURLOptions)) {
+    return;
+  }
+
+  termsAndConditionsLink.href = contractURLOptions.data;
 
   ipfsButton.onclick = async function () {
     dispatch_setPage(PageState.ipfsConfig);
