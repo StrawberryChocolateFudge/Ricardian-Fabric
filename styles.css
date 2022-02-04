@@ -275,6 +275,9 @@ hr {
 .maxHeight-100px {
   max-height: 100px;
 }
+.maxHeight-300px {
+  max-height: 300px;
+}
 
 .listStyleType-disclosureClosed {
   list-style-type: disclosure-closed;
