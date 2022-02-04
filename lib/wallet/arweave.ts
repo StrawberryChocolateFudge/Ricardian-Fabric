@@ -1,6 +1,7 @@
 import Arweave from "arweave";
 import { readContract, selectWeightedPstHolder } from "smartweave";
 import { Options, ProposalFormat, Status } from "../types";
+import { getTip } from "./profitSharing";
 
 export const ARWAEVECONFIG = {
   host: "arweave.net",
@@ -18,12 +19,6 @@ const arweave = Arweave.init(ARWAEVECONFIG);
 export const dependencyDeployer = [
   "Ygcqww4Hq2mjMzqhWFnCTMsQ9VFEr4ytVWbYDbXCpDw",
 ];
-
-export const TIP = "0.01";
-
-export function getTip() {
-  return ArToWinston(TIP);
-}
 
 export async function createFileTransaction(
   type: string,
@@ -142,6 +137,29 @@ export async function getTransferTransaction(
   );
 
   transaction.addTag("Contract-Type", "Transfer");
+  transaction.addTag("App-Version", version);
+  transaction.addTag("App-Name", "Ricardian Fabric");
+
+  await arweave.transactions.sign(transaction, key);
+  return transaction;
+}
+
+export async function getProfitSharingTransaction(
+  target: string,
+  key: any,
+  version: string
+) {
+  const quantity = getTip();
+  const transaction = await arweave.createTransaction(
+    {
+      target,
+      quantity,
+      data: "RICARDIAN FABRIC DAO AR SHARING TRANSACTION",
+    },
+    key
+  );
+  transaction.addTag("Contract-Type", "PST");
+  transaction.addTag("Content-Type", "plain/text");
   transaction.addTag("App-Version", version);
   transaction.addTag("App-Name", "Ricardian Fabric");
 
