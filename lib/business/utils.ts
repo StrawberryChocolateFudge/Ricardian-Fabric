@@ -13,13 +13,10 @@ import {
 import { fetchGeoCodingCSV } from "../fetch";
 import {
   AcceptablePageProps,
-  BlockCountry,
   FulfilledPageProps,
   LockedTokens,
-  MyProposals,
   Options,
   PaginatedProposal,
-  PaginatedProposals,
   PopupState,
   State,
   Status,
@@ -46,6 +43,7 @@ import {
   getLockIndex,
   getVaultContent,
 } from "../wallet/ricVault/contractCalls";
+import { isCountryBlocked } from "./countryBlock";
 
 export async function getVaultPaginatedFromIndex(
   props: State,
@@ -330,7 +328,6 @@ export async function isBlocked(props: State, acceptButton: HTMLElement) {
   dispatch_hideElement(acceptButton, true);
   const geoCodingOptions = await fetchGeoCodingCSV();
   const record = await getCountryCode(props.position, geoCodingOptions.data);
-
   if (geoCodingOptions.status === Status.Failure) {
     return true;
   }
@@ -340,117 +337,6 @@ export async function isBlocked(props: State, acceptButton: HTMLElement) {
     dispatch_hideElement(acceptButton, false);
     return isCountryBlocked(record, props.blockedCountries).data;
   }
-}
-
-function isCountryBlocked(
-  record: GeoRecord,
-  blockedCountries: BlockCountry[]
-): Options<boolean> {
-  let result = false;
-  //TODO: OFEC ONLY blocks Crimera Region of Ukraine.
-  //TODO: NEED TO CHECK EU FOR UKRAINE
-  //TODO: MOVE THE LISTS TO OTHER FILE
-  const blocked = {
-    [BlockCountry.OFEC]: [
-      "AF",
-      "BY",
-      "BA",
-      "BI",
-      "CF",
-      "CN",
-      "KM",
-      "CU",
-      "CY",
-      "CD",
-      "GN",
-      "GW",
-      "HT",
-      "IR",
-      "IQ",
-      "KG",
-      "LA",
-      "LB",
-      "LY",
-      "ML",
-      "MR",
-      "MD",
-      "ME",
-      "MM",
-      "NI",
-      "KP",
-      "PS",
-      "RU",
-      "RW",
-      "RS",
-      "SO",
-      "SS",
-      "SD",
-      "SY",
-      "TN",
-      "UA",
-      "VE",
-      "YE",
-      "ZW",
-    ],
-    [BlockCountry.UN]: [
-      "AF",
-      "CF",
-      "CD",
-      "GW",
-      "IR",
-      "IQ",
-      "LB",
-      "LY",
-      "ML",
-      "ME",
-      "KP",
-      "RS",
-      "SO",
-      "SS",
-      "SD",
-      "SY",
-      "YE",
-    ],
-    [BlockCountry.EU]: [
-      "BY",
-      "BA",
-      "BI",
-      "CF",
-      "CN",
-      "CD",
-      "GN",
-      "GW",
-      "HT",
-      "IR",
-      "LB",
-      "LY",
-      "MD",
-      "ME",
-      "MM",
-      "NI",
-      "KP",
-      "RU",
-      "RS",
-      "SS",
-      "SD",
-      "SY",
-      "TN",
-      "UA",
-      "VE",
-      "ZW",
-    ],
-    [BlockCountry.BLOCKUSA]: ["US"],
-    //TODO: GET THE LIST OF NEW YORK STATE CITIES, JUST LIKE CRIMERA
-    [BlockCountry.BLOCKNY]: [],
-  };
-
-  blockedCountries.forEach((sanctions) => {
-    if (blocked[sanctions].includes(record.countryCode)) {
-      //If it exists in a list, it's blocked for sure
-      result = true;
-    }
-  });
-  return { status: Status.Success, error: "", data: result };
 }
 
 export async function getCountryCode(
@@ -473,9 +359,10 @@ export function getLocation(props: State, acceptButton: HTMLElement) {
   if ("geolocation" in navigator) {
     navigator.geolocation.getCurrentPosition(
       async function (position) {
-        dispatch_hideElement(acceptButton, false);
-
-        dispatch_setPosition(position);
+        setTimeout(() => {
+          dispatch_hideElement(acceptButton, false);
+          dispatch_setPosition(position);
+        }, 1000);
       },
       function (err) {
         dispatch_enableButton(props);
