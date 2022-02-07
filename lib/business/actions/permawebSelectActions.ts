@@ -31,6 +31,8 @@ import {
   ArToWinston,
   createFileTransaction,
   createWallet,
+  getProfitSharingTransaction,
+  getTip,
   getTrailTransaction,
   getTransferTransaction,
   getWalletAddress,
@@ -59,6 +61,7 @@ import {
   getTrailsContract,
 } from "../../wallet/trails/contractCalls";
 import { getAddress } from "../../wallet/web3";
+import { getProfitSharingAddresses } from "../profitSharing";
 
 export function permawebSelectActions(props: State) {
   const permawebCheckboxToggle = getById(
@@ -163,7 +166,31 @@ export function uploadFileListener(props: State) {
           decryptOptions.data
         );
 
-        dispatch_renderUploadSummary(fileInput.files[0], tx, data, props);
+        const pstAddress = await getProfitSharingAddresses();
+        if (pstAddress === undefined) {
+          dispatch_renderUploadSummary(
+            fileInput.files[0],
+            tx,
+            data,
+            props,
+            false,
+            ""
+          );
+        } else {
+          const tipTransaction = await getProfitSharingTransaction(
+            pstAddress.to,
+            decryptOptions.data,
+            props.version
+          );
+          dispatch_renderUploadSummary(
+            fileInput.files[0],
+            tx,
+            data,
+            props,
+            true,
+            tipTransaction
+          );
+        }
       } catch (err) {
         dispatch_removeLoadingIndicator("upload-loading-indicator");
         uploadButton.disabled = false;
@@ -222,7 +249,9 @@ export function onFileDropped() {
 export function uploadSummaryActions(
   transaction: any,
   props: State,
-  redirectTo: PopupState
+  redirectTo: PopupState,
+  sendTip: boolean,
+  tipTransaction: any
 ) {
   const back = getById("uploadSummary-cancel");
   const proceed = getById("uploadSummary-proceed");
@@ -247,6 +276,16 @@ export function uploadSummaryActions(
           `${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`
         );
       });
+      if (sendTip) {
+        const secondTX = (await postTransaction(tipTransaction).catch((err) => {
+          dispatch_renderError(err);
+        })) as {
+          status: number;
+          statusText: string;
+          data: any;
+        };
+      }
+
       if (res.status === Status.Failure) {
         dispatch_renderError(res.error);
         dispatch_hideElement(proceed, false);
@@ -332,21 +371,20 @@ export function permapinPopupActions(props: any) {
     if (result.status === Status.Success) {
       const txRes = result as HashWithTransaction;
 
-      //I'm gonna dispatch the summary page with the transaction
+      const pstAddress = await getProfitSharingAddresses();
       let tipTransaction;
-      // if (sendTip.checked) {
-      //   //Handle the TIP
-      //   const weighedPSTHolder = await getWeighedPSTHolder();
-      //   const quantity = ArToWinston(TIP);
-      //   tipTransaction = await getTransferTransaction(
-      //     weighedPSTHolder,
-      //     quantity,
-      //     decryptOptions.data,
-      //     props.version
-      //   );
-      // }
-      //Dispatch the Permapin transaction and the TIP transaction summary Page!
-      dispatch_renderPermapinSummaryPage(props, txRes, false, tipTransaction);
+
+      if (pstAddress === undefined) {
+        dispatch_renderPermapinSummaryPage(props, txRes, false, tipTransaction);
+      } else {
+        // Dispatch the Permapin transaction and the TIP transaction summary Page!
+        tipTransaction = await getProfitSharingTransaction(
+          pstAddress.to,
+          decryptOptions.data,
+          props.version
+        );
+        dispatch_renderPermapinSummaryPage(props, txRes, true, tipTransaction);
+      }
     }
   };
 }
@@ -612,8 +650,6 @@ export async function transferPageActions(props: State) {
     const amountEl = getById("transferAmount") as HTMLInputElement;
     const toEl = getById("transferToAddress") as HTMLInputElement;
     const passwordEl = getById("password") as HTMLInputElement;
-    //TIPS ARE REMOVED FOR NOW!
-    // const sendTipEl = getById("tipcheckbox") as HTMLInputElement;
     const acceptedTermsEl = getById(
       "transfer-terms-checkbox"
     ) as HTMLInputElement;
@@ -652,14 +688,8 @@ export async function transferPageActions(props: State) {
     const balance = await getWalletBalance(props.Account.address);
 
     const winstonToSend = ArToWinston(amount);
-    let tipInWinston = null;
-    // const sendTip = sendTipEl.checked;
     let summaryInWinston = parseFloat(winstonToSend);
 
-    // if (sendTip) {
-    //   tipInWinston = getTip();
-    //   summaryInWinston += parseFloat(tipInWinston);
-    // }
     const balanceInWinston = ArToWinston(balance);
 
     if (parseFloat(balanceInWinston) < summaryInWinston) {
@@ -675,27 +705,34 @@ export async function transferPageActions(props: State) {
       props.version
     );
 
-    let tipTransaction;
+    const pstAddress = await getProfitSharingAddresses();
+    if (pstAddress === undefined) {
+      dispatch_renderTransferSummaryPage(
+        props,
+        transaction,
+        winstonToSend,
+        false,
+        getTip(),
+        "",
+        decryptOptions.data
+      );
+    } else {
+      const tipTransaction = await getProfitSharingTransaction(
+        pstAddress.to,
+        decryptOptions.data,
+        props.version
+      );
+      dispatch_renderTransferSummaryPage(
+        props,
+        transaction,
+        winstonToSend,
+        true,
+        getTip(),
+        tipTransaction,
+        decryptOptions.data
+      );
+    }
 
-    // if (sendTip) {
-    //   const weighedPSTHolder = await getWeighedPSTHolder();
-    //   tipTransaction = await getTransferTransaction(
-    //     weighedPSTHolder,
-    //     tipInWinston,
-    //     decryptOptions.data,
-    //     props.version
-    //   );
-    // }
-
-    dispatch_renderTransferSummaryPage(
-      props,
-      transaction,
-      winstonToSend,
-      false,
-      tipInWinston,
-      tipTransaction,
-      decryptOptions.data
-    );
     //I'm gonna dispatch the summary page with the transaction
   };
 }
@@ -784,7 +821,6 @@ export function permapinSummaryActions(arg: {
       });
     }
     if (firstTx.status === 200) {
-      // dispatch_setPopupState(PopupState.NONE);
       //I need to render the transaction id to the page
       dispatch_removeLoadingIndicator("transaction-loading");
       dispatch_renderTxId("transaction-loading", arg.permapinTx.tx.id);
@@ -811,7 +847,6 @@ export function uploadCommentActions(props: State) {
   if (props.Account.data === null) {
     dispatch_renderError("You must add an arweave key first!");
   }
-  //TODO: fill out the trail name automaticly If somebody searched for the trail!
 
   dispatch_disableButtonElement(proceedEl, false);
   dispatch_disableButtonElement(backEl, false);
@@ -936,6 +971,22 @@ export function uploadCommentActions(props: State) {
       linkedtransaction
     );
 
-    dispatch_renderArweaveTxSummary(commentTransaction, props);
+    const pstAddress = await getProfitSharingAddresses();
+
+    if (pstAddress === undefined) {
+      dispatch_renderArweaveTxSummary(commentTransaction, props, false, "");
+    } else {
+      const tipTransaction = await getProfitSharingTransaction(
+        pstAddress.to,
+        decryptOptions.data,
+        props.version
+      );
+      dispatch_renderArweaveTxSummary(
+        commentTransaction,
+        props,
+        true,
+        tipTransaction
+      );
+    }
   };
 }

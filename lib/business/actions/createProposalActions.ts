@@ -43,7 +43,12 @@ import {
   dispatch_setUploadProposalProps,
 } from "../../dispatch/stateChange";
 import { decryptWallet } from "../../crypto";
-import { createProposalTransaction, uploadData } from "../../wallet/arweave";
+import {
+  createProposalTransaction,
+  getProfitSharingTransaction,
+  postTransaction,
+  uploadData,
+} from "../../wallet/arweave";
 import {
   convertToHTMLFromArrayBuffer,
   onDocProposalFileDropped,
@@ -60,6 +65,7 @@ import {
   getRicContract,
 } from "../../wallet/ric/contractCalls";
 import Web3 from "web3";
+import { getProfitSharingAddresses } from "../profitSharing";
 
 export async function createProposalActions(props: State) {
   dispatch_renderLoadingIndicator("loading-display");
@@ -437,17 +443,41 @@ export function uploadProposalActions(props: State, step: PopupState) {
             networkEl.value,
             implementsSimpleTerms.checked
           );
+          const pstAddress = await getProfitSharingAddresses();
 
-          const getTerms = (terms: string) => {
-            dispatch_renderProposalSummary(
-              proposalTransaction,
-              props,
-              proposal,
-              terms
+          if (pstAddress === undefined) {
+            const getTerms = (terms: string) => {
+              // Because I need to get the terms via callback, I continue the rest of the action here
+
+              dispatch_renderProposalSummary(
+                proposalTransaction,
+                props,
+                proposal,
+                terms,
+                false,
+                ""
+              );
+            };
+
+            convertToHTMLFromArrayBuffer(proposal.terms, getTerms);
+          } else {
+            const tipTransaction = await getProfitSharingTransaction(
+              pstAddress.to,
+              decryptOptions.data,
+              props.version
             );
-          };
-
-          convertToHTMLFromArrayBuffer(proposal.terms, getTerms);
+            const getTerms = (terms: string) => {
+              dispatch_renderProposalSummary(
+                proposalTransaction,
+                props,
+                proposal,
+                terms,
+                true,
+                tipTransaction
+              );
+            };
+            convertToHTMLFromArrayBuffer(proposal.terms, getTerms);
+          }
         });
         break;
       default:
@@ -456,7 +486,12 @@ export function uploadProposalActions(props: State, step: PopupState) {
   };
 }
 
-export function uploadProposalSummaryActions(transaction: any, props: State) {
+export function uploadProposalSummaryActions(
+  transaction: any,
+  props: State,
+  hasTip: boolean,
+  tipTransaction: any
+) {
   const backButton = getById("post-proposal-back");
   const postButton = getById("post-proposal");
   const copyButton = getById("copy-proposal-address");
@@ -481,6 +516,17 @@ export function uploadProposalSummaryActions(transaction: any, props: State) {
           `${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`
         );
       });
+
+      if (hasTip) {
+        const secondTX = (await postTransaction(tipTransaction).catch((err) => {
+          dispatch_renderError(err);
+        })) as {
+          status: number;
+          statusText: string;
+          data: any;
+        };
+      }
+
       if (res.status === Status.Failure) {
         dispatch_renderError(res.error);
         dispatch_hideElement(backButton, false);
