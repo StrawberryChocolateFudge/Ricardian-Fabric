@@ -2,10 +2,16 @@ import Web3 from "web3";
 import { Contract } from "web3-eth-contract";
 import { ProfitShare } from "../../types";
 import { getArweavePSAbi } from "../abi/arweavePSABI";
+import { HARMONYRPCURL } from "../catalogDAO/contractCalls";
 import { ARWAVEPSADDRESS } from "../web3";
 
 export async function getArweavePSContract(): Promise<Contract> {
   const web3 = new Web3(window.ethereum);
+  return await new web3.eth.Contract(getArweavePSAbi(), ARWAVEPSADDRESS);
+}
+
+export async function getArweavePSContractWithRPC(): Promise<Contract> {
+  const web3 = new Web3(HARMONYRPCURL);
   return await new web3.eth.Contract(getArweavePSAbi(), ARWAVEPSADDRESS);
 }
 
