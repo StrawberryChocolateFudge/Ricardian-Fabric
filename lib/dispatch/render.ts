@@ -312,11 +312,13 @@ export function dispatch_renderUploadSummary(
   file: File,
   transaction: any,
   data: any,
-  props: State
+  props: State,
+  hasTip: boolean,
+  tipTransaction: any
 ) {
   dispatch(Events.render, {
     type: RenderType.uploadSummary,
-    props: { transaction, file, data, props },
+    props: { transaction, file, data, props, hasTip, tipTransaction },
   });
 }
 
@@ -324,7 +326,9 @@ export function dispatch_renderProposalSummary(
   transaction: any,
   props: State,
   proposal: ProposalFormat,
-  terms: string
+  terms: string,
+  hasTip: boolean,
+  tipTransaction: any
 ) {
   dispatch(Events.render, {
     type: RenderType.proposalSummary,
@@ -334,6 +338,8 @@ export function dispatch_renderProposalSummary(
         transaction,
         proposal,
         terms,
+        hasTip,
+        tipTransaction,
       },
     },
   });
@@ -796,11 +802,13 @@ export function dispatch_addCommentPopup(props: State) {
 
 export function dispatch_renderArweaveTxSummary(
   transaction: any,
-  props: State
+  props: State,
+  hasTip: boolean,
+  tipTransaction: any
 ) {
   dispatch(Events.render, {
     type: RenderType.arweaveTxSummary,
-    props: { ...props, tmp: { transaction } },
+    props: { ...props, tmp: { transaction, hasTip, tipTransaction } },
   });
 }
 
