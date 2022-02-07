@@ -1,5 +1,4 @@
 import {
-  ArweaveDataPage,
   ContractTypes,
   DeploySC,
   Events,
@@ -343,10 +342,25 @@ const Render: Renderer = {
     transaction: any;
     data: any;
     props: State;
+    tipTransaction: any;
+    hasTip: boolean;
   }) => {
-    const fee = WinstonToAr(props.transaction.reward);
+    let fee: string | number = parseFloat(props.transaction.reward);
+    if (props.hasTip) {
+      fee += parseFloat(props.tipTransaction.reward);
+      fee += parseFloat(props.tipTransaction.quantity);
+    }
+
+    fee = WinstonToAr(fee.toString());
+
     renderUploadSummary(props.file, fee, props.transaction.id);
-    uploadSummaryActions(props.transaction, props.props, PopupState.UploadFile);
+    uploadSummaryActions(
+      props.transaction,
+      props.props,
+      PopupState.UploadFile,
+      props.hasTip,
+      props.tipTransaction
+    );
   },
   [RenderType.uploadStatus]: (props: RenderDispatchArgs) => {
     renderUploadStatus(props.tmp.progress);
@@ -435,10 +449,20 @@ const Render: Renderer = {
     uploadProposalActions(props, step);
   },
   [RenderType.proposalSummary]: (props: RenderDispatchArgs) => {
-    const fee = WinstonToAr(props.tmp.transaction.reward);
+    let fee: string | number = parseFloat(props.tmp.transaction.reward);
+    if (props.tmp.hasTip) {
+      fee += parseFloat(props.tmp.tipTransaction.reward);
+      fee += parseFloat(props.tmp.tipTransaction.quantity);
+    }
+    fee = WinstonToAr(fee.toString());
     const id = props.tmp.transaction.id;
     renderProposalSummary(fee, id, props.tmp.terms, props.tmp.proposal);
-    uploadProposalSummaryActions(props.tmp.transaction, props);
+    uploadProposalSummaryActions(
+      props.tmp.transaction,
+      props,
+      props.tmp.hasTip,
+      props.tmp.tipTransaction
+    );
   },
   [RenderType.initializeCreateRicardian]: (props: RenderDispatchArgs) => {
     if (props.tmp.pageProps !== null) {
@@ -604,9 +628,21 @@ const Render: Renderer = {
     disableButtonElement(props.tmp.el, props.tmp.disabled);
   },
   [RenderType.arweaveTxSummary]: (props: RenderDispatchArgs) => {
-    const fee = WinstonToAr(props.tmp.transaction.reward);
+    let fee: string | number = parseFloat(props.tmp.transaction.reward);
+    if (props.tmp.hasTip) {
+      fee += parseFloat(props.tmp.tipTransaction.reward);
+      fee += parseFloat(props.tmp.tipTransaction.quantity);
+    }
+    fee = WinstonToAr(fee.toString());
     renderArweaveSummaryTx(fee, props.tmp.transaction.id);
-    uploadSummaryActions(props.tmp.transaction, props, PopupState.AddComment);
+
+    uploadSummaryActions(
+      props.tmp.transaction,
+      props,
+      PopupState.AddComment,
+      props.tmp.hasTip,
+      props.tmp.tipTransaction
+    );
   },
   [RenderType.trailDataPage]: (props: RenderDispatchArgs) => {
     renderTrailDataPage(props.tmp.dataPage, props.tmp.creatorCalls);
