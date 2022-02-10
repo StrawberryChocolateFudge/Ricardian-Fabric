@@ -73,7 +73,7 @@ export async function proposeNewSmartContract(
   _hasFrontEnd: boolean,
   _hasFees: boolean,
   isUpdate: boolean,
-  updateOf: boolean,
+  updateOf: string,
   from: string,
   onError: any,
   onReceipt: any
@@ -116,6 +116,20 @@ export async function closeSmartContractProposal(
 ) {
   await catalogDAO.methods
     .closeSmartContractProposal(sCIndex)
+    .send({ from })
+    .on("error", onError)
+    .on("receipt", onReceipt);
+}
+
+export async function closeSuspiciousProposal(
+  catalogDAO: Contract,
+  sCIndex: string,
+  from: string,
+  onError: any,
+  onReceipt: any
+) {
+  await catalogDAO.methods
+    .closeSuspiciousProposal(sCIndex)
     .send({ from })
     .on("error", onError)
     .on("receipt", onReceipt);
