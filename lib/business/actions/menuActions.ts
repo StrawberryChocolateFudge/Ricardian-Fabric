@@ -1,9 +1,6 @@
 import { dispatch_setPage } from "../../dispatch/stateChange";
 import { PageState, State } from "../../types";
 import { getById } from "../../view/utils";
-import { getTerms } from "../../wallet/catalogDAO/contractCalls";
-import { getSignupContract } from "../../wallet/signup/contractCalls";
-import { hasError, OptionsBuilder } from "../utils";
 
 export async function menuActions(props: State) {
   const createPage = getById("create-contract-button");
@@ -13,7 +10,7 @@ export async function menuActions(props: State) {
   const tokenSale = getById("tokensale-button");
   const vaultButton = getById("vault-button");
   const trailsButton = getById("trails-page-button");
-  const rewardsButton = getById("rewards-button");
+  const rewardsButton = getById("fees-button");
 
   dashboardButton.onclick = function () {
     dispatch_setPage(PageState.Dashboard);
