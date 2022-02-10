@@ -9,18 +9,19 @@ import {
   RemovalProposal,
   SmartContractProposal,
 } from "../../types";
-import { CATALOGDAOADDRESS } from "../web3";
+import { CATALOGDAOADDRESS, metamask_web3, rpc_web3 } from "../web3";
 export const HARMONYRPCURL = "http://127.0.0.1:8545/";
 export const VOTINGPERIODBLOCKS = 10; //The blocks passing in the voting period. 302400 on Harmony, 10 on Hardhat
 
 export async function getCatalogDAOContractWithWallet() {
-  const web3 = new Web3(window.ethereum);
-  return await new web3.eth.Contract(getCatalogDAOAbi(), CATALOGDAOADDRESS);
+  return await new metamask_web3.eth.Contract(
+    getCatalogDAOAbi(),
+    CATALOGDAOADDRESS
+  );
 }
 
 export async function getCatalogDAOContractWithRPC() {
-  const web3 = new Web3(HARMONYRPCURL);
-  return await new web3.eth.Contract(getCatalogDAOAbi(), CATALOGDAOADDRESS);
+  return await new rpc_web3.eth.Contract(getCatalogDAOAbi(), CATALOGDAOADDRESS);
 }
 
 // State setters

@@ -1,11 +1,13 @@
 import Web3 from "web3";
 import { getSimpleTermsAbi } from "../abi/SimpleTerms";
 import { Contract } from "web3-eth-contract";
-import { SIGNUPADDRESS } from "../web3";
+import { metamask_web3, SIGNUPADDRESS } from "../web3";
 
 export async function getSignupContract() {
-  const web3 = new Web3(window.ethereum);
-  return await new web3.eth.Contract(getSimpleTermsAbi(), SIGNUPADDRESS);
+  return await new metamask_web3.eth.Contract(
+    getSimpleTermsAbi(),
+    SIGNUPADDRESS
+  );
 }
 
 export async function getTerms(signup: Contract): Promise<string> {

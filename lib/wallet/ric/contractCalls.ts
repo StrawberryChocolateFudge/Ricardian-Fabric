@@ -2,7 +2,7 @@ import Web3 from "web3";
 import { Contract } from "web3-eth-contract";
 import { ERC20Params } from "../../types";
 import { getRicAbi } from "../abi/ricABI";
-import { RICADDRESS } from "../web3";
+import { metamask_web3, RICADDRESS } from "../web3";
 
 export const RICPARAMS: ERC20Params = {
   name: "RIC",
@@ -12,8 +12,7 @@ export const RICPARAMS: ERC20Params = {
 };
 
 export async function getRicContract(): Promise<Contract> {
-  const web3 = new Web3(window.ethereum);
-  return await new web3.eth.Contract(getRicAbi(), RICADDRESS);
+  return await new metamask_web3.eth.Contract(getRicAbi(), RICADDRESS);
 }
 
 export async function approve(
