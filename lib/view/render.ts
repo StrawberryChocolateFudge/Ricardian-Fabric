@@ -1,5 +1,6 @@
 import { html, render } from "lit-html";
 import {
+  AcceptedSmartContractProposal,
   ArweaveDataPage,
   ContractTypes,
   CreateRicardianPageProps,
@@ -15,6 +16,7 @@ import {
   RankProposal,
   RenderType,
   SelectedWallet,
+  SmartContractProposal,
   State,
   VerificationState,
 } from "../types";
@@ -71,14 +73,17 @@ import {
 import {
   RankProposalTable,
   ReviewAndVote,
+  SmartContractProposalsTable,
 } from "./templates/pages/reviewAndVotePage";
 import { SideBar } from "./templates/components/sideBar";
 import { createProposalPage } from "./templates/pages/createProposalPage";
 import ScreenSizeDetector from "screen-size-detector";
 import {
   ManageProposals,
+  MyAcceptedSmartContratctProposalsTable,
   MyProposalsContent,
   MyRankProposalTable,
+  MySmartContractProposalTable,
 } from "./templates/pages/manageProposals";
 import { WrongNetworkPopup } from "./templates/popups/WrongNetworkPopup";
 import { DaoTermsPopup } from "./templates/popups/DaoTermsPopup";
@@ -106,6 +111,11 @@ import {
 } from "./templates/popups/addComment";
 import { IpfsConfigPage } from "./templates/pages/ipfsConfigPage";
 import { BlockCountry } from "../business/countryBlock";
+import {
+  contractDisplay,
+  VoteOnSmartContract,
+} from "./templates/popups/contractDisplayAndVote";
+import { smartContractProductPage } from "./templates/components/smartContractProductPage";
 
 export function renderConnectYourWallet(props: State) {
   const page = getById("page");
@@ -908,6 +918,46 @@ export function renderMyProposalsRankContent(
   );
 }
 
+export function renderMyProposalsSmartContractContent(
+  smartContractProposals: SmartContractProposal[],
+  indexes: string[],
+  blockNumber: number,
+  totalPages: number,
+  currentPage: number
+) {
+  const el = getById("my-smart-contract-proposals-container");
+  render(
+    MySmartContractProposalTable(
+      smartContractProposals,
+      indexes,
+      blockNumber,
+      totalPages,
+      currentPage
+    ),
+    el
+  );
+}
+
+export function renderMyAcceptedSmartContractProposalsContent(
+  acceptedProposals: AcceptedSmartContractProposal[],
+  indexes: string[],
+  blockNumber: number,
+  totalPage: number,
+  currentPage: number
+) {
+  const el = getById("my-accepted-contracts-container");
+  render(
+    MyAcceptedSmartContratctProposalsTable(
+      acceptedProposals,
+      indexes,
+      blockNumber,
+      totalPage,
+      currentPage
+    ),
+    el
+  );
+}
+
 export function renderAccordionOpener() {
   const acc = document.getElementsByClassName("accordion");
 
@@ -1124,7 +1174,6 @@ export function renderRankProposalTable(
   paging: PaginatedProposal
 ) {
   const el = getById("rank-proposal-table");
-  console.log(paging);
   render(
     RankProposalTable(
       ranks,
@@ -1133,6 +1182,19 @@ export function renderRankProposalTable(
       paging.totalPages,
       paging.currentPage
     ),
+    el
+  );
+}
+
+export function renderSmartContractProposalTable(
+  blockNumber: number,
+  smartContracts: SmartContractProposal[],
+  indexes: string[],
+  paging: PaginatedProposal
+) {
+  const el = getById("smart-contract-proposal-table");
+  render(
+    SmartContractProposalsTable(blockNumber, smartContracts, indexes, paging),
     el
   );
 }
@@ -1429,4 +1491,38 @@ export function navigateToQueryString(
         break;
     }
   }, 500);
+}
+
+export function renderContractDisplayPage(contractId: string) {
+  const layout = getById("overlay-layout");
+  render(contractDisplay(contractId), layout);
+}
+export function renderTeardownContractDisplay() {
+  const loading = getById("contract-loading-slot");
+  render(html`${loadingIndicator}`, loading);
+  const display = getById("contract-display-slot");
+  render(html``, display);
+}
+
+export function renderVoteOnSmartContract(
+  accepted: boolean,
+  contractIndex: string
+) {
+  const layout = getById("overlay-layout");
+  render(VoteOnSmartContract(accepted, contractIndex), layout);
+}
+
+export function renderSCProposalDisplayPage(
+  arweaveTxId: string,
+  proposal: ProposalFormat,
+  terms: string
+) {
+  const overlay = getById("overlay-layout");
+  overlay.style.maxHeight = "100%";
+  const loading = getById("contract-loading-slot");
+  render(html``, loading);
+  const slot = getById("contract-display-slot");
+  render(smartContractProductPage(arweaveTxId, proposal, true), slot);
+  const termsContent = getById("termsContent");
+  termsContent.innerHTML = terms;
 }
