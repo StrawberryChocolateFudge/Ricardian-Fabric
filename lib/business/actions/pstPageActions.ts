@@ -52,7 +52,6 @@ export async function pstPageActions(props: State) {
       dispatch_renderError(error.message);
     };
     const onReceipt = (receipt) => {
-      console.log(receipt);
       const address = receipt.events.SetPS.returnValues._to;
       dispatch_renderPSArweaveAddress(props, address);
     };
