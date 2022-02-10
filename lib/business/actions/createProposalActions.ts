@@ -17,6 +17,7 @@ import {
   PopupState,
   ProposalFormat,
   RankProposal,
+  SmartContractProposal,
   State,
   Status,
 } from "../../types";
@@ -26,14 +27,14 @@ import {
   requestAccounts,
 } from "../../wallet/web3";
 import {
-  acceptedTerms,
-  getCatalogDAOContractWithRPC,
+  getAcceptedSCProposalsByIndex,
   getCatalogDAOContractWithWallet,
   getMyProposals,
   getRank,
   getRankProposalsByIndex,
-  getTerms,
+  getSmartContractProposalsBYIndex,
   proposeNewRank,
+  proposeNewSmartContract,
 } from "../../wallet/catalogDAO/contractCalls";
 import { hasError, OptionsBuilder } from "../utils";
 import { copyStringToClipboard, getById, readFile } from "../../view/utils";
@@ -98,30 +99,20 @@ export async function createProposalActions(props: State) {
 
   //Check if the last RankProposal is still pending!
 
-  let myLastRankProposal;
-  if (myRankProposals.length !== 0) {
-    const myLastRankProposalOptions = await OptionsBuilder(() =>
-      getRankProposalsByIndex(
-        catalogDAO,
-        myRankProposals.slice(-1)[0],
-        myAddress
-      )
-    );
-
-    if (myLastRankProposalOptions.status === Status.Failure) {
-      dispatch_renderError(myLastRankProposalOptions.error);
-      dispatch_removeLoadingIndicator("loading-display");
-    }
-
-    myLastRankProposal = myLastRankProposalOptions.data as RankProposal;
-
-    if (!myLastRankProposal.closed) {
-      dispatch_renderError("Your last rank proposal is still open.");
-    }
-  }
-
+  const myLastRankProposal = await getMyLastRankProposal(
+    catalogDAO,
+    myAddress,
+    myProposals.rank
+  );
   let rank = rankOptions.data;
   //If the rank is zero and there is no pending Rank proposal
+
+  // const mySmartContractProposals = myProposals.smartContract;
+  const myLastSmartContractProposal = await getMyLastSmartContractProposal(
+    catalogDAO,
+    myAddress,
+    myProposals.smartContract
+  );
 
   dispatch_removeLoadingIndicator("loading-display");
   if (rank === "0") {
@@ -131,7 +122,11 @@ export async function createProposalActions(props: State) {
       dispatch_proposeNewRank(!myLastRankProposal.closed);
     }
   } else {
-    dispatch_proposeNewContract();
+    if (myLastSmartContractProposal === undefined) {
+      dispatch_proposeNewContract(false);
+    } else {
+      dispatch_proposeNewContract(!myLastSmartContractProposal.closed);
+    }
   }
 
   //Then render either the proposalTXId input.. or the GithubURL, maybe I just render the labels
@@ -213,7 +208,7 @@ export async function createProposalActions(props: State) {
   const githubRepoUrl = getById("github-url") as HTMLInputElement;
   const rankheader = getById("rankHeader") as HTMLHeadingElement;
   const submitRankProposal = getById("create-rank-proposal");
-
+  const scProposalEl = getById("proposal-tx-id") as HTMLInputElement;
   rankheader.textContent = `Your rank is ${rank}`;
 
   submitRankProposal.onclick = async function () {
@@ -243,15 +238,59 @@ export async function createProposalActions(props: State) {
     );
   };
 
-  // if (props.proposalType === ProposalType.NewSmartContract) {
   const contractProposalSubmit = getById("proposal-submit-button");
+  const isUpdateEl = getById("is-update-input") as HTMLInputElement;
+  const hasFrontendEl = getById("has-frontend-input") as HTMLInputElement;
+  const hasFeesEl = getById("has-fees-input") as HTMLInputElement;
+  const updateOfEl = getById("of-update-input") as HTMLInputElement;
 
-  contractProposalSubmit.onclick = function () {
-    //TODO: I need tp get the ID entered,
-    // use arweave to check if the status is accepted by the network
-    //then I call the ricardian fabric smart contract
+  isUpdateEl.onchange = function () {
+    updateOfEl.disabled = !updateOfEl.disabled;
   };
-  // }
+
+  contractProposalSubmit.onclick = async function () {
+    if (scProposalEl.value.length !== 43) {
+      dispatch_renderError("Invalid transaction id");
+      return;
+    }
+
+    const id = scProposalEl.value;
+
+    if (isUpdateEl.checked) {
+      const proposalToUpdate = await getAcceptedSCProposalsByIndex(
+        catalogDAO,
+        updateOfEl.value,
+        myAddress
+      );
+      if (proposalToUpdate.creator !== myAddress) {
+        dispatch_renderError(
+          "You can only update your own smart contract proposal."
+        );
+        return;
+      }
+    }
+
+    const onError = (error: any, receipt: any) => {
+      dispatch_renderError(error.message);
+    };
+    const onReceipt = (receipt: any) => {
+      dispatch_setPage(PageState.Proposals);
+    };
+
+    const updateOf = isNaN(parseInt(updateOfEl.value)) ? "0" : updateOfEl.value;
+
+    await proposeNewSmartContract(
+      catalogDAO,
+      id,
+      hasFrontendEl.checked,
+      hasFeesEl.checked,
+      isUpdateEl.checked,
+      updateOf,
+      myAddress,
+      onError,
+      onReceipt
+    );
+  };
 }
 
 function artifactValid(data: string): boolean {
@@ -544,4 +583,62 @@ export function uploadProposalSummaryActions(
       dispatch_removeLoadingIndicator("upload-proposal-display");
     }
   };
+}
+
+export async function getMyLastSmartContractProposal(
+  catalogDAO: any,
+  myAddress: any,
+  mySmartContractProposals: string[]
+) {
+  let myLastSmartContractProposal;
+  if (mySmartContractProposals.length !== 0) {
+    const myLastSmartContractProposalOptions = await OptionsBuilder(() =>
+      getSmartContractProposalsBYIndex(
+        catalogDAO,
+        mySmartContractProposals.slice(-1)[0],
+        myAddress
+      )
+    );
+
+    if (hasError(myLastSmartContractProposalOptions)) {
+      dispatch_removeLoadingIndicator("loading-display");
+    }
+
+    myLastSmartContractProposal =
+      myLastSmartContractProposalOptions.data as SmartContractProposal;
+
+    if (!myLastSmartContractProposal.closed) {
+      dispatch_renderError("Your last smart contract proposal is still open");
+    }
+  }
+  return myLastSmartContractProposal;
+}
+
+export async function getMyLastRankProposal(
+  catalogDAO: any,
+  myAddress: string,
+  myRankProposals: string[]
+) {
+  let myLastRankProposal;
+  if (myRankProposals.length !== 0) {
+    const myLastRankProposalOptions = await OptionsBuilder(() =>
+      getRankProposalsByIndex(
+        catalogDAO,
+        myRankProposals.slice(-1)[0],
+        myAddress
+      )
+    );
+
+    if (myLastRankProposalOptions.status === Status.Failure) {
+      dispatch_renderError(myLastRankProposalOptions.error);
+      dispatch_removeLoadingIndicator("loading-display");
+    }
+
+    myLastRankProposal = myLastRankProposalOptions.data as RankProposal;
+
+    if (!myLastRankProposal.closed) {
+      dispatch_renderError("Your last rank proposal is still open.");
+    }
+  }
+  return myLastRankProposal;
 }
