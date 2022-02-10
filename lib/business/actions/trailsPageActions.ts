@@ -271,7 +271,7 @@ async function fetchDataOptions(currentDataToFetch: Array<string>) {
   let correctedData: ArweaveDataDisplayContent[] = [];
   for (let i = 0; i < currentDataToFetch.length; i++) {
     const res = await OptionsBuilder(() =>
-      fetchTransactionBy(currentDataToFetch[i])
+      fetchTransactionBy<TrailData>(currentDataToFetch[i])
     );
     if (res.status === Status.Failure) {
       correctedData.push({
@@ -324,7 +324,7 @@ async function getMetaDisplay(
       linkedContractType = contractType;
       if (contractType === ContractTypes.trail) {
         const replyToOptions = await OptionsBuilder(() =>
-          fetchTransactionBy(linkedTransaction)
+          fetchTransactionBy<TrailData>(linkedTransaction)
         );
         if (replyToOptions.status === Status.Success) {
           const data: TrailData = replyToOptions.data;
