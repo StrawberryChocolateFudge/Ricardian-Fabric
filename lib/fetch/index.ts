@@ -38,10 +38,10 @@ export async function fetchAcceptableContract(
   return result;
 }
 // Used with the OptionsBuilder
-export async function fetchTransactionBy(id): Promise<TrailData> {
+export async function fetchTransactionBy<T>(id): Promise<T> {
   const response = await fetch(`https://arweave.net/${id}`, { method: "get" });
   const result = await response.json();
-  return result as TrailData;
+  return result as T;
 }
 
 export async function fetchFromIPFS(
