@@ -2,7 +2,13 @@ import {
   dispatch_setPage,
   dispatch_setPopupState,
 } from "../../dispatch/stateChange";
-import { PageState, PopupState, RankProposal, State } from "../../types";
+import {
+  PageState,
+  PopupState,
+  RankProposal,
+  SmartContractProposal,
+  State,
+} from "../../types";
 import { getById, newTab } from "../../view/utils";
 import {
   checkNetwork,
@@ -13,8 +19,11 @@ import {
 } from "../../wallet/web3";
 import MetaMaskOnboarding from "@metamask/onboarding";
 import {
+  dispatch_renderContractDisplayPage,
   dispatch_renderError,
   dispatch_renderReviewRankProposals,
+  dispatch_renderReviewSmartContractProposals,
+  dispatch_renderVoteOnSmartContract,
 } from "../../dispatch/render";
 import {
   getCatalogDAOContractWithWallet,
@@ -23,6 +32,9 @@ import {
   voteOnNewRank,
   acceptedTerms,
   getTerms,
+  getSmartContractProposalIndex,
+  getMySmartContractProposalsPaginated,
+  closeSuspiciousProposal,
 } from "../../wallet/catalogDAO/contractCalls";
 import { getPaginatedByIndex, hasError, OptionsBuilder } from "../utils";
 import {
@@ -68,31 +80,9 @@ export async function reviewAndVotePageActions(props: State) {
   const pSTPageButton = getById("profit-sharing-button");
 
   pSTPageButton.onclick = async function () {
-    const addressOptions = await OptionsBuilder(() => getAddress());
-    if (hasError(addressOptions)) {
-      return;
-    }
-    // Check if the user is staking..
-    const daoStakingOptions = await OptionsBuilder(() =>
-      getDaoStakingContract()
-    );
+    const isStakingResult = await checkIfUserIsStaking();
 
-    if (hasError(daoStakingOptions)) {
-      return;
-    }
-    const isStakingOptions = await OptionsBuilder(() =>
-      isStaking(
-        daoStakingOptions.data,
-        addressOptions.data,
-        addressOptions.data
-      )
-    );
-
-    if (hasError(isStakingOptions)) {
-      return;
-    }
-
-    if (isStakingOptions.data === true) {
+    if (isStakingResult) {
       dispatch_setPage(PageState.profitSharing);
     } else {
       dispatch_renderError("You need to be staking to access Ar sharing");
@@ -135,14 +125,18 @@ export async function reviewAndVotePageActions(props: State) {
 
   dispatch_renderReviewRankProposals(props, blockNumber, rankPage);
 
-  // const smartContractPage = await getPaginatedByIndexSTART<
-  //   SmartContractProposal[]
-  // >(
-  //   catalogDAO,
-  //   myAddress,
-  //   getSmartContractProposalIndex,
-  //   getMySmartContractProposalsPaginated
-  // );
+  const smartContractPage = await getPaginatedByIndex<SmartContractProposal[]>(
+    1,
+    catalogDAO,
+    myAddress,
+    getSmartContractProposalIndex,
+    getMySmartContractProposalsPaginated
+  );
+  dispatch_renderReviewSmartContractProposals(
+    props,
+    blockNumber,
+    smartContractPage
+  );
 
   // const acceptedSmartContractPage =
   //   await getPaginatedByIndexSTART<AcceptedSmartContractProposal>(
@@ -193,15 +187,20 @@ export async function rankProposalTableActions(props: State) {
     dispatch_setPage(PageState.ReviewAndVote);
   };
 
-  const vote = async (approve: boolean, index: string) =>
-    await voteOnNewRank(
-      catalogDAO,
-      index,
-      approve,
-      myAddress,
-      onError,
-      onReceipt
-    );
+  const vote = async (approve: boolean, index: string) => {
+    const isStakingResult = await checkIfUserIsStaking();
+
+    if (isStakingResult) {
+      await voteOnNewRank(
+        catalogDAO,
+        index,
+        approve,
+        myAddress,
+        onError,
+        onReceipt
+      );
+    }
+  };
   // starts with _ because an import can shadow it
   const _getProposals = async (index: number) =>
     await getPaginatedByIndex<RankProposal[]>(
@@ -219,11 +218,11 @@ export async function rankProposalTableActions(props: State) {
     const rejectButton = rejectButtons[i] as HTMLButtonElement;
     approveButton.onclick = async function () {
       const index = approveButton.dataset.index;
-      vote(true, index);
+      await vote(true, index);
     };
     rejectButton.onclick = async function () {
       const index = rejectButton.dataset.index;
-      vote(false, index);
+      await vote(false, index);
     };
   }
 
@@ -262,4 +261,165 @@ export async function rankProposalTableActions(props: State) {
       dispatch_renderReviewRankProposals(props, blockNumber, rankPage);
     }
   };
+}
+
+export async function checkIfUserIsStaking(): Promise<boolean> {
+  const addressOptions = await OptionsBuilder(() => getAddress());
+  if (hasError(addressOptions)) {
+    return false;
+  }
+  const daoStakingOptions = await OptionsBuilder(() => getDaoStakingContract());
+
+  if (hasError(daoStakingOptions)) {
+    return false;
+  }
+  const isStakingOptions = await OptionsBuilder(() =>
+    isStaking(daoStakingOptions.data, addressOptions.data, addressOptions.data)
+  );
+
+  if (hasError(isStakingOptions)) {
+    return false;
+  }
+
+  return isStakingOptions.data === true;
+}
+
+export async function smartContractProposalTableActions(props: State) {
+  const paginationButtons = document.getElementsByClassName(
+    "smartContractPagePaginationButton"
+  );
+  const pageLeftButton = getById("smartcontract-page-left");
+  const pageRightButton = getById("smartcontract-page-right");
+
+  const approveButtons = document.getElementsByClassName(
+    "smartContractProposalApproveButton"
+  );
+  const rejectButtons = document.getElementsByClassName(
+    "smartContractProposalRejectButton"
+  );
+
+  const closeSuspiciousBttn = document.getElementsByClassName(
+    "close-suspicious-proposal-buttons"
+  );
+
+  const myAddress = await getAddress();
+  const catalogDAO = await getCatalogDAOContractWithWallet();
+
+  const vote = async (approve: boolean, index: string, arweaveTxId: string) => {
+    const isStakingResult = await checkIfUserIsStaking();
+    if (isStakingResult) {
+      dispatch_setPopupState(PopupState.emptyPopup);
+      dispatch_renderVoteOnSmartContract(
+        props,
+        index,
+        approve,
+        arweaveTxId,
+        refresh
+      );
+    } else {
+      dispatch_renderError("You need to be staking to vote!");
+    }
+  };
+
+  const refresh = async (pageindex) => {
+    const smartContractpage = await _getProposals(pageindex);
+    const blockNumber = await getBlockNumber();
+
+    dispatch_renderReviewSmartContractProposals(
+      props,
+      blockNumber,
+      smartContractpage
+    );
+  };
+
+  const _getProposals = async (pageindex: number) =>
+    await getPaginatedByIndex<SmartContractProposal[]>(
+      pageindex,
+      catalogDAO,
+      myAddress,
+      getSmartContractProposalIndex,
+      getMySmartContractProposalsPaginated
+    );
+
+  // Lets add the onclick for the approve and the reject buttons
+
+  for (let i = 0; i < approveButtons.length; i++) {
+    const approveButton = approveButtons[i] as HTMLButtonElement;
+    const rejectButton = rejectButtons[i] as HTMLButtonElement;
+
+    approveButton.onclick = async function () {
+      const index = approveButton.dataset.index;
+      const arweaveTxId = approveButton.dataset.arweavetx;
+      await vote(true, index, arweaveTxId);
+    };
+    rejectButton.onclick = async function () {
+      const index = rejectButton.dataset.index;
+      const arweaveTxId = approveButton.dataset.arweavetx;
+      await vote(false, index, arweaveTxId);
+    };
+  }
+  addContractDetailsPopup(props);
+
+  // add the onclick for the close suspicious contract buttons
+  for (let i = 0; i < closeSuspiciousBttn.length; i++) {
+    const bttn = closeSuspiciousBttn[i] as HTMLButtonElement;
+
+    bttn.onclick = async function () {
+      const index = bttn.dataset.index;
+      const onError = (error, receipt) => {
+        dispatch_renderError(error.message);
+      };
+      const onReceipt = () => {
+        refresh(pageRightButton.dataset.smartcontractpage);
+      };
+      await closeSuspiciousProposal(
+        catalogDAO,
+        index,
+        myAddress,
+        onError,
+        onReceipt
+      );
+    };
+  }
+
+  // add the onclick for the smart contract pagination buttons
+  for (let i = 0; i < paginationButtons.length; i++) {
+    const paginationButton = paginationButtons[i] as HTMLButtonElement;
+    paginationButton.onclick = async function () {
+      const pageIndex = parseInt(paginationButton.dataset.smartcontractpage);
+      refresh(pageIndex);
+    };
+  }
+
+  pageLeftButton.onclick = async function () {
+    const index = parseInt(pageLeftButton.dataset.smartcontractpage);
+
+    if (index > 1) {
+      refresh(index - 1);
+    }
+  };
+
+  pageRightButton.onclick = async function () {
+    const index = parseInt(pageRightButton.dataset.smartcontractpage);
+    const total = parseInt(pageRightButton.dataset.totalpages);
+
+    if (index < total) {
+      refresh(index + 1);
+    }
+  };
+}
+
+export function addContractDetailsPopup(props: State) {
+  const contractDetailsBttn = document.getElementsByClassName(
+    "contract-page-popup"
+  );
+  // add the onclick for the contract page popup
+  for (let i = 0; i < contractDetailsBttn.length; i++) {
+    const bttn = contractDetailsBttn[i] as HTMLButtonElement;
+    bttn.onclick = async function () {
+      const tx = bttn.dataset.arweavetx;
+      dispatch_setPopupState(PopupState.emptyPopup);
+      dispatch_renderContractDisplayPage(props, tx);
+    };
+  }
 }
