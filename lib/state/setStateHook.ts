@@ -6,6 +6,7 @@ import {
   dispatch_collectRewardPage,
   dispatch_ConnectYourWalletPage,
   dispatch_dismissSidebar,
+  dispatch_emptyPopup,
   dispatch_feeProposals,
   dispatch_hidePopup,
   dispatch_ipfsConfig,
@@ -143,6 +144,8 @@ export const setStateHook = {
       case PopupState.AddComment:
         dispatch_addCommentPopup(clone);
         break;
+      case PopupState.emptyPopup:
+        dispatch_emptyPopup(clone);
       default:
         break;
     }
