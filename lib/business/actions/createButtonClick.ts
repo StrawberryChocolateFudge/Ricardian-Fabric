@@ -151,6 +151,10 @@ export function renderCreateButtonClick(props: State, calledAt: RenderType) {
         dispatch_renderError("Invalid Trail name.");
         return;
       }
+      if (detailsOptions.data.creator !== issuer) {
+        dispatch_renderError("You can only link your own trail!");
+        return;
+      }
     }
 
     if (smartContract !== "NONE") {
