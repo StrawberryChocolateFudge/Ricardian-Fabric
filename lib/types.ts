@@ -98,6 +98,8 @@ export enum RenderType {
   renderWrongNetworkPopup = "renderWrongNetworkPopup",
   renderMyProposals = "renderMyProposals",
   renderMyRankProposals = "renderMyRankProposals",
+  renderMySmartContractProposals = "renderMySmartContractProposals",
+  renderMyAcceptedSmartContractProposals = "renderMyAcceptedSmartContractProposals",
   renderReviewRankProposals = "renderReviewRankProposals",
   renderReviewSmartContractProposals = "renderReviewSmartContractProposals",
   renderReviewAcceptedProposals = "renderReviewAcceptedProposals",
@@ -127,6 +129,11 @@ export enum RenderType {
   trailDataPage = "trailDataPage",
   navigateToQueryString = "navigateToQueryString",
   renderIpfsConfig = "renderIpfsConfig",
+  emptyPopup = "emptyPopup",
+  renderContractDisplay = "renderContractDisplayPage",
+  teardownContractDisplay = "teardownContractDisplay",
+  renderVoteOnSmartContract = "renderVoteOnSmartContract",
+  renderSCProposalDisplayPage = "renderSCProposalDisplayPage",
 }
 
 // TODO refactor to RenderDispatchArgs for specifying the dispatch arguments
@@ -200,9 +207,11 @@ export type Renderer = {
   [RenderType.manageProposals]: RenderFunction;
   [RenderType.dismissSidebar]: RenderFunction;
   [RenderType.renderWrongNetworkPopup]: RenderFunction;
-  [RenderType.renderMyProposals]: RenderFunction;
   [RenderType.renderMyRankProposals]: RenderFunction;
+  [RenderType.renderMySmartContractProposals]: RenderFunction;
+  [RenderType.renderMyAcceptedSmartContractProposals]: RenderFunction;
   [RenderType.renderReviewRankProposals]: RenderFunction;
+  [RenderType.renderReviewSmartContractProposals]: RenderFunction;
   [RenderType.renderLoadedValue]: RenderFunction;
   [RenderType.pinnedDashboardData]: RenderFunction;
   [RenderType.stakingButtons]: RenderFunction;
@@ -228,6 +237,11 @@ export type Renderer = {
   [RenderType.trailDataPage]: RenderFunction;
   [RenderType.navigateToQueryString]: RenderFunction;
   [RenderType.renderIpfsConfig]: RenderFunction;
+  [RenderType.emptyPopup]: RenderFunction;
+  [RenderType.renderContractDisplay]: RenderFunction;
+  [RenderType.teardownContractDisplay]: RenderFunction;
+  [RenderType.renderVoteOnSmartContract]: RenderFunction;
+  [RenderType.renderSCProposalDisplayPage]: RenderFunction;
 };
 
 export enum VerificationState {
@@ -353,6 +367,7 @@ export enum PopupState {
   WrongNetwork,
   SavePage,
   AddComment,
+  emptyPopup,
 }
 
 export enum PageState {
@@ -569,12 +584,25 @@ export type SmartContractProposal = {
   approvals: string;
   rejections: string;
   closed: boolean;
+  suspicious: string;
+  penalized: boolean;
+  hasFrontend: boolean;
+  hasFees: boolean;
+  isUpdate: boolean;
+  updateOf: string;
 };
 
 export type AcceptedSmartContractProposal = {
   arweaveTxId: string;
   creator: string;
   removed: boolean;
+  created: string;
+  hasFrontend: boolean;
+  hasFees: boolean;
+  likes: string;
+  dislikes: string;
+  isUpdate: boolean;
+  updateOf: string;
 };
 
 export type RemovalProposal = {
