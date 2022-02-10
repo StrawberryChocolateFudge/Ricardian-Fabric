@@ -1,4 +1,5 @@
 import {
+  AcceptedSmartContractProposal,
   ArweaveDataPage,
   CreateRicardianPageProps,
   DeploySC,
@@ -11,6 +12,7 @@ import {
   QueryStrings,
   RankProposal,
   RenderType,
+  SmartContractProposal,
   State,
   TrailDetails,
   VerificationState,
@@ -533,10 +535,10 @@ export function dispatch_proposeNewRank(hasOpenProposal: boolean) {
   });
 }
 
-export function dispatch_proposeNewContract() {
+export function dispatch_proposeNewContract(hasOpenProposal: boolean) {
   dispatch(Events.render, {
     type: RenderType.proposeNewContract,
-    props: {},
+    props: { tmp: { hasOpenProposal } },
   });
 }
 
@@ -560,21 +562,6 @@ export function dispatch_renderWrongNetworkPopup(props: State) {
     props,
   });
 }
-// TODO :refactor this to 4 separate renders
-export function dispatch_renderMyProposals(
-  props: State,
-  paginatedProposals: PaginatedProposals,
-  fetchedProposals: FetchedProposals,
-  blockNumber: number
-) {
-  dispatch(Events.render, {
-    type: RenderType.renderMyProposals,
-    props: {
-      ...props,
-      tmp: { paginatedProposals, fetchedProposals, blockNumber },
-    },
-  });
-}
 
 export function dispatch_renderMyRankProposals(
   props: State,
@@ -590,6 +577,28 @@ export function dispatch_renderMyRankProposals(
   });
 }
 
+export function dispatch_renderMySmartContractProposals(
+  props: State,
+  blockNumber: number,
+  smartContractPage: [SmartContractProposal[], string[], PaginatedProposal]
+) {
+  dispatch(Events.render, {
+    type: RenderType.renderMySmartContractProposals,
+    props: { ...props, tmp: { blockNumber, smartContractPage } },
+  });
+}
+
+export function dispatch_renderMyAcceptedSmartContractProposals(
+  props: State,
+  blockNumber: number,
+  page: [AcceptedSmartContractProposal[], string[], PaginatedProposal]
+) {
+  dispatch(Events.render, {
+    type: RenderType.renderMyAcceptedSmartContractProposals,
+    props: { ...props, tmp: { blockNumber, page } },
+  });
+}
+
 export function dispatch_renderReviewRankProposals(
   props: State,
   blockNumber: number,
@@ -598,6 +607,17 @@ export function dispatch_renderReviewRankProposals(
   dispatch(Events.render, {
     type: RenderType.renderReviewRankProposals,
     props: { ...props, tmp: { rankPage, blockNumber } },
+  });
+}
+
+export function dispatch_renderReviewSmartContractProposals(
+  props: State,
+  blockNumber: number,
+  smartContractPage: [SmartContractProposal[], string[], PaginatedProposal]
+) {
+  dispatch(Events.render, {
+    type: RenderType.renderReviewSmartContractProposals,
+    props: { ...props, tmp: { blockNumber, smartContractPage } },
   });
 }
 
@@ -841,5 +861,54 @@ export function dispatch_ipfsConfig(props: State) {
   dispatch(Events.render, {
     type: RenderType.renderIpfsConfig,
     props,
+  });
+}
+
+export function dispatch_emptyPopup(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.emptyPopup,
+    props,
+  });
+}
+
+export function dispatch_renderContractDisplayPage(
+  props: State,
+  contractId: string
+) {
+  dispatch(Events.render, {
+    type: RenderType.renderContractDisplay,
+    props: { ...props, tmp: { contractId } },
+  });
+}
+
+export function dispatch_teardownContractDisplayPage() {
+  dispatch(Events.render, {
+    type: RenderType.teardownContractDisplay,
+    props: {},
+  });
+}
+
+export function dispatch_renderVoteOnSmartContract(
+  props: State,
+  contractIndex: string,
+  accepted: boolean,
+  arweaveTxId: string,
+  refresh: CallableFunction
+) {
+  dispatch(Events.render, {
+    type: RenderType.renderVoteOnSmartContract,
+    props: { ...props, tmp: { contractIndex, accepted, arweaveTxId, refresh } },
+  });
+}
+
+export function dispatch_renderSCProposalDisplayPage(
+  props: State,
+  arweaveTxId: string,
+  proposal: ProposalFormat,
+  terms: string
+) {
+  dispatch(Events.render, {
+    type: RenderType.renderSCProposalDisplayPage,
+    props: { ...props, tmp: { arweaveTxId, proposal, terms } },
   });
 }

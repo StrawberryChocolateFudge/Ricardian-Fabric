@@ -8,6 +8,7 @@ import {
   RenderDispatchArgs,
   Renderer,
   RenderType,
+  SmartContractProposal,
   State,
 } from "../types";
 import { renderCreateButtonClick } from "../business/actions/createButtonClick";
@@ -110,6 +111,13 @@ import {
   renderTrailDataPage,
   navigateToQueryString,
   renderIpfsConfigPage,
+  renderSmartContractProposalTable,
+  renderMyProposalsSmartContractContent,
+  renderContractDisplayPage,
+  renderVoteOnSmartContract,
+  renderSCProposalDisplayPage,
+  renderTeardownContractDisplay,
+  renderMyAcceptedSmartContractProposalsContent,
 } from "./render";
 import { renderAcceptTools } from "./render";
 import { areYouSureButtons } from "../business/actions/areYouSureButtons";
@@ -121,7 +129,7 @@ import {
   deployAgainButtonActions,
   redirectAction,
 } from "../business/actions/deployAgainButton";
-import { changeContainerSlotStyle } from "./utils";
+import { changeContainerSlotStyle, setBannerDisplayBlock } from "./utils";
 import {
   addChainButtonListener,
   networkSelectActions,
@@ -153,6 +161,7 @@ import { menuActions } from "../business/actions/menuActions";
 import {
   rankProposalTableActions,
   reviewAndVotePageActions,
+  smartContractProposalTableActions,
 } from "../business/actions/reviewAndVote";
 import {
   createProposalActions,
@@ -162,6 +171,7 @@ import {
 import {
   myProposalsActions,
   myRankProposalsTableActions,
+  mySmartContractProposalsTableActions,
 } from "../business/actions/myProposalsActions";
 import { wrongNetworkActions } from "../business/actions/WrongNetworkActions";
 import { connectWalletButton } from "../business/actions/connectWalletButton";
@@ -180,6 +190,10 @@ import {
   trailsPageActions,
 } from "../business/actions/trailsPageActions";
 import { ipfsConfigActions } from "../business/actions/ipfsConfigActions";
+import { votingOnContractActions } from "../business/actions/VotingOnContractActions";
+import { contractDisplayActions } from "../business/actions/contractDisplayActions";
+import { render } from "lit-html";
+import { smartContractProductPage } from "./templates/components/smartContractProductPage";
 
 const Render: Renderer = {
   [RenderType.connectYourWallet]: (props: State) => {
@@ -480,20 +494,14 @@ const Render: Renderer = {
     );
   },
   [RenderType.proposeNewContract]: (props: RenderDispatchArgs) => {
-    render_createProposalPageContent(RenderType.proposeNewContract, false);
+    render_createProposalPageContent(
+      RenderType.proposeNewContract,
+      props.tmp.hasOpenProposal
+    );
   },
   [RenderType.manageProposals]: (props: RenderDispatchArgs) => {
     renderManageProposals();
     myProposalsActions(props);
-  },
-  [RenderType.renderMyProposals]: (props: RenderDispatchArgs) => {
-    // TODO: REMOVE, ITS BroROKEN UP
-    // renderMyProposalsContent(
-    //   props.tmp.paginatedProposals,
-    //   props.tmp.fetchedProposals,
-    //   props.tmp.blockNumber
-    // );
-    // myProposalsTableActions();
   },
   [RenderType.renderMyRankProposals]: (props: RenderDispatchArgs) => {
     const rankPage: [RankProposal[], string[], PaginatedProposal] =
@@ -507,6 +515,38 @@ const Render: Renderer = {
       rankPage[2].currentPage
     );
     myRankProposalsTableActions(props, rankPage[2].proposals);
+  },
+  [RenderType.renderMySmartContractProposals]: async (
+    props: RenderDispatchArgs
+  ) => {
+    const smartContractPage: [
+      SmartContractProposal[],
+      string[],
+      PaginatedProposal
+    ] = props.tmp.smartContractPage;
+    const blockNr = props.tmp.blockNumber;
+    renderMyProposalsSmartContractContent(
+      smartContractPage[0],
+      smartContractPage[1],
+      blockNr,
+      smartContractPage[2].totalPages,
+      smartContractPage[2].currentPage
+    );
+    await mySmartContractProposalsTableActions(
+      props,
+      smartContractPage[2].proposals
+    );
+  },
+  [RenderType.renderMyAcceptedSmartContractProposals]: (
+    props: RenderDispatchArgs
+  ) => {
+    renderMyAcceptedSmartContractProposalsContent(
+      props.tmp.page[0],
+      props.tmp.page[1],
+      props.tmp.blockNumber,
+      props.tmp.page[2].totalPages,
+      props.tmp.page[2].currentPage
+    );
   },
   [RenderType.dismissSidebar]: (props: RenderDispatchArgs) => {
     collapseSidebar();
@@ -523,6 +563,17 @@ const Render: Renderer = {
       props.tmp.rankPage[2]
     );
     rankProposalTableActions(props);
+  },
+  [RenderType.renderReviewSmartContractProposals]: (
+    props: RenderDispatchArgs
+  ) => {
+    renderSmartContractProposalTable(
+      props.tmp.blockNumber,
+      props.tmp.smartContractPage[0],
+      props.tmp.smartContractPage[1],
+      props.tmp.smartContractPage[2]
+    );
+    smartContractProposalTableActions(props);
   },
   [RenderType.renderLoadedValue]: (props: RenderDispatchArgs) => {
     renderLoadedValue(props.tmp.loadedValue, props.tmp.renderTo);
@@ -662,6 +713,35 @@ const Render: Renderer = {
   [RenderType.renderIpfsConfig]: (props: RenderDispatchArgs) => {
     renderIpfsConfigPage(props);
     ipfsConfigActions(props);
+  },
+  [RenderType.emptyPopup]: (props: RenderDispatchArgs) => {
+    setBannerDisplayBlock();
+  },
+  [RenderType.renderContractDisplay]: (props: RenderDispatchArgs) => {
+    renderContractDisplayPage(props.tmp.contractId);
+    contractDisplayActions(props, props.tmp.contractId);
+  },
+  [RenderType.teardownContractDisplay]: (props: RenderDispatchArgs) => {
+    renderTeardownContractDisplay();
+  },
+  [RenderType.renderVoteOnSmartContract]: async (props: RenderDispatchArgs) => {
+    renderVoteOnSmartContract(props.tmp.accepted, props.tmp.contractIndex);
+    await votingOnContractActions(
+      props,
+      props.tmp.accepted,
+      props.tmp.contractIndex,
+      props.tmp.arweaveTxId,
+      props.tmp.refresh
+    );
+  },
+  [RenderType.renderSCProposalDisplayPage]: async (
+    props: RenderDispatchArgs
+  ) => {
+    renderSCProposalDisplayPage(
+      props.tmp.arweaveTxId,
+      props.tmp.proposal,
+      props.tmp.terms
+    );
   },
 };
 
