@@ -54,8 +54,7 @@ function proposeGetRank() {
     <small>You need to get Rank to propose a new smart contract.</small>
     <small
       >To create a proposal, first you need to stake and approve spend, then add
-      your github repo link, to show off your skills, with an open issue to
-      comment on in the field below.</small
+      the required discussion's link you opened on github.</small
     >
     <hr />
 
@@ -70,9 +69,7 @@ function proposeGetRank() {
         ${ChevronRightBlack()}
       </button>
 
-      ${helperTooltips(
-        "A github link to your repositiory containing code to show off."
-      )}
+      ${helperTooltips("A github link to the discussion you opened.")}
     </div>
 
     <hr />
@@ -89,16 +86,55 @@ function proposeNewContract() {
   return html`
     <small
       >You can propose a new smart contract. The DAO will decide if it's
-      eligible to be added to the catalog.</small
+      eligible to be added to the catalog.Proposal data is uploaded to the
+      permaweb. Make sure you fill out the form correctly, otherwise your
+      proposal will not pass!</small
     >
-    <small
-      >Proposal data is uploaded to the permaweb. Select it from the
-      dropdown.</small
-    >
-    <div class="row">
-      <label for="proposal-tx-id">Proposal Tx Id:</label>
-      <input id="proposal-tx-id" type="text" />
-      <button class="labelButton" id="proposal-submit-button">Submit</button>
-    </div>
+    <table class="center width-100Percent box-value padding-10px">
+      <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+      <tr>
+        <td><label for="has-frontend-input">Has front end?</label></td>
+        <td><input id="has-frontend-input" type="checkbox" /></td>
+        <td>
+          ${helperTooltips(
+            "Does the contract have a front end uploaded to arweave?"
+          )}
+        </td>
+      </tr>
+      <tr>
+        <td><label for="has-fees-input">Has Fees:</label></td>
+        <td><input id="has-fees-input" type="checkbox" /></td>
+        <td>${helperTooltips("Does the contract have fees implemented?")}</td>
+      </tr>
+      <tr>
+        <td><label for="is-update-input">is it an Update?</label></td>
+        <td><input id="is-update-input" type="checkbox" /></td>
+        <td>
+          ${helperTooltips("Are you updating a previously added contract?")}
+        </td>
+      </tr>
+      <tr>
+        <td><label for="of-update-input">Updating:</label></td>
+        <td><input id="of-update-input" type="number" disabled /></td>
+        <td>
+          ${helperTooltips(
+            "The index of the contract that is getting updated!"
+          )}
+        </td>
+      </tr>
+      <tr>
+        <td><label for="proposal-tx-id">Proposal Tx Id:</label></td>
+        <td><input id="proposal-tx-id" type="text" /></td>
+        <td>
+          <button class="labelButton" id="proposal-submit-button">
+            ${ChevronRightBlack()}
+          </button>
+        </td>
+      </tr>
+    </table>
   `;
 }
