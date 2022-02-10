@@ -279,6 +279,10 @@ hr {
   max-height: 300px;
 }
 
+.padding-10px {
+  padding: 10px;
+}
+
 .listStyleType-disclosureClosed {
   list-style-type: disclosure-closed;
 }
@@ -287,6 +291,9 @@ hr {
   color: red;
 }
 
+.ccc {
+  background-color: #ccc;
+}
 .editable {
   background: #f2f2f2;
 }
