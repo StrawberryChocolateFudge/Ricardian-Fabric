@@ -226,7 +226,7 @@ hr {
   margin: 0 auto;
   display: flex;
   max-width: 800px;
-  min-width: 350px;
+  min-width: 550px;
   height: 100%;
   flex-direction: column;
   padding-bottom: 20px;
@@ -566,13 +566,6 @@ hr {
 
 #import-docx-trigger:hover {
   background-color: #ccc;
-}
-
-.catalogList {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
 }
 
 .backButton {
