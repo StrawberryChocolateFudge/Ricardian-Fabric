@@ -118,6 +118,8 @@ import {
   renderSCProposalDisplayPage,
   renderTeardownContractDisplay,
   renderMyAcceptedSmartContractProposalsContent,
+  renderRemovalProposalPopup,
+  renderStakerDetails,
 } from "./render";
 import { renderAcceptTools } from "./render";
 import { areYouSureButtons } from "../business/actions/areYouSureButtons";
@@ -169,9 +171,12 @@ import {
   uploadProposalSummaryActions,
 } from "../business/actions/createProposalActions";
 import {
+  myAcceptedSmartContractProposalTableActions,
   myProposalsActions,
   myRankProposalsTableActions,
   mySmartContractProposalsTableActions,
+  removalProposalPageActions,
+  stakerDetailsActions,
 } from "../business/actions/myProposalsActions";
 import { wrongNetworkActions } from "../business/actions/WrongNetworkActions";
 import { connectWalletButton } from "../business/actions/connectWalletButton";
@@ -537,7 +542,7 @@ const Render: Renderer = {
       smartContractPage[2].proposals
     );
   },
-  [RenderType.renderMyAcceptedSmartContractProposals]: (
+  [RenderType.renderMyAcceptedSmartContractProposals]: async (
     props: RenderDispatchArgs
   ) => {
     renderMyAcceptedSmartContractProposalsContent(
@@ -546,6 +551,10 @@ const Render: Renderer = {
       props.tmp.blockNumber,
       props.tmp.page[2].totalPages,
       props.tmp.page[2].currentPage
+    );
+    await myAcceptedSmartContractProposalTableActions(
+      props,
+      props.tmp.page[2].proposals
     );
   },
   [RenderType.dismissSidebar]: (props: RenderDispatchArgs) => {
@@ -742,6 +751,18 @@ const Render: Renderer = {
       props.tmp.proposal,
       props.tmp.terms
     );
+  },
+  [RenderType.createRemovalProposalPopup]: (props: RenderDispatchArgs) => {
+    renderRemovalProposalPopup(props, props.tmp.acceptableIndex);
+    removalProposalPageActions(props, props.tmp.acceptableIndex);
+  },
+  [RenderType.renderStakerDetails]: (props: RenderDispatchArgs) => {
+    renderStakerDetails(
+      props.tmp.staker,
+      props.tmp.stakingBlocks,
+      props.tmp.blockNumber
+    );
+    stakerDetailsActions();
   },
 };
 
