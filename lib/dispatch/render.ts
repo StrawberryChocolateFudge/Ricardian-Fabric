@@ -13,6 +13,7 @@ import {
   RankProposal,
   RenderType,
   SmartContractProposal,
+  Staker,
   State,
   TrailDetails,
   VerificationState,
@@ -910,5 +911,27 @@ export function dispatch_renderSCProposalDisplayPage(
   dispatch(Events.render, {
     type: RenderType.renderSCProposalDisplayPage,
     props: { ...props, tmp: { arweaveTxId, proposal, terms } },
+  });
+}
+
+export function dispatch_createRemovalProposal(
+  props: State,
+  acceptableIndex: string
+) {
+  dispatch(Events.render, {
+    type: RenderType.createRemovalProposalPopup,
+    props: { ...props, tmp: { acceptableIndex } },
+  });
+}
+
+export function dispatch_renderStakerDetails(
+  props: State,
+  staker: Staker,
+  stakingBlocks: string,
+  blockNumber: number
+) {
+  dispatch(Events.render, {
+    type: RenderType.renderStakerDetails,
+    props: { ...props, tmp: { staker, stakingBlocks, blockNumber } },
   });
 }
