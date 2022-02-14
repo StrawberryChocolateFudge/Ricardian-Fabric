@@ -6,6 +6,7 @@ import {
   PaginatedProposals,
   RankProposal,
   SmartContractProposal,
+  Staker,
 } from "../../../types";
 import { VOTINGPERIODBLOCKS } from "../../../wallet/catalogDAO/contractCalls";
 import { getBlockie } from "../components/getBlockies";
@@ -18,15 +19,49 @@ import {
   getPageButtonEndPoint,
   getPageButtonStartPoint,
 } from "../components/paginations";
+import { balanceDisplay } from "./tokenSalePage";
 
 export function ManageProposals() {
-  return html`<h2>My Proposals</h2>
-
+  return html`<h4>My Proposals</h4>
+    ${balanceDisplay()}
+    <div id="stakerDetails" class="placeholder-item"></div>
+    <hr />
     <div id="my-rank-proposals-container"></div>
     <hr />
     <div id="my-smart-contract-proposals-container"></div>
     <hr />
     <div id="my-accepted-contracts-container"></div> `;
+}
+
+export function StakerDetails(
+  staker: Staker,
+  stakingBlocks: string,
+  blockNumber: number
+) {
+  const canUnstake =
+    parseInt(stakingBlocks) + parseInt(staker.stakeDate) < blockNumber;
+
+  const blockNumberNeeded =
+    parseInt(stakingBlocks) + parseInt(staker.stakeDate);
+
+  const stakeTimeLeft = blockNumberNeeded - blockNumber;
+
+  if (!staker.isStaking) {
+    return html``;
+  }
+
+  return html`<div>
+    Stake: ${staker.stakeAmount} RIC
+    ${staker.isStaking
+      ? html`<button
+          id="unstake-button"
+          class="labelButton"
+          ?disabled="${!canUnstake}"
+        >
+          ${canUnstake ? "Unstake" : stakeTimeLeft + " blocks left to unstake."}
+        </button>`
+      : nothing}
+  </div>`;
 }
 
 export function MyProposalsContent(
@@ -55,7 +90,6 @@ export function MyAcceptedSmartContratctProposalsTable(
 ) {
   let acceptedProposals = [];
   // attaching the indexes
-
   for (let i = 0; i < indexes.length; i++) {
     if (indexes[i] !== "0") {
       acceptedProposals.push({
@@ -67,22 +101,31 @@ export function MyAcceptedSmartContratctProposalsTable(
   return html`<hr />
     <h5>Accepted Proposals</h5>
     <hr />
-    <table class="light-shadow width-100Percent">
-      <tr>
-        <td><label>Index</label></td>
-        <td>
-          <label>Contract</label>
-        </td>
-        <td><label>Active</label></td>
-        <td><label>Likes</label></td>
-        <td><label>Dislikes</label></td>
-        <td></td>
-      </tr>
-      ${acceptedProposals.map(
-        (r: { smartContract: AcceptedSmartContractProposal; index: string }) =>
-          acceptedSmartContractProposalTR(r.smartContract, r.index, blockNumber)
-      )}
-    </table>
+    <div class="overflow-auto">
+      <table class="light-shadow width-100Percent">
+        <tr>
+          <td><label>Index</label></td>
+          <td>
+            <label>Contract</label>
+          </td>
+          <td><label>Active</label></td>
+          <td><label>Likes</label></td>
+          <td><label>Dislikes</label></td>
+          <td><label>Rewards</label></td>
+        </tr>
+        ${acceptedProposals.map(
+          (r: {
+            smartContract: AcceptedSmartContractProposal;
+            index: string;
+          }) =>
+            acceptedSmartContractProposalTR(
+              r.smartContract,
+              r.index,
+              blockNumber
+            )
+        )}
+      </table>
+    </div>
     <div>
       ${getSmartContractPagingButtons(
         totalPages,
@@ -114,26 +157,28 @@ export function MySmartContractProposalTable(
   return html`<hr />
     <h5>Smart Contract Proposals</h5>
     <hr />
-    <table class="light-shadow width-100Percent">
-      <tr>
-        <td><label>Index</label></td>
-        <td>
-          <label>Contract</label>
-        </td>
-        <td><label>Front end</label></td>
-        <td><label>Fees</label></td>
-        <td><label>Update</label></td>
-        <td><label>Approvals</label></td>
-        <td><label>Rejections</label></td>
-        <td><label>Period</label></td>
-        <td><label>Close</label></td>
-        <td><label>Created</label></td>
-      </tr>
-      ${smartContractProposals.map(
-        (r: { smartContract: SmartContractProposal; index: string }) =>
-          smartContractProposalTR(r.smartContract, r.index, blockNumber)
-      )}
-    </table>
+    <div class="overflow-auto">
+      <table class="light-shadow width-100Percent">
+        <tr>
+          <td><label>Index</label></td>
+          <td>
+            <label>Contract</label>
+          </td>
+          <td><label>Front end</label></td>
+          <td><label>Fees</label></td>
+          <td><label>Update</label></td>
+          <td><label>Approvals</label></td>
+          <td><label>Rejections</label></td>
+          <td><label>Period</label></td>
+          <td><label>Close</label></td>
+          <td><label>Created</label></td>
+        </tr>
+        ${smartContractProposals.map(
+          (r: { smartContract: SmartContractProposal; index: string }) =>
+            smartContractProposalTR(r.smartContract, r.index, blockNumber)
+        )}
+      </table>
+    </div>
     <div>
       ${getSmartContractPagingButtons(
         totalPages,
@@ -162,20 +207,22 @@ export function MyRankProposalTable(
     <hr />
     <h5>Rank proposals</h5>
     <hr />
-    <table class="light-shadow width-100Percent">
-      <tr>
-        <td><label>Index</label></td>
-        <td><label>Link</label></td>
-        <td><label>Approvals</label></td>
-        <td><label>Rejections</label></td>
-        <td><label>Period</label></td>
-        <td><label>Close</label></td>
-        <td><label>Created</label></td>
-      </tr>
-      ${rankProposalTRs.map((r: { rank: RankProposal; index: string }) =>
-        rankProposalTR(r.rank, r.index, blockNumber)
-      )}
-    </table>
+    <div class="overflow-auto">
+      <table class="light-shadow width-100Percent">
+        <tr>
+          <td><label>Index</label></td>
+          <td><label>Link</label></td>
+          <td><label>Approvals</label></td>
+          <td><label>Rejections</label></td>
+          <td><label>Period</label></td>
+          <td><label>Close</label></td>
+          <td><label>Created</label></td>
+        </tr>
+        ${rankProposalTRs.map((r: { rank: RankProposal; index: string }) =>
+          rankProposalTR(r.rank, r.index, blockNumber)
+        )}
+      </table>
+    </div>
     <div>
       ${getRankPagingButtons(totalPages, currentPage, "myRankPaginationButton")}
     </div>
@@ -247,6 +294,15 @@ function getPageButtons(
         >
           ${i}
         </button>`;
+      case "acceptedcontract":
+        return html`<button
+          data-smartcontractpage="${i}"
+          class="${cssselector} labelButton ${currentPage === i
+            ? "light-shadow"
+            : null}"
+        >
+          ${i}
+        </button>`;
       default:
         return html``;
     }
@@ -270,7 +326,6 @@ export function getSmartContractPagingButtons(
     cssselector,
     name
   );
-
   if (pageButtons.length === 1) {
     return null;
   }
@@ -283,8 +338,10 @@ export function getSmartContractPagingButtons(
         ? "background-ccc cursor-notallowed"
         : nothing}"
     >
-      ${ChevronLeftBlack()}</button
-    >${pageButtons.map((res) => res)}<button
+      ${ChevronLeftBlack()}
+    </button>
+    ${pageButtons.map((res) => res)}
+    <button
       id="${name}-page-right"
       data-smartcontractpage="${currentPage}"
       data-totalpages="${totalPages}"
@@ -369,8 +426,11 @@ function acceptedSmartContractProposalTR(
         class="labelButton contract-claim-reward-button"
         data-index="${index}"
         title="Claim the reward!"
+        ?disabled="${acceptedProp.rewardClaimed}"
       >
-        Claim Reward!
+        ${!acceptedProp.rewardClaimed
+          ? "Claim " + acceptedProp.claimableReward + " Ric"
+          : "Claimed"}
       </button>
     </td>
   </tr>`;
@@ -441,4 +501,22 @@ export function getStatusCondition(
   createdBlock: string
 ): boolean {
   return blockNumber > parseInt(createdBlock) + VOTINGPERIODBLOCKS;
+}
+
+export function RemovalProposalPage(index: string) {
+  return html`<h6>Are you sure?</h6>
+
+    <div class="column">
+      <label for="discussion-link-input">Discussion link:</label>
+      <input type="url" id="discussion-link-input" />
+
+      <div class="wide-row">
+        <button id="removal-back-button" class="labelButton">Back</button>
+        <button id="removal-proposal-proceed" class="labelButton">
+          Proceed
+        </button>
+      </div>
+      <hr />
+      <hr />
+    </div> `;
 }
