@@ -72,20 +72,22 @@ export function RankProposalTable(
     <hr />
     <h5>New Rank</h5>
     <hr />
-    <table class="light-shadow width-100Percent">
-      <tr>
-        <td><label>Index</label></td>
-        <td><label>Creator</label></td>
-        <td><label>Link</label></td>
-        <td><label>Approve</label></td>
-        <td><label>Reject</label></td>
-        <td><label>Status</label></td>
-        <td></td>
-      </tr>
-      ${rankProposalTRs.map((r) =>
-        rankProposalTR(r.rank, r.index, blockNumber)
-      )}
-    </table>
+    <div class="overflow-auto">
+      <table class="light-shadow width-100Percent">
+        <tr>
+          <td><label>Index</label></td>
+          <td><label>Creator</label></td>
+          <td><label>Link</label></td>
+          <td><label>Approve</label></td>
+          <td><label>Reject</label></td>
+          <td><label>Status</label></td>
+          <td><label>Blocks left</label></td>
+        </tr>
+        ${rankProposalTRs.map((r) =>
+          rankProposalTR(r.rank, r.index, blockNumber)
+        )}
+      </table>
+    </div>
     <div>
       ${getRankPagingButtons(
         totalPages,
@@ -163,8 +165,7 @@ function rankProposalTR(
 function getExpiresElementTitle(createdBlock: string, blockNumber: number) {
   if (!getStatusCondition(blockNumber, createdBlock)) {
     return html`<small
-      >${parseInt(createdBlock) + VOTINGPERIODBLOCKS - blockNumber} blocks
-      left.</small
+      >${parseInt(createdBlock) + VOTINGPERIODBLOCKS - blockNumber}</small
     >`;
   } else {
     return "";
@@ -190,23 +191,25 @@ export function SmartContractProposalsTable(
   return html` <hr />
     <h5>New smart contract proposals</h5>
     <hr />
-    <table class="light-shadow width-100Percent">
-      <tr>
-        <td><label>Index</label></td>
-        <td><label>Creator</label></td>
-        <td><label>Contract</label></td>
-        <td><label>Front end</label></td>
-        <td><label>Fees</label></td>
-        <td><label>Update </label></td>
-        <td><label>Approve</label></td>
-        <td><label>Reject</label></td>
-        <td><label>Status</label></td>
-        <td></td>
-      </tr>
-      ${smartContractProposalTRs.map((c) =>
-        smartContractProposalTR(c.smartContract, c.index, blockNumber)
-      )}
-    </table>
+    <div class="overflow-auto">
+      <table class="light-shadow width-100Percent">
+        <tr>
+          <td><label>Index</label></td>
+          <td><label>Creator</label></td>
+          <td><label>Contract</label></td>
+          <td><label>Front end</label></td>
+          <td><label>Fees</label></td>
+          <td><label>Update </label></td>
+          <td><label>Approve</label></td>
+          <td><label>Reject</label></td>
+          <td><label>Status</label></td>
+          <td><label>Blocks left</label></td>
+        </tr>
+        ${smartContractProposalTRs.map((c) =>
+          smartContractProposalTR(c.smartContract, c.index, blockNumber)
+        )}
+      </table>
+    </div>
     <div>
       ${getSmartContractPagingButtons(
         paging.totalPages,
@@ -307,12 +310,7 @@ function smartContractProposalTR(
             )}
       </td>
       <td>
-        <div
-          title="${getExpiresElementTitle(
-            smartContractProposal.createdBlock,
-            blockNumber
-          )}"
-        >
+        <div>
           ${getExpiresElementTitle(
             smartContractProposal.createdBlock,
             blockNumber
@@ -375,10 +373,10 @@ function getCSS(
 }
 
 export function RemovalProposalsTable(removalProposals: RemovalProposal[]) {
-  return html` </table>
-      <hr />
-      <h5>Removal Request</h5>
-      <hr />
+  return html` <hr />
+    <h5>Removal Request</h5>
+    <hr />
+    <div class="overflow-auto">
       <table class="light-shadow">
         <tr>
           <td><label>From</label></td>
@@ -390,7 +388,7 @@ export function RemovalProposalsTable(removalProposals: RemovalProposal[]) {
         </tr>
         ${RemovalRequestBuilder(removalProposals)}
       </table>
-    </table>`;
+    </div>`;
 }
 
 export function RemovalRequestBuilder(removalProposals: RemovalProposal[]) {
