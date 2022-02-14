@@ -1,9 +1,7 @@
 import { Contract } from "web3-eth-contract";
-import Web3 from "web3";
 import { TrailsABI } from "../abi/TrailsABI";
 import { metamask_web3, rpc_web3, TRAILSADDRESS } from "../web3";
 import { TrailDetails } from "../../types";
-import { HARMONYRPCURL } from "../catalogDAO/contractCalls";
 
 export async function getTrailsContractWithRPC() {
   return await new rpc_web3.eth.Contract(TrailsABI(), TRAILSADDRESS);

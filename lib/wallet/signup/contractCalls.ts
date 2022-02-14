@@ -1,4 +1,3 @@
-import Web3 from "web3";
 import { getSimpleTermsAbi } from "../abi/SimpleTerms";
 import { Contract } from "web3-eth-contract";
 import { metamask_web3, SIGNUPADDRESS } from "../web3";
