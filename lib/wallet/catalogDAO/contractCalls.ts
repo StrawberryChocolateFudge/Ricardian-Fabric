@@ -198,18 +198,12 @@ export async function expressOpinion(
 
 // View functions
 
-export async function getAllAccepted(
-  catalogDAO: Contract,
-  from: string
-): Promise<number> {
-  return await catalogDAO.methods.getAllAccepted().call({ from });
+export async function getAllAccepted(catalogDAO: Contract): Promise<string[]> {
+  return await catalogDAO.methods.getAllAccepted().call();
 }
 
-export async function getAllRemoved(
-  catalogDAO: Contract,
-  from: string
-): Promise<number> {
-  return await catalogDAO.methods.getAllRemoved().call({ from });
+export async function getAllRemoved(catalogDAO: Contract): Promise<string[]> {
+  return await catalogDAO.methods.getAllRemoved().call();
 }
 
 export async function getRank(
