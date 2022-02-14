@@ -48,7 +48,7 @@ export async function claimReward(
 ) {
   await daoStaking.methods
     .claimReward(forProposal)
-    .call({ from })
+    .send({ from })
     .on("error", onError)
     .on("receipt", onReceipt);
 }
@@ -67,7 +67,15 @@ export async function getStaker(
   address: string,
   from: string
 ): Promise<Staker> {
-  return await daoStaking.methods.getStaker(address).call({ from });
+  const staker: Staker = await daoStaking.methods
+    .getStaker(address)
+    .call({ from });
+
+  return {
+    isStaking: staker.isStaking,
+    stakeDate: staker.stakeDate,
+    stakeAmount: Web3.utils.fromWei(staker.stakeAmount),
+  };
 }
 
 export async function getActualReward(
@@ -124,4 +132,12 @@ export async function getDetails(
   from: string
 ): Promise<[string, string, string]> {
   return await daoStaking.methods.getDetails().call({ from });
+}
+
+export async function isRewarded(
+  daoStaking: Contract,
+  arweaveTxId: string,
+  from: string
+): Promise<boolean> {
+  return await daoStaking.methods.isRewarded(arweaveTxId).call({ from });
 }
