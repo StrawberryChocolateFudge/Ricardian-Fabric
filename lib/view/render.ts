@@ -17,6 +17,7 @@ import {
   RenderType,
   SelectedWallet,
   SmartContractProposal,
+  Staker,
   State,
   VerificationState,
 } from "../types";
@@ -84,6 +85,8 @@ import {
   MyProposalsContent,
   MyRankProposalTable,
   MySmartContractProposalTable,
+  RemovalProposalPage,
+  StakerDetails,
 } from "./templates/pages/manageProposals";
 import { WrongNetworkPopup } from "./templates/popups/WrongNetworkPopup";
 import { DaoTermsPopup } from "./templates/popups/DaoTermsPopup";
@@ -1525,4 +1528,23 @@ export function renderSCProposalDisplayPage(
   render(smartContractProductPage(arweaveTxId, proposal, true), slot);
   const termsContent = getById("termsContent");
   termsContent.innerHTML = terms;
+}
+
+export function renderRemovalProposalPopup(
+  props: State,
+  acceptableIndex: string
+) {
+  const overlay = getById("overlay-layout");
+  render(RemovalProposalPage(acceptableIndex), overlay);
+}
+
+export function renderStakerDetails(
+  staker: Staker,
+  stakingBlocks: string,
+  blockNumber: number
+) {
+  const slot = getById("stakerDetails");
+  slot.classList.remove("placeholder-item");
+
+  render(StakerDetails(staker, stakingBlocks, blockNumber), slot);
 }
