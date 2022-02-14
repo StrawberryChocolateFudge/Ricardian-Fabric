@@ -1,10 +1,13 @@
 import {
+  dispatch_createRemovalProposal,
   dispatch_removeLoadingIndicator,
   dispatch_renderError,
   dispatch_renderLoadingIndicator,
   dispatch_renderMyAcceptedSmartContractProposals,
   dispatch_renderMyRankProposals,
+  dispatch_renderMyRicBalance,
   dispatch_renderMySmartContractProposals,
+  dispatch_renderStakerDetails,
 } from "../../dispatch/render";
 import {
   checkNetwork,
@@ -37,6 +40,7 @@ import {
   getMyProposals,
   getMyRankProposalsPaginated,
   getMySmartContractProposalsPaginated,
+  proposeContractRemoval,
 } from "../../wallet/catalogDAO/contractCalls";
 import {
   getProposals,
@@ -48,6 +52,16 @@ import {
 import { getById } from "../../view/utils";
 import { Contract } from "web3-eth-contract";
 import { addContractDetailsPopup } from "./reviewAndVote";
+import {
+  claimReward,
+  getActualReward,
+  getDaoStakingContract,
+  getStaker,
+  getStakingBlocks,
+  isRewarded,
+  unStake,
+} from "../../wallet/daoStaking/contractCalls";
+import { balanceOf, getRicContract } from "../../wallet/ric/contractCalls";
 
 export async function myProposalsActions(props: State) {
   if (!web3Injected()) {
@@ -57,7 +71,6 @@ export async function myProposalsActions(props: State) {
     return;
   }
 
-  // TODO: dispatch loading indicator to the other tables too!
   dispatch_renderLoadingIndicator("my-rank-proposals-container");
   await requestAccounts();
 
@@ -72,6 +85,43 @@ export async function myProposalsActions(props: State) {
   const myAddress = await getAddress();
   const blockNumber = await getBlockNumber();
   const catalogDAO = await getCatalogDAOContractWithWallet();
+  const ricOptions = await OptionsBuilder(() => getRicContract());
+  if (hasError(ricOptions)) {
+    return;
+  }
+  const ricBalanceOptions = await OptionsBuilder(() =>
+    balanceOf(ricOptions.data, myAddress, myAddress)
+  );
+  if (hasError(ricBalanceOptions)) {
+    return;
+  }
+
+  dispatch_renderMyRicBalance(props, ricBalanceOptions.data);
+
+  const daoStakingOptions = await OptionsBuilder(() => getDaoStakingContract());
+
+  if (hasError(daoStakingOptions)) {
+    return;
+  }
+
+  const getStakerOptions = await OptionsBuilder(() =>
+    getStaker(daoStakingOptions.data, myAddress, myAddress)
+  );
+
+  if (hasError(getStakerOptions)) {
+    return;
+  }
+
+  const stakingBlocksOptions = await OptionsBuilder(() =>
+    getStakingBlocks(daoStakingOptions.data, myAddress)
+  );
+
+  dispatch_renderStakerDetails(
+    props,
+    getStakerOptions.data,
+    stakingBlocksOptions.data,
+    blockNumber
+  );
 
   const myProposalOptions = await OptionsBuilder(() =>
     getMyProposals(catalogDAO, myAddress)
@@ -183,7 +233,6 @@ export async function acceptedSmartContractProposalFetcher(
 ) {
   const acceptedProposalsToFetch: string[] =
     proposalsToFetch(paginatedContract);
-
   const acceptedProposals = await getProposals<AcceptedSmartContractProposal[]>(
     catalogDAO,
     myAddress,
@@ -191,31 +240,192 @@ export async function acceptedSmartContractProposalFetcher(
     getAcceptedSmartContractProposalsPaginated
   );
 
-  dispatch_renderMyAcceptedSmartContractProposals(props, blockNumber, [
+  // attaching the available reward to claim ,and if reward was claimed already for it
+  const acceptedWithRewardDetails = await attachRewardDetails(
     acceptedProposals,
+    myAddress
+  );
+  console.log("paginated contract", paginatedContract);
+  dispatch_renderMyAcceptedSmartContractProposals(props, blockNumber, [
+    acceptedWithRewardDetails,
     acceptedProposalsToFetch,
     paginatedContract,
   ]);
+}
+
+async function attachRewardDetails(
+  acceptedProposals: AcceptedSmartContractProposal[],
+  myAddress: string
+) {
+  const daoStakingOptions = await OptionsBuilder(() => getDaoStakingContract());
+
+  if (hasError(daoStakingOptions)) {
+    return;
+  }
+  let acceptedWithRewardDetails: AcceptedSmartContractProposal[] = [];
+  // The length is always 5 here, max 5 proposals are fetched at a time
+  for (let i = 0; i < 5; i++) {
+    const proposal = acceptedProposals[i];
+    const claimableReward = await getActualReward(
+      daoStakingOptions.data,
+      proposal.hasFrontend,
+      proposal.hasFees,
+      myAddress
+    );
+    const rewardClaimed = await isRewarded(
+      daoStakingOptions.data,
+      proposal.arweaveTxId,
+      myAddress
+    );
+    acceptedWithRewardDetails.push({
+      ...proposal,
+      rewardClaimed,
+      claimableReward,
+    });
+  }
+  return acceptedWithRewardDetails;
 }
 
 export async function myAcceptedSmartContractProposalTableActions(
   props: State,
   indexes: string[]
 ) {
+  console.log("INDEXES", indexes);
   const removeButtons = document.getElementsByClassName(
     "contract-remove-button"
   );
   const claimRewardButtons = document.getElementsByClassName(
     "contract-claim-reward-button"
   );
-
   const paginationButtons = document.getElementsByClassName(
     "myAcceptedSmartContractPaginationButton"
   );
   const pageLeftButton = getById("acceptedcontract-page-left");
   const pageRightButton = getById("acceptedcontract-page-right");
 
-  //TODO:
+  const myAddressOptions = await OptionsBuilder(() => getAddress());
+  if (hasError(myAddressOptions)) {
+    return;
+  }
+
+  const catalogDaoOptions = await OptionsBuilder(() =>
+    getCatalogDAOContractWithWallet()
+  );
+
+  if (hasError(catalogDaoOptions)) {
+    return;
+  }
+
+  const onError = (error, receipt) => {
+    dispatch_renderError(error.message);
+  };
+  const onReceipt = (receipt) => {
+    dispatch_setPage(PageState.ManageProposals);
+  };
+  const myAddress = myAddressOptions.data;
+  // Let's attach the removal button onclicks
+
+  const onRemovePressed = (index: string) => {
+    dispatch_setPopupState(PopupState.emptyPopup);
+    dispatch_createRemovalProposal(props, index);
+  };
+
+  const onRewardClaimed = async (index: string) => {
+    const daoStakingOptions = await OptionsBuilder(() =>
+      getDaoStakingContract()
+    );
+    if (hasError(daoStakingOptions)) {
+      return;
+    }
+    await claimReward(
+      daoStakingOptions.data,
+      index,
+      myAddress,
+      onError,
+      onReceipt
+    );
+  };
+
+  attachListenersToAccepted(removeButtons, onRemovePressed);
+  //Doing the claim reward buttons now
+  attachListenersToAccepted(claimRewardButtons, onRewardClaimed);
+
+  console.log(paginationButtons);
+  for (let i = 0; i < paginationButtons.length; i++) {
+    const bttn = paginationButtons[i] as HTMLButtonElement;
+    bttn.onclick = async function () {
+      const pageIndex = parseInt(bttn.dataset.smartcontractpage);
+      const blockNumber = await getBlockNumber();
+      const paginatedSmartContract = startPaginatingAProposal(
+        indexes,
+        pageIndex
+      );
+      await acceptedSmartContractProposalFetcher(
+        paginatedSmartContract,
+        catalogDaoOptions.data,
+        myAddress,
+        props,
+        blockNumber
+      );
+    };
+  }
+
+  pageLeftButton.onclick = async function () {
+    const pageindex = parseInt(pageLeftButton.dataset.smartcontractpage);
+    if (pageindex > 1) {
+      const blockNumber = await getBlockNumber();
+      const paginatedSmartContractProposals = startPaginatingAProposal(
+        indexes,
+        pageindex - 1
+      );
+      console.log(paginatedSmartContractProposals);
+      await acceptedSmartContractProposalFetcher(
+        paginatedSmartContractProposals,
+        catalogDaoOptions.data,
+        myAddress,
+        props,
+        blockNumber
+      );
+    }
+  };
+
+  pageRightButton.onclick = async function () {
+    const index = parseInt(pageRightButton.dataset.smartcontractpage);
+    const total = parseInt(pageRightButton.dataset.totalpages);
+    console.log(index);
+    console.log(total);
+    console.log(indexes);
+    if (index < total) {
+      const blockNumber = await getBlockNumber();
+      const paginatedSmartContractProposal = startPaginatingAProposal(
+        indexes,
+        index + 1
+      );
+      console.log(paginatedSmartContractProposal);
+
+      await acceptedSmartContractProposalFetcher(
+        paginatedSmartContractProposal,
+        catalogDaoOptions.data,
+        myAddress,
+        props,
+        blockNumber
+      );
+    }
+  };
+}
+
+function attachListenersToAccepted(
+  elements: HTMLCollectionOf<Element>,
+  call: CallableFunction
+) {
+  for (let i = 0; i < elements.length; i++) {
+    const bttn = elements[i] as HTMLButtonElement;
+    bttn.onclick = async function () {
+      const index = bttn.dataset.index;
+
+      await call(index);
+    };
+  }
 }
 
 export async function mySmartContractProposalsTableActions(
@@ -420,5 +630,85 @@ export async function myRankProposalsTableActions(
         blockNumber
       );
     }
+  };
+}
+
+export function removalProposalPageActions(
+  props: State,
+  acceptedIndex: string
+) {
+  const discussionLink = getById("discussion-link-input") as HTMLInputElement;
+  const backButton = getById("removal-back-button") as HTMLButtonElement;
+  const proceedButton = getById(
+    "removal-proposal-proceed"
+  ) as HTMLButtonElement;
+
+  backButton.onclick = function () {
+    dispatch_setPopupState(PopupState.NONE);
+  };
+
+  proceedButton.onclick = async function () {
+    if (discussionLink.value.length === 0) {
+      dispatch_renderError("Invalid discussion link");
+      return;
+    }
+    const onError = (error, receipt) => {
+      dispatch_renderError(error.message);
+    };
+    const onReceipt = (receipt) => {
+      dispatch_setPopupState(PopupState.NONE);
+      dispatch_setPage(PageState.ManageProposals);
+    };
+    const catalogDAOOptions = await OptionsBuilder(() =>
+      getCatalogDAOContractWithWallet()
+    );
+    if (hasError(catalogDAOOptions)) {
+      return;
+    }
+
+    const myAddressOpts = await OptionsBuilder(() => getAddress());
+
+    if (hasError(myAddressOpts)) {
+      return;
+    }
+
+    await proposeContractRemoval(
+      catalogDAOOptions.data,
+      discussionLink.value,
+      acceptedIndex,
+      false,
+      myAddressOpts.data,
+      onError,
+      onReceipt
+    );
+  };
+}
+
+export function stakerDetailsActions() {
+  const unstakeBttn = getById("unstake-button");
+
+  unstakeBttn.onclick = async function () {
+    const myAddressOpt = await OptionsBuilder(() => getAddress());
+
+    const onError = (error, receipt) => {
+      dispatch_renderError(error.message);
+    };
+    const onReceipt = (receipt) => {
+      dispatch_setPage(PageState.ManageProposals);
+    };
+    const daoStakingOptions = await OptionsBuilder(() =>
+      getDaoStakingContract()
+    );
+
+    if (hasError(daoStakingOptions.data)) {
+      return;
+    }
+
+    await unStake(
+      daoStakingOptions.data,
+      myAddressOpt.data,
+      onError,
+      onReceipt
+    );
   };
 }
