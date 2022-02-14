@@ -134,6 +134,8 @@ export enum RenderType {
   teardownContractDisplay = "teardownContractDisplay",
   renderVoteOnSmartContract = "renderVoteOnSmartContract",
   renderSCProposalDisplayPage = "renderSCProposalDisplayPage",
+  createRemovalProposalPopup = "createRemovalProposalPopup",
+  renderStakerDetails = "renderStakerDetails",
 }
 
 // TODO refactor to RenderDispatchArgs for specifying the dispatch arguments
@@ -242,6 +244,8 @@ export type Renderer = {
   [RenderType.teardownContractDisplay]: RenderFunction;
   [RenderType.renderVoteOnSmartContract]: RenderFunction;
   [RenderType.renderSCProposalDisplayPage]: RenderFunction;
+  [RenderType.createRemovalProposalPopup]: RenderFunction;
+  [RenderType.renderStakerDetails]: RenderFunction;
 };
 
 export enum VerificationState {
@@ -603,6 +607,8 @@ export type AcceptedSmartContractProposal = {
   dislikes: string;
   isUpdate: boolean;
   updateOf: string;
+  claimableReward: string;
+  rewardClaimed: boolean;
 };
 
 export type RemovalProposal = {
