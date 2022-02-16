@@ -55,6 +55,7 @@ import { beforePageSetHook, setStateHook } from "./setStateHook";
         erc20Symbol: "",
         erc20Decimals: "",
         erc20Address: "",
+        trail: "",
       },
       editor: createNewEditor(),
       domParser: new DOMParser(),
