@@ -5,7 +5,6 @@ import {
 } from "../../dispatch/render";
 import { fetchAcceptableContract } from "../../fetch";
 import {
-  BlockCountry,
   ContractTypes,
   PageState,
   State,
@@ -17,6 +16,7 @@ import { getById } from "../../view/utils";
 import { dependencyDeployer } from "../../wallet/arweave";
 import { getOwnerFromTxId } from "../../fetch/graphql";
 import { dispatch_setPage } from "../../dispatch/stateChange";
+import { BlockCountry } from "../countryBlock";
 
 export function verifyContractPageTrigger(props: State) {
   const verify = getById("verify-contract-button");
