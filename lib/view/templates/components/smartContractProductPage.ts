@@ -1,24 +1,15 @@
-import { html } from "lit-html";
+import { html, nothing } from "lit-html";
 import { ProposalFormat } from "../../../types";
 import { getBlockie } from "./getBlockies";
+import { BugLogo, DownloadLogo, RocketLogo } from "./logos";
 
 export function smartContractProductPage(
   arweaveTxId: string,
   proposal: ProposalFormat,
-  preview: boolean
+  preview: boolean,
+  index: string
 ) {
   return html`
-    <div class="row width-100Percent">
-      <div class="column width-70Percent">
-        <label>Category:</label>
-        <small>${proposal.category}</small>
-      </div>
-
-      <div class="column width-30Percent text-align-center">
-        <label>Network:</label>
-        <small>${proposal.network}</small>
-      </div>
-    </div>
     <div class="row">
       <div id="termsContent" class="column width-70Percent"></div>
       <div class="display-block width-30Percent">
@@ -27,22 +18,34 @@ export function smartContractProductPage(
           ${getBlockie(arweaveTxId, "40px", "")}
         </div>
         <hr />
-        ${preview
-          ? null
-          : html` <div class="text-align-center">
-              <button class="labelButton" disabled=${preview}>Deploy</button>
-            </div>`}
-        <hr />
-        <div class="text-align-center column">
-          <label>Name:</label>
-          <small>${proposal.name}</small>
-        </div>
-        <hr />
-
-        <div class="text-align-center column">
+        <table>
+          <tr>
+            <th></th>
+            <th></th>
+          </tr>
+          <tr>
+            <td><label>Name:</label></td>
+            <td><small>${proposal.name}</small></td>
+          </tr>
+          <tr>
+            <td>
+              <label>Category:</label>
+            </td>
+            <td><small>${proposal.category}</small></td>
+          </tr>
+          <tr>
+            <td><label>Network:</label></td>
+            <td><small>${proposal.network}</small></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+          </tr>
+        </table>
+        <div class="text-align-center">
           ${proposal.simpleterms
             ? html` <label>Implements Simple terms</label> `
-            : null}
+            : nothing}
         </div>
         <hr />
         <div class="text-align-center">
@@ -54,13 +57,42 @@ export function smartContractProductPage(
                 >Front End</a
               >
             </div>`
-          : null}
+          : nothing}
         <hr />
         ${preview
-          ? null
+          ? nothing
           : html` <div class="text-align-center">
-              <button class="labelButton">Remove</button>
+              <button
+                data-arweavetxid="${arweaveTxId}"
+                data-name="${proposal.name}"
+                id="deploy-button"
+                class="labelButton width-100"
+                ?disabled=${preview}
+              >
+                ${RocketLogo()} Deploy
+              </button>
             </div>`}
+        <hr />
+        ${preview
+          ? nothing
+          : html` <div class="text-align-center">
+              <button id="download-terms-button" class="labelButton width-100">
+                ${DownloadLogo()}Download
+              </button>
+            </div>`}
+        <hr />
+        ${preview
+          ? nothing
+          : html` <div class="text-align-center">
+              <button
+                id="remove-sc-button"
+                class="labelButton width-100"
+                data-index="${index}"
+              >
+                ${BugLogo()} Report
+              </button>
+            </div>`}
+        <hr />
       </div>
     </div>
     <hr />
