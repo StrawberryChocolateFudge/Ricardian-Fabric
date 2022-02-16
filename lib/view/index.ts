@@ -1,6 +1,5 @@
 import {
   ContractTypes,
-  DeploySC,
   Events,
   PaginatedProposal,
   PopupState,
@@ -120,6 +119,8 @@ import {
   renderMyAcceptedSmartContractProposalsContent,
   renderRemovalProposalPopup,
   renderStakerDetails,
+  renderCatalogContent,
+  renderCatalogContentLoadingIndicator,
 } from "./render";
 import { renderAcceptTools } from "./render";
 import { areYouSureButtons } from "../business/actions/areYouSureButtons";
@@ -156,6 +157,7 @@ import {
 import { verifyContractActions } from "../business/actions/verifyContractActions";
 import {
   catalogAction,
+  catalogContentActions,
   walletSelectListener,
 } from "../business/actions/catalogActions";
 import { WinstonToAr } from "../wallet/arweave";
@@ -196,9 +198,10 @@ import {
 } from "../business/actions/trailsPageActions";
 import { ipfsConfigActions } from "../business/actions/ipfsConfigActions";
 import { votingOnContractActions } from "../business/actions/VotingOnContractActions";
-import { contractDisplayActions } from "../business/actions/contractDisplayActions";
-import { render } from "lit-html";
-import { smartContractProductPage } from "./templates/components/smartContractProductPage";
+import {
+  contractDisplayActions,
+  SCProposalDisplayPageActions,
+} from "../business/actions/contractDisplayActions";
 
 const Render: Renderer = {
   [RenderType.connectYourWallet]: (props: State) => {
@@ -334,9 +337,9 @@ const Render: Renderer = {
     renderCatalogPage();
     catalogAction(props);
   },
-  [RenderType.SCDeploySelected]: (props: { deploy: DeploySC }) => {
-    renderContructorInputs(props.deploy);
-    constructSCActions(props.deploy);
+  [RenderType.SCDeploySelected]: (props: RenderDispatchArgs) => {
+    renderContructorInputs(props.tmp.deploy);
+    constructSCActions(props, props.tmp.deploy);
   },
   [RenderType.DisableSCInputs]: (props: { params: any }) => {
     disableSCInputs(props.params);
@@ -728,7 +731,13 @@ const Render: Renderer = {
   },
   [RenderType.renderContractDisplay]: (props: RenderDispatchArgs) => {
     renderContractDisplayPage(props.tmp.contractId);
-    contractDisplayActions(props, props.tmp.contractId);
+
+    contractDisplayActions(
+      props,
+      props.tmp.contractId,
+      props.tmp.preview,
+      props.tmp.proposal
+    );
   },
   [RenderType.teardownContractDisplay]: (props: RenderDispatchArgs) => {
     renderTeardownContractDisplay();
@@ -749,12 +758,23 @@ const Render: Renderer = {
     renderSCProposalDisplayPage(
       props.tmp.arweaveTxId,
       props.tmp.proposal,
-      props.tmp.terms
+      props.tmp.terms,
+      props.tmp.preview,
+      props.tmp.acceptedProposal
     );
+    SCProposalDisplayPageActions(props);
   },
   [RenderType.createRemovalProposalPopup]: (props: RenderDispatchArgs) => {
-    renderRemovalProposalPopup(props, props.tmp.acceptableIndex);
-    removalProposalPageActions(props, props.tmp.acceptableIndex);
+    renderRemovalProposalPopup(
+      props,
+      props.tmp.acceptableIndex,
+      props.tmp.malicious
+    );
+    removalProposalPageActions(
+      props,
+      props.tmp.acceptableIndex,
+      props.tmp.malicious
+    );
   },
   [RenderType.renderStakerDetails]: (props: RenderDispatchArgs) => {
     renderStakerDetails(
@@ -763,6 +783,17 @@ const Render: Renderer = {
       props.tmp.blockNumber
     );
     stakerDetailsActions();
+  },
+  [RenderType.catalogContent]: (props: RenderDispatchArgs) => {
+    renderCatalogContent(
+      props.tmp.allContractsToDisplay,
+      props.tmp.allIds,
+      props.tmp.uploadsForCategory
+    );
+    catalogContentActions(props);
+  },
+  [RenderType.catalogContentLoadingIndicator]: (props: RenderDispatchArgs) => {
+    renderCatalogContentLoadingIndicator();
   },
 };
 
