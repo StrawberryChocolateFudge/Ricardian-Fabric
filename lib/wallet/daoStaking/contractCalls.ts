@@ -2,13 +2,17 @@ import Web3 from "web3";
 import { getDaoStakingABI } from "../abi/daoStakingABI";
 import { Contract } from "web3-eth-contract";
 import { Staker } from "../../types";
-import { DAOSTAKINGADDRESS, metamask_web3 } from "../web3";
+import { DAOSTAKINGADDRESS, metamask_web3, rpc_web3 } from "../web3";
 
 export async function getDaoStakingContract() {
   return await new metamask_web3.eth.Contract(
     getDaoStakingABI(),
     DAOSTAKINGADDRESS
   );
+}
+
+export async function getDaoStakingContractViaRPC() {
+  return await new rpc_web3.eth.Contract(getDaoStakingABI(), DAOSTAKINGADDRESS);
 }
 
 // State setters
