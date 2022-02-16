@@ -109,8 +109,6 @@ export function MyAcceptedSmartContratctProposalsTable(
             <label>Contract</label>
           </td>
           <td><label>Active</label></td>
-          <td><label>Likes</label></td>
-          <td><label>Dislikes</label></td>
           <td><label>Rewards</label></td>
         </tr>
         ${acceptedProposals.map(
@@ -419,8 +417,6 @@ function acceptedSmartContractProposalTR(
             Remove
           </button>`}
     </td>
-    <td><label>${acceptedProp.likes}</label></td>
-    <td><label>${acceptedProp.dislikes}</label></td>
     <td>
       <button
         class="labelButton contract-claim-reward-button"
@@ -503,12 +499,20 @@ export function getStatusCondition(
   return blockNumber > parseInt(createdBlock) + VOTINGPERIODBLOCKS;
 }
 
-export function RemovalProposalPage(index: string) {
+export function RemovalProposalPage(index: string, malicious: boolean) {
   return html`<h6>Are you sure?</h6>
 
     <div class="column">
       <label for="discussion-link-input">Discussion link:</label>
       <input type="url" id="discussion-link-input" />
+
+      ${malicious
+        ? html`<small
+            >Reporting will create a removal proposal. Only do this if you have
+            proof the contract is unusable/malicious. The creator will loose his
+            stake in the Dao.</small
+          >`
+        : nothing}
 
       <div class="wide-row">
         <button id="removal-back-button" class="labelButton">Back</button>
