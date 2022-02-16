@@ -136,6 +136,8 @@ export enum RenderType {
   renderSCProposalDisplayPage = "renderSCProposalDisplayPage",
   createRemovalProposalPopup = "createRemovalProposalPopup",
   renderStakerDetails = "renderStakerDetails",
+  catalogContent = "catalogContent",
+  catalogContentLoadingIndicator = "catalogContentLoadingIndicator",
 }
 
 // TODO refactor to RenderDispatchArgs for specifying the dispatch arguments
@@ -246,6 +248,8 @@ export type Renderer = {
   [RenderType.renderSCProposalDisplayPage]: RenderFunction;
   [RenderType.createRemovalProposalPopup]: RenderFunction;
   [RenderType.renderStakerDetails]: RenderFunction;
+  [RenderType.catalogContent]: RenderFunction;
+  [RenderType.catalogContentLoadingIndicator]: RenderFunction;
 };
 
 export enum VerificationState {
@@ -307,11 +311,6 @@ export enum ContractTypes {
   proposal = "Proposal",
   transfer = "Transfer",
   trail = "Trail",
-}
-
-export enum DeploySC {
-  HRC20 = "HRC20",
-  PST = "PST",
 }
 
 export enum WalletDropperType {
@@ -555,7 +554,7 @@ window.ethereum = window.ethereum || {};
 
 export type ProposalFormat = {
   name: string;
-  artifact: string;
+  artifact: string | any;
   terms: string | File | ArrayBuffer;
   git: string;
   frontEnd: string;
@@ -597,14 +596,13 @@ export type SmartContractProposal = {
 };
 
 export type AcceptedSmartContractProposal = {
+  index: string;
   arweaveTxId: string;
   creator: string;
   removed: boolean;
   created: string;
   hasFrontend: boolean;
   hasFees: boolean;
-  likes: string;
-  dislikes: string;
   isUpdate: boolean;
   updateOf: string;
   claimableReward: string;
@@ -713,6 +711,10 @@ export type ArweaveTags = {
 export type ArweaveNode = {
   id: string;
   tags: Array<ArweaveTags>;
+};
+
+export type ArweaveQueryResult = {
+  node: ArweaveNode;
 };
 
 export type ArweaveDataPage = {
