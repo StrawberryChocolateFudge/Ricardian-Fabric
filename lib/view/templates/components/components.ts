@@ -31,7 +31,7 @@ export const createdDateTemplate = (date: string) => {
     <td aria-labelledby="created date label">
       <label for="createdDate"><label for="createdDate">Created:</label></label>
     </td>
-    <td id="createdDate" aria-label="created date"><small>${date}</small></td>
+    <td id="createdDate" aria-label="created date"><label>${date}</label></td>
   </tr>`;
 };
 
@@ -40,7 +40,7 @@ export const signedDateTemplate = (date: string) => {
     <td aria-labelledby="signed date label">
       <label for="signed-date">Signed on:</label>
     </td>
-    <td id="signed-date" aria-label="signed date"><small>${date}</small></td>
+    <td id="signed-date" aria-label="signed date"><label>${date}</label></td>
   </tr>`;
 };
 
@@ -53,7 +53,7 @@ export const issuerTemplate = (address: string) => {
         >
       </td>
       <td id="issuer-address" aria-label="address">
-        ${getBlockie(address, "20px", "")}<small>${address}</small>
+        ${getBlockie(address, "20px", "")}<label>${address}</label>
       </td>
       <td></td>
     </tr>
@@ -112,7 +112,7 @@ export const networkTemplate = (network: string, isFulfilled: boolean) => {
       <label for="network-id">Network:</label>
     </td>
     <td id="network-id" aria-label="network id">
-      <small>${networkEl === undefined ? network : networkEl}</small>
+      <label>${networkEl === undefined ? network : networkEl}</label>
     </td>
     <td></td>
   </tr>`;
@@ -129,7 +129,7 @@ export function getChainButton(
     return html`${getChainLogo(chains)} ${chainName} ${net} ${shard}`;
   } else {
     return html`<button class="network-button" id="addChainButton">
-      ${getChainLogo(chains)} <small>${chainName} ${net} ${shard}</small>
+      ${getChainLogo(chains)} <label>${chainName} ${net} ${shard}</label>
     </button>`;
   }
 }
@@ -171,7 +171,7 @@ export const expiryTemplate = (date: string) => html`<tr>
   <td aria-labelledby="expires label">
     <label for="expiresDate">Expires:</label>
   </td>
-  <td id="expiresDate" aria-label="date"><small>${date}</small></td>
+  <td id="expiresDate" aria-label="date"><label>${date}</label></td>
   <td></td>
 </tr>`;
 
@@ -180,7 +180,7 @@ export const getParticipantFromTemplate = (participant: string) => html`<tr>
     <label for="participant">Participant:</label>
   </td>
   <td id="participant" aria-label="participant">
-    ${getBlockie(participant, "20px", "")}<small>${participant}</small>
+    ${getBlockie(participant, "20px", "")}<label>${participant}</label>
   </td>
   <td></td>
 </tr>`;
@@ -192,7 +192,7 @@ export const parentUrl = (url: string) => html`
     </td>
     <td id="parent-url">
       <a aria-label="accepted at url ${url}" href="${url}"
-        ><small>${url}</small></a
+        ><label>${url}</label></a
       >
     </td>
     <td></td>
