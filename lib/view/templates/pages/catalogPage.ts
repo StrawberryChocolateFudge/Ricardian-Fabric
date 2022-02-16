@@ -1,8 +1,14 @@
 import { html } from "lit-html";
+import {
+  AcceptedSmartContractProposal,
+  ArweaveQueryResult,
+  ArweaveTags,
+} from "../../../types";
 import { getBlockie } from "../components/getBlockies";
 
 export function getCategories() {
-  return html` <select id="select-category">
+  return html` <select id="select-category" class="cursor-pointer">
+    <option>All</option>
     <option>Registries</option>
     <option>Tokens</option>
     <option>Token Sale</option>
@@ -12,117 +18,85 @@ export function getCategories() {
   </select>`;
 }
 
-function getSmartContracts() {
-  return html`
-    ${SmartContractCards(
-      `Generic ERC-20", "Tokens","All"`,
-      "Generic ERC-20",
-      "Tokens",
-      "All"
-    )}
-    ${SmartContractCards(
-      `"Capped tokens", "Tokens","All"`,
-      "Capped tokens",
-      "Tokens",
-      "All"
-    )}
-    ${SmartContractCards(
-      `"Escrow on Harmony", "Finance","Harmony"`,
-      "Escrow on Harmony",
-      "Payments",
-      "Harmony"
-    )}
-    ${SmartContractCards(`zsfasfaa`, "Burnable ERC-20", "Tokens", "All")}
-    ${SmartContractCards(
-      `Generic NFT contract`,
-      "Generic NFT contract",
-      "Tokens",
-      "All"
-    )}
-  `;
-}
-
 export function catalogPage() {
   return html`<h3>Catalogue of smart contracts</h3>
     <small>
-     Select a smart contract for your specific use case.
+      Select and deploy a smart contract for your specific use case.
     </small>
     <table>
       <thead>
         <tr>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>
-            <label id="categories-label" for="select-category">Category:</label>
-          </td>
-          <td>
-    ${getCategories()}
-          </td>
-          <td><hr/></td>
-          <td>
-            <button class="labelButton">Search</button>
-          </td>
-          <td><input id="search-input" type="text" placeholder="Search for..."/></td>
+          <td><label for="select-category">Category:</label></td>
+          <td>${getCategories()}</td>
+          <td><hr /></td>
         </tr>
-        <tr>
-           <td>
-            <label>Sort by date</label>
-          </td>
-          <td>
-            <select>
-              <option>Ascending</option>
-              <option>Descending</option>
-            </select>
-          </td>
-          <td><hr/></td>
-          <td><label>Premium</label> <input type="checkbox"/></td>
-          <td> <label>ISimpleTerms</label> <input type="checkbox"/></td>
-        </tr>
-        </tbody>
+      </tbody>
     </table>
-    <div class="catalogList">
-     ${getSmartContracts()}
-</div>
-      <hr />
-    </div>`;
+    <div id="catalog-content" class="placeholder-item">
+      <h3>Loading</h3>
+    </div>
+    <hr /> `;
 }
 
-export function SmartContractCards(
-  id: string,
-  name: string,
-  category: string,
-  network: string
+export function catalogContent(
+  uploadsFoallContractsToDisplay: Array<AcceptedSmartContractProposal>,
+  allIds: Array<string>,
+  uploadsForCategory: ArweaveQueryResult[]
 ) {
-  return html`<style>
-      .card {
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-        transition: 0.3s;
-        /* width: 20%; */
-        margin-top: 10px;
-        cursor: pointer;
-        width: 60px;
-      }
+  return uploadsForCategory.map((data) => {
+    const id = data.node.id;
+    const at = allIds.indexOf(id);
 
-      .card:hover {
-        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-      }
-    </style>
-    <div class="card">
-      ${getBlockie(id, "100%", "")}
-      <div class="row">
-        <div class="column"></div>
-        <h4><b>${name}</b></h4>
-        <label for="category_parag">Category:</label>
-        <small id="category_parag">${category}</small>
-        <label for="network_parag">Network:</label>
-        <small id="network_parag">${network}</small>
+    return smartContractElementBoxes(data, uploadsFoallContractsToDisplay[at]);
+  });
+}
+
+function smartContractElementBoxes(
+  uploadsForCategory: ArweaveQueryResult,
+  proposal: AcceptedSmartContractProposal
+) {
+  return html`<div
+    data-arweavetxid="${uploadsForCategory.node.id}"
+    data-proposal="${JSON.stringify(proposal)}"
+    class="box cursor-pointer  labelButton unselectable contract-page-popup"
+  >
+    <hr />
+    <div class="row padding-5">
+      <div class="column">
+        <div>${getBlockie(uploadsForCategory.node.id, "50px", "")}</div>
+        <label>
+          ${getChainMessage(
+            getTag(uploadsForCategory.node.tags, "ChainId")
+          )}</label
+        >
       </div>
-    </div>`;
+      <hr />
+      <div class="overflow-auto width-100">
+        <small> ${getTag(uploadsForCategory.node.tags, "Name")} </small>
+      </div>
+    </div>
+  </div>`;
+}
+
+function getChainMessage(chainId) {
+  if (chainId === "ALL") {
+    return "Supports all networks.";
+  } else {
+    return `Supporty only ${chainId}`;
+  }
+}
+
+function getTag(tags: Array<ArweaveTags>, name: string) {
+  for (let i = 0; i < tags.length; i++) {
+    if (tags[i].name === name) {
+      return tags[i].value;
+    }
+  }
 }
