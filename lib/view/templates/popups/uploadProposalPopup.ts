@@ -19,7 +19,7 @@ export const UploadProposalSummary = (
   proposal: ProposalFormat
 ) => {
   return html`
-    ${smartContractProductPage(id, proposal, true)}
+    ${smartContractProductPage(id, proposal, true, "0")}
     <div class="row">
       <label>Transaction id:</label>
       <small id="transactionid" data-id="${id}"">${id}</small>
