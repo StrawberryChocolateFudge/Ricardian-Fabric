@@ -97,6 +97,81 @@ export async function getPublicTrail(trailName: string): Promise<Options<any>> {
   return options;
 }
 
+export async function getAllCatalogProposals() {
+  const options: Options<any> = {
+    status: Status.Success,
+    error: "",
+    data: "",
+  };
+  // the query will fetch maximum 1000 comments
+  const query = `query {
+  transactions(
+    first: 1000
+    sort: HEIGHT_DESC
+    tags: [
+      { name: "App-Name", values: ["Ricardian Fabric"] }
+      { name: "Contract-Type", values: ["Proposal"] }
+    ]
+  ) {
+    edges {
+      node {
+        id
+        tags {
+          name
+          value
+        }
+      }
+    }
+  }
+}`;
+
+  const result = await request(ARWEAVEAPI, query).catch((err) => {
+    options.error = err.message;
+    options.status = Status.Failure;
+  });
+  options.data = result;
+  return options;
+}
+
+export async function getCatalogProposalByCategory(
+  categoryName: string
+): Promise<Options<any>> {
+  const options: Options<any> = {
+    status: Status.Success,
+    error: "",
+    data: "",
+  };
+  // the query will fetch maximum 1000 comments
+  const query = `query {
+  transactions(
+    first: 1000
+    sort: HEIGHT_DESC
+    tags: [
+      { name: "App-Name", values: ["Ricardian Fabric"] }
+      { name: "Contract-Type", values: ["Proposal"] }
+      { name: "Category", values: ["${categoryName}"] }
+    ]
+  ) {
+    edges {
+      node {
+        id
+        tags {
+          name
+          value
+        }
+      }
+    }
+  }
+}`;
+
+  const result = await request(ARWEAVEAPI, query).catch((err) => {
+    options.error = err.message;
+    options.status = Status.Failure;
+  });
+  options.data = result;
+  return options;
+}
+
 export async function getTags(transaction: string): Promise<Options<any>> {
   const options: Options<any> = {
     status: Status.Success,
