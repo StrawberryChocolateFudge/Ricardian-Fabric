@@ -4,29 +4,27 @@ import {
   dispatch_renderError,
   dispatch_setDeployedSCAddress,
 } from "../../dispatch/render";
-import { DeploySC, PopupState } from "../../types";
+import { ChainName, PopupState, ProposalFormat, State } from "../../types";
 import {
   deployContract,
   findConstructorParameters,
   getAddress,
   prepareType,
   requestAccounts,
+  switchNetwork,
   web3Injected,
 } from "../../wallet/web3";
-import { getHRC20Abi, getHRC20Bytecode } from "../../wallet/abi/HRC20";
 import { getById } from "../../view/utils";
 import MetaMaskOnboarding from "@metamask/onboarding";
-import { dispatch_setPopupState } from "../../dispatch/stateChange";
+import {
+  dispatch_setCreateRicardianState,
+  dispatch_setPopupState,
+} from "../../dispatch/stateChange";
 
-export function constructSCActions(selected: DeploySC) {
-  let abi;
-  let bytecode;
-  if (selected === DeploySC.HRC20) {
-    abi = getHRC20Abi();
-    bytecode = getHRC20Bytecode();
-  }
-
-  const constructorParams = findConstructorParameters(getHRC20Abi());
+export function constructSCActions(props: State, selected: ProposalFormat) {
+  const abi = selected.artifact.abi;
+  const bytecode = selected.artifact.bytecode;
+  const constructorParams = findConstructorParameters(abi);
 
   const constructorElements = {};
 
@@ -55,6 +53,11 @@ export function constructSCActions(selected: DeploySC) {
     }
     await requestAccounts();
 
+    if (selected.network !== "All") {
+      //TODO:TEST
+      await switchNetwork(selected.network as ChainName, 0, "Testnet");
+    }
+
     const empty = inputsEmpty(constructorElements, constructorParams);
     if (empty) {
       dispatch_renderError("You must fill out the empty fields");
@@ -67,7 +70,6 @@ export function constructSCActions(selected: DeploySC) {
     }
 
     dispatch_DisableSCInputs(constructorParams);
-
     const preparedArgs = prepareArguments(
       constructorElements,
       constructorParams
@@ -84,6 +86,12 @@ export function constructSCActions(selected: DeploySC) {
       dispatch_setDeployedSCAddress(receipt.contractAddress);
 
       dispatch_setPopupState(PopupState.NONE);
+      if (selected.simpleterms) {
+        dispatch_setCreateRicardianState({
+          ...props.createRicardianPageProps,
+          smartContract: receipt.contractAddress,
+        });
+      }
     };
 
     await deployContract(
