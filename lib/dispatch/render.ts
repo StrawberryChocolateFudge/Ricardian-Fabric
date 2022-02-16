@@ -2,15 +2,13 @@ import {
   AcceptedSmartContractProposal,
   ArweaveDataPage,
   CreateRicardianPageProps,
-  DeploySC,
-  FetchedProposals,
   LockedTokens,
   PaginatedProposal,
-  PaginatedProposals,
   PopupState,
   ProposalFormat,
   QueryStrings,
   RankProposal,
+  RenderDispatchArgs,
   RenderType,
   SmartContractProposal,
   Staker,
@@ -249,10 +247,13 @@ export function dispatch_catalogPage(props: State) {
   });
 }
 
-export function dispatch_SCDeploySelected(deploy: DeploySC) {
+export function dispatch_SCDeploySelected(
+  props: State,
+  deploy: ProposalFormat
+) {
   dispatch(Events.render, {
     type: RenderType.SCDeploySelected,
-    props: { deploy },
+    props: { ...props, tmp: { deploy } },
   });
 }
 
@@ -874,11 +875,13 @@ export function dispatch_emptyPopup(props: State) {
 
 export function dispatch_renderContractDisplayPage(
   props: State,
-  contractId: string
+  contractId: string,
+  preview: boolean,
+  proposal: AcceptedSmartContractProposal
 ) {
   dispatch(Events.render, {
     type: RenderType.renderContractDisplay,
-    props: { ...props, tmp: { contractId } },
+    props: { ...props, tmp: { contractId, preview, proposal } },
   });
 }
 
@@ -898,7 +901,15 @@ export function dispatch_renderVoteOnSmartContract(
 ) {
   dispatch(Events.render, {
     type: RenderType.renderVoteOnSmartContract,
-    props: { ...props, tmp: { contractIndex, accepted, arweaveTxId, refresh } },
+    props: {
+      ...props,
+      tmp: {
+        contractIndex,
+        accepted,
+        arweaveTxId,
+        refresh,
+      },
+    },
   });
 }
 
@@ -906,21 +917,33 @@ export function dispatch_renderSCProposalDisplayPage(
   props: State,
   arweaveTxId: string,
   proposal: ProposalFormat,
-  terms: string
+  terms: string,
+  preview: boolean,
+  acceptedProposal: AcceptedSmartContractProposal
 ) {
   dispatch(Events.render, {
     type: RenderType.renderSCProposalDisplayPage,
-    props: { ...props, tmp: { arweaveTxId, proposal, terms } },
+    props: {
+      ...props,
+      tmp: {
+        arweaveTxId,
+        proposal,
+        terms,
+        preview,
+        acceptedProposal,
+      },
+    },
   });
 }
 
 export function dispatch_createRemovalProposal(
   props: State,
-  acceptableIndex: string
+  acceptableIndex: string,
+  malicious: boolean
 ) {
   dispatch(Events.render, {
     type: RenderType.createRemovalProposalPopup,
-    props: { ...props, tmp: { acceptableIndex } },
+    props: { ...props, tmp: { acceptableIndex, malicious } },
   });
 }
 
@@ -933,5 +956,27 @@ export function dispatch_renderStakerDetails(
   dispatch(Events.render, {
     type: RenderType.renderStakerDetails,
     props: { ...props, tmp: { staker, stakingBlocks, blockNumber } },
+  });
+}
+
+export function dispatch_renderAvailableContractsToCatalog(
+  props: State,
+  allContractsToDisplay: Array<AcceptedSmartContractProposal>,
+  allIds: Array<string>,
+  uploadsForCategory: any // Arweave graphql query result for the selected category
+) {
+  dispatch(Events.render, {
+    type: RenderType.catalogContent,
+    props: {
+      ...props,
+      tmp: { allContractsToDisplay, allIds, uploadsForCategory },
+    },
+  });
+}
+
+export function dispatch_renderCatalogContractLoadingIndicator(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.catalogContentLoadingIndicator,
+    props,
   });
 }
