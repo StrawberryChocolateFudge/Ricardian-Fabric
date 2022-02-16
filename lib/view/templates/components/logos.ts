@@ -1629,7 +1629,7 @@ export const SearchLogo = () => html`<svg
   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
   version="1.1"
   id="svg885"
-  width="30"
+  width="40"
   height="30"
   viewBox="0 0 512 512"
   sodipodi:docname="SearchIcon.svg"

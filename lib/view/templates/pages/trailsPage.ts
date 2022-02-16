@@ -18,14 +18,14 @@ import {
 } from "../components/paginations";
 
 export const TrailsPage = () => html`<h3>Trails</h3>
-  <h5>Create a new trail or search for an existing one</h5>
+  <small>Create a new trail or search for an existing one</small>
   <div class="row">
     <div id="permaweb-dropdown"></div>
-    <button id="search-trail-tab" class="labelButton">
-      ${SearchLogo()} Search
+    <button id="search-trail-tab" class="labelButton" title="Search">
+      ${SearchLogo()}
     </button>
-    <button id="create-trail-tab" class="labelButton">
-      ${SignPost()}Create a new trail
+    <button id="create-trail-tab" class="labelButton" title="Create new trail">
+      ${SignPost()}
     </button>
   </div>
   <hr />
