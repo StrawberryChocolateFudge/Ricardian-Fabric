@@ -10,8 +10,8 @@ import { dashEl } from "./dashboardPage";
 export const TokenSalePage = () => html`<h3>Join the community</h3>
   ${balanceDisplay()}
   <h6>
-    You can buy 100.000 RIC per Rate. The price is incrementing from 0.01 ONE
-    till 1 ONE per RIC.
+    You can buy once per rate, max 100.000 RIC/Rate. The price is incrementing
+    from 0.01 ONE till 1 ONE per RIC.
   </h6>
   <div class="column">
     <div class="rowAround">
