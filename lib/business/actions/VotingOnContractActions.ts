@@ -1,8 +1,5 @@
 import { sha256 } from "../../crypto";
-import {
-  dispatch_renderError,
-  dispatch_renderLoadingIndicator,
-} from "../../dispatch/render";
+import { dispatch_renderError } from "../../dispatch/render";
 import {
   dispatch_setPage,
   dispatch_setPopupState,
