@@ -239,13 +239,11 @@ export async function acceptedSmartContractProposalFetcher(
     acceptedProposalsToFetch,
     getAcceptedSmartContractProposalsPaginated
   );
-
   // attaching the available reward to claim ,and if reward was claimed already for it
   const acceptedWithRewardDetails = await attachRewardDetails(
     acceptedProposals,
     myAddress
   );
-  console.log("paginated contract", paginatedContract);
   dispatch_renderMyAcceptedSmartContractProposals(props, blockNumber, [
     acceptedWithRewardDetails,
     acceptedProposalsToFetch,
@@ -327,7 +325,7 @@ export async function myAcceptedSmartContractProposalTableActions(
 
   const onRemovePressed = (index: string) => {
     dispatch_setPopupState(PopupState.emptyPopup);
-    dispatch_createRemovalProposal(props, index);
+    dispatch_createRemovalProposal(props, index, false);
   };
 
   const onRewardClaimed = async (index: string) => {
@@ -350,7 +348,6 @@ export async function myAcceptedSmartContractProposalTableActions(
   //Doing the claim reward buttons now
   attachListenersToAccepted(claimRewardButtons, onRewardClaimed);
 
-  console.log(paginationButtons);
   for (let i = 0; i < paginationButtons.length; i++) {
     const bttn = paginationButtons[i] as HTMLButtonElement;
     bttn.onclick = async function () {
@@ -392,16 +389,13 @@ export async function myAcceptedSmartContractProposalTableActions(
   pageRightButton.onclick = async function () {
     const index = parseInt(pageRightButton.dataset.smartcontractpage);
     const total = parseInt(pageRightButton.dataset.totalpages);
-    console.log(index);
-    console.log(total);
-    console.log(indexes);
+
     if (index < total) {
       const blockNumber = await getBlockNumber();
       const paginatedSmartContractProposal = startPaginatingAProposal(
         indexes,
         index + 1
       );
-      console.log(paginatedSmartContractProposal);
 
       await acceptedSmartContractProposalFetcher(
         paginatedSmartContractProposal,
@@ -635,7 +629,8 @@ export async function myRankProposalsTableActions(
 
 export function removalProposalPageActions(
   props: State,
-  acceptedIndex: string
+  acceptedIndex: string,
+  malicious: boolean
 ) {
   const discussionLink = getById("discussion-link-input") as HTMLInputElement;
   const backButton = getById("removal-back-button") as HTMLButtonElement;
@@ -676,7 +671,7 @@ export function removalProposalPageActions(
       catalogDAOOptions.data,
       discussionLink.value,
       acceptedIndex,
-      false,
+      malicious,
       myAddressOpts.data,
       onError,
       onReceipt
