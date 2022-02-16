@@ -419,7 +419,7 @@ export function addContractDetailsPopup(props: State) {
     bttn.onclick = async function () {
       const tx = bttn.dataset.arweavetx;
       dispatch_setPopupState(PopupState.emptyPopup);
-      dispatch_renderContractDisplayPage(props, tx);
+      dispatch_renderContractDisplayPage(props, tx, true, null);
     };
   }
 }
