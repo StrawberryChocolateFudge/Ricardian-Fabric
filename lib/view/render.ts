@@ -2,9 +2,9 @@ import { html, render } from "lit-html";
 import {
   AcceptedSmartContractProposal,
   ArweaveDataPage,
+  ArweaveQueryResult,
   ContractTypes,
   CreateRicardianPageProps,
-  DeploySC,
   FetchedProposals,
   LockedTokens,
   PageState,
@@ -24,7 +24,7 @@ import {
 import { AcceptButton, acceptTools } from "./templates/components/acceptTools";
 import { createButton } from "./templates/components/createButton";
 import { CreateSummary } from "./templates/components/createSummary";
-import { catalogPage } from "./templates/pages/catalogPage";
+import { catalogContent, catalogPage } from "./templates/pages/catalogPage";
 import { DocXDropper } from "./templates/components/docxDropper";
 import { helperTooltips } from "./templates/components/helperTooltips";
 import { loadingIndicator } from "./templates/components/loadingIndicator";
@@ -692,7 +692,7 @@ export function hideElement(el: HTMLElement, hide: boolean) {
   }
 }
 
-export function renderContructorInputs(selected: DeploySC) {
+export function renderContructorInputs(selected: ProposalFormat) {
   const layout = getById("overlay-layout");
   render(SCConstructorPopup(selected), layout);
 }
@@ -1518,24 +1518,43 @@ export function renderVoteOnSmartContract(
 export function renderSCProposalDisplayPage(
   arweaveTxId: string,
   proposal: ProposalFormat,
-  terms: string
+  terms: string,
+  preview: boolean,
+  acceptedProposal: AcceptedSmartContractProposal
 ) {
   const overlay = getById("overlay-layout");
   overlay.style.maxHeight = "100%";
   const loading = getById("contract-loading-slot");
   render(html``, loading);
   const slot = getById("contract-display-slot");
-  render(smartContractProductPage(arweaveTxId, proposal, true), slot);
+  if (acceptedProposal === null) {
+    render(
+      smartContractProductPage(arweaveTxId, proposal, preview, null),
+      slot
+    );
+  } else {
+    render(
+      smartContractProductPage(
+        arweaveTxId,
+        proposal,
+        preview,
+        acceptedProposal[0]
+      ),
+      slot
+    );
+  }
+
   const termsContent = getById("termsContent");
   termsContent.innerHTML = terms;
 }
 
 export function renderRemovalProposalPopup(
   props: State,
-  acceptableIndex: string
+  acceptableIndex: string,
+  malicious: boolean
 ) {
   const overlay = getById("overlay-layout");
-  render(RemovalProposalPage(acceptableIndex), overlay);
+  render(RemovalProposalPage(acceptableIndex, malicious), overlay);
 }
 
 export function renderStakerDetails(
@@ -1547,4 +1566,25 @@ export function renderStakerDetails(
   slot.classList.remove("placeholder-item");
 
   render(StakerDetails(staker, stakingBlocks, blockNumber), slot);
+}
+
+export function renderCatalogContent(
+  uploadsFoallContractsToDisplay: Array<AcceptedSmartContractProposal>,
+  allIds: Array<string>,
+  uploadsForCategory: ArweaveQueryResult[] // Arweave graphql query result for the selected category
+) {
+  const contentEl = getById("catalog-content");
+  contentEl.classList.remove("placeholder-item");
+  contentEl.classList.add("rowAround");
+  render(
+    catalogContent(uploadsFoallContractsToDisplay, allIds, uploadsForCategory),
+    contentEl
+  );
+}
+
+export function renderCatalogContentLoadingIndicator() {
+  const contentEl = getById("catalog-content");
+  contentEl.classList.add("placeholder-item");
+  contentEl.classList.remove("rowAround");
+  render(html`<h3>Loading</h3>`, contentEl);
 }
