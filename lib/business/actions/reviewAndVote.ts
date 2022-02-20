@@ -6,6 +6,7 @@ import {
   PageState,
   PopupState,
   RankProposal,
+  RemovalProposal,
   SmartContractProposal,
   State,
 } from "../../types";
@@ -22,6 +23,7 @@ import {
   dispatch_renderContractDisplayPage,
   dispatch_renderError,
   dispatch_renderReviewRankProposals,
+  dispatch_renderReviewRemovalProposals,
   dispatch_renderReviewSmartContractProposals,
   dispatch_renderVoteOnSmartContract,
 } from "../../dispatch/render";
@@ -35,12 +37,16 @@ import {
   getSmartContractProposalIndex,
   getMySmartContractProposalsPaginated,
   closeSuspiciousProposal,
+  getRemovalProposalIndex,
+  getRemovalProposalsPaginated,
+  voteOnRemoval,
 } from "../../wallet/catalogDAO/contractCalls";
 import { getPaginatedByIndex, hasError, OptionsBuilder } from "../utils";
 import {
   getDaoStakingContract,
   isStaking,
 } from "../../wallet/daoStaking/contractCalls";
+import { Contract } from "web3-eth-contract";
 
 export async function reviewAndVotePageActions(props: State) {
   const createProposalButton = getById("create-proposal-button");
@@ -138,20 +144,15 @@ export async function reviewAndVotePageActions(props: State) {
     smartContractPage
   );
 
-  // const acceptedSmartContractPage =
-  //   await getPaginatedByIndexSTART<AcceptedSmartContractProposal>(
-  //     catalogDAO,
-  //     myAddress,
-  //     getAcceptedSmartContractIndex,
-  //     getAcceptedSmartContractProposalsPaginated
-  //   );
+  const removalProposals = await getPaginatedByIndex<RemovalProposal[]>(
+    1,
+    catalogDAO,
+    myAddress,
+    getRemovalProposalIndex,
+    getRemovalProposalsPaginated
+  );
 
-  // const removalPage = await getPaginatedByIndexSTART<RemovalProposal>(
-  //   catalogDAO,
-  //   myAddress,
-  //   getRemovalProposalIndex,
-  //   getRemovalProposalsPaginated
-  // );
+  dispatch_renderReviewRemovalProposals(props, blockNumber, removalProposals);
 }
 
 export async function rankProposalTableActions(props: State) {
@@ -233,7 +234,6 @@ export async function rankProposalTableActions(props: State) {
       const pageIndex = parseInt(paginationButton.dataset.rankpage);
       const rankPage = await _getProposals(pageIndex);
       const blockNumber = await getBlockNumber();
-
       dispatch_renderReviewRankProposals(props, blockNumber, rankPage);
     };
   }
@@ -405,6 +405,111 @@ export async function smartContractProposalTableActions(props: State) {
 
     if (index < total) {
       refresh(index + 1);
+    }
+  };
+}
+
+export async function removalProposalTableActions(props: State) {
+  const paginationButtons = document.getElementsByClassName(
+    "removalProposalPaginationButton"
+  );
+  const pageLeftButton = getById("removalProposal-page-left");
+  const pageRightButton = getById("removalProposal-page-right");
+  const approveButtons = document.getElementsByClassName(
+    "removalProposalApproveButton"
+  );
+  const rejectButtons = document.getElementsByClassName(
+    "removalProposalRejectButton"
+  );
+  let myAddress: any = await OptionsBuilder(() => getAddress());
+  if (hasError(myAddress)) {
+    return;
+  }
+  myAddress = myAddress.data as string;
+
+  let catalogDAO: any = await OptionsBuilder(() =>
+    getCatalogDAOContractWithWallet()
+  );
+  if (hasError(catalogDAO)) {
+    return;
+  }
+  catalogDAO = catalogDAO.data as Contract;
+
+  const onError = (error, receipt) => {
+    dispatch_renderError(error.message);
+  };
+  const onReceipt = (receipt) => {
+    dispatch_setPage(PageState.ReviewAndVote);
+  };
+
+  const vote = async (approve: boolean, index: string) => {
+    const isStakingResult = await checkIfUserIsStaking();
+    if (isStakingResult) {
+      await voteOnRemoval(
+        catalogDAO,
+        index,
+        approve,
+        myAddress,
+        onError,
+        onReceipt
+      );
+    }
+  };
+
+  const _getProposals = async (index: number) =>
+    await getPaginatedByIndex<RemovalProposal[]>(
+      index,
+      catalogDAO,
+      myAddress,
+      getRemovalProposalIndex,
+      getRemovalProposalsPaginated
+    );
+
+  // add the onclick for the approve buttons
+
+  for (let i = 0; i < approveButtons.length; i++) {
+    const approveButton = approveButtons[i] as HTMLButtonElement;
+    const rejectButton = rejectButtons[i] as HTMLButtonElement;
+
+    approveButton.onclick = async function () {
+      const index = approveButton.dataset.index;
+      await vote(true, index);
+    };
+    rejectButton.onclick = async function () {
+      const index = rejectButton.dataset.index;
+      await vote(false, index);
+    };
+  }
+
+  // add the onclick for the pagination buttons
+
+  for (let i = 0; i < paginationButtons.length; i++) {
+    const bttn = paginationButtons[i] as HTMLButtonElement;
+    bttn.onclick = async function () {
+      const pageIndex = parseInt(bttn.dataset.proposalpage);
+      const removalPage = await _getProposals(pageIndex);
+      const blockNumber = await getBlockNumber();
+      dispatch_renderReviewRemovalProposals(props, blockNumber, removalPage);
+    };
+  }
+
+  pageLeftButton.onclick = async function () {
+    const index = parseInt(pageLeftButton.dataset.smartcontractpage);
+    if (index > 1) {
+      const removalPage = await _getProposals(index - 1);
+      const blockNumber = await getBlockNumber();
+
+      dispatch_renderReviewRemovalProposals(props, blockNumber, removalPage);
+    }
+  };
+
+  pageRightButton.onclick = async function () {
+    const index = parseInt(pageRightButton.dataset.smartcontractpage);
+    const total = parseInt(pageRightButton.dataset.totalpages);
+    if (index < total) {
+      const removalPage = await _getProposals(index + 1);
+      const blockNumber = await getBlockNumber();
+      dispatch_renderReviewRemovalProposals(props, blockNumber, removalPage);
     }
   };
 }
