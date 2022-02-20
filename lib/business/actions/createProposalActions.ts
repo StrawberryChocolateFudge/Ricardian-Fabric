@@ -121,7 +121,7 @@ export async function createProposalActions(props: State) {
     } else {
       dispatch_proposeNewRank(!myLastRankProposal.closed);
     }
-  } else {
+  } else if (rank !== "10") {
     if (myLastSmartContractProposal === undefined) {
       dispatch_proposeNewContract(false);
     } else {
