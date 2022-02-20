@@ -5,6 +5,7 @@ import {
   FetchedProposals,
   PaginatedProposals,
   RankProposal,
+  RemovalProposal,
   SmartContractProposal,
   Staker,
 } from "../../../types";
@@ -30,7 +31,11 @@ export function ManageProposals() {
     <hr />
     <div id="my-smart-contract-proposals-container"></div>
     <hr />
-    <div id="my-accepted-contracts-container"></div> `;
+    <div id="my-accepted-contracts-container"></div>
+    <hr />
+    <div id="my-removal-porposals-container"></div>
+    <hr />
+    <div id="removed-from-me-container"></div> `;
 }
 
 export function StakerDetails(
@@ -102,7 +107,7 @@ export function MyAcceptedSmartContratctProposalsTable(
     <h5>Accepted Proposals</h5>
     <hr />
     <div class="overflow-auto">
-      <table class="light-shadow width-100Percent">
+      <table class="light-shadow width-100Percent minWidth-500px">
         <tr>
           <td><label>Index</label></td>
           <td>
@@ -134,6 +139,59 @@ export function MyAcceptedSmartContratctProposalsTable(
     </div> `;
 }
 
+export function MyRemovalProposalTable(
+  removalProposals: RemovalProposal[],
+  indexes: string[],
+  blockNumber: number,
+  totalPages: number,
+  currentPage: number
+) {
+  let removalContractProposals = [];
+  for (let i = 0; i < indexes.length; i++) {
+    if (indexes[i] !== "0") {
+      removalContractProposals.push({
+        removal: removalProposals[i],
+        index: indexes[i],
+      });
+    }
+  }
+
+  return html`
+    <hr />
+    <h5>Removal Proposals</h5>
+    <hr />
+    <div class="overflow-auto">
+      <table class="light-shadow width-100Percent minWidth-500px">
+        <tr>
+          <td>
+            <label
+              title="Shows the index of the accepted proposal that is getting removed"
+              >Removing</label
+            >
+          </td>
+          <td><label>Discussion</label></td>
+          <td><label>Malicious</label></td>
+          <td><label>Approvals</label></td>
+          <td><label>Rejections</label></td>
+          <td><label>Status</label></td>
+          <td><label>Created</label></td>
+        </tr>
+        ${removalContractProposals.map((c) =>
+          removalProposalTR(c.removal, c.index, blockNumber)
+        )}
+      </table>
+    </div>
+    <div>
+      ${getSmartContractPagingButtons(
+        totalPages,
+        currentPage,
+        "myRemovalProposalPaginationButton",
+        "removalProposal"
+      )}
+    </div>
+  `;
+}
+
 export function MySmartContractProposalTable(
   smartContracts: SmartContractProposal[],
   indexes: string[],
@@ -156,7 +214,7 @@ export function MySmartContractProposalTable(
     <h5>Smart Contract Proposals</h5>
     <hr />
     <div class="overflow-auto">
-      <table class="light-shadow width-100Percent">
+      <table class="light-shadow width-100Percent minWidth-500px">
         <tr>
           <td><label>Index</label></td>
           <td>
@@ -206,7 +264,7 @@ export function MyRankProposalTable(
     <h5>Rank proposals</h5>
     <hr />
     <div class="overflow-auto">
-      <table class="light-shadow width-100Percent">
+      <table class="light-shadow width-100Percent minWidth-500px">
         <tr>
           <td><label>Index</label></td>
           <td><label>Link</label></td>
@@ -279,7 +337,7 @@ function getPageButtons(
           data-rankpage="${i}"
           class="${cssselector} labelButton ${currentPage === i
             ? "light-shadow"
-            : null}"
+            : nothing}"
         >
           ${i}
         </button>`;
@@ -288,7 +346,7 @@ function getPageButtons(
           data-smartcontractpage="${i}"
           class="${cssselector} labelButton ${currentPage === i
             ? "light-shadow"
-            : null}"
+            : nothing}"
         >
           ${i}
         </button>`;
@@ -297,7 +355,16 @@ function getPageButtons(
           data-smartcontractpage="${i}"
           class="${cssselector} labelButton ${currentPage === i
             ? "light-shadow"
-            : null}"
+            : nothing}"
+        >
+          ${i}
+        </button>`;
+      case "removalProposal":
+        return html`<button
+          data-proposalpage="${i}"
+          class="${cssselector} labelButton ${currentPage === i
+            ? "light-shadow"
+            : nothing}"
         >
           ${i}
         </button>`;
@@ -318,6 +385,9 @@ export function getSmartContractPagingButtons(
   cssselector: string,
   name: string
 ) {
+  if (totalPages === 0) {
+    return null;
+  }
   const pageButtons = getPageButtons(
     totalPages,
     currentPage,
@@ -429,6 +499,50 @@ function acceptedSmartContractProposalTR(
           : "Claimed"}
       </button>
     </td>
+  </tr>`;
+}
+
+function removalProposalTR(
+  removalProposal: RemovalProposal,
+  proposalIndex: string,
+  blockNumber: number
+) {
+  return html`<tr>
+    <td><label>${removalProposal.acceptedIndex}</label></td>
+    <td>
+      <a
+        class="labelButton"
+        href="${removalProposal.discussionUrl}"
+        target="_blank"
+        rel="noopener"
+        title="${removalProposal.discussionUrl}"
+        >${WebAsset()}</a
+      >
+    </td>
+    <td>
+      <label>${removalProposal.malicious ? "YES" : "NO"}</label>
+    </td>
+    <td>
+      <label>${removalProposal.approvals}</label>
+    </td>
+    <td>
+      <label>${removalProposal.rejections}</label>
+    </td>
+    <td>
+      ${removalProposal.closed
+        ? html`<p>Closed</p>`
+        : html`<button
+            data-proposalindex="${proposalIndex}"
+            class="labelButton removalProposalCloseButton"
+            ?disabled=${!getStatusCondition(
+              blockNumber,
+              removalProposal.createdBlock
+            )}
+          >
+            Close
+          </button>`}
+    </td>
+    <td>${removalProposal.createdBlock}</td>
   </tr>`;
 }
 
