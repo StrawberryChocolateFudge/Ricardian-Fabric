@@ -226,7 +226,7 @@ hr {
   margin: 0 auto;
   display: flex;
   max-width: 800px;
-  min-width: 550px;
+  min-width: 350px;
   height: 100%;
   flex-direction: column;
   padding-bottom: 20px;
@@ -266,6 +266,10 @@ hr {
 }
 .width-100Percent {
   width: 100%;
+}
+
+.minWidth-500px {
+  min-width: 500px;
 }
 
 .height-100Percent {
