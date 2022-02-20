@@ -121,6 +121,8 @@ import {
   renderStakerDetails,
   renderCatalogContent,
   renderCatalogContentLoadingIndicator,
+  renderRemovalProposalTable,
+  renderMyRemovalProposals,
 } from "./render";
 import { renderAcceptTools } from "./render";
 import { areYouSureButtons } from "../business/actions/areYouSureButtons";
@@ -164,6 +166,7 @@ import { WinstonToAr } from "../wallet/arweave";
 import { menuActions } from "../business/actions/menuActions";
 import {
   rankProposalTableActions,
+  removalProposalTableActions,
   reviewAndVotePageActions,
   smartContractProposalTableActions,
 } from "../business/actions/reviewAndVote";
@@ -176,6 +179,7 @@ import {
   myAcceptedSmartContractProposalTableActions,
   myProposalsActions,
   myRankProposalsTableActions,
+  myRemovalPropsalTableActions,
   mySmartContractProposalsTableActions,
   removalProposalPageActions,
   stakerDetailsActions,
@@ -560,6 +564,16 @@ const Render: Renderer = {
       props.tmp.page[2].proposals
     );
   },
+  [RenderType.renderMyRemovalProposals]: async (props: RenderDispatchArgs) => {
+    renderMyRemovalProposals(
+      props.tmp.page[0],
+      props.tmp.page[1],
+      props.tmp.blockNumber,
+      props.tmp.page[2].totalPages,
+      props.tmp.page[2].currentPage
+    );
+    await myRemovalPropsalTableActions(props, props.tmp.page[2].proposals);
+  },
   [RenderType.dismissSidebar]: (props: RenderDispatchArgs) => {
     collapseSidebar();
   },
@@ -586,6 +600,17 @@ const Render: Renderer = {
       props.tmp.smartContractPage[2]
     );
     smartContractProposalTableActions(props);
+  },
+  [RenderType.renderReviewRemovalProposals]: async (
+    props: RenderDispatchArgs
+  ) => {
+    renderRemovalProposalTable(
+      props.tmp.blockNumber,
+      props.tmp.removalProposalPage[0],
+      props.tmp.removalProposalPage[1],
+      props.tmp.removalProposalPage[2]
+    );
+    await removalProposalTableActions(props);
   },
   [RenderType.renderLoadedValue]: (props: RenderDispatchArgs) => {
     renderLoadedValue(props.tmp.loadedValue, props.tmp.renderTo);
