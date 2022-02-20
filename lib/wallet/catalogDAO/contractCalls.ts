@@ -1,5 +1,4 @@
 // I'm gonna add all the catalog dao functions here
-import Web3 from "web3";
 import { getCatalogDAOAbi } from "../abi/catalogDAOABI";
 import { Contract } from "web3-eth-contract";
 import {
