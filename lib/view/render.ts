@@ -14,6 +14,7 @@ import {
   ProposalFormat,
   QueryStrings,
   RankProposal,
+  RemovalProposal,
   RenderType,
   SelectedWallet,
   SmartContractProposal,
@@ -73,6 +74,7 @@ import {
 } from "./templates/popups/uploadProposalPopup";
 import {
   RankProposalTable,
+  RemovalProposalsTable,
   ReviewAndVote,
   SmartContractProposalsTable,
 } from "./templates/pages/reviewAndVotePage";
@@ -84,6 +86,7 @@ import {
   MyAcceptedSmartContratctProposalsTable,
   MyProposalsContent,
   MyRankProposalTable,
+  MyRemovalProposalTable,
   MySmartContractProposalTable,
   RemovalProposalPage,
   StakerDetails,
@@ -961,6 +964,26 @@ export function renderMyAcceptedSmartContractProposalsContent(
   );
 }
 
+export function renderMyRemovalProposals(
+  removalProposals: RemovalProposal[],
+  indexes: string[],
+  blockNumber: number,
+  totalPage: number,
+  currentPage: number
+) {
+  const el = getById("my-removal-porposals-container");
+  render(
+    MyRemovalProposalTable(
+      removalProposals,
+      indexes,
+      blockNumber,
+      totalPage,
+      currentPage
+    ),
+    el
+  );
+}
+
 export function renderAccordionOpener() {
   const acc = document.getElementsByClassName("accordion");
 
@@ -1198,6 +1221,20 @@ export function renderSmartContractProposalTable(
   const el = getById("smart-contract-proposal-table");
   render(
     SmartContractProposalsTable(blockNumber, smartContracts, indexes, paging),
+    el
+  );
+}
+
+export function renderRemovalProposalTable(
+  blockNumber: number,
+  removalProposals: RemovalProposal[],
+  indexes: string[],
+  paging: PaginatedProposal
+) {
+  const el = getById("removal-proposal-table");
+
+  render(
+    RemovalProposalsTable(blockNumber, removalProposals, indexes, paging),
     el
   );
 }
