@@ -100,6 +100,7 @@ export enum RenderType {
   renderMyRankProposals = "renderMyRankProposals",
   renderMySmartContractProposals = "renderMySmartContractProposals",
   renderMyAcceptedSmartContractProposals = "renderMyAcceptedSmartContractProposals",
+  renderMyRemovalProposals = "renderMyRemovalProposals",
   renderReviewRankProposals = "renderReviewRankProposals",
   renderReviewSmartContractProposals = "renderReviewSmartContractProposals",
   renderReviewAcceptedProposals = "renderReviewAcceptedProposals",
@@ -214,8 +215,10 @@ export type Renderer = {
   [RenderType.renderMyRankProposals]: RenderFunction;
   [RenderType.renderMySmartContractProposals]: RenderFunction;
   [RenderType.renderMyAcceptedSmartContractProposals]: RenderFunction;
+  [RenderType.renderMyRemovalProposals]: RenderFunction;
   [RenderType.renderReviewRankProposals]: RenderFunction;
   [RenderType.renderReviewSmartContractProposals]: RenderFunction;
+  [RenderType.renderReviewRemovalProposals]: RenderFunction;
   [RenderType.renderLoadedValue]: RenderFunction;
   [RenderType.pinnedDashboardData]: RenderFunction;
   [RenderType.stakingButtons]: RenderFunction;
