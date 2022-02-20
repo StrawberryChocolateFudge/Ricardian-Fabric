@@ -52,6 +52,9 @@ export function ReviewAndVote() {
     <div id="rank-proposal-table"></div>
     <hr />
     <div id="smart-contract-proposal-table"></div>
+    <hr />
+    <div id="removal-proposal-table"></div>
+    <hr />
   `;
 }
 
@@ -73,7 +76,7 @@ export function RankProposalTable(
     <h5>New Rank</h5>
     <hr />
     <div class="overflow-auto">
-      <table class="light-shadow width-100Percent">
+      <table class="light-shadow width-100Percent minWidth-500px">
         <tr>
           <td><label>Index</label></td>
           <td><label>Creator</label></td>
@@ -172,6 +175,114 @@ function getExpiresElementTitle(createdBlock: string, blockNumber: number) {
   }
 }
 
+export function RemovalProposalsTable(
+  blockNumber: number,
+  removalProposals: RemovalProposal[],
+  indexes: string[],
+  paging: PaginatedProposal
+) {
+  let removalProposalTRs = [];
+  for (let i = 0; i < indexes.length; i++) {
+    if (indexes[i] !== "0") {
+      removalProposalTRs.push({
+        removalProposals: removalProposals[i],
+        index: indexes[i],
+      });
+    }
+  }
+  return html` <hr />
+    <h5>Removal Requests</h5>
+    <hr />
+    <div class="overflow-auto">
+      <table class="light-shadow width-100Percent minWidth-500px">
+        <tr>
+          <td><label>Index</label></td>
+          <td><label>Creator</label></td>
+          <td>
+            <label
+              title="Shows the index of the accepted proposal that is getting removed"
+              >Removing</label
+            >
+          </td>
+          <td><label>Discussion</label></td>
+          <td><label>Malicious</label></td>
+          <td><label>Approve</label></td>
+          <td><label>Reject</label></td>
+          <td><label>Status</label></td>
+          <td><label>Blocks left</label></td>
+        </tr>
+        ${removalProposalTRs.map((c) =>
+          RemovalRequestBuilder(c.removalProposals, c.index, blockNumber)
+        )}
+      </table>
+    </div>
+    <div>
+      ${getSmartContractPagingButtons(
+        paging.totalPages,
+        paging.currentPage,
+        "removalProposalPaginationButton",
+        "removalProposal"
+      )}
+    </div>`;
+}
+
+export function RemovalRequestBuilder(
+  proposal: RemovalProposal,
+  index: string,
+  blockNumber: number
+) {
+  const finished = getStatusCondition(blockNumber, proposal.createdBlock);
+  const [approvalCSS, rejectionCSS] = getCSS(
+    {
+      approvals: proposal.approvals,
+      rejections: proposal.rejections,
+    },
+    finished
+  );
+  return html`<tr>
+    <td><label>${index}</label></td>
+    <td>${getBlockie(proposal.creator, "50px", "")}</td>
+    <td><label>${proposal.acceptedIndex}</label></td>
+    <td>
+      <a
+        class="labelButton"
+        href="${proposal.discussionUrl}"
+        target="_blank"
+        rel="noopener"
+        title="${proposal.discussionUrl}"
+        >${WebAsset()}</a
+      >
+    </td>
+    <td><label>${proposal.malicious ? "YES" : "NO"}</label></td>
+    <td>
+      <button
+        class="labelButton removalProposalApproveButton ${approvalCSS}"
+        data-index="${index}"
+        title="${proposal.approvals}"
+        ?disabled="${finished}"
+      >
+        ${ThumbsUp()}
+      </button>
+    </td>
+    <td>
+      <button
+        class="labelButton removalProposalRejectButton ${rejectionCSS}"
+        data-index="${index}"
+        title="${proposal.rejections}"
+        ?disabled="${finished}"
+      >
+        ${ThumbsDown()}
+      </button>
+    </td>
+    <td>
+      ${proposal.closed
+        ? "Closed"
+        : GetStatus(blockNumber, proposal.createdBlock)}
+    </td>
+    <td>${getExpiresElementTitle(proposal.createdBlock, blockNumber)}</td>
+  </tr> `;
+}
+
 export function SmartContractProposalsTable(
   blockNumber: number,
   smartContracts: SmartContractProposal[],
@@ -192,7 +303,7 @@ export function SmartContractProposalsTable(
     <h5>New smart contract proposals</h5>
     <hr />
     <div class="overflow-auto">
-      <table class="light-shadow width-100Percent">
+      <table class="light-shadow width-100Percent minWidth-500px">
         <tr>
           <td><label>Index</label></td>
           <td><label>Creator</label></td>
@@ -236,7 +347,6 @@ function smartContractProposalTR(
     },
     finished
   );
-  smartContractProposal.suspicious;
   return html`<tr>
       <td><hr /></td>
       <td><hr /></td>
@@ -370,39 +480,4 @@ function getCSS(
     }
   }
   return [approvalCSS, rejectionCSS];
-}
-
-export function RemovalProposalsTable(removalProposals: RemovalProposal[]) {
-  return html` <hr />
-    <h5>Removal Request</h5>
-    <hr />
-    <div class="overflow-auto">
-      <table class="light-shadow">
-        <tr>
-          <td><label>From</label></td>
-          <td><label>Id</label></td>
-          <td><label>Discussion</label></td>
-          <td><label>Name</label></td>
-          <td><label>Approve</label></td>
-          <td><label>Reject</label></td>
-        </tr>
-        ${RemovalRequestBuilder(removalProposals)}
-      </table>
-    </div>`;
-}
-
-export function RemovalRequestBuilder(removalProposals: RemovalProposal[]) {
-  // TODO: Removal proposals need to fetch the transaction ID from the acceptable,
-  // to populate the ID field blocky,the name etc
-
-  return html`${removalProposals.map(
-    (proposal: RemovalProposal) => html`<tr>
-      <td>${getBlockie(proposal.creator, "50px", "")}</td>
-      <td>${getBlockie("asf", "50px", "")}</td>
-      <td><a href="${proposal.discussionUrl}" class="labelButton">Here</a></td>
-      <td><button class="labelButton">HRC-20 token</button></td>
-      <td><button class="labelButton">${ThumbsUp()}</button></td>
-      <td><button class="labelButton">${ThumbsDown()}</button></td>
-    </tr> `
-  )}`;
 }
