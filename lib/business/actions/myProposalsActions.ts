@@ -5,6 +5,7 @@ import {
   dispatch_renderLoadingIndicator,
   dispatch_renderMyAcceptedSmartContractProposals,
   dispatch_renderMyRankProposals,
+  dispatch_renderMyRemovalProposals,
   dispatch_renderMyRicBalance,
   dispatch_renderMySmartContractProposals,
   dispatch_renderStakerDetails,
@@ -28,18 +29,21 @@ import {
   PaginatedProposal,
   PopupState,
   RankProposal,
+  RemovalProposal,
   SmartContractProposal,
   State,
   Status,
 } from "../../types";
 import {
   closeRankProposal,
+  closeRemovalProposal,
   closeSmartContractProposal,
   getAcceptedSmartContractProposalsPaginated,
   getCatalogDAOContractWithWallet,
   getMyProposals,
   getMyRankProposalsPaginated,
   getMySmartContractProposalsPaginated,
+  getRemovalProposalsPaginated,
   proposeContractRemoval,
 } from "../../wallet/catalogDAO/contractCalls";
 import {
@@ -164,16 +168,18 @@ export async function myProposalsActions(props: State) {
     blockNumber
   );
 
-  // const removalToFetch = proposalsToFetch(paginatedProposalData.removal);
+  const paginatedRemovalProposal = startPaginatingAProposal(
+    myProposals.removal.slice().reverse(),
+    1
+  );
+  await removalProposalFetcher(
+    paginatedRemovalProposal,
+    catalogDAO,
+    myAddress,
+    props,
+    blockNumber
+  );
 
-  // const removalProposals = await getProposals<RemovalProposal[]>(
-  //   catalogDAO,
-  //   myAddress,
-  //   removalToFetch,
-  //   getAcceptedSmartContractProposalsPaginated
-  // );
-
-  // dispatch_removeLoadingIndicator("my-proposals-container");
   addContractDetailsPopup(props);
 }
 
@@ -248,6 +254,28 @@ export async function acceptedSmartContractProposalFetcher(
     acceptedWithRewardDetails,
     acceptedProposalsToFetch,
     paginatedContract,
+  ]);
+}
+
+export async function removalProposalFetcher(
+  paginatedProposal: PaginatedProposal,
+  catalogDAO: Contract,
+  myAddress: string,
+  props: State,
+  blockNumber: number
+) {
+  const removalProposalsToFetch: string[] = proposalsToFetch(paginatedProposal);
+  const removalProposals = await getProposals<RemovalProposal[]>(
+    catalogDAO,
+    myAddress,
+    removalProposalsToFetch,
+    getRemovalProposalsPaginated
+  );
+
+  dispatch_renderMyRemovalProposals(props, blockNumber, [
+    removalProposals,
+    removalProposalsToFetch,
+    paginatedProposal,
   ]);
 }
 
@@ -375,7 +403,6 @@ export async function myAcceptedSmartContractProposalTableActions(
         indexes,
         pageindex - 1
       );
-      console.log(paginatedSmartContractProposals);
       await acceptedSmartContractProposalFetcher(
         paginatedSmartContractProposals,
         catalogDaoOptions.data,
@@ -517,6 +544,112 @@ export async function mySmartContractProposalsTableActions(
       await smartContractProposalFetcher(
         paginatedSmartContractProposal,
         catalogDAO,
+        myAddress,
+        props,
+        blockNumber
+      );
+    }
+  };
+}
+
+export async function myRemovalPropsalTableActions(
+  props: State,
+  removalProposalIndexes: string[]
+) {
+  const closeRemovalProposalButton = document.getElementsByClassName(
+    "removalProposalCloseButton"
+  );
+  const paginationButtons = document.getElementsByClassName(
+    "myRemovalProposalPaginationButton"
+  );
+  const pageLeftButton = getById("removalProposal-page-left");
+  const pageRightButton = getById("removalProposal-page-right");
+  const catalogDAOOptions = await OptionsBuilder(() =>
+    getCatalogDAOContractWithWallet()
+  );
+
+  if (hasError(catalogDAOOptions)) {
+    return;
+  }
+  const myAddressOptions = await OptionsBuilder(() => getAddress());
+  if (hasError(myAddressOptions)) {
+    return;
+  }
+  const myAddress = myAddressOptions.data;
+  const blockNumber = await getBlockNumber();
+
+  for (let i = 0; i < closeRemovalProposalButton.length; i++) {
+    const bttn = closeRemovalProposalButton[i] as HTMLButtonElement;
+
+    bttn.onclick = async function () {
+      const index = bttn.dataset.proposalindex;
+
+      const myAddress = await getAddress();
+      const onError = (error, receipt) => {
+        dispatch_renderError(error.message);
+      };
+      const onReceipt = (receipt) => {
+        dispatch_setPage(PageState.ManageProposals);
+      };
+      await closeRemovalProposal(
+        catalogDAOOptions.data,
+        index,
+        myAddress,
+        onError,
+        onReceipt
+      );
+    };
+  }
+
+  for (let i = 0; i < paginationButtons.length; i++) {
+    const bttn = paginationButtons[i] as HTMLButtonElement;
+    bttn.onclick = async function () {
+      const pageIndex = parseInt(bttn.dataset.proposalpage);
+      const paginatedRemoval = startPaginatingAProposal(
+        removalProposalIndexes,
+        pageIndex
+      );
+      await removalProposalFetcher(
+        paginatedRemoval,
+        catalogDAOOptions.data,
+        myAddress,
+        props,
+        blockNumber
+      );
+    };
+  }
+
+  pageLeftButton.onclick = async function () {
+    const index = parseInt(pageLeftButton.dataset.smartcontractpage);
+    if (index > 1) {
+      const paginatedRemovalProposal = startPaginatingAProposal(
+        removalProposalIndexes,
+        index - 1
+      );
+
+      await removalProposalFetcher(
+        paginatedRemovalProposal,
+        catalogDAOOptions.data,
+        myAddress,
+        props,
+        blockNumber
+      );
+    }
+  };
+
+  pageRightButton.onclick = async function () {
+    const index = parseInt(pageRightButton.dataset.smartcontractpage);
+    const total = parseInt(pageRightButton.dataset.totalpages);
+
+    if (index < total) {
+      const paginatedRemovalProposal = startPaginatingAProposal(
+        removalProposalIndexes,
+        index + 1
+      );
+
+      await removalProposalFetcher(
+        paginatedRemovalProposal,
+        catalogDAOOptions.data,
         myAddress,
         props,
         blockNumber
