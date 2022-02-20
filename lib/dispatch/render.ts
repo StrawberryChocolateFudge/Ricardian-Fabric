@@ -8,7 +8,7 @@ import {
   ProposalFormat,
   QueryStrings,
   RankProposal,
-  RenderDispatchArgs,
+  RemovalProposal,
   RenderType,
   SmartContractProposal,
   Staker,
@@ -601,6 +601,17 @@ export function dispatch_renderMyAcceptedSmartContractProposals(
   });
 }
 
+export function dispatch_renderMyRemovalProposals(
+  props: State,
+  blockNumber,
+  page: [RemovalProposal[], string[], PaginatedProposal]
+) {
+  dispatch(Events.render, {
+    type: RenderType.renderMyRemovalProposals,
+    props: { ...props, tmp: { blockNumber, page } },
+  });
+}
+
 export function dispatch_renderReviewRankProposals(
   props: State,
   blockNumber: number,
@@ -620,6 +631,17 @@ export function dispatch_renderReviewSmartContractProposals(
   dispatch(Events.render, {
     type: RenderType.renderReviewSmartContractProposals,
     props: { ...props, tmp: { blockNumber, smartContractPage } },
+  });
+}
+
+export function dispatch_renderReviewRemovalProposals(
+  props: State,
+  blockNumber: number,
+  removalProposalPage: [RemovalProposal[], string[], PaginatedProposal]
+) {
+  dispatch(Events.render, {
+    type: RenderType.renderReviewRemovalProposals,
+    props: { ...props, tmp: { blockNumber, removalProposalPage } },
   });
 }
 
