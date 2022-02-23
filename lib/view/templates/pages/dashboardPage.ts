@@ -16,6 +16,7 @@ import {
   TokenPileLogo,
   VerificationLogo,
 } from "../components/logos";
+import { Marquee } from "../components/marquee";
 
 export const dashBoardElementsTitles: DashboardUIElement[] = [
   {
@@ -79,8 +80,10 @@ export const dashBoardElementsTitles: DashboardUIElement[] = [
     logo: TokenPileLogo(),
   },
 ];
-
-export const DashboardPage = () => html`<h3>Dashboard</h3>
+export const DashboardPage = () => html`
+  <hr />
+  ${Marquee()}
+  <h3>Dashboard</h3>
   <div class="dashboard-layout">
     ${dashBoardElementsTitles.map((elmnts) =>
       dashEl(elmnts.title, elmnts.id, elmnts.desc, elmnts.logo)
@@ -112,7 +115,8 @@ export const DashboardPage = () => html`<h3>Dashboard</h3>
       >${TandCLogo()}</a
     >
   </div>
-  <slot id="permapinned-data-slot"></slot> `;
+  <slot id="permapinned-data-slot"></slot>
+`;
 // The dashboard elements will have a loading indicator at the id, then the value.
 // It will side-effect like render it in an init function one by one as they fetch
 export const dashEl = (
