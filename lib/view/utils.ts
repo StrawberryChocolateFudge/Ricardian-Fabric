@@ -188,20 +188,8 @@ export function newTab(url: string) {
   window.open(url, "_blank");
 }
 
-export function copyStringToClipboard(str: string) {
-  // Create new element
-  const el = document.createElement("textarea");
-  // Set value (string to be copied)
-  el.value = str;
-  // Set non-editable to avoid focus and move outside of view
-  el.setAttribute("readonly", "");
-  document.body.appendChild(el);
-  // Select text inside element
-  el.select();
-  // Copy text to clipboard
-  document.execCommand("copy");
-  // Remove temporary element
-  document.body.removeChild(el);
+export async function copyStringToClipboard(str: string) {
+  await navigator.clipboard.writeText(str);
 }
 
 export function setBannerDisplayBlock() {
@@ -350,9 +338,9 @@ export function getEditorElementInnerHTML() {
   return getById("editor").innerHTML;
 }
 
-export function copyAddressToClipboard() {
+export async function copyAddressToClipboard() {
   const addressEl = getById("arweave-address");
-  copyStringToClipboard(addressEl.dataset.address);
+  await copyStringToClipboard(addressEl.dataset.address);
 }
 
 // THANKS TO https://gist.github.com/alisey/4552101
