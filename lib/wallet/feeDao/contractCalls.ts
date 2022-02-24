@@ -52,21 +52,6 @@ export async function closeTokenProposal(
     .on("receipt", onReceipt);
 }
 
-export async function expressOpinion(
-  feeDao: Contract,
-  tokenArrIndex: string,
-  likedIt: boolean,
-  from: string,
-  onError: any,
-  onReceipt: any
-) {
-  await feeDao.methods
-    .expressOpinion(tokenArrIndex, likedIt)
-    .send({ from })
-    .on("error", onError)
-    .on("receipt", onReceipt);
-}
-
 export async function withdrawETH(
   feeDao: Contract,
   amount: string,
