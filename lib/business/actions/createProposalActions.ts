@@ -535,9 +535,9 @@ export function uploadProposalSummaryActions(
   const postButton = getById("post-proposal");
   const copyButton = getById("copy-proposal-address");
 
-  copyButton.onclick = function () {
+  copyButton.onclick = async function () {
     const txIdEl = getById("transactionid");
-    copyStringToClipboard(txIdEl.dataset.id);
+    await copyStringToClipboard(txIdEl.dataset.id);
   };
 
   backButton.onclick = function () {

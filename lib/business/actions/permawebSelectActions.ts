@@ -257,9 +257,9 @@ export function uploadSummaryActions(
   const proceed = getById("uploadSummary-proceed");
   const transactiondisplay = getById("uploadSummary-tx");
   const copyButton = getById("copy-transaction");
-  copyButton.onclick = function () {
+  copyButton.onclick = async function () {
     const txId = copyButton.dataset.txid;
-    copyStringToClipboard(txId);
+    await copyStringToClipboard(txId);
   };
 
   back.onclick = function () {
@@ -583,8 +583,8 @@ export function showAccountActions(props: State) {
     dispatch_setPopupState(PopupState.NewAccount);
   };
 
-  copyButton.onclick = function () {
-    copyAddressToClipboard();
+  copyButton.onclick = async function () {
+    await copyAddressToClipboard();
   };
 }
 
@@ -799,9 +799,9 @@ export function permapinSummaryActions(arg: {
   const next = getById("permapinPost-proceed");
 
   const copyButton = getById("copy-transaction");
-  copyButton.onclick = function () {
+  copyButton.onclick = async function () {
     const txId = copyButton.dataset.txid;
-    copyStringToClipboard(txId);
+    await copyStringToClipboard(txId);
   };
   back.onclick = function () {
     dispatch_setPopupState(PopupState.Permapin);

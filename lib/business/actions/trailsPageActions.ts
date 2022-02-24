@@ -528,8 +528,8 @@ export function trailDetailsActions(
   for (let i = 0; i < copyButtons.length; i++) {
     const btn = copyButtons[i] as HTMLButtonElement;
     const txId = btn.dataset.txid;
-    btn.onclick = function () {
-      copyStringToClipboard(txId);
+    btn.onclick = async function () {
+      await copyStringToClipboard(txId);
     };
   }
 }
