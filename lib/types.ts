@@ -139,6 +139,11 @@ export enum RenderType {
   renderStakerDetails = "renderStakerDetails",
   catalogContent = "catalogContent",
   catalogContentLoadingIndicator = "catalogContentLoadingIndicator",
+  feeTokenRow = "feeTokenRow",
+  tokenProposalPopup = "tokenProposalPopup",
+  tokenProposals = "tokenProposals",
+  rewardTokenRowWithBalances = "rewardTokenRowWithBalances",
+  rewardTokenWithdraw = "rewardTokenWithdraw",
 }
 
 // TODO refactor to RenderDispatchArgs for specifying the dispatch arguments
@@ -253,6 +258,11 @@ export type Renderer = {
   [RenderType.renderStakerDetails]: RenderFunction;
   [RenderType.catalogContent]: RenderFunction;
   [RenderType.catalogContentLoadingIndicator]: RenderFunction;
+  [RenderType.feeTokenRow]: RenderFunction;
+  [RenderType.tokenProposalPopup]: RenderFunction;
+  [RenderType.tokenProposals]: RenderFunction;
+  [RenderType.rewardTokenRowWithBalances]: RenderFunction;
+  [RenderType.rewardTokenWithdraw]: RenderFunction;
 };
 
 export enum VerificationState {
@@ -675,8 +685,6 @@ export type TokenProposal = {
 export type Token = {
   name: string; // The name of the token
   token: string;
-  likes: string; // Amount of addresses liking this
-  dislikes: string; // Amount of addresses disliking this
 };
 
 export type LockedTokens = {
@@ -733,3 +741,9 @@ export type ArweaveDataDisplayContent = {
   metadisplay: string; // metadata to displya;
   linkedContractType: string;
 } & TrailData;
+
+export type TokenWithBalance = {
+  name: string;
+  address: string;
+  balance: string;
+};
