@@ -20,6 +20,8 @@ import {
   SmartContractProposal,
   Staker,
   State,
+  Token,
+  TokenProposal,
   VerificationState,
 } from "../types";
 import { AcceptButton, acceptTools } from "./templates/components/acceptTools";
@@ -99,7 +101,12 @@ import {
   loadedValueEl,
   PermaPinnedData,
 } from "./templates/pages/dashboardPage";
-import { FeeDaoPage } from "./templates/pages/feeDaoPage";
+import {
+  FeeDaoPage,
+  proposeTokenPopup,
+  TokenProposals,
+  tokenRow,
+} from "./templates/pages/feeDaoPage";
 import { PSTPage } from "./templates/pages/pstPage";
 import { TokenSalePage } from "./templates/pages/tokenSalePage";
 import { EmptyVault, VaultItems, VaultPage } from "./templates/pages/vaultPage";
@@ -110,7 +117,10 @@ import {
   TrailsPage,
 } from "./templates/pages/trailsPage";
 import { ToyBlocks } from "./templates/components/logos";
-import { CollectRewardsPage } from "./templates/pages/collectRewardsPage";
+import {
+  CollectRewardsPage,
+  TokenRow,
+} from "./templates/pages/collectRewardsPage";
 import {
   AddCommentTrail,
   UploadArweaveTxSummary,
@@ -122,6 +132,7 @@ import {
   VoteOnSmartContract,
 } from "./templates/popups/contractDisplayAndVote";
 import { smartContractProductPage } from "./templates/components/smartContractProductPage";
+import { zeroAddress } from "ethereumjs-util";
 
 export function renderConnectYourWallet(props: State) {
   const page = getById("page");
@@ -229,7 +240,7 @@ export async function removeLoadingIndicator(from: string) {
 
 export async function renderTransaction(props: State, url: string) {
   render(transactionUrl(props, url), getById("transaction-display"));
-  copyStringToClipboard(url);
+  await copyStringToClipboard(url);
 }
 
 export async function removeTransaction() {
@@ -1624,4 +1635,31 @@ export function renderCatalogContentLoadingIndicator() {
   contentEl.classList.add("placeholder-item");
   contentEl.classList.remove("rowAround");
   render(html`<h3>Loading</h3>`, contentEl);
+}
+
+export function renderFeeTokenRow(tokens: Token[]) {
+  const feeTokenRow = getById("tokenRow");
+  render(tokenRow(tokens), feeTokenRow);
+}
+
+export function renderTokenProposalPopup() {
+  const layout = getById("overlay-layout");
+  render(proposeTokenPopup(), layout);
+}
+
+export function renderTokenProposals(
+  proposals: TokenProposal[],
+  blockNumber: number,
+  myaddress: string
+) {
+  const slot = getById("tokenProposals");
+  render(TokenProposals(proposals, blockNumber, myaddress), slot);
+}
+
+export function renderFeeTokenRowWithBalances(
+  tokens: Array<{ name: string; address: string; balance: string }>
+) {
+  const el = getById("feeTokenRow");
+  el.classList.remove("placeholder-item");
+  render(TokenRow(tokens), el);
 }
