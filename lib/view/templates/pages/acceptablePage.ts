@@ -380,6 +380,9 @@ export const acceptablePageLayout = (props: AcceptablePageProps) => html`
     .cursor-pointer {
       cursor: pointer;
     }
+    .circular {
+      border-radius: 50%;
+    }
   </style>
   <body>
     ${acceptablePage(props)} ${mainDep(props.mainDep.src)}

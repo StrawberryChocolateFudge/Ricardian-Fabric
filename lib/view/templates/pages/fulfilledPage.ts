@@ -102,6 +102,9 @@ export const fulfilledPageLayout = (props: FulfilledPageProps) => html`
       padding: 10px;
       color: black;
     }
+    .circular {
+      border-radius: 50%;
+    }
   </style>
 
   <body>
