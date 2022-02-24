@@ -13,6 +13,9 @@ import {
   SmartContractProposal,
   Staker,
   State,
+  Token,
+  TokenProposal,
+  TokenWithBalance,
   TrailDetails,
   VerificationState,
 } from "../types";
@@ -1000,5 +1003,54 @@ export function dispatch_renderCatalogContractLoadingIndicator(props: State) {
   dispatch(Events.render, {
     type: RenderType.catalogContentLoadingIndicator,
     props,
+  });
+}
+
+export function dispatch_feeTokenRow(props: State, tokens: Token[]) {
+  dispatch(Events.render, {
+    type: RenderType.feeTokenRow,
+    props: { ...props, tmp: { tokens } },
+  });
+}
+
+export function dispatch_renderTokenProposalPopup(
+  props: State,
+  feeDao: Contract
+) {
+  dispatch(Events.render, {
+    type: RenderType.tokenProposalPopup,
+    props: { ...props, tmp: { feeDao } },
+  });
+}
+
+export function dispatch_renderTokenProposals(
+  props: State,
+  proposals: TokenProposal[],
+  blockNumber: number,
+  myaddress: string
+) {
+  dispatch(Events.render, {
+    type: RenderType.tokenProposals,
+    props: { ...props, tmp: { proposals, blockNumber, myaddress } },
+  });
+}
+
+export function dispatch_renderRewardTokenRowWithBalances(
+  props: State,
+  tokenBalances: Array<TokenWithBalance>
+) {
+  dispatch(Events.render, {
+    type: RenderType.rewardTokenRowWithBalances,
+    props: { ...props, tmp: { tokenBalances } },
+  });
+}
+
+export function dispatch_renderRewardTokenWithdraw(
+  props: State,
+  token: TokenWithBalance
+) {
+  dispatch(Events.render, {
+    type: RenderType.rewardTokenWithdraw,
+    props: { ...props, tmp: { token } },
   });
 }
