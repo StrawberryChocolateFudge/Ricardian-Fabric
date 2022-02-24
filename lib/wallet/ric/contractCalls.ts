@@ -15,6 +15,11 @@ export async function getRicContract(): Promise<Contract> {
   return await new metamask_web3.eth.Contract(getRicAbi(), RICADDRESS);
 }
 
+export async function getERC20(address: string): Promise<Contract> {
+  //Using the ric abi to check for generic erc20 contract
+  return await new metamask_web3.eth.Contract(getRicAbi(), address);
+}
+
 export async function approve(
   ric: Contract,
   spender: string,
@@ -56,4 +61,8 @@ export async function allowance(
   const allowance = await ric.methods.allowance(owner, spender).call({ from });
 
   return Web3.utils.fromWei(allowance);
+}
+
+export async function getName(contract: Contract, from: string) {
+  return await contract.methods.name().call({ from });
 }
