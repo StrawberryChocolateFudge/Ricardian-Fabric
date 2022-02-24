@@ -123,6 +123,10 @@ import {
   renderCatalogContentLoadingIndicator,
   renderRemovalProposalTable,
   renderMyRemovalProposals,
+  renderFeeTokenRow,
+  renderTokenProposalPopup,
+  renderTokenProposals,
+  renderFeeTokenRowWithBalances,
 } from "./render";
 import { renderAcceptTools } from "./render";
 import { areYouSureButtons } from "../business/actions/areYouSureButtons";
@@ -187,7 +191,12 @@ import {
 import { wrongNetworkActions } from "../business/actions/WrongNetworkActions";
 import { connectWalletButton } from "../business/actions/connectWalletButton";
 import { dashboardActions } from "../business/actions/dashboardActions";
-import { feeProposalPageActions } from "../business/actions/feeProposalPageActions";
+import {
+  feeProposalPageActions,
+  tokenProposalPopupActions,
+  tokenProposalsTableActions,
+  tokenRowActions,
+} from "../business/actions/feeProposalPageActions";
 import { pstPageActions } from "../business/actions/pstPageActions";
 import { tokenSalePageActions } from "../business/actions/tokenSalePageActions";
 import {
@@ -206,6 +215,10 @@ import {
   contractDisplayActions,
   SCProposalDisplayPageActions,
 } from "../business/actions/contractDisplayActions";
+import {
+  collectRewardsPageActions,
+  onRewardTokenRowClicks,
+} from "../business/actions/collectRewardsPageActions";
 
 const Render: Renderer = {
   [RenderType.connectYourWallet]: (props: State) => {
@@ -626,9 +639,9 @@ const Render: Renderer = {
       props.tmp.isStaking
     );
   },
-  [RenderType.feeProposalsPage]: (props: RenderDispatchArgs) => {
+  [RenderType.feeProposalsPage]: async (props: RenderDispatchArgs) => {
     renderFeeProposalsPage(props);
-    feeProposalPageActions(props);
+    await feeProposalPageActions(props);
   },
   [RenderType.pstPage]: (props: RenderDispatchArgs) => {
     renderPSTPage(props);
@@ -677,8 +690,9 @@ const Render: Renderer = {
   [RenderType.renderApprovedSpend]: (props: RenderDispatchArgs) => {
     renderApprovedSpend(props.tmp.spend);
   },
-  [RenderType.collectRewardsPage]: (props: RenderDispatchArgs) => {
+  [RenderType.collectRewardsPage]: async (props: RenderDispatchArgs) => {
     renderCollectRewardsPage(props);
+    await collectRewardsPageActions(props);
   },
   [RenderType.PSArweaveAddress]: (props: RenderDispatchArgs) => {
     renderPSArweaveAddress(props.tmp.address);
@@ -819,6 +833,29 @@ const Render: Renderer = {
   },
   [RenderType.catalogContentLoadingIndicator]: (props: RenderDispatchArgs) => {
     renderCatalogContentLoadingIndicator();
+  },
+  [RenderType.feeTokenRow]: (props: RenderDispatchArgs) => {
+    renderFeeTokenRow(props.tmp.tokens);
+    tokenRowActions();
+  },
+  [RenderType.tokenProposalPopup]: (props: RenderDispatchArgs) => {
+    renderTokenProposalPopup();
+    tokenProposalPopupActions(props, props.tmp.feeDao);
+  },
+  [RenderType.tokenProposals]: (props: RenderDispatchArgs) => {
+    renderTokenProposals(
+      props.tmp.proposals,
+      props.tmp.blockNumber,
+      props.tmp.myaddress
+    );
+    tokenProposalsTableActions(props);
+  },
+  [RenderType.rewardTokenRowWithBalances]: (props: RenderDispatchArgs) => {
+    renderFeeTokenRowWithBalances(props.tmp.tokenBalances);
+    onRewardTokenRowClicks(props);
+  },
+  [RenderType.rewardTokenWithdraw]: (props: RenderDispatchArgs) => {
+    //Maybe it will work with drag and drop and will be different.....
   },
 };
 
