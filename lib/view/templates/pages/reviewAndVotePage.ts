@@ -165,7 +165,10 @@ function rankProposalTR(
     </tr>`;
 }
 
-function getExpiresElementTitle(createdBlock: string, blockNumber: number) {
+export function getExpiresElementTitle(
+  createdBlock: string,
+  blockNumber: number
+) {
   if (!getStatusCondition(blockNumber, createdBlock)) {
     return html`<small
       >${parseInt(createdBlock) + VOTINGPERIODBLOCKS - blockNumber}</small

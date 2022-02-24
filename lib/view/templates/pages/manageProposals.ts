@@ -296,9 +296,14 @@ export function getRankPagingButtons(
     cssselector,
     "rank"
   );
+  if (totalPages === 0) {
+    return null;
+  }
+
   if (pageButtons.length === 1) {
     return null;
   }
+
   return html`<button
       id="rank-page-left"
       data-rankpage="${currentPage}"
