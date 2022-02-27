@@ -20,19 +20,19 @@ import { Marquee } from "../components/marquee";
 
 export const dashBoardElementsTitles: DashboardUIElement[] = [
   {
-    title: "Ric Total Supply",
+    title: "Total Supply (RIC)",
     id: "ric-total-supply",
     desc: "All the tokens were created and it's not possible to mint more.",
     logo: GoldBarsLogo(),
   },
   {
-    title: "Locked in Vault",
+    title: "Locked in Vault (RIC)",
     id: "ric-in-vault",
     desc: "The amount of RIC currently locked in the vault.",
     logo: CryptoVaultLogo(),
   },
   {
-    title: "RIC for sale",
+    title: "For sale (RIC)",
     id: "ric-left-for-sale",
     desc: "Join the community by purchasing the native token, Ric.",
     logo: CardLookingLogo(),
@@ -44,7 +44,7 @@ export const dashBoardElementsTitles: DashboardUIElement[] = [
     logo: RateLogo(),
   },
   {
-    title: "Contributor Rewards",
+    title: "Contributor Rewards (RIC)",
     id: "available-reward-amount",
     desc: "The rewards available for the catalogue contributors!",
     logo: Rewardhand(),
@@ -62,7 +62,7 @@ export const dashBoardElementsTitles: DashboardUIElement[] = [
     logo: AllProposalsLogo(),
   },
   {
-    title: "Contributor Stake",
+    title: "Contributor Stake (RIC)",
     id: "total-staking-amount",
     desc: "The amount of RIC securing the catalogue.",
     logo: StakingLogo("50"),
@@ -140,7 +140,10 @@ export const dashEl = (
   </div>
 `;
 
-export const loadedValueEl = (loadedValue) => html` <h4>${loadedValue}</h4>`;
+export const loadedValueEl = (loadedValue) =>
+  html`<div class="width-100">
+    <p class="textOverflow">${loadedValue}</p>
+  </div>`;
 
 export const PermaPinnedData = (ipfsV2Url: string, nodes: any) => {
   return html`
