@@ -366,7 +366,7 @@ function smartContractProposalTR(
       <td>${getBlockie(smartContractProposal.creator, "50px", "")}</td>
       <td>
         <button
-          class="contract-page-popup border-none cursor-pointer"
+          class="contract-page-popup border-none cursor-pointer borderRadius5px"
           data-arweavetx="${smartContractProposal.arweaveTxId}"
           title="Uploaded proposal details"
         >
