@@ -10,6 +10,7 @@ import {
   RankProposal,
   RemovalProposal,
   RenderType,
+  SelectedRewardDetails,
   SmartContractProposal,
   Staker,
   State,
@@ -1047,10 +1048,18 @@ export function dispatch_renderRewardTokenRowWithBalances(
 
 export function dispatch_renderRewardTokenWithdraw(
   props: State,
-  token: TokenWithBalance
+  selected: "none" | "single",
+  details: Array<SelectedRewardDetails>
 ) {
   dispatch(Events.render, {
     type: RenderType.rewardTokenWithdraw,
-    props: { ...props, tmp: { token } },
+    props: { ...props, tmp: { selected, details } },
+  });
+}
+
+export function dispatch_renderRewardTokenSelected(props: State, id: string) {
+  dispatch(Events.render, {
+    type: RenderType.renderTokenSelected,
+    props: { ...props, tmp: { id } },
   });
 }
