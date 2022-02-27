@@ -67,7 +67,6 @@ function smartContractElementBoxes(
     data-proposal="${JSON.stringify(proposal)}"
     class="box cursor-pointer  labelButton unselectable contract-page-popup"
   >
-    <hr />
     <div class="row padding-5">
       <div class="column">
         <div>${getBlockie(uploadsForCategory.node.id, "50px", "")}</div>
@@ -78,8 +77,10 @@ function smartContractElementBoxes(
         >
       </div>
       <hr />
-      <div class="overflow-auto width-100">
-        <small> ${getTag(uploadsForCategory.node.tags, "Name")} </small>
+      <div class="column">
+        <div class="overflow-auto width-100">
+          <small> ${getTag(uploadsForCategory.node.tags, "Name")} </small>
+        </div>
       </div>
     </div>
   </div>`;
