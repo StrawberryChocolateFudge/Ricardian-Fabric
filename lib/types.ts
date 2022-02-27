@@ -144,6 +144,7 @@ export enum RenderType {
   tokenProposals = "tokenProposals",
   rewardTokenRowWithBalances = "rewardTokenRowWithBalances",
   rewardTokenWithdraw = "rewardTokenWithdraw",
+  renderTokenSelected = "renderTokenSelected",
 }
 
 // TODO refactor to RenderDispatchArgs for specifying the dispatch arguments
@@ -263,6 +264,7 @@ export type Renderer = {
   [RenderType.tokenProposals]: RenderFunction;
   [RenderType.rewardTokenRowWithBalances]: RenderFunction;
   [RenderType.rewardTokenWithdraw]: RenderFunction;
+  [RenderType.renderTokenSelected]: RenderFunction;
 };
 
 export enum VerificationState {
@@ -746,4 +748,11 @@ export type TokenWithBalance = {
   name: string;
   address: string;
   balance: string;
+};
+
+export type SelectedRewardDetails = {
+  name: string;
+  balance: string;
+  canWithdraw: string;
+  address: string;
 };
