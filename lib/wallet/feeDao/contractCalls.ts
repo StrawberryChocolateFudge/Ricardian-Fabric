@@ -68,30 +68,14 @@ export async function withdrawETH(
 
 export async function withdrawOne(
   feeDao: Contract,
+  erc20: string,
   amount: string,
   from: string,
   onError: any,
   onReceipt: any
 ) {
   await feeDao.methods
-    .withdrawOne(amount)
-    .send({ from })
-    .on("error", onError)
-    .on("receipt", onReceipt);
-}
-
-export async function withdrawThree(
-  feeDao: Contract,
-  first: string,
-  second: string,
-  third: string,
-  amount: string,
-  from: string,
-  onError: any,
-  onReceipt: any
-) {
-  await feeDao.methods
-    .withdrawThree(first, second, third, amount)
+    .withdrawOne(erc20, amount)
     .send({ from })
     .on("error", onError)
     .on("receipt", onReceipt);
@@ -125,8 +109,9 @@ export async function calculateETHWithdraw(
   amount: string,
   from: string
 ): Promise<string> {
+  const toWei = Web3.utils.toWei(amount);
   const withdraw = await feeDao.methods
-    .calculateETHWithdraw(amount)
+    .calculateETHWithdraw(toWei)
     .call({ from });
 
   return Web3.utils.fromWei(withdraw);
@@ -138,9 +123,11 @@ export async function calculateWithdraw(
   amount: string,
   from: string
 ): Promise<string> {
-  return await feeDao.methods
-    .calculateWithdraw(withdrawFrom, amount)
+  const toWei = Web3.utils.toWei(amount);
+  const withdraw = await feeDao.methods
+    .calculateWithdraw(withdrawFrom, toWei)
     .call({ from });
+  return Web3.utils.fromWei(withdraw);
 }
 
 export async function getCurrentbalance(
