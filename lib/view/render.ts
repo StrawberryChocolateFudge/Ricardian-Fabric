@@ -16,6 +16,7 @@ import {
   RankProposal,
   RemovalProposal,
   RenderType,
+  SelectedRewardDetails,
   SelectedWallet,
   SmartContractProposal,
   Staker,
@@ -119,6 +120,7 @@ import {
 import { ToyBlocks } from "./templates/components/logos";
 import {
   CollectRewardsPage,
+  getSelected,
   TokenRow,
 } from "./templates/pages/collectRewardsPage";
 import {
@@ -1656,10 +1658,27 @@ export function renderTokenProposals(
   render(TokenProposals(proposals, blockNumber, myaddress), slot);
 }
 
-export function renderFeeTokenRowWithBalances(
+export function renderRewardTokenRowWithBalances(
   tokens: Array<{ name: string; address: string; balance: string }>
 ) {
-  const el = getById("feeTokenRow");
+  const el = getById("rewardTokenRow");
   el.classList.remove("placeholder-item");
   render(TokenRow(tokens), el);
+}
+
+export function renderWithdrawRewardToken(
+  selected: "none" | "single" | "triple",
+  details: Array<SelectedRewardDetails>
+) {
+  const slot = getById("rewardWithdrawSelected");
+  render(getSelected(selected, details), slot);
+}
+
+export function renderTokenSelected(selected: string) {
+  const selectedEl = getById(selected);
+  if (selectedEl.classList.contains("rewardSelected")) {
+    selectedEl.classList.remove("rewardSelected");
+  } else {
+    selectedEl.classList.add("rewardSelected");
+  }
 }
