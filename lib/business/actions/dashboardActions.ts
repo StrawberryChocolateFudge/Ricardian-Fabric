@@ -97,7 +97,7 @@ export async function dashboardActions(props: State) {
 
   const totalSupplyVal = totalSupplyOptions.data;
 
-  dispatch_renderLoadedValue(props, totalSupplyVal + " RIC", ricTotalSupplyEl);
+  dispatch_renderLoadedValue(props, totalSupplyVal, ricTotalSupplyEl);
 
   const ricsaleOptions = await OptionsBuilder(() => getRicSaleContract());
 
@@ -127,7 +127,7 @@ export async function dashboardActions(props: State) {
   if (tokensSold === "40000000") {
     dispatch_renderLoadedValue(props, "Sale finished", ricLeftEl);
   } else {
-    dispatch_renderLoadedValue(props, ricLeft + " RIC", ricLeftEl);
+    dispatch_renderLoadedValue(props, ricLeft, ricLeftEl);
   }
 
   const ricRateOptions = await OptionsBuilder(() =>
@@ -160,7 +160,7 @@ export async function dashboardActions(props: State) {
 
   const totalLocked = totalLockedOptions.data;
 
-  dispatch_renderLoadedValue(props, totalLocked + " RIC", ricLockedInVaultEl);
+  dispatch_renderLoadedValue(props, totalLocked, ricLockedInVaultEl);
 
   const daoStakingOptions = await OptionsBuilder(() => getDaoStakingContract());
   if (hasError(daoStakingOptions)) {
@@ -176,11 +176,7 @@ export async function dashboardActions(props: State) {
 
   const availableReward = availableRewardOptions.data;
 
-  dispatch_renderLoadedValue(
-    props,
-    availableReward + " RIC",
-    availableRewardEl
-  );
+  dispatch_renderLoadedValue(props, availableReward, availableRewardEl);
 
   const catalogDAOOptions = await OptionsBuilder(() =>
     getCatalogDAOContractWithWallet()
@@ -234,11 +230,7 @@ export async function dashboardActions(props: State) {
 
   const contributorStake = contributorStakeOptions.data;
 
-  dispatch_renderLoadedValue(
-    props,
-    contributorStake + " RIC",
-    contributorStakeEl
-  );
+  dispatch_renderLoadedValue(props, contributorStake, contributorStakeEl);
 
   const feeDaoOptions = await OptionsBuilder(() => getFeeDaoContract());
   if (hasError(feeDaoOptions)) {
