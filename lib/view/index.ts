@@ -126,7 +126,9 @@ import {
   renderFeeTokenRow,
   renderTokenProposalPopup,
   renderTokenProposals,
-  renderFeeTokenRowWithBalances,
+  renderRewardTokenRowWithBalances,
+  renderWithdrawRewardToken,
+  renderTokenSelected,
 } from "./render";
 import { renderAcceptTools } from "./render";
 import { areYouSureButtons } from "../business/actions/areYouSureButtons";
@@ -218,6 +220,7 @@ import {
 import {
   collectRewardsPageActions,
   onRewardTokenRowClicks,
+  tokenWithdrawActions,
 } from "../business/actions/collectRewardsPageActions";
 
 const Render: Renderer = {
@@ -851,11 +854,15 @@ const Render: Renderer = {
     tokenProposalsTableActions(props);
   },
   [RenderType.rewardTokenRowWithBalances]: (props: RenderDispatchArgs) => {
-    renderFeeTokenRowWithBalances(props.tmp.tokenBalances);
+    renderRewardTokenRowWithBalances(props.tmp.tokenBalances);
     onRewardTokenRowClicks(props);
   },
-  [RenderType.rewardTokenWithdraw]: (props: RenderDispatchArgs) => {
-    //Maybe it will work with drag and drop and will be different.....
+  [RenderType.rewardTokenWithdraw]: async (props: RenderDispatchArgs) => {
+    renderWithdrawRewardToken(props.tmp.selected, props.tmp.details);
+    await tokenWithdrawActions(props, props.tmp.selected);
+  },
+  [RenderType.renderTokenSelected]: (props: RenderDispatchArgs) => {
+    renderTokenSelected(props.tmp.id);
   },
 };
 
