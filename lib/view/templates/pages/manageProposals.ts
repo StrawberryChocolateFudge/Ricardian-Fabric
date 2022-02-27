@@ -474,7 +474,7 @@ function acceptedSmartContractProposalTR(
     <td><label>${index}</label></td>
     <td>
       <button
-        class="border-none cursor-pointer contract-page-popup"
+        class="border-none cursor-pointer contract-page-popup borderRadius5px"
         data-arweavetx="${acceptedProp.arweaveTxId}"
         title="Uploaded Proposal Details"
       >
@@ -560,7 +560,7 @@ function smartContractProposalTR(
     <td><label>${proposalIndex}</label></td>
     <td>
       <button
-        class="border-none cursor-pointer contract-page-popup"
+        class="border-none cursor-pointer contract-page-popup borderRadius5px"
         data-arweavetx="${smartContractProposal.arweaveTxId}"
         title="Uploaded proposal details"
       >
