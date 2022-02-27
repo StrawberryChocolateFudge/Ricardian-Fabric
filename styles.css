@@ -1181,3 +1181,16 @@ hr {
 .circular {
   border-radius: 50%;
 }
+
+.rewardSelected {
+  box-shadow: none;
+}
+
+.borderRadius5px {
+  border-radius: 5px;
+}
+.textOverflow {
+  overflow: auto;
+  white-space: nowrap;
+  text-overflow: clip;
+}
