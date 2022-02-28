@@ -1,11 +1,10 @@
 import {
-  dispatch_renderError,
   dispatch_renderLoadedValue,
   dispatch_renderPermapinnedDashboardData,
 } from "../../dispatch/render";
 import { dispatch_setPage } from "../../dispatch/stateChange";
 import { getUploadedContracts } from "../../fetch/graphql";
-import { PageState, State, Status } from "../../types";
+import { PageState, State } from "../../types";
 import { getById } from "../../view/utils";
 import {
   getAcceptedSmartContractIndex,
@@ -95,7 +94,7 @@ export async function dashboardActions(props: State) {
     return;
   }
 
-  const totalSupplyVal = totalSupplyOptions.data;
+  const totalSupplyVal = parseFloat(totalSupplyOptions.data).toFixed(4);
 
   dispatch_renderLoadedValue(props, totalSupplyVal, ricTotalSupplyEl);
 
@@ -113,7 +112,7 @@ export async function dashboardActions(props: State) {
     return;
   }
 
-  const ricLeft = ricLeftOptions.data;
+  const ricLeft = parseFloat(ricLeftOptions.data).toFixed(2);
   let tokensSoldOptions = await OptionsBuilder(() =>
     getTokensSold(ricsale, address)
   );
@@ -158,7 +157,7 @@ export async function dashboardActions(props: State) {
     return;
   }
 
-  const totalLocked = totalLockedOptions.data;
+  const totalLocked = parseFloat(totalLockedOptions.data).toFixed(4);
 
   dispatch_renderLoadedValue(props, totalLocked, ricLockedInVaultEl);
 
@@ -174,7 +173,7 @@ export async function dashboardActions(props: State) {
     return;
   }
 
-  const availableReward = availableRewardOptions.data;
+  const availableReward = parseFloat(availableRewardOptions.data).toFixed(4);
 
   dispatch_renderLoadedValue(props, availableReward, availableRewardEl);
 
@@ -193,7 +192,9 @@ export async function dashboardActions(props: State) {
     return;
   }
 
-  const acceptedContracts = acceptedContractsOptions.data;
+  const acceptedContracts = parseFloat(acceptedContractsOptions.data).toFixed(
+    4
+  );
 
   dispatch_renderLoadedValue(props, acceptedContracts, availableContractsEl);
 
@@ -228,7 +229,7 @@ export async function dashboardActions(props: State) {
     return;
   }
 
-  const contributorStake = contributorStakeOptions.data;
+  const contributorStake = parseFloat(contributorStakeOptions.data).toFixed(2);
 
   dispatch_renderLoadedValue(props, contributorStake, contributorStakeEl);
 
@@ -246,7 +247,7 @@ export async function dashboardActions(props: State) {
     return;
   }
 
-  const fees = feesOptions.data;
+  const fees = parseFloat(feesOptions.data).toFixed(4);
 
   dispatch_renderLoadedValue(props, fees + " ONE", HarmonyFeesCollectedEl);
 
