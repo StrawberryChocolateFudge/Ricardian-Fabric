@@ -1192,5 +1192,9 @@ hr {
 .textOverflow {
   overflow: auto;
   white-space: nowrap;
-  text-overflow: clip;
+  text-overflow: ellipsis;
+}
+
+.text-align-start {
+  text-align: start;
 }
