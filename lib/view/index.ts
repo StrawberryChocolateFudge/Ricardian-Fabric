@@ -129,6 +129,8 @@ import {
   renderRewardTokenRowWithBalances,
   renderWithdrawRewardToken,
   renderTokenSelected,
+  contractDeployedPopup,
+  contractDeployedData,
 } from "./render";
 import { renderAcceptTools } from "./render";
 import { areYouSureButtons } from "../business/actions/areYouSureButtons";
@@ -145,7 +147,10 @@ import {
   addChainButtonListener,
   networkSelectActions,
 } from "../business/actions/networkSelectActions";
-import { constructSCActions } from "../business/actions/deploySCActions";
+import {
+  constructSCActions,
+  deploymentDoneActions,
+} from "../business/actions/deploySCActions";
 import { templateSelectActions } from "../business/actions/templateSelectActions";
 import {
   AddNewAccountActions,
@@ -863,6 +868,13 @@ const Render: Renderer = {
   },
   [RenderType.renderTokenSelected]: (props: RenderDispatchArgs) => {
     renderTokenSelected(props.tmp.id);
+  },
+  [RenderType.contractDeployedPopup]: (props: RenderDispatchArgs) => {
+    contractDeployedPopup();
+  },
+  [RenderType.contractDeployedData]: (props: RenderDispatchArgs) => {
+    contractDeployedData(props.tmp.contractAddress, props.tmp.simpleTerms);
+    deploymentDoneActions();
   },
 };
 

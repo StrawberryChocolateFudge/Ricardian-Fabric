@@ -1,7 +1,6 @@
 import { html, nothing } from "lit-html";
 import { findConstructorParameters } from "../../../wallet/web3";
-import { getHRC20Abi } from "../../../wallet/abi/HRC20";
-import { BackLogo } from "../components/logos";
+import { BackLogo, CopyLogo } from "../components/logos";
 import { ProposalFormat } from "../../../types";
 
 export function SCConstructorPopup(selected: ProposalFormat) {
@@ -101,6 +100,46 @@ export function SCConstructorPopup(selected: ProposalFormat) {
         Create contract!
       </button>
     </div>
+    <hr />
+  `;
+}
+
+export function deploymentDonePopup() {
+  return html`<h4>Successful deployment!</span></h4>
+    <div id="contract-details" class="column width-400"></div>`;
+}
+
+export function deploymentDone(contractAddress: string, simpleTerms: boolean) {
+  return html`
+    <label>Contract is deployed to:</label>
+    <div class="row">
+      <pre class="overflow-auto">${contractAddress}</pre>
+      <button
+        class="labelButton"
+        data-address="${contractAddress}"
+        id="copyContractAddress"
+      >
+        ${CopyLogo()}
+      </button>
+    </div>
+    <hr />
+    ${simpleTerms
+      ? html`<p>
+          The contract uses a Ricardian Contract.Head over to the Ricardian
+          contract editor, the smart contract field has been assigned with the
+          address.
+        </p>`
+      : nothing}
+    <div class="rowAround">
+      <button
+        class="labelButton width-50 text-align-center"
+        id="dismiss-popup-button"
+      >
+        Done
+      </button>
+      <button id="head-over-button" class="labelButton">Go to Editor</button>
+    </div>
+
     <hr />
   `;
 }

@@ -5,6 +5,7 @@ import {
   dispatch_catalogPage,
   dispatch_collectRewardPage,
   dispatch_ConnectYourWalletPage,
+  dispatch_contractDeployedPopup,
   dispatch_dismissSidebar,
   dispatch_emptyPopup,
   dispatch_feeProposals,
@@ -81,9 +82,11 @@ export const setStateHook = {
     dispatch_renderAcceptButton(cloneState(args.obj));
   },
   [StateProperties.selectedWallet]: (args: SetHookArgs) => {
+    //TODO: REMOVE!!
+
     if (args.obj.contracttype === ContractTypes.create) {
       const clone = cloneState(args.obj);
-      //TODO: This is not working right now,
+      //TODO: This is not used  right now,
       // there could be a bug if used because createPage has the editor locally and this will reinitialize it/
       // dispatch_renderCreateButton(clone);
     }
@@ -146,6 +149,10 @@ export const setStateHook = {
         break;
       case PopupState.emptyPopup:
         dispatch_emptyPopup(clone);
+        break;
+      case PopupState.contractDeployed:
+        dispatch_contractDeployedPopup(clone);
+        break;
       default:
         break;
     }

@@ -36,7 +36,11 @@ import { NetworkDropdown } from "./templates/dropdowns/networkdropdown";
 import { PermawebDropdown } from "./templates/dropdowns/permawebDropdown";
 import { redirectButton } from "./templates/components/redirectCounter";
 import { SanctionsDropdown } from "./templates/dropdowns/sanctionsDropdown";
-import { SCConstructorPopup } from "./templates/popups/SCContructorPopup";
+import {
+  deploymentDone,
+  deploymentDonePopup,
+  SCConstructorPopup,
+} from "./templates/popups/SCContructorPopup";
 import { TemplateDropdown } from "./templates/dropdowns/templatedropdown";
 import { transactionUrl, TxId } from "./templates/components/transaction";
 import {
@@ -1681,4 +1685,14 @@ export function renderTokenSelected(selected: string) {
   } else {
     selectedEl.classList.add("rewardSelected");
   }
+}
+
+export function contractDeployedPopup() {
+  const layout = getById("overlay-layout");
+  render(deploymentDonePopup(), layout);
+}
+
+export function contractDeployedData(address: string, simpleterms: boolean) {
+  const contractDetails = getById("contract-details");
+  render(deploymentDone(address, simpleterms), contractDetails);
 }

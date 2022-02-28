@@ -145,6 +145,8 @@ export enum RenderType {
   rewardTokenRowWithBalances = "rewardTokenRowWithBalances",
   rewardTokenWithdraw = "rewardTokenWithdraw",
   renderTokenSelected = "renderTokenSelected",
+  contractDeployedPopup = "contractDeployedPopup",
+  contractDeployedData = "contractDeployedData",
 }
 
 // TODO refactor to RenderDispatchArgs for specifying the dispatch arguments
@@ -265,6 +267,8 @@ export type Renderer = {
   [RenderType.rewardTokenRowWithBalances]: RenderFunction;
   [RenderType.rewardTokenWithdraw]: RenderFunction;
   [RenderType.renderTokenSelected]: RenderFunction;
+  [RenderType.contractDeployedPopup]: RenderFunction;
+  [RenderType.contractDeployedData]: RenderFunction;
 };
 
 export enum VerificationState {
@@ -386,6 +390,7 @@ export enum PopupState {
   SavePage,
   AddComment,
   emptyPopup,
+  contractDeployed,
 }
 
 export enum PageState {

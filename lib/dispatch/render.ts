@@ -1063,3 +1063,21 @@ export function dispatch_renderRewardTokenSelected(props: State, id: string) {
     props: { ...props, tmp: { id } },
   });
 }
+
+export function dispatch_contractDeployedPopup(props: State) {
+  dispatch(Events.render, {
+    type: RenderType.contractDeployedPopup,
+    props,
+  });
+}
+
+export function dispatch_contractDeployedData(
+  props: State,
+  contractAddress: string,
+  simpleTerms: boolean
+) {
+  dispatch(Events.render, {
+    type: RenderType.contractDeployedData,
+    props: { ...props, tmp: { contractAddress, simpleTerms } },
+  });
+}

@@ -1,10 +1,17 @@
 import {
+  dispatch_contractDeployedData,
   dispatch_DisableSCInputs,
   dispatch_EnableSCInputs,
   dispatch_renderError,
   dispatch_setDeployedSCAddress,
 } from "../../dispatch/render";
-import { ChainName, PopupState, ProposalFormat, State } from "../../types";
+import {
+  ChainName,
+  PageState,
+  PopupState,
+  ProposalFormat,
+  State,
+} from "../../types";
 import {
   deployContract,
   findConstructorParameters,
@@ -14,10 +21,11 @@ import {
   switchNetwork,
   web3Injected,
 } from "../../wallet/web3";
-import { getById } from "../../view/utils";
+import { copyStringToClipboard, getById } from "../../view/utils";
 import MetaMaskOnboarding from "@metamask/onboarding";
 import {
   dispatch_setCreateRicardianState,
+  dispatch_setPage,
   dispatch_setPopupState,
 } from "../../dispatch/stateChange";
 
@@ -85,13 +93,16 @@ export function constructSCActions(props: State, selected: ProposalFormat) {
     const onReceipt = async (receipt) => {
       dispatch_setDeployedSCAddress(receipt.contractAddress);
 
-      dispatch_setPopupState(PopupState.NONE);
+      dispatch_setPopupState(PopupState.contractDeployed);
+
       if (selected.simpleterms) {
         dispatch_setCreateRicardianState({
           ...props.createRicardianPageProps,
           smartContract: receipt.contractAddress,
         });
       }
+
+      dispatch_contractDeployedData(props, address, selected.simpleterms);
     };
 
     await deployContract(
@@ -127,4 +138,23 @@ export function prepareArguments(constructorElements, params) {
     preparedArgs.push(prepareType(type, value));
   });
   return preparedArgs;
+}
+
+export function deploymentDoneActions() {
+  const copyButton = getById("copyContractAddress");
+  const dismiss = getById("dismiss-popup-button");
+  const headOver = getById("head-over-button");
+  copyButton.onclick = async function () {
+    const address = copyButton.dataset.address;
+    await copyStringToClipboard(address);
+  };
+
+  dismiss.onclick = function () {
+    dispatch_setPopupState(PopupState.NONE);
+  };
+
+  headOver.onclick = function () {
+    dispatch_setPopupState(PopupState.NONE);
+    dispatch_setPage(PageState.CreateRicardian);
+  };
 }
