@@ -141,8 +141,8 @@ export const dashEl = (
 `;
 
 export const loadedValueEl = (loadedValue) =>
-  html`<div class="width-100">
-    <p class="textOverflow">${loadedValue}</p>
+  html`<div class="width-100Percent">
+    <p class="textOverflow text-align-center">${loadedValue}</p>
   </div>`;
 
 export const PermaPinnedData = (ipfsV2Url: string, nodes: any) => {
