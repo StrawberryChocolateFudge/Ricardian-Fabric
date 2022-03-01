@@ -78,14 +78,6 @@ export async function myProposalsActions(props: State) {
   dispatch_renderLoadingIndicator("my-rank-proposals-container");
   await requestAccounts();
 
-  const correctNetwork = await checkNetwork();
-
-  if (!correctNetwork) {
-    dispatch_renderError("You need to switch to Harmony network!");
-    dispatch_setPopupState(PopupState.WrongNetwork);
-    return;
-  }
-
   const myAddress = await getAddress();
   const blockNumber = await getBlockNumber();
   const catalogDAO = await getCatalogDAOContractWithWallet();

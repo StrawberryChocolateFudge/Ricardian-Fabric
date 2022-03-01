@@ -109,13 +109,6 @@ export async function reviewAndVotePageActions(props: State) {
   }
 
   await requestAccounts();
-  const correctNetwork = await checkNetwork();
-
-  if (!correctNetwork) {
-    dispatch_renderError("You need to switch to Harmony network!");
-    dispatch_setPopupState(PopupState.WrongNetwork);
-    return;
-  }
 
   const myAddress = await getAddress();
   const catalogDAO = await getCatalogDAOContractWithWallet();

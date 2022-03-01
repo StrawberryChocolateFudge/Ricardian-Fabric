@@ -1,6 +1,7 @@
 import { dispatch_setPage } from "../../dispatch/stateChange";
-import { PageState, State } from "../../types";
+import { ChainName, PageState, State } from "../../types";
 import { getById } from "../../view/utils";
+import { switchNetwork } from "../../wallet/web3";
 
 export async function menuActions(props: State) {
   const createPage = getById("create-contract-button");
@@ -12,7 +13,9 @@ export async function menuActions(props: State) {
   const trailsButton = getById("trails-page-button");
   const rewardsButton = getById("fees-button");
 
-  dashboardButton.onclick = function () {
+  dashboardButton.onclick = async function () {
+    await switchToHarmony();
+
     dispatch_setPage(PageState.Dashboard);
   };
 
@@ -24,23 +27,34 @@ export async function menuActions(props: State) {
     dispatch_setPage(PageState.Catalog);
   };
 
-  reviewAndVoteButton.onclick = function () {
+  reviewAndVoteButton.onclick = async function () {
+    await switchToHarmony();
+
     dispatch_setPage(PageState.ReviewAndVote);
   };
 
-  tokenSale.onclick = function () {
+  tokenSale.onclick = async function () {
+    await switchToHarmony();
+
     dispatch_setPage(PageState.tokenSale);
   };
 
-  vaultButton.onclick = function () {
+  vaultButton.onclick = async function () {
+    await switchToHarmony();
     dispatch_setPage(PageState.vault);
   };
 
-  trailsButton.onclick = function () {
+  trailsButton.onclick = async function () {
+    await switchToHarmony();
     dispatch_setPage(PageState.trails);
   };
 
-  rewardsButton.onclick = function () {
+  rewardsButton.onclick = async function () {
+    await switchToHarmony();
     dispatch_setPage(PageState.rewards);
   };
+}
+
+async function switchToHarmony() {
+  await switchNetwork(ChainName.hardhat, 0, "Testnet");
 }
