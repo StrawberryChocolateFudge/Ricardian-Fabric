@@ -13,6 +13,7 @@ export enum ChainName {
   Ropsten = "Ropsten",
   BSC = "BSC",
   Polygon = "Polygon",
+  hardhat = "HardHat",
 }
 
 export enum QueryStrings {
