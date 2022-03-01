@@ -118,7 +118,7 @@ export async function decryptWallet(
   };
 
   const onError = (err) => {
-    options.error = err;
+    options.error = "Unable to decrypt keyfile.";
     options.status = Status.Failure;
   };
 
@@ -128,7 +128,7 @@ export async function decryptWallet(
     options.data = JSON.parse(decodedBytes);
   } catch (err) {
     options.status = Status.Failure;
-    options.error = err.message;
+    options.error = "Unable to decrypt keyfile";
   }
   return options;
 }
