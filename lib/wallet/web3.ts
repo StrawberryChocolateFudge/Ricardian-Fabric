@@ -283,6 +283,10 @@ export async function switchNetwork(
   shard: number,
   type: NetworkType
 ) {
+  if (network === ChainName.hardhat) {
+    await switchToHardhat();
+  }
+
   if (network === ChainName.Harmony) {
     await switchToHarmony(shard, type);
   }
@@ -297,6 +301,29 @@ export async function switchNetwork(
 
   if (network === ChainName.Polygon) {
     await switchToPolygon(type);
+  }
+}
+
+export async function switchToHardhat() {
+  const hexChainid = "0x" + Number(31337).toString(16);
+  const switched = await switch_to_Chain(hexChainid);
+  if (!switched) {
+    await window.ethereum.request({
+      method: "wallet_addEthereumChain",
+      params: [
+        {
+          chainId: hexChainid,
+          chainName: "Localhost 8545",
+          nativeCurrency: {
+            name: "ETH",
+            symbol: "ETH",
+            decimals: 18,
+          },
+          rpcUrls: ["http://localhost:8545"],
+          blockExplorerUrls: ["http://localhost:8545"],
+        },
+      ],
+    });
   }
 }
 
