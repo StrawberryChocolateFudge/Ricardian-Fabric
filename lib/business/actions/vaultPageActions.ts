@@ -12,6 +12,7 @@ import {
 } from "../../dispatch/stateChange";
 import { PageState, State } from "../../types";
 import { getById } from "../../view/utils";
+import { getError } from "../../wallet/errors";
 import {
   allowance,
   approve,
@@ -112,7 +113,7 @@ export async function vaultPageActions(props: State) {
     }
 
     const onError = (error, receipt) => {
-      dispatch_renderError(error.message);
+      dispatch_renderError(getError(error.message));
     };
     const onReceipt = (receipt) => {
       dispatch_setPage(PageState.vault);
@@ -153,7 +154,7 @@ export async function vaultPageActions(props: State) {
     }
 
     const onError = (error, receipt) => {
-      dispatch_renderError(error.message);
+      dispatch_renderError(getError(error.message));
     };
     const onReceipt = async (receipt) => {
       const allowanceOptions = await OptionsBuilder(() =>
@@ -279,7 +280,7 @@ export function lockedTokensActions(props: State) {
       const vault = vaultOptions.data;
 
       const onError = (error) => {
-        dispatch_renderError(error.message);
+        dispatch_renderError(getError(error.message));
       };
       const onReceipt = async () => {
         // dispatch_setPage(PageState.vault);

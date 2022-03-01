@@ -28,6 +28,7 @@ import {
   dispatch_setPage,
   dispatch_setPopupState,
 } from "../../dispatch/stateChange";
+import { getError } from "../../wallet/errors";
 
 export function constructSCActions(props: State, selected: ProposalFormat) {
   const abi = selected.artifact.abi;
@@ -86,7 +87,7 @@ export function constructSCActions(props: State, selected: ProposalFormat) {
     const address = await getAddress();
 
     const onError = (err) => {
-      dispatch_renderError(err.message);
+      dispatch_renderError(getError(err.message));
       dispatch_EnableSCInputs(constructorParams);
     };
 

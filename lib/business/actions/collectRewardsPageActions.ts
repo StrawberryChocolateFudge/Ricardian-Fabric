@@ -28,6 +28,7 @@ import { hasError, OptionsBuilder } from "../utils";
 import { Contract } from "web3-eth-contract";
 import { dispatch_setPage } from "../../dispatch/stateChange";
 import Web3 from "web3";
+import { getError } from "../../wallet/errors";
 
 export const HARMONYONEREWARDADDRESS = "Harmony ONE";
 
@@ -131,7 +132,7 @@ export async function onRewardTokenRowClicks(props: State) {
   approveButton.onclick = async function () {
     const amount = ricAmountEl.value;
     const onError = (err) => {
-      dispatch_renderError(err.message);
+      dispatch_renderError(getError(err.message));
     };
     const onReceipt = (res) => {};
 

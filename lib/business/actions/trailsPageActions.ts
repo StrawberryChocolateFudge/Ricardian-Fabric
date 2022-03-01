@@ -19,6 +19,7 @@ import {
   TrailDetails,
 } from "../../types";
 import { copyStringToClipboard, getById } from "../../view/utils";
+import { getError } from "../../wallet/errors";
 import {
   add,
   blacklist,
@@ -82,7 +83,7 @@ export async function trailsPageActions(props: State) {
     }
 
     const onError = (err, receipt) => {
-      dispatch_renderError(err.message);
+      dispatch_renderError(getError(err.message));
       return;
     };
     const onReceipt = (err, receipt) => {
@@ -511,7 +512,7 @@ export function trailDetailsActions(
     const txId = btn.dataset.txid;
     btn.onclick = async function () {
       const onError = (error: any, receipt: any) => {
-        dispatch_renderError(error.message);
+        dispatch_renderError(getError(error.message));
       };
       const onReceipt = (receipt: any) => {
         // DISPATCH TO REFETCH THE WHOLE FROM PAGE 1

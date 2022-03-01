@@ -9,6 +9,7 @@ import {
   getPS,
   setPS,
 } from "../../wallet/arweavePS/contractCalls";
+import { getError } from "../../wallet/errors";
 import { getAddress } from "../../wallet/web3";
 import { hasError, OptionsBuilder } from "../utils";
 
@@ -49,7 +50,7 @@ export async function pstPageActions(props: State) {
     }
 
     const onError = (error, receipt) => {
-      dispatch_renderError(error.message);
+      dispatch_renderError(getError(error.message));
     };
     const onReceipt = (receipt) => {
       const address = receipt.events.SetPS.returnValues._to;

@@ -35,6 +35,7 @@ import {
   getDaoStakingContract,
   isStaking,
 } from "../../wallet/daoStaking/contractCalls";
+import { getError } from "../../wallet/errors";
 
 export async function feeProposalPageActions(props: State) {
   const copyAddressButton = getById("copyFeeDaoAddress");
@@ -99,7 +100,7 @@ export async function tokenProposalsTableActions(props: State) {
   const closeButtons = document.getElementsByClassName("tokenCloseButton");
 
   const onError = (error, receipt) => {
-    dispatch_renderError(error.message);
+    dispatch_renderError(getError(error.message));
   };
   const onReceipt = (receipt) => {
     dispatch_setPage(PageState.feeProposals);
@@ -336,7 +337,7 @@ export async function tokenProposalPopupActions(
     }
 
     const onError = (error, receipt) => {
-      dispatch_renderError(error.message);
+      dispatch_renderError(getError(error.message));
     };
     const onReceipt = (receipt) => {
       //DISPATCH RERENDER THE PAGE

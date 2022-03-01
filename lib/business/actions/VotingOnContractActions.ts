@@ -12,6 +12,7 @@ import {
   getCatalogDAOContractWithWallet,
   voteOnNewSmartContract,
 } from "../../wallet/catalogDAO/contractCalls";
+import { getError } from "../../wallet/errors";
 import { getAddress } from "../../wallet/web3";
 import { hasError, OptionsBuilder } from "../utils";
 import { checkForProposalTag } from "./contractDisplayActions";
@@ -30,7 +31,7 @@ export async function votingOnContractActions(
     dispatch_setPopupState(PopupState.NONE);
   };
   const onError = (error, receipt) => {
-    dispatch_renderError(error.message);
+    dispatch_renderError(getError(error.message));
   };
   const onReceipt = (receipt) => {
     dispatch_setPopupState(PopupState.NONE);

@@ -24,6 +24,7 @@ import {
 } from "../../wallet/ricSale/contractCalls";
 import { getAddress, watchAsset } from "../../wallet/web3";
 import { hasError, OptionsBuilder } from "../utils";
+import { getError } from "../../wallet/errors";
 
 export async function tokenSalePageActions(props: State) {
   const buyButton = getById("buy-ric");
@@ -125,7 +126,7 @@ export async function tokenSalePageActions(props: State) {
     }
 
     const onError = (error: any, receipt: any) => {
-      dispatch_renderError(error.message);
+      dispatch_renderError(getError(error.message));
     };
     const onReceipt = async (receipt: any) => {
       dispatch_setPage(PageState.tokenSale);

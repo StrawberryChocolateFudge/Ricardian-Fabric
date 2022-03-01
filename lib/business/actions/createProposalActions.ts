@@ -67,6 +67,7 @@ import {
 } from "../../wallet/ric/contractCalls";
 import Web3 from "web3";
 import { getProfitSharingAddresses } from "../profitSharing";
+import { getError } from "../../wallet/errors";
 
 export async function createProposalActions(props: State) {
   dispatch_renderLoadingIndicator("loading-display");
@@ -180,7 +181,7 @@ export async function createProposalActions(props: State) {
 
   approveButton.onclick = async function () {
     const onError = (err) => {
-      dispatch_renderError(err.message);
+      dispatch_renderError(getError(err.message));
     };
     const onReceipt = (res) => {
       dispatch_renderCreateProposalPage(props);
@@ -196,7 +197,7 @@ export async function createProposalActions(props: State) {
   };
   stakingButton.onclick = async function () {
     const onError = (err) => {
-      dispatch_renderError(err.message);
+      dispatch_renderError(getError(err.message));
     };
     const onReceipt = (res) => {
       dispatch_renderCreateProposalPage(props);
@@ -223,7 +224,7 @@ export async function createProposalActions(props: State) {
     }
 
     const onError = (error, receipt) => {
-      dispatch_renderError(error.message);
+      dispatch_renderError(getError(error.message));
     };
     const onReceipt = (receipt) => {
       dispatch_setPage(PageState.Proposals);
@@ -271,7 +272,7 @@ export async function createProposalActions(props: State) {
     }
 
     const onError = (error: any, receipt: any) => {
-      dispatch_renderError(error.message);
+      dispatch_renderError(getError(error.message));
     };
     const onReceipt = (receipt: any) => {
       dispatch_setPage(PageState.Proposals);

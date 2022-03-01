@@ -66,6 +66,7 @@ import {
   unStake,
 } from "../../wallet/daoStaking/contractCalls";
 import { balanceOf, getRicContract } from "../../wallet/ric/contractCalls";
+import { getError } from "../../wallet/errors";
 
 export async function myProposalsActions(props: State) {
   if (!web3Injected()) {
@@ -335,7 +336,7 @@ export async function myAcceptedSmartContractProposalTableActions(
   }
 
   const onError = (error, receipt) => {
-    dispatch_renderError(error.message);
+    dispatch_renderError(getError(error.message));
   };
   const onReceipt = (receipt) => {
     dispatch_setPage(PageState.ManageProposals);
@@ -468,7 +469,7 @@ export async function mySmartContractProposalsTableActions(
       const index = button.dataset.proposalindex;
 
       const onError = (error, receipt) => {
-        dispatch_renderError(error.message);
+        dispatch_renderError(getError(error.message));
       };
       const onReceipt = (receipt) => {
         dispatch_setPage(PageState.ManageProposals);
@@ -578,7 +579,7 @@ export async function myRemovalPropsalTableActions(
 
       const myAddress = await getAddress();
       const onError = (error, receipt) => {
-        dispatch_renderError(error.message);
+        dispatch_renderError(getError(error.message));
       };
       const onReceipt = (receipt) => {
         dispatch_setPage(PageState.ManageProposals);
@@ -672,11 +673,7 @@ export async function myRankProposalsTableActions(
 
       const myAddress = await getAddress();
       const onError = (error, receipt) => {
-        if (error.message.includes("915")) {
-          dispatch_renderError("The voting period is not over,yet.");
-        } else {
-          dispatch_renderError(error.message);
-        }
+        dispatch_renderError(getError(error.message));
       };
 
       const onReceipt = (receipt) => {
@@ -773,7 +770,7 @@ export function removalProposalPageActions(
       return;
     }
     const onError = (error, receipt) => {
-      dispatch_renderError(error.message);
+      dispatch_renderError(getError(error.message));
     };
     const onReceipt = (receipt) => {
       dispatch_setPopupState(PopupState.NONE);
@@ -811,7 +808,7 @@ export function stakerDetailsActions() {
     const myAddressOpt = await OptionsBuilder(() => getAddress());
 
     const onError = (error, receipt) => {
-      dispatch_renderError(error.message);
+      dispatch_renderError(getError(error.message));
     };
     const onReceipt = (receipt) => {
       dispatch_setPage(PageState.ManageProposals);
