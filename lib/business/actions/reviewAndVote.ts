@@ -153,6 +153,17 @@ export async function reviewAndVotePageActions(props: State) {
   );
 
   dispatch_renderReviewRemovalProposals(props, blockNumber, removalProposals);
+
+  const contractURLOptions = await OptionsBuilder(() => getTerms(catalogDAO));
+  if (hasError(contractURLOptions)) {
+    return;
+  }
+
+  const termsAndConditionsButton = getById(
+    "terms-and-conditions-button"
+  ) as HTMLAnchorElement;
+
+  termsAndConditionsButton.href = contractURLOptions.data;
 }
 
 export async function rankProposalTableActions(props: State) {

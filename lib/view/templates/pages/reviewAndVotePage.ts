@@ -12,6 +12,7 @@ import {
   FeeProposalLogo,
   ManageAccountLogo,
   ProfitSharingLogo,
+  TandCLogo,
   ThumbsDown,
   ThumbsUp,
   WebAsset,
@@ -47,6 +48,15 @@ export function ReviewAndVote() {
       <button id="profit-sharing-button" class="labelButton" title="Ar Sharing">
         ${ProfitSharingLogo()}
       </button>
+      <a
+        id="terms-and-conditions-button"
+        class="labelButton"
+        title="Terms and conditions"
+        target="_blank"
+        rel="noopener"
+      >
+        ${TandCLogo()}
+      </a>
     </div>
 
     <div id="rank-proposal-table"></div>
