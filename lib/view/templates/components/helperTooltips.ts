@@ -29,6 +29,6 @@ export const helperTooltips = (message: string) => html`
   </style>
   <div class="tooltip">
     ?
-    <span aria-label="tooltip helptext" class="tooltiptext">${message}</span>
+    <span aria-label="Tooltip helptext" class="tooltiptext">${message}</span>
   </div>
 `;

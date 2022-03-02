@@ -26,15 +26,7 @@ export const acceptTools = (props: State) => {
       }
     </style>
     ${expired
-      ? html`
-          <div
-            aria-label="contract expired"
-            class="center red"
-            id="error-display"
-          >
-            Expired
-          </div>
-        `
+      ? html` <div class="center red" id="error-display">Expired</div> `
       : html` <table class="center">
             <tr>
               <th></th>
@@ -70,12 +62,7 @@ export const AcceptButton = (positionNeeded: boolean) => {
     </style>
     <div class="ac-location">
       ${labelEl}
-      <button
-        aria-label="Accept and Sign"
-        name="sign"
-        id="accept-button"
-        class="center width-200"
-      >
+      <button name="sign" id="accept-button" class="center width-200">
         ${buttonText}
       </button>
     </div>

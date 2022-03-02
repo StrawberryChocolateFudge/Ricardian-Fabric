@@ -59,9 +59,7 @@ function proposeGetRank() {
     <hr />
 
     <div class="row">
-      <label aria-labelledby="github url link" for="github-url"
-        >Github url</label
-      >
+      <label for="github-url">Github url</label>
 
       <input id="github-url" type="url" />
 

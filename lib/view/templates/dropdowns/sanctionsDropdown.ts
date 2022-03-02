@@ -19,10 +19,12 @@ export const SanctionsDropdown = (expand: boolean) => html`
     </li>
     <li>
       <input
-        aria-label="ofec checkbox"
+        aria-labeledby="ofec-span"
         id="ofec_checkbox"
         type="checkbox"
-      /><span class="sanctions-span">OFEC sanctioned countries</span>
+      /><span id="ofec-span" class="sanctions-span"
+        >OFEC sanctioned countries</span
+      >
     </li>
     <li>
       <input

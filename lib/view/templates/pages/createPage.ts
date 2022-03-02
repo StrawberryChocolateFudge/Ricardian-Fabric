@@ -36,9 +36,7 @@ export const CreatePage = () => html`
       </tr>
       <tr>
         <td>
-          <label aria-labelledby="Block countries selected"
-            >Block countries:</label
-          >
+          <label>Block countries:</label>
         </td>
         <td>
           <div id="sanctions-dropdown"></div>
@@ -49,9 +47,7 @@ export const CreatePage = () => html`
       </tr>
       <tr>
         <td>
-          <label for="blocked-addresses" aria-labelledby="Block addresses"
-            >Block addresses:</label
-          >
+          <label for="blocked-addresses">Block addresses:</label>
         </td>
         <td>
           <input id="blocked-addresses" type="text" placeholder="0x..." />
@@ -62,13 +58,11 @@ export const CreatePage = () => html`
       </tr>
       <tr>
         <td>
-          <label aria-labelledby="expires label" for="expires-input"
-            >Expires:</label
-          >
+          <label for="expires-input">Expires:</label>
         </td>
         <td>
           <input
-            aria-label="expires date input"
+            aria-label="Expires date input"
             name="expires"
             id="expires-input"
             class="cursor-pointer"
@@ -89,7 +83,7 @@ export const CreatePage = () => html`
       </tr>
       <tr>
         <td>
-          <label aria-labelledby="post to label">Redirects to:</label>
+          <label>Redirects to:</label>
         </td>
         <td>
           <input
@@ -107,9 +101,7 @@ export const CreatePage = () => html`
       </tr>
       <tr>
         <td>
-          <label aria-labelledby="Compatible  smart contract label"
-            >Smart Contract:</label
-          >
+          <label>Smart Contract:</label>
         </td>
         <td>
           <input
@@ -127,7 +119,7 @@ export const CreatePage = () => html`
       </tr>
       <tr>
         <td>
-          <label aria-labelledby="The related trail's name">Trail:</label>
+          <label>Trail:</label>
         </td>
         <td>
           <input
@@ -161,16 +153,14 @@ export const CreatePage = () => html`
       </tr>
       <tr>
         <td>
-          <label aria-labelledby="add ERC20 to wallet?" for="add-erc20-checkbox"
-            >Add ERC20 to wallet?</label
-          >
+          <label for="add-erc20-checkbox">Add ERC20 to wallet?</label>
         </td>
         <td><input id="add-erc20-checkbox" type="checkbox" /></td>
         <td><span id="add-erc20-checkbox-tooltip"></span></td>
       </tr>
       <tr>
         <td>
-          <label aria-labelledby="ERC20 name" for="erc20-name">Name</label>
+          <label for="erc20-name">Name</label>
         </td>
         <td>
           <input
@@ -184,9 +174,7 @@ export const CreatePage = () => html`
       </tr>
       <tr>
         <td>
-          <label aria-labelledby="ERC20 symbol" for="erc20-symbol"
-            >Symbol</label
-          >
+          <label for="erc20-symbol">Symbol</label>
         </td>
         <td>
           <input
@@ -200,9 +188,7 @@ export const CreatePage = () => html`
       </tr>
       <tr>
         <td>
-          <label for="erc20-decimals" aria-labelledby="ERC20 decimals"
-            >Decimals</label
-          >
+          <label for="erc20-decimals">Decimals</label>
         </td>
         <td>
           <input
@@ -216,9 +202,7 @@ export const CreatePage = () => html`
       </tr>
       <tr>
         <td>
-          <label for="erc20-address" aria-labelledby="ERC20 address"
-            >Contract address</label
-          >
+          <label for="erc20-address">Contract address</label>
         </td>
         <td>
           <input
@@ -244,9 +228,7 @@ export const CreatePage = () => html`
 
   <hr />
   <div class="center marginBottom-10">
-    <label aria-labelledby="I agree to the terms" id="terms-checkbox-label"
-      >I agree to the terms and agreements</label
-    >
+    <label id="terms-checkbox-label">I agree to the terms and agreements</label>
     <input
       aria-label="I agree to the terms checkbox"
       id="terms-checkbox"

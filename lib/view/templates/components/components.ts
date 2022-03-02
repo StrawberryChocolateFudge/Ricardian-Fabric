@@ -11,7 +11,7 @@ export const getPriceTemplate = (
     const formattedPrice = price === "NONE" ? "" : `${price} Ar`;
     return html`<tr>
         <td>
-          <label aria-labelledby="price label">Price:</label>
+          <label>Price:</label>
         </td>
         <td>
           <div aria-label="price">${formattedPrice}</div>
@@ -19,40 +19,40 @@ export const getPriceTemplate = (
       </tr>
       <tr>
         <td>
-          <label aria-labelledby="fee label">Fee:</label>
+          <label>Fee:</label>
         </td>
-        <td aria-label="fee">${fee} Ar</td>
+        <td>${fee} Ar</td>
       </tr>`;
   }
 };
 
 export const createdDateTemplate = (date: string) => {
   return html`<tr>
-    <td aria-labelledby="created date label">
-      <label for="createdDate"><label for="createdDate">Created:</label></label>
+    <td>
+      <label for="createdDate">Created:</label>
     </td>
-    <td id="createdDate" aria-label="created date"><label>${date}</label></td>
+    <td id="createdDate"><label>${date}</label></td>
   </tr>`;
 };
 
 export const signedDateTemplate = (date: string) => {
   return html`<tr>
-    <td aria-labelledby="signed date label">
+    <td>
       <label for="signed-date">Signed on:</label>
     </td>
-    <td id="signed-date" aria-label="signed date"><label>${date}</label></td>
+    <td id="signed-date"><label>${date}</label></td>
   </tr>`;
 };
 
 export const issuerTemplate = (address: string) => {
   return html`
     <tr>
-      <td aria-labelledby="issuer label">
+      <td>
         <label for="issuer-address"
           ><label for="issuer-address">Issuer:</label></label
         >
       </td>
-      <td id="issuer-address" aria-label="address">
+      <td id="issuer-address">
         ${getBlockie(address, "20px", "")}<label>${address}</label>
       </td>
       <td></td>
@@ -63,7 +63,7 @@ export const issuerTemplate = (address: string) => {
 export const TrailTemplate = (creatorAppLink: string, relatedTrail: string) => {
   const url = creatorAppLink + "?trail=" + relatedTrail;
   return html` <tr>
-    <td aria-labelledby="Trail">
+    <td>
       <label for="Trail">Trail:</label>
     </td>
     <td>
@@ -108,10 +108,10 @@ export const networkTemplate = (network: string, isFulfilled: boolean) => {
   const networkEl = chains[network];
 
   return html`<tr>
-    <td aria-labelledby="Network Id label">
+    <td>
       <label for="network-id">Network:</label>
     </td>
-    <td id="network-id" aria-label="network id">
+    <td id="network-id">
       <label>${networkEl === undefined ? network : networkEl}</label>
     </td>
     <td></td>
@@ -152,8 +152,8 @@ export function getChainLogo(chain: Chains) {
 export const onlySignerTemplate = (onlySigner: string) => {
   if (onlySigner !== "NONE") {
     return html`<tr>
-      <td aria-labelledby="only signer label">Only Signer:</td>
-      <td aria-label="only signer address">${onlySigner}</td>
+      <td>Only Signer:</td>
+      <td>${onlySigner}</td>
       <td></td>
     </tr>`;
   }
@@ -161,25 +161,25 @@ export const onlySignerTemplate = (onlySigner: string) => {
 
 export const hashTemplate = (hash: string) => {
   return html`<tr>
-    <td aria-labelledby="Hash label">Hash</td>
+    <td>Hash</td>
     <td aria-label="Hash">${hash}</td>
     <td></td>
   </tr>`;
 };
 
 export const expiryTemplate = (date: string) => html`<tr>
-  <td aria-labelledby="expires label">
+  <td>
     <label for="expiresDate">Expires:</label>
   </td>
-  <td id="expiresDate" aria-label="date"><label>${date}</label></td>
+  <td id="expiresDate"><label>${date}</label></td>
   <td></td>
 </tr>`;
 
 export const getParticipantFromTemplate = (participant: string) => html`<tr>
-  <td aria-labelledby="participant label">
+  <td>
     <label for="participant">Participant:</label>
   </td>
-  <td id="participant" aria-label="participant">
+  <td id="participant">
     ${getBlockie(participant, "20px", "")}<label>${participant}</label>
   </td>
   <td></td>
@@ -187,13 +187,11 @@ export const getParticipantFromTemplate = (participant: string) => html`<tr>
 
 export const parentUrl = (url: string) => html`
   <tr>
-    <td aria-labelledby="accepted at url label">
+    <td>
       <label for="parent-url">Parent:</label>
     </td>
     <td id="parent-url">
-      <a aria-label="accepted at url ${url}" href="${url}"
-        ><label>${url}</label></a
-      >
+      <a href="${url}"><label>${url}</label></a>
     </td>
     <td></td>
   </tr>

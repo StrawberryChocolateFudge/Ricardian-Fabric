@@ -47,12 +47,7 @@ export const transactionUrl = (props: any, url: string) => {
     </style>
 
     <div class="transaction-layout">
-      <a
-        class="center"
-        aria-label="Link copied to clipboard"
-        href="${url}"
-        target="_blank"
-        rel="noopener"
+      <a class="center" href="${url}" target="_blank" rel="noopener"
         >Link copied to clipboard</a
       >
       <hr />

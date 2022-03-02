@@ -29,7 +29,7 @@ export const loadingIndicator = html`
     }
   </style>
   <div
-    aria-label="loading indicator"
+    aria-label="Loading Indicator"
     id="loader"
     class="lds-dual-ring center"
   ></div>

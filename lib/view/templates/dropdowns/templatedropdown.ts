@@ -11,12 +11,15 @@ export const TemplateDropdown = () => html`
     class="labelButton dropdown_checkbox_label"
     id="template_checkbox_label"
     for="template_checkbox_toggle"
-    aria-labelledby="Import templates label"
     >Templates</label
   >
   <ul>
     <li>
-      <button id="import-docx-trigger" class="dropdown-button">
+      <button
+        id="import-docx-trigger"
+        class="dropdown-button"
+        aria-label="Import"
+      >
         <small>Import</small>
       </button>
     </li>
