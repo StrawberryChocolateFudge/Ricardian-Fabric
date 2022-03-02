@@ -94,7 +94,7 @@ export async function dashboardActions(props: State) {
     return;
   }
 
-  const totalSupplyVal = parseFloat(totalSupplyOptions.data).toFixed(4);
+  const totalSupplyVal = parseFloat(totalSupplyOptions.data).toFixed(0);
 
   dispatch_renderLoadedValue(props, totalSupplyVal, ricTotalSupplyEl);
 
@@ -112,7 +112,7 @@ export async function dashboardActions(props: State) {
     return;
   }
 
-  const ricLeft = parseFloat(ricLeftOptions.data).toFixed(2);
+  const ricLeft = parseFloat(ricLeftOptions.data).toFixed(0);
   let tokensSoldOptions = await OptionsBuilder(() =>
     getTokensSold(ricsale, address)
   );
@@ -157,7 +157,7 @@ export async function dashboardActions(props: State) {
     return;
   }
 
-  const totalLocked = parseFloat(totalLockedOptions.data).toFixed(4);
+  const totalLocked = parseFloat(totalLockedOptions.data).toFixed(0);
 
   dispatch_renderLoadedValue(props, totalLocked, ricLockedInVaultEl);
 
@@ -173,7 +173,7 @@ export async function dashboardActions(props: State) {
     return;
   }
 
-  const availableReward = parseFloat(availableRewardOptions.data).toFixed(4);
+  const availableReward = parseFloat(availableRewardOptions.data).toFixed(0);
 
   dispatch_renderLoadedValue(props, availableReward, availableRewardEl);
 
@@ -193,7 +193,7 @@ export async function dashboardActions(props: State) {
   }
 
   const acceptedContracts = parseFloat(acceptedContractsOptions.data).toFixed(
-    4
+    0
   );
 
   dispatch_renderLoadedValue(props, acceptedContracts, availableContractsEl);
@@ -229,7 +229,7 @@ export async function dashboardActions(props: State) {
     return;
   }
 
-  const contributorStake = parseFloat(contributorStakeOptions.data).toFixed(2);
+  const contributorStake = parseFloat(contributorStakeOptions.data).toFixed(0);
 
   dispatch_renderLoadedValue(props, contributorStake, contributorStakeEl);
 
@@ -247,7 +247,7 @@ export async function dashboardActions(props: State) {
     return;
   }
 
-  const fees = parseFloat(feesOptions.data).toFixed(4);
+  const fees = parseFloat(feesOptions.data).toFixed(0);
 
   dispatch_renderLoadedValue(props, fees + " ONE", HarmonyFeesCollectedEl);
 

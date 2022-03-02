@@ -126,7 +126,7 @@ export const dashEl = (
   logo: TemplateResult
 ) => html`
   <div class="box rowSpacer">
-    <div class="column">${logo}</div>
+    <div class="column width-100">${logo}</div>
     <div class="column">
       <div class="box-title text-align-center">
         <label>${title}</label>
@@ -140,10 +140,7 @@ export const dashEl = (
   </div>
 `;
 
-export const loadedValueEl = (loadedValue) =>
-  html`<div class="width-100Percent">
-    <p class="textOverflow text-align-center">${loadedValue}</p>
-  </div>`;
+export const loadedValueEl = (loadedValue) => html` <h4>${loadedValue}</h4>`;
 
 export const PermaPinnedData = (ipfsV2Url: string, nodes: any) => {
   return html`
