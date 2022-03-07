@@ -68,15 +68,6 @@ export const uploadFilePopup = () => html`
         </td>
         <td>${helperTooltips("The password of the encrypted keyfile")}</td>
       </tr>
-      <!-- <tr>
-                                                      <td><label for="tipcheckbox">Send a tip:</label></td>
-                                                      <td>
-                                                        <input id="tipcheckbox" type="checkbox" checked />
-                                                      </td>
-                                                      <td>${helperTooltips(
-        `Support us by sending a tip. ${TIP} Ar`
-      )}</td>
-                                                    </tr> -->
     </tbody>
   </table>
   <hr />
