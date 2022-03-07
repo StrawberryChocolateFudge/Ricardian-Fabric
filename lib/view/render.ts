@@ -773,9 +773,14 @@ export function renderUploadFile() {
   render(uploadFilePopup(), layout);
 }
 
-export function renderUploadSummary(file: File, fee: any, id: string) {
+export function renderUploadSummary(
+  file: File,
+  fee: any,
+  id: string,
+  contentType: string
+) {
   const layout = getById("overlay-layout");
-  render(uploadFileSummary(file.name, file.type, fee, id), layout);
+  render(uploadFileSummary(file.name, contentType, fee, id), layout);
 }
 
 export function renderUploadStatus(status: string) {
@@ -1272,7 +1277,7 @@ export function enableStakingButtons(
   ricBalance: string,
   isStaking: boolean
 ) {
-  const stakingButtonEl = getById("stake-30-ric") as HTMLButtonElement;
+  const stakingButtonEl = getById("stake-3000-ric") as HTMLButtonElement;
   const approveButtonEl = getById("approve-stake-spend") as HTMLButtonElement;
   const ricBalanceEl = getById("ricBalance");
   const rankProposalSubmit = getById(
@@ -1282,7 +1287,7 @@ export function enableStakingButtons(
 
   let stakingdisabled = !stakingButtonDisabled;
 
-  if (parseInt(ricBalance) < 30) {
+  if (parseInt(ricBalance) < 3000) {
     stakingdisabled = true;
   }
   let approveDisabled = approveButtonDisabled;
@@ -1625,7 +1630,7 @@ export function renderStakerDetails(
 export function renderCatalogContent(
   uploadsFoallContractsToDisplay: Array<AcceptedSmartContractProposal>,
   allIds: Array<string>,
-  uploadsForCategory: ArweaveQueryResult[] // Arweave graphql query result for the selected category
+  uploadsForCategory: any // Arweave graphql query result for the selected category
 ) {
   const contentEl = getById("catalog-content");
   contentEl.classList.remove("placeholder-item");
