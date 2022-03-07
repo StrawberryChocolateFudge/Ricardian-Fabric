@@ -48,38 +48,35 @@ export function catalogPage() {
 export function catalogContent(
   uploadsFoallContractsToDisplay: Array<AcceptedSmartContractProposal>,
   allIds: Array<string>,
-  uploadsForCategory: ArweaveQueryResult[]
+  uploadsForCategory: any
 ) {
   return uploadsForCategory.map((data) => {
-    const id = data.node.id;
+    const id = data.id;
     const at = allIds.indexOf(id);
-
     return smartContractElementBoxes(data, uploadsFoallContractsToDisplay[at]);
   });
 }
 
 function smartContractElementBoxes(
-  uploadsForCategory: ArweaveQueryResult,
+  uploadsForCategory: any,
   proposal: AcceptedSmartContractProposal
 ) {
   return html`<div
-    data-arweavetxid="${uploadsForCategory.node.id}"
+    data-arweavetxid="${uploadsForCategory.id}"
     data-proposal="${JSON.stringify(proposal)}"
     class="box cursor-pointer  labelButton unselectable contract-page-popup"
   >
     <div class="row padding-5">
       <div class="column">
-        <div>${getBlockie(uploadsForCategory.node.id, "50px", "")}</div>
+        <div>${getBlockie(uploadsForCategory.id, "50px", "")}</div>
         <label>
-          ${getChainMessage(
-            getTag(uploadsForCategory.node.tags, "ChainId")
-          )}</label
+          ${getChainMessage(getTag(uploadsForCategory.tags, "ChainId"))}</label
         >
       </div>
       <hr />
       <div class="column">
         <div class="overflow-auto width-100">
-          <small> ${getTag(uploadsForCategory.node.tags, "Name")} </small>
+          <small> ${getTag(uploadsForCategory.tags, "Name")} </small>
         </div>
       </div>
     </div>
@@ -90,14 +87,15 @@ function getChainMessage(chainId) {
   if (chainId === "ALL") {
     return "Supports all networks.";
   } else {
-    return `Supporty only ${chainId}`;
+    return `Supports only ${chainId}`;
   }
 }
 
-function getTag(tags: Array<ArweaveTags>, name: string) {
+function getTag(tags: any, name: string) {
   for (let i = 0; i < tags.length; i++) {
-    if (tags[i].name === name) {
-      return tags[i].value;
+    const tag = tags[i];
+    if (Object.keys(tag).includes(name)) {
+      return tag[name];
     }
   }
 }
