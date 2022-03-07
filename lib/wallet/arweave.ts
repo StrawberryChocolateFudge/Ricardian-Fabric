@@ -1,4 +1,5 @@
 import Arweave from "arweave";
+import { Tag } from "arweave/node/lib/transaction";
 import { readContract, selectWeightedPstHolder } from "smartweave";
 import { Options, ProposalFormat, Status } from "../types";
 export const TIP = "0.0001";
@@ -212,4 +213,16 @@ export function encodeProposalTerms(buff: ArrayBuffer): Array<number> {
 
 export async function getTransaction(id: string) {
   return await arweave.transactions.get(id);
+}
+
+export async function getDecodedTagsFromTX(id: string) {
+  const transaction = await getTransaction(id);
+  let txTags = [];
+  const tags = transaction.get("tags") as any;
+  tags.forEach((tag) => {
+    let key = tag.get("name", { decode: true, string: true });
+    let value = tag.get("value", { decode: true, string: true });
+    txTags.push({ [key]: value });
+  });
+  return txTags;
 }
