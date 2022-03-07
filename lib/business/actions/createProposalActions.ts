@@ -131,7 +131,7 @@ export async function createProposalActions(props: State) {
   }
 
   //Then render either the proposalTXId input.. or the GithubURL, maybe I just render the labels
-  const stakingButton = getById("stake-30-ric");
+  const stakingButton = getById("stake-3000-ric");
   const approveButton = getById("approve-stake-spend");
 
   const daoStakingOptions = await OptionsBuilder(() => getDaoStakingContract());
@@ -169,7 +169,7 @@ export async function createProposalActions(props: State) {
   }
 
   const intAllowance = parseInt(myAllowanceOptions.data);
-  const enoughAllowance = intAllowance >= 30;
+  const enoughAllowance = intAllowance >= 3000;
 
   dispatch_enableStakingButtons(
     props,
@@ -189,7 +189,7 @@ export async function createProposalActions(props: State) {
     await approve(
       ricOptions.data,
       DAOSTAKINGADDRESS,
-      Web3.utils.toWei("30"),
+      Web3.utils.toWei("3000"),
       myAddress,
       onError,
       onReceipt
