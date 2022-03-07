@@ -63,7 +63,6 @@ export function constructSCActions(props: State, selected: ProposalFormat) {
     await requestAccounts();
 
     if (selected.network !== "All") {
-      //TODO:TEST
       await switchNetwork(selected.network as ChainName, 0, "Testnet");
     }
 
@@ -93,17 +92,18 @@ export function constructSCActions(props: State, selected: ProposalFormat) {
 
     const onReceipt = async (receipt) => {
       dispatch_setDeployedSCAddress(receipt.contractAddress);
-
       dispatch_setPopupState(PopupState.contractDeployed);
-
       if (selected.simpleterms) {
         dispatch_setCreateRicardianState({
           ...props.createRicardianPageProps,
           smartContract: receipt.contractAddress,
         });
       }
-
-      dispatch_contractDeployedData(props, address, selected.simpleterms);
+      dispatch_contractDeployedData(
+        props,
+        receipt.contractAddress,
+        selected.simpleterms
+      );
     };
 
     await deployContract(
@@ -135,7 +135,6 @@ export function prepareArguments(constructorElements, params) {
   params.forEach((par) => {
     const type = constructorElements[par.name].param.type;
     const value = constructorElements[par.name].el.value;
-
     preparedArgs.push(prepareType(type, value));
   });
   return preparedArgs;
