@@ -52,3 +52,8 @@ export async function fetchFromIPFS(
   const response = await fetch(url, { method: "get" });
   return response.text();
 }
+
+export async function fetchText(url: string): Promise<string> {
+  const response = await fetch(url, { method: "get" });
+  return await response.text();
+}
