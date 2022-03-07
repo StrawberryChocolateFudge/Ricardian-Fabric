@@ -319,6 +319,7 @@ export function dispatch_hidePopup() {
 export function dispatch_renderUploadSummary(
   file: File,
   transaction: any,
+  contentType: string,
   data: any,
   props: State,
   hasTip: boolean,
@@ -326,7 +327,15 @@ export function dispatch_renderUploadSummary(
 ) {
   dispatch(Events.render, {
     type: RenderType.uploadSummary,
-    props: { transaction, file, data, props, hasTip, tipTransaction },
+    props: {
+      transaction,
+      file,
+      contentType,
+      data,
+      props,
+      hasTip,
+      tipTransaction,
+    },
   });
 }
 
@@ -989,7 +998,7 @@ export function dispatch_renderAvailableContractsToCatalog(
   props: State,
   allContractsToDisplay: Array<AcceptedSmartContractProposal>,
   allIds: Array<string>,
-  uploadsForCategory: any // Arweave graphql query result for the selected category
+  uploadsForCategory: any
 ) {
   dispatch(Events.render, {
     type: RenderType.catalogContent,
