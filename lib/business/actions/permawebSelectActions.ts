@@ -171,6 +171,7 @@ export function uploadFileListener(props: State) {
           dispatch_renderUploadSummary(
             fileInput.files[0],
             tx,
+            contentType,
             data,
             props,
             false,
@@ -185,6 +186,7 @@ export function uploadFileListener(props: State) {
           dispatch_renderUploadSummary(
             fileInput.files[0],
             tx,
+            contentType,
             data,
             props,
             true,
