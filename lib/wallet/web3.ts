@@ -519,21 +519,12 @@ export async function deployContract(
 }
 
 export function prepareType(type: string, value: string) {
-  //TODO: PREPARE THIS FOR ALL TYPES!!
-  // This function only considers the HRC20 contract for now!
-  switch (type) {
-    case "string":
-      return value;
-      break;
-    case "uint8":
-      return Web3.utils.toNumber(value);
-      break;
-    case "uint256":
-      return Web3.utils.toBN(value);
-      break;
-    default:
-      return value;
-      break;
+  if (type.includes("int") && type !== "uint256") {
+    return Web3.utils.toNumber(value);
+  } else if (type === "uint256") {
+    return Web3.utils.toWei(value);
+  } else {
+    return value;
   }
 }
 
