@@ -15,8 +15,8 @@ export function createProposalPage() {
       <div id="permaweb-dropdown">Permaweb</div>
       <button
         class="labelButton light-shadow"
-        id="stake-30-ric"
-        title="Stake 30 Ric to start contributing to the catalogue."
+        id="stake-3000-ric"
+        title="Stake 3000 Ric to start contributing to the catalogue."
         disabled
       >
         ${StakingLogo("30")} Stake
@@ -24,7 +24,7 @@ export function createProposalPage() {
       <button
         class="labelButton light-shadow"
         id="approve-stake-spend"
-        title="Approve 30 Ric to allow staking "
+        title="Approve 3000 Ric to allow staking "
         disabled
       >
         ${SpendLogo()} Approve
@@ -59,7 +59,7 @@ function proposeGetRank() {
     <hr />
 
     <div class="row">
-      <label for="github-url">Github url</label>
+      <label for="github-url">Discussion</label>
 
       <input id="github-url" type="url" />
 
@@ -67,7 +67,7 @@ function proposeGetRank() {
         ${ChevronRightBlack()}
       </button>
 
-      ${helperTooltips("A github link to the discussion you opened.")}
+      ${helperTooltips("A Link to an open discussion.")}
     </div>
 
     <hr />
