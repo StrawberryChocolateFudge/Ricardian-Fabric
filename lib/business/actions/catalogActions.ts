@@ -19,6 +19,7 @@ import {
   State,
 } from "../../types";
 import { getById } from "../../view/utils";
+import { getDecodedTagsFromTX } from "../../wallet/arweave";
 import {
   getAllAccepted,
   getAllRemoved,
@@ -57,16 +58,21 @@ export async function catalogAction(props: State) {
     allAcceptedOptions.data,
     allRemovedOptions.data
   );
-
   const getContracts = async function () {
     dispatch_renderCatalogContractLoadingIndicator(props);
     const category = categorySelectEl.value;
-    // Now I use the graphQL to get the contracts with the required category
 
-    const uploadedProposals = await fetchContractsPerCategory(category);
+    let decodedTxs = [];
+    for (let i = 0; i < ids.length; i++) {
+      decodedTxs.push({ tags: await getDecodedTagsFromTX(ids[i]), id: ids[i] });
+    }
 
-    // iterate over the uploaded proposals and check if they are allowed to display
-    const available = filterCategoryUploads(uploadedProposals, ids);
+    // filter for the category
+    let available = decodedTxs;
+    if (category !== "All") {
+      available = filterCategoryNotArweaveRes(decodedTxs, category);
+    }
+
     setTimeout(
       () =>
         dispatch_renderAvailableContractsToCatalog(
@@ -82,6 +88,25 @@ export async function catalogAction(props: State) {
   await getContracts();
 
   categorySelectEl.onclick = getContracts;
+}
+
+function filterCategoryNotArweaveRes(
+  decodedTxs: Array<{ id: string; tags: any }>,
+  category: string
+) {
+  let res = [];
+  for (let i = 0; i < decodedTxs.length; i++) {
+    const tags = decodedTxs[i].tags;
+    for (let j = 0; j < tags.length; j++) {
+      const tag = tags[j];
+      if (Object.keys(tag).includes("Category")) {
+        if (tag["Category"] === category) {
+          res.push(decodedTxs[i]);
+        }
+      }
+    }
+  }
+  return res;
 }
 
 function filterCategoryUploads(
