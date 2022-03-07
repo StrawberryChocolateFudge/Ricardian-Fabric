@@ -58,6 +58,7 @@ export function SCConstructorPopup(selected: ProposalFormat) {
       <td></td>
     </tr>`;
   });
+
   return html`
     <h4>Deploy ${selected.name}</h4>
     ${selected.simpleterms
@@ -67,22 +68,25 @@ export function SCConstructorPopup(selected: ProposalFormat) {
         >`
       : nothing}
     <hr />
-    <p>Contructor parameters:</p>
-    <table>
-      <thead>
-        <tr>
-          <th></th>
-          <th></th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        ${list}
-      </tbody>
-    </table>
-    <small
-      >Make sure you enter the correct details.This is non-reversible.</small
-    >
+    ${list.length > 0
+      ? html`<p>Constructor parameters:</p>
+          <table>
+            <thead>
+              <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              ${list}
+            </tbody>
+          </table>
+          <small
+            >Make sure you enter the correct details.This is
+            non-reversible.</small
+          >`
+      : nothing}
     <div class="row">
       <label for="agree-to-deploy-sc">I agree to the terms.</label>
       <input
@@ -125,7 +129,7 @@ export function deploymentDone(contractAddress: string, simpleTerms: boolean) {
     <hr />
     ${simpleTerms
       ? html`<p>
-          The contract uses a Ricardian Contract.Head over to the Ricardian
+          The contract uses a Ricardian Contract. Head over to the Ricardian
           contract editor, the smart contract field has been assigned with the
           address.
         </p>`
