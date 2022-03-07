@@ -8,6 +8,7 @@ import { fetchTransactionBy } from "../../fetch";
 import { getTags } from "../../fetch/graphql";
 import { PageState, PopupState, ProposalFormat, State } from "../../types";
 import { getById } from "../../view/utils";
+import { getDecodedTagsFromTX } from "../../wallet/arweave";
 import {
   getCatalogDAOContractWithWallet,
   voteOnNewSmartContract,
@@ -47,33 +48,26 @@ export async function votingOnContractActions(
     if (accepted) {
       const artifactEl = getById("artifact-text-input") as HTMLInputElement;
 
-      const artifactIdOptions = await getTags(arweaveTxId);
-      if (hasError(artifactIdOptions)) {
-        return;
-      }
-      const edges = artifactIdOptions.data.transactions.edges;
+      const tags = await getDecodedTagsFromTX(arweaveTxId);
 
-      if (edges.length === 0) {
-        dispatch_renderError("Invalid proposal. Cannot proceed.");
+      if (tags.length === 0) {
+        dispatch_renderError("Invalid proposal! Transaction not found.");
         return;
       }
-      if (!checkForProposalTag(edges[0])) {
-        dispatch_renderError("Invalid proposal. Cannot proceed.");
-        return;
-      }
+
       // then I download the contract transaction
       const transactionOptions = await OptionsBuilder(() =>
         fetchTransactionBy<ProposalFormat>(arweaveTxId)
       );
 
       if (hasError(transactionOptions)) {
-        dispatch_renderError("Invalid proposal. Cannot proceed.");
+        dispatch_renderError("Invalid proposal. Missing contract data.");
         return;
       }
       const proposal: ProposalFormat = transactionOptions.data;
 
       if (proposal.artifact === undefined) {
-        dispatch_renderError("Invalid  proposal. Cannot proceed.");
+        dispatch_renderError("Invalid  proposal. Missing artifact.");
         return;
       }
       // hash the proposal artifact and the uploaded one

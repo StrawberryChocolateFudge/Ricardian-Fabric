@@ -7,7 +7,6 @@ import {
 } from "../../dispatch/render";
 import { dispatch_setPopupState } from "../../dispatch/stateChange";
 import { fetchTransactionBy } from "../../fetch";
-import { getTags } from "../../fetch/graphql";
 import {
   AcceptedSmartContractProposal,
   PopupState,
@@ -16,6 +15,7 @@ import {
 } from "../../types";
 import { downloadBlob } from "../../view/render";
 import { getById } from "../../view/utils";
+import { getDecodedTagsFromTX } from "../../wallet/arweave";
 import { hasError, OptionsBuilder } from "../utils";
 import { convertToHTMLFromArrayBuffer } from "./onDocFileDropped";
 
@@ -30,21 +30,12 @@ export async function contractDisplayActions(
     dispatch_teardownContractDisplayPage();
     dispatch_setPopupState(PopupState.NONE);
   };
-  const getTagsOptions = await getTags(contractId);
 
-  if (hasError(getTagsOptions)) {
-    dispatch_renderError("An error occured");
+  const tags = await getDecodedTagsFromTX(contractId);
+
+  if (tags.length === 0) {
+    dispatch_renderError("Invalid proposal! Transaction not found.");
     return;
-  }
-
-  const edges = getTagsOptions.data.transactions.edges;
-
-  if (edges.length === 0) {
-    dispatch_renderError("Invalid proposal!");
-    return;
-  }
-  if (!checkForProposalTag(edges[0])) {
-    dispatch_renderError("Invalid proposal!");
   }
 
   // then I download the contract transaction
@@ -53,14 +44,14 @@ export async function contractDisplayActions(
   );
 
   if (hasError(transactionOptions)) {
-    dispatch_renderError("Invalid proposal!");
+    dispatch_renderError("Invalid proposal! Transaction not found.");
     return;
   }
 
   const proposal: ProposalFormat = transactionOptions.data;
 
   if (proposal.name === undefined) {
-    dispatch_renderError("Invalid proposal!");
+    dispatch_renderError("Invalid proposal! Name is undefined.");
     return;
   }
   const getTerms = (terms: string) => {
