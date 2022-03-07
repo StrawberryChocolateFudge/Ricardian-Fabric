@@ -391,6 +391,7 @@ const Render: Renderer = {
     props: State;
     tipTransaction: any;
     hasTip: boolean;
+    contentType: string;
   }) => {
     let fee: string | number = parseFloat(props.transaction.reward);
     if (props.hasTip) {
@@ -400,7 +401,12 @@ const Render: Renderer = {
 
     fee = WinstonToAr(fee.toString());
 
-    renderUploadSummary(props.file, fee, props.transaction.id);
+    renderUploadSummary(
+      props.file,
+      fee,
+      props.transaction.id,
+      props.contentType
+    );
     uploadSummaryActions(
       props.transaction,
       props.props,
