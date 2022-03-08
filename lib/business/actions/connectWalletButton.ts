@@ -66,7 +66,7 @@ export async function connectWalletButton(props) {
         }
       }
     } catch (err) {
-      dispatch_renderError(err);
+      console.error(err);
     }
   };
 }
