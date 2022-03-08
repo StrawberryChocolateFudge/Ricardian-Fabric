@@ -53,7 +53,7 @@ export const issuerTemplate = (address: string) => {
         >
       </td>
       <td id="issuer-address">
-        ${getBlockie(address, "20px", "")}<label>${address}</label>
+        <label>${address}</label>
       </td>
       <td></td>
     </tr>
@@ -180,7 +180,7 @@ export const getParticipantFromTemplate = (participant: string) => html`<tr>
     <label for="participant">Participant:</label>
   </td>
   <td id="participant">
-    ${getBlockie(participant, "20px", "")}<label>${participant}</label>
+    <label>${participant}</label>
   </td>
   <td></td>
 </tr>`;
