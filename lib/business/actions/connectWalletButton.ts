@@ -3,7 +3,12 @@ import {
   dispatch_renderError,
 } from "../../dispatch/render";
 import { getById, newTab, parseQueryString } from "../../view/utils";
-import { getAddress, requestAccounts, web3Injected } from "../../wallet/web3";
+import {
+  getAddress,
+  requestAccounts,
+  switchNetwork,
+  web3Injected,
+} from "../../wallet/web3";
 import MetaMaskOnboarding from "@metamask/onboarding";
 import {
   acceptedTerms,
@@ -15,7 +20,7 @@ import {
   dispatch_setPopupState,
   dispatch_stashIpfsCID,
 } from "../../dispatch/stateChange";
-import { PageState, PopupState, QueryStrings } from "../../types";
+import { ChainName, PageState, PopupState, QueryStrings } from "../../types";
 import { registerEthereumProviderEvents } from "../utils";
 
 export async function connectWalletButton(props) {
@@ -32,8 +37,8 @@ export async function connectWalletButton(props) {
     await requestAccounts();
     registerEthereumProviderEvents(props);
 
-    //TODO: ON TESTNET LAUNCH I NEED TO COMMENT THIS BACK
-    //     await switchNetwork(ChainName.Harmony, 0, "Testnet");
+    //TODO ON MAINNET LAUNCH I NEED TO CHANGE THIS TO MAINNET
+    await switchNetwork(ChainName.Harmony, 0, "Testnet");
 
     // Now I check if they signed the terms,
     // If the terms is an empty string, I allow pass (dev mode)
