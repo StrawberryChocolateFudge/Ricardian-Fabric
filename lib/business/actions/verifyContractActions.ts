@@ -167,6 +167,6 @@ async function verifyAcceptableContract(url: string, domParser: DOMParser) {
 }
 
 export function getArweaveTxIdFromSRC(src: string) {
-  const split = src.split("https://arweave.net/");
+  const split = src.split("arweave.net/");
   return split[1];
 }
