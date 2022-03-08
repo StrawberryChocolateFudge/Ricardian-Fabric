@@ -1,6 +1,5 @@
 import { html } from "lit-html";
 import { Chains } from "../../../types";
-import { getBlockie } from "./getBlockies";
 import { BSCLogo, EthLogo, HarmonyLogo, PolygonLogo } from "./logos";
 
 export const getPriceTemplate = (
@@ -31,7 +30,7 @@ export const createdDateTemplate = (date: string) => {
     <td>
       <label for="createdDate">Created:</label>
     </td>
-    <td id="createdDate"><label>${date}</label></td>
+    <td><label id="createdDate">${date}</label></td>
   </tr>`;
 };
 
@@ -40,7 +39,7 @@ export const signedDateTemplate = (date: string) => {
     <td>
       <label for="signed-date">Signed on:</label>
     </td>
-    <td id="signed-date"><label>${date}</label></td>
+    <td><label id="signed-date">${date}</label></td>
   </tr>`;
 };
 
@@ -48,12 +47,10 @@ export const issuerTemplate = (address: string) => {
   return html`
     <tr>
       <td>
-        <label for="issuer-address"
-          ><label for="issuer-address">Issuer:</label></label
-        >
+        <label for="issuer-address">Issuer:</label>
       </td>
-      <td id="issuer-address">
-        <label>${address}</label>
+      <td>
+        <label id="issuer-address">${address}</label>
       </td>
       <td></td>
     </tr>
@@ -111,8 +108,10 @@ export const networkTemplate = (network: string, isFulfilled: boolean) => {
     <td>
       <label for="network-id">Network:</label>
     </td>
-    <td id="network-id">
-      <label>${networkEl === undefined ? network : networkEl}</label>
+    <td>
+      <label id="network-id"
+        >${networkEl === undefined ? network : networkEl}</label
+      >
     </td>
     <td></td>
   </tr>`;
@@ -179,8 +178,8 @@ export const getParticipantFromTemplate = (participant: string) => html`<tr>
   <td>
     <label for="participant">Participant:</label>
   </td>
-  <td id="participant">
-    <label>${participant}</label>
+  <td>
+    <label id="participant">${participant}</label>
   </td>
   <td></td>
 </tr>`;
