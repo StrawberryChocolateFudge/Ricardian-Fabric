@@ -203,7 +203,7 @@ export function renderCreateButtonClick(props: State, calledAt: RenderType) {
           issuerSignature,
           smartContract,
           ERC20,
-          creatorAppLink: location.origin,
+          creatorAppLink: location.origin + location.pathname,
           relatedtrail: trailEl.value,
           ipfsParams: props.ipfs,
         },
