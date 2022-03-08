@@ -68,4 +68,5 @@ const errors = {
   959: "Invalid data",
   960: "Invalid access property",
   961: "You can only update your own contracts",
+  962: "That trail already exists",
 };
