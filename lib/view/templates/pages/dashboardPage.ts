@@ -152,7 +152,7 @@ export const PermaPinnedData = (ipfsV2Url: string, nodes: any) => {
           return html`<li class="marginTop-50">
             <div class="column">
               <a
-                href="https:/${ipfsCID}.${ipfsV2Url}"
+                href="https://${ipfsCID}.${ipfsV2Url}"
                 target="_blank"
                 rel="noopener"
                 >${ipfsCID}</a
@@ -166,7 +166,6 @@ export const PermaPinnedData = (ipfsV2Url: string, nodes: any) => {
     </div>
   `;
 };
-
 function findTags(
   tags: Array<{ name: string; value: string }>
 ): [string, string] {
