@@ -8,7 +8,7 @@ Detailed docs on how to use it can be found at docs.ricadianfabric.com
 
 The latest version of ricadian fabric.
 DEPLOYED AT:
-https://vpoujgmzomhgm4vabp2mbnkwgcer6bhdsawgpcdoazjphpts54.arweave.net/q91EmZlzD-mZyoAv0wLVWMIkfBOOQLGeIbgZS875y7w
+https://5sogpgw5uhq7a6lr3kkw7mxkq2mxvgikf66qujhhmte5zntm.arweave.net/7Jxn_mt2h4fB5cdqVb7L-qhpl6mQovvQok52TJ3LZsI
 
 ## Use
 
