@@ -1,5 +1,8 @@
 # Ricardian-Fabric DAO
 
+## THE MAINTAINED CODE HAS MOVED TO THE ORGANIZATION https://github.com/Ricardian-Fabric/Ricardian-Fabric
+## THIS REPO IS DEPRECATED
+
 ## DOCS
 
 Detailed docs on how to use it can be found at docs.ricadianfabric.com
