@@ -4,7 +4,10 @@ The IPFS version of Ricardian fabric.
 
 # 0.0.4
 
-The latest version of ricadian fabric, still under development and not in production.
+The latest version of ricadian fabric.
+DEPLOYED AT:
+https://vpoujgmzomhgm4vabp2mbnkwgcer6bhdsawgpcdoazjphpts54.arweave.net/q91EmZlzD-mZyoAv0wLVWMIkfBOOQLGeIbgZS875y7w
+
 The latest version on testnet is 0.0.3 and there are breaking changes in contract verification and signing between the versions.
 It is advised to wait to use the version on the website till I update it to the latest version.
 
